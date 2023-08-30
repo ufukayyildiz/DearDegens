@@ -54,7 +54,12 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["var(--font-sans)", ...fontFamily.sans],
+        sans: ["Prompt", ...fontFamily.sans],
+        prompt: ['Prompt', ...fontFamily.sans],
+        indie: ['Indie Flower', ...fontFamily.sans],
+        bangers: ['Bangers', ...fontFamily.sans],
+        galada: ['Galada', ...fontFamily.sans],
+        chivo: ['Chivo Mono', ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {
