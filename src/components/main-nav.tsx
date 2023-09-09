@@ -1,10 +1,10 @@
 import * as React from "react"
 import Link from "next/link"
 
-import { NavItem } from "@/types/nav"
-import { siteConfig } from "@/config/site"
-import { cn } from "@/lib/utils"
-import { Icons } from "@/components/icons"
+import { NavItem } from "@/src/types/nav"
+import { siteConfig } from "@/src/config/site"
+import { cn } from "@/src/lib/utils"
+import { Icons } from "@/src/components/icons"
 
 interface MainNavProps {
   items?: NavItem[]
