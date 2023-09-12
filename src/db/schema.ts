@@ -44,9 +44,9 @@ export const profileRelations = relations(profiles, ({ one }) => ({
 
 // agreedPrice is either the initial offer or the counter offer (if it exists). A buyer cannot counter and will need to create a new offer.
 // If the seller accepts, the buyer will need to confirm. A report will be automatically generated if the buyer ignores the seller after a period.
-export const offers = mysqlTable('offer', {
+export const offers = mysqlTable('offers', {
   id: varchar('id', { length: 191 }).primaryKey().notNull(),
-  listingId: varchar('buyerId', { length: 191 }).unique().notNull(),
+  listingId: varchar('listingId', { length: 191 }).unique().notNull(),
   buyerId: varchar('buyerId', { length: 191 }).unique().notNull(),
   sellerId: varchar('sellerId', { length: 191 }).unique().notNull(),
   createdAt: timestamp("createdAt").defaultNow().onUpdateNow().notNull(),
