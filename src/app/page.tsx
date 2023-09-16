@@ -1,9 +1,14 @@
 import Link from "next/link"
-
 import { siteConfig } from "@/src/config/site"
-import { buttonVariants } from "@/src/components/ui/button"
+import { buttonVariants } from "../components/components-ui/Button"
+import { authOptions } from "../lib/auth"
+import { getServerSession } from "next-auth"
 
-export default function IndexPage() {
+export default async function IndexPage() {
+  
+  const session = await getServerSession(authOptions)
+  console.log('Session:', session)
+
   return (
     <section className="container grid items-center gap-6 pb-8 pt-6 md:py-10">
       <div className="flex max-w-[980px] flex-col items-start gap-2">

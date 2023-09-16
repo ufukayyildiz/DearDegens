@@ -4,7 +4,7 @@ import Link from "next/link"
 import { NavItem } from "@/src/types/nav"
 import { siteConfig } from "@/src/config/site"
 import { cn } from "@/src/lib/utils"
-import { Icons } from "@/src/components/icons"
+import { Icons } from "./components-ui/Icons"
 
 interface MainNavProps {
   items?: NavItem[]

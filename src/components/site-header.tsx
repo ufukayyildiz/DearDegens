@@ -1,8 +1,8 @@
 import Link from "next/link"
 
 import { siteConfig } from "@/src/config/site"
-import { buttonVariants } from "@/src/components/ui/button"
-import { Icons } from "@/src/components/icons"
+import { buttonVariants } from "./components-ui/Button"
+import { Icons } from "./components-ui/Icons"
 import { MainNav } from "@/src/components/main-nav"
 import { ThemeToggle } from "@/src/components/theme-toggle"
 
@@ -20,7 +20,7 @@ export function SiteHeader() {
             >
               <div
                 className={buttonVariants({
-                  size: "icon",
+                  size: "lg",
                   variant: "ghost",
                 })}
               >
@@ -35,7 +35,7 @@ export function SiteHeader() {
             >
               <div
                 className={buttonVariants({
-                  size: "icon",
+                  size: "lg",
                   variant: "ghost",
                 })}
               >
