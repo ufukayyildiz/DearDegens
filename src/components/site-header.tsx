@@ -6,7 +6,7 @@ import { Icons } from "./components-ui/Icons"
 import { MainNav } from "@/src/components/main-nav"
 import { ThemeToggle } from "@/src/components/theme-toggle"
 import { getServerSession } from "next-auth"
-import { authOptions } from "../lib/auth"
+import { authOptions } from "../lib/auth/auth-options"
 
 export function SiteHeader() {
 

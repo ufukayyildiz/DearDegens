@@ -1,10 +1,10 @@
 import { db } from '@/src/db/index'
 import { eq } from 'drizzle-orm'
-import { DrizzleAdapter } from '@auth/drizzle-adapter'
+import { DrizzleAdapter } from './drizzle-adapter'
 import type { NextAuthOptions } from 'next-auth'
 import { getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { users } from '../db/schema'
+import { users } from '../../db/schema'
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db),
@@ -17,8 +17,8 @@ export const authOptions: NextAuthOptions = {
   },
   providers: [
     GoogleProvider({
-      clientId: process.env.GOOGLE_CLIENT_ID!,
-      clientSecret: process.env.GOOGLE_CLIENT_SECRET!,
+      clientId: process.env.GOOGLE_CLIENT_ID as string,
+      clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
     }),
   ],
   callbacks: {

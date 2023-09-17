@@ -1,4 +1,4 @@
-import { authOptions } from "@/src/lib/auth"
+import { authOptions } from "@/src/lib/auth/auth-options"
 import NextAuth from "next-auth"
 
 console.log("authOptions", authOptions.callbacks?.session)

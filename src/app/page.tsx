@@ -1,7 +1,7 @@
 import Link from "next/link"
 import { siteConfig } from "@/src/config/site"
 import { buttonVariants } from "../components/components-ui/Button"
-import { authOptions } from "../lib/auth"
+import { authOptions } from "../lib/auth/auth-options"
 import { getServerSession } from "next-auth"
 
 export default async function IndexPage() {

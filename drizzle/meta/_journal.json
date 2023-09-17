@@ -64,6 +64,20 @@
       "when": 1694891448275,
       "tag": "0008_fancy_the_leader",
       "breakpoints": true
+    },
+    {
+      "idx": 9,
+      "version": "5",
+      "when": 1694953625611,
+      "tag": "0009_spotty_revanche",
+      "breakpoints": true
+    },
+    {
+      "idx": 10,
+      "version": "5",
+      "when": 1694954208555,
+      "tag": "0010_tiny_risque",
+      "breakpoints": true
     }
   ]
 }
