@@ -4,6 +4,9 @@ const nextConfig = {
   experimental: {
     appDir: true,
   },
+  images: {
+    domains: ['uploadthing.com', 'lh3.googleusercontent.com'],
+  },
 }
 
 export default nextConfig
