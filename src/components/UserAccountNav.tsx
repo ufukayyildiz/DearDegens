@@ -16,10 +16,9 @@ import { UserAvatar } from "./components-ui/UserAvatar"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "image" | "email">
-  admin: boolean
 }
 
-export function UserAccountNav({ user, admin }: UserAccountNavProps) {
+export function UserAccountNav({ user }: UserAccountNavProps) {
   const { setTheme, theme } = useTheme()
 
   const userName = user?.name

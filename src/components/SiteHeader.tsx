@@ -22,7 +22,6 @@ export async function SiteHeader() {
     .select()
     .from(users)
     .where(eq(users.id, session.user.id))
-  const { admin } = user[0]
 
   return (
     <header className="sticky top-0 z-50 w-full border-b border-secondary backdrop-blur-md">
@@ -38,7 +37,6 @@ export async function SiteHeader() {
                   email: session.user.email || "",
                   image: session.user.image || "",
                 }}
-                admin={admin}
               />
             ) : (
               <Link href="/signin" className={buttonVariants()}>

@@ -1,31 +1,52 @@
-import { z } from 'zod'
+import { z } from "zod"
 
 export const MintValidator = z.object({
-  type: z.string(),
-  categorydoc: z.string(),
-  categorynpm: z.string(),
-  index: z
-    .number()
-    .max(128, {
-      message: 'Cannot have more than 200 items',
-    }),
+  category: z.string(),
+  subCategory: z.string(),
+  price: z
+    .coerce.number()
+    .min(1, {
+      message: "Your price cannot be less than 1 Rand",
+    })
+    .max(999999999, {
+    message: "Your price cannot be higher than 999,999,999 Rand",
+  }),
   title: z
     .string()
     .min(3, {
-      message: 'Title must be at least 3 characters long',
+      message: "Title must be at least 3 characters long",
+    })
+    .max(64, {
+      message: "Title must be less than 64 characters long",
+    }),
+  brand: z
+    .string()
+    .min(3, {
+      message: "Brand must be at least 3 characters long",
+    })
+    .max(64, {
+      message: "Brand must be less than 64 characters long",
+    }),
+  model: z
+    .string()
+    .min(3, {
+      message: "Model must be at least 3 characters long",
     })
     .max(128, {
-      message: 'Title must be less than 128 characters long',
+      message: "Title must be less than 128 characters long",
     }),
   description: z
     .string()
     .min(3, {
-      message: 'Description must be at least 3 characters long',
+      message: "Description must be at least 3 characters long",
     })
     .max(255, {
-      message: 'Description must be less than 255 characters long',
+      message: "Description must be less than 255 characters long",
     }),
-  content: z.any(),
+  images: z.string(),
+  meetup: z.string(),
 })
 
 export type AdCreationRequest = z.infer<typeof MintValidator>
+
+
