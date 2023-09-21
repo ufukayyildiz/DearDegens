@@ -48,18 +48,7 @@ export default function MintItems() {
 
   // Initialise useForm
   const form = useForm<FormData>({
-    resolver: zodResolver(MintValidator),
-    defaultValues: {
-      category: "",
-      subCategory: "",
-      price: 0,
-      title: "",
-      brand: "",
-      model: "",
-      description: "",
-      images: "",
-      meetup: "",
-    },
+    resolver: zodResolver(MintValidator)
   })
 
   const { mutate: createPost } = useMutation({
