@@ -1,9 +1,10 @@
 "use client"
 
-import React, { useState, useEffect } from "react"
+import React, { useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { categoryItems } from "@/src/lib/categories/mintItems"
+import { southAfrica } from "@/src/lib/locations/southAfrica"
 import { AdCreationRequest, MintValidator } from "@/src/lib/validators/mint"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
@@ -42,13 +43,13 @@ type FormData = z.infer<typeof MintValidator>
 export default function MintItems() {
   const router = useRouter()
 
-  const [categoryValue, setCategoryValue] = useState<string | undefined>('')
- 
-  console.log('categoryValue:', categoryValue)
+  const [categoryValue, setCategoryValue] = useState<string | undefined>("")
+
+  console.log("categoryValue:", categoryValue)
 
   // Initialise useForm
   const form = useForm<FormData>({
-    resolver: zodResolver(MintValidator)
+    resolver: zodResolver(MintValidator),
   })
 
   const { mutate: createPost } = useMutation({
@@ -62,6 +63,7 @@ export default function MintItems() {
       model,
       description,
       images,
+      location,
       meetup,
     }: AdCreationRequest) => {
       const payload: AdCreationRequest = {
@@ -73,6 +75,7 @@ export default function MintItems() {
         model,
         description,
         images,
+        location,
         meetup,
       }
       const { data } = await axios.post("/api/post/create", payload)
@@ -111,6 +114,7 @@ export default function MintItems() {
       model: data.model,
       description: data.description,
       images: data.images,
+      location: data.location,
       meetup: data.meetup,
     }
     console.log("payload:", payload)
@@ -134,11 +138,11 @@ export default function MintItems() {
                       <SelectTrigger className="w-60">
                         <SelectValue {...field} />
                       </SelectTrigger>
-                      <SelectContent className=" max-h-60 overflow-auto p-2">
+                      <SelectContent className="max-h-96 overflow-auto p-2">
                         {categoryItems.map((category, index) => (
                           <div key={index}>
-                            <hr className="mb-2"></hr>
-                            <p className="font-bold" key={category.name}>
+                            <hr className="mb-10"></hr>
+                            <p className="font-bold text-lg text-primary" key={category.name}>
                               {category.name}
                             </p>
                             {category.subCategories.map((subs) => (
@@ -160,6 +164,42 @@ export default function MintItems() {
             />
           </div>
 
+          <div className="w-full flex flex-col md:flex-row justify-between gap-10">
+            {/* BRAND */}
+            <FormField
+              control={form.control}
+              name="brand"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Brand</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription>
+                    It's all about the branding..
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* MODEL */}
+            <FormField
+              control={form.control}
+              name="model"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Model</FormLabel>
+                  <FormControl>
+                    <Input {...field} />
+                  </FormControl>
+                  <FormDescription>Model name/number..</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
+
           {/* PRICE */}
           <FormField
             control={form.control}
@@ -168,7 +208,7 @@ export default function MintItems() {
               <FormItem>
                 <FormLabel>Price</FormLabel>
                 <FormControl>
-                  <Input {...field} type="number" className="w-44" />
+                  <Input {...field} type="number" className="w-60" />
                 </FormControl>
                 <FormDescription>Have a price in mind?</FormDescription>
                 <FormMessage />
@@ -211,6 +251,77 @@ export default function MintItems() {
               </FormItem>
             )}
           />
+
+          <div className="flex flex-col md:flex-row gap-10">
+            {/* LOCATION */}
+            <FormField
+              control={form.control}
+              name="location"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Location</FormLabel>
+                  <FormControl>
+                    <Select>
+                      <SelectTrigger className="w-60">
+                        <SelectValue {...field} />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {southAfrica.map((category, index) => (
+                          <div key={index}>
+                            <hr className="mb-10"></hr>
+                            <p className="font-bold text-lg text-primary" key={category.name}>
+                              {category.name}
+                            </p>
+                            {category.subCategories.map((subs) => (
+                              <SelectItem key={subs} value={subs}>
+                                {subs}
+                              </SelectItem>
+                            ))}
+                          </div>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    Where are you from?
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+            {/* MEET */}
+            <FormField
+              control={form.control}
+              name="meetup"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Meeting Preferance</FormLabel>
+                  <FormControl>
+                    <Select>
+                      <SelectTrigger className="w-60">
+                        <SelectValue {...field} />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-60 overflow-auto p-2">
+                        <SelectItem key="public" value="Public meet">
+                          Meet in public
+                        </SelectItem>
+                        <SelectItem key="public" value="Public meet">
+                          Buyer collects
+                        </SelectItem>
+                        <SelectItem key="public" value="Public meet">
+                          Deliver to buyer
+                        </SelectItem>
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    How is this deal going down?
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+          </div>
 
           <Button type="submit" variant="outline" form="">
             Sell!

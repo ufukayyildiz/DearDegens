@@ -44,6 +44,7 @@ export const MintValidator = z.object({
       message: "Description must be less than 255 characters long",
     }),
   images: z.string(),
+  location: z.string(),
   meetup: z.string(),
 })
 
