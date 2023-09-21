@@ -2,7 +2,6 @@ import { z } from "zod"
 
 export const MintValidator = z.object({
   category: z.string(),
-  subCategory: z.string(),
   price: z
     .coerce.number()
     .min(1, {

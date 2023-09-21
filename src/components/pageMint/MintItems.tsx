@@ -56,7 +56,6 @@ export default function MintItems() {
     // PAYLOAD
     mutationFn: async ({
       category,
-      subCategory,
       price,
       title,
       brand,
@@ -68,7 +67,6 @@ export default function MintItems() {
     }: AdCreationRequest) => {
       const payload: AdCreationRequest = {
         category,
-        subCategory,
         price,
         title,
         brand,
@@ -107,7 +105,6 @@ export default function MintItems() {
   async function onSubmit(data: FormData) {
     const payload: AdCreationRequest = {
       category: data.category,
-      subCategory: data.subCategory,
       price: data.price,
       title: data.title,
       brand: data.brand,
