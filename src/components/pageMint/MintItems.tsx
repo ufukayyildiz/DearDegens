@@ -12,12 +12,6 @@ import axios from "axios"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "../components-ui/Accordion"
 import { Button } from "../components-ui/Button"
 import {
   Form,
@@ -43,13 +37,20 @@ type FormData = z.infer<typeof MintValidator>
 export default function MintItems() {
   const router = useRouter()
 
-  const [categoryValue, setCategoryValue] = useState<string | undefined>("")
-
-  console.log("categoryValue:", categoryValue)
-
   // Initialise useForm
   const form = useForm<FormData>({
     resolver: zodResolver(MintValidator),
+    defaultValues: {
+      category: '',
+      price: 0,
+      title: '',
+      brand: '',
+      model: '',
+      description:'',
+      images: '',
+      location: '',
+      meetup: '',
+    }
   })
 
   const { mutate: createPost } = useMutation({
@@ -76,7 +77,7 @@ export default function MintItems() {
         location,
         meetup,
       }
-      const { data } = await axios.post("/api/post/create", payload)
+      const { data } = await axios.post("/api/createAd", payload)
 
       return data
     },
@@ -299,13 +300,13 @@ export default function MintItems() {
                         <SelectValue {...field} />
                       </SelectTrigger>
                       <SelectContent className="max-h-60 overflow-auto p-2">
-                        <SelectItem key="public" value="Public meet">
+                        <SelectItem key="pub" value="public">
                           Meet in public
                         </SelectItem>
-                        <SelectItem key="public" value="Public meet">
+                        <SelectItem key="col" value="collect">
                           Buyer collects
                         </SelectItem>
-                        <SelectItem key="public" value="Public meet">
+                        <SelectItem key="del" value="deliver">
                           Deliver to buyer
                         </SelectItem>
                       </SelectContent>
@@ -320,7 +321,7 @@ export default function MintItems() {
             />
           </div>
 
-          <Button type="submit" variant="outline" form="">
+          <Button type="submit" variant="outline">
             Sell!
           </Button>
         </form>

@@ -6,8 +6,6 @@ import {
   TabsTrigger,
 } from "@/src/components/components-ui/Tabs"
 import MintItems from "@/src/components/pageMint/MintItems"
-import MintGaming from "@/src/components/pageMint/MintGaming"
-import MintElectronics from "@/src/components/pageMint/MintElectronics"
 
 export default function MintPage() {
   return (
@@ -30,10 +28,8 @@ export default function MintPage() {
           <h1>Vehicles</h1>
         </TabsContent>
         <TabsContent value="electronics">
-         <MintElectronics/>
         </TabsContent>
         <TabsContent value="gaming">
-          <MintGaming/>
         </TabsContent>
       </Tabs>
     </div>

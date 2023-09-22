@@ -202,8 +202,8 @@ export const listingsGeneral = mysqlTable("listingGeneral", {
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
   expirationDate: datetime("expirationDate").notNull(),
-  purgeDate: datetime("expirationDate").notNull(),
-  category: varchar("description", { length: 191 }).notNull(),
+  purgeDate: datetime("purgeDate").notNull(),
+  category: varchar("category", { length: 191 }).notNull(),
   price: int("price").notNull(),
   brand: varchar("brand", { length: 191 }).notNull(),
   model: varchar("model", { length: 191 }).notNull(),
