@@ -15,7 +15,8 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     const authorId = JSON.stringify(session?.user.id)
-    const id = JSON.stringify(nanoid())
+    const generateId = nanoid()
+    const id = JSON.stringify(generateId)
     console.log("id:", id)
 
     const currentDate: Date = new Date()

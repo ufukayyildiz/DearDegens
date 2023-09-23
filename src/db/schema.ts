@@ -1,4 +1,4 @@
-import { relations, sql, InferSelectModel, InferInsertModel } from "drizzle-orm"
+import { relations, sql, InferInsertModel } from "drizzle-orm"
 import {
   boolean,
   datetime,
@@ -40,6 +40,13 @@ export const accounts = mysqlTable(
   })
 )
 
+export const accountsRelations = relations(accounts, ({ one }) => ({
+  user: one(users, {
+    fields: [accounts.userId],
+    references: [users.id],
+  }),
+}))
+
 
 
 export const sessions = mysqlTable(
@@ -62,6 +69,13 @@ export const sessions = mysqlTable(
     userIdIndex: index("sessions__userId__idx").on(session.userId),
   })
 )
+
+export const sessionsRelations = relations(sessions, ({ one }) => ({
+  user: one(users, {
+    fields: [sessions.userId],
+    references: [users.id],
+  }),
+}))
 
 
 
@@ -107,8 +121,8 @@ export const verificationTokens = mysqlTable(
     identifier: varchar("identifier", { length: 255 }).primaryKey().notNull(),
     token: varchar("token", { length: 255 }).notNull(),
     expires: datetime("expires").notNull(),
-    created_at: timestamp("created_at").notNull().defaultNow(),
-    updated_at: timestamp("updated_at").notNull().defaultNow().onUpdateNow(),
+    createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`),
+    updatedAt: timestamp("updatedAt").default(sql`CURRENT_TIMESTAMP`).onUpdateNow(),
   },
   (verificationToken) => ({
     tokenIndex: uniqueIndex("verification_tokens__token__idx").on(
