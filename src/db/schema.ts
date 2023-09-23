@@ -1,4 +1,4 @@
-import { relations, sql } from "drizzle-orm"
+import { relations, sql, InferSelectModel, InferInsertModel } from "drizzle-orm"
 import {
   boolean,
   datetime,
@@ -195,23 +195,19 @@ export const listingQuestionsRelations = relations(
 export const listingsGeneral = mysqlTable("listingGeneral", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   authorId: varchar("authorId", { length: 191 }).unique().notNull(),
-  createdAt: timestamp("createdAt")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  updatedAt: timestamp("updatedAt")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  expirationDate: datetime("expirationDate").notNull(),
-  purgeDate: datetime("purgeDate").notNull(),
-  category: varchar("category", { length: 191 }).notNull(),
-  price: int("price").notNull(),
-  brand: varchar("brand", { length: 191 }).notNull(),
-  model: varchar("model", { length: 191 }).notNull(),
-  title: varchar("title", { length: 191 }).notNull(),
-  description: text("description").notNull(),
-  images: varchar("images", { length: 191 }).notNull(),
-  location: varchar("location", { length: 191 }).notNull(),
-  meetup: varchar("meetup", { length: 191 }).notNull(),
+  createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedAt: timestamp("updatedAt").default(sql`CURRENT_TIMESTAMP`),
+  expirationDate: datetime("expirationDate"),
+  purgeDate: datetime("purgeDate"),
+  category: varchar("category", { length: 191 }),
+  price: int("price"),
+  brand: varchar("brand", { length: 191 }),
+  model: varchar("model", { length: 191 }),
+  title: varchar("title", { length: 191 }),
+  description: text("description"),
+  images: varchar("images", { length: 191 }),
+  location: varchar("location", { length: 191 }),
+  meetup: varchar("meetup", { length: 191 }),
   isAvailable: boolean("isAvailable").default(true).notNull(),
 })
 
@@ -341,3 +337,5 @@ export const userReportsRelations = relations(userReports, ({ one }) => ({
     references: [users.id],
   }),
 }))
+
+export type newListingsGeneral = InferInsertModel<typeof listingsGeneral>

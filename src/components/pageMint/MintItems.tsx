@@ -93,7 +93,7 @@ export default function MintItems() {
 
     // SUCCESS
     onSuccess: () => {
-      router.push("/p/home")
+      router.push("/home")
 
       router.refresh()
 
@@ -132,9 +132,9 @@ export default function MintItems() {
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    <Select>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger className="w-60">
-                        <SelectValue {...field} />
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
                         {categoryItems.map((category, index) => (
@@ -259,9 +259,9 @@ export default function MintItems() {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Select>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger className="w-60">
-                        <SelectValue {...field} />
+                        <SelectValue/>
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
                         {southAfrica.map((category, index) => (
@@ -295,9 +295,9 @@ export default function MintItems() {
                 <FormItem>
                   <FormLabel>Meeting Preferance</FormLabel>
                   <FormControl>
-                    <Select>
+                    <Select onValueChange={field.onChange} defaultValue={field.value}>
                       <SelectTrigger className="w-60">
-                        <SelectValue {...field} />
+                        <SelectValue/>
                       </SelectTrigger>
                       <SelectContent className="max-h-60 overflow-auto p-2">
                         <SelectItem key="pub" value="public">

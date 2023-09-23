@@ -32,7 +32,7 @@ export const MintValidator = z.object({
       message: "Model must be at least 3 characters long",
     })
     .max(128, {
-      message: "Title must be less than 128 characters long",
+      message: "Model must be less than 128 characters long",
     }),
   description: z
     .string()
