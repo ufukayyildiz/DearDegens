@@ -1,21 +1,21 @@
 "use client"
 
-import React, { useCallback, useEffect, useState } from "react"
+import React, { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
-import { OurFileRouter } from "@/src/app/api/uploadthing/core"
 import { toast } from "@/src/hooks/use-toast"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
 import { categoryItems } from "@/src/lib/categories/mintItems"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import { AdCreationRequest, MintValidator } from "@/src/lib/validators/mint"
-import { UploadDropzone, type FileWithPath } from "@uploadthing/react"
 import { useDropzone } from "@uploadthing/react/hooks"
+import { FileWithPath } from "react-dropzone"
 import { generateClientDropzoneAccept } from "uploadthing/client"
 
 import "@uploadthing/react/styles.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
+import { ImagePlus, Loader } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -38,31 +38,28 @@ import {
   SelectValue,
 } from "../components-ui/Select"
 import { Textarea } from "../components-ui/Textarea"
-import { ImagePlus } from "lucide-react"
 
 type FormData = z.infer<typeof MintValidator>
-
-
-
 
 export default function MintItems() {
   const router = useRouter()
 
   // UPLOADTHING
   const [files, setFiles] = useState<File[]>([])
+  const [isLoading, setIsLoading] = useState<boolean>(false)
   const [uploadData, setuploadData] = useState([])
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
     setFiles(acceptedFiles)
   }, [])
   const fileUrls = uploadData.map((file: any) => file.fileUrl)
   const urlJson = JSON.stringify(fileUrls)
-  console.log('urlJson:', urlJson)
-
+  console.log("urlJson:", urlJson)
 
   const { startUpload, permittedFileInfo } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res: any) => {
       const data = res
       setuploadData(data)
+      setIsLoading(false)
       return toast({
         title: "Success!.",
         description: "Your files have been uploaded successfully.",
@@ -76,6 +73,7 @@ export default function MintItems() {
       })
     },
     onUploadBegin: () => {
+      setIsLoading(true)
       return toast({
         title: "Please wait..",
         description: "Your upload has started.",
@@ -175,12 +173,21 @@ export default function MintItems() {
     <div className="mt-10 mx-auto w-full rounded-lg bg-background p-2">
       {/* IMAGES */}
       <p className="text-sm mb-3">Image Upload</p>
-      <div className="flex h-auto min-h-[100px] mb-3 text-center justify-center border border-dashed border-l-1 border-zinc-300 rounded-lg shadow-lg">
+      <div className="relative flex h-auto min-h-[100px] mb-3 text-center justify-center border border-dashed border-l-1 border-zinc-300 rounded-lg shadow-lg">
+        {isLoading === true && (
+          <div className="absolute inset-0 flex w-full h-full z-50 top-0 left-0 bg-slate-300/30 justify-center backdrop-blur-sm rounded-lg">
+            <Loader className="h-16 w-16 my-auto animate-spin text-slate-500" />
+          </div>
+        )}
         {fileUrls.length > 0 ? (
           <div className="flex flex-wrap w-full h-full gap-2 p-2">
             {fileUrls.map((file: any, index: number) => (
               <div key={index}>
-                <img src={file} alt={`Image ${index}`} className="w-20 h-20 rounded-md shadow-md object-contain" />
+                <img
+                  src={file}
+                  alt={`Image ${index}`}
+                  className="w-20 h-20 rounded-md shadow-md object-contain"
+                />
               </div>
             ))}
           </div>
@@ -196,13 +203,15 @@ export default function MintItems() {
                 className="h-auto my-auto text-zinc-400 italic"
               >
                 <input {...getInputProps()} />
-                <ImagePlus className="w-10 h-10 animate-pulse"/>
+                <ImagePlus className="w-10 h-10 animate-pulse" />
               </div>
             )}
           </div>
         )}
       </div>
-      <p className="text-xs text-slate-500 mb-10">(Max Images: 6 | Max file size: 2mb)</p>
+      <p className="text-xs text-slate-500 mb-10">
+        (Max Images: 6 | Max file size: 2mb)
+      </p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
