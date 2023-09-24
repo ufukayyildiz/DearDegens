@@ -1,5 +1,5 @@
 import { db } from "@/src/db"
-import { listingsGeneral } from "@/src/db/schema"
+import { listingsGeneral, notifications } from "@/src/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { MintValidator } from "@/src/lib/validators/mint"
 import { nanoid } from "nanoid"
@@ -15,9 +15,12 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     const authorId = JSON.stringify(session?.user.id)
-    const generateId = nanoid()
-    const id = JSON.stringify(generateId)
-    console.log("id:", id)
+
+    const generateListingId = nanoid()
+    const listingId = JSON.stringify(generateListingId)
+
+    const generateNotificationId = nanoid()
+    const notificationId = JSON.stringify(generateNotificationId)
 
     const currentDate: Date = new Date()
     const expirationDate: Date = new Date(
@@ -52,7 +55,7 @@ export async function POST(req: Request) {
     )
 
     const post = await db.insert(listingsGeneral).values({
-      id: id,
+      id: listingId,
       authorId: authorId,
       createdAt: currentDate,
       updatedAt: currentDate,
@@ -70,7 +73,19 @@ export async function POST(req: Request) {
       isAvailable: true,
     })
 
+    const notification = await db.insert(notifications).values({
+      id: notificationId,
+      userId: authorId,
+      createdAt: currentDate,
+      title: `Listing ${title} is live!`,
+      description: 'Congratulations, your listing is live!',
+      body: `Thank you for choosing PepperMint to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
+      isRead: false,
+    })
+    
+
     console.log("post:", post)
+    console.log('notification', notification)
 
     return new Response(JSON.stringify(post), { status: 200 })
   } catch (error) {
