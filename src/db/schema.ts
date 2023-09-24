@@ -9,6 +9,7 @@ import {
   timestamp,
   uniqueIndex,
   varchar,
+  json,
 } from "drizzle-orm/mysql-core"
 
 export const accounts = mysqlTable(
@@ -135,10 +136,10 @@ export const verificationTokens = mysqlTable(
 
 export const profiles = mysqlTable("profile", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  userId: varchar("userId", { length: 191 }).unique().notNull(),
+  userId: varchar("userId", { length: 191 }).notNull(),
   name: varchar("name", { length: 191 }),
   surname: varchar("surname", { length: 191 }),
-  email: varchar("email", { length: 191 }).unique(),
+  email: varchar("email", { length: 191 }),
   contactNum: int("contactNum"),
 })
 
@@ -153,9 +154,9 @@ export const profileRelations = relations(profiles, ({ one }) => ({
 // If the seller accepts, the buyer will need to confirm. A report will be automatically generated if the buyer ignores the seller after a period.
 export const offers = mysqlTable("offers", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  listingId: varchar("listingId", { length: 191 }).unique().notNull(),
-  buyerId: varchar("buyerId", { length: 191 }).unique().notNull(),
-  sellerId: varchar("sellerId", { length: 191 }).unique().notNull(),
+  listingId: varchar("listingId", { length: 191 }).notNull(),
+  buyerId: varchar("buyerId", { length: 191 }).notNull(),
+  sellerId: varchar("sellerId", { length: 191 }).notNull(),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .onUpdateNow()
@@ -185,9 +186,9 @@ export const offerRelations = relations(offers, ({ one, many }) => ({
 
 export const listingQuestions = mysqlTable("listingQuestions", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  listingId: varchar("listingId", { length: 191 }).unique().notNull(),
-  authorId: varchar("authorId", { length: 191 }).unique().notNull(),
-  sellerId: varchar("sellerId", { length: 191 }).unique().notNull(),
+  listingId: varchar("listingId", { length: 191 }).notNull(),
+  authorId: varchar("authorId", { length: 191 }).notNull(),
+  sellerId: varchar("sellerId", { length: 191 }).notNull(),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -208,7 +209,7 @@ export const listingQuestionsRelations = relations(
 
 export const listingsGeneral = mysqlTable("listingGeneral", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  authorId: varchar("authorId", { length: 191 }).unique().notNull(),
+  authorId: varchar("authorId", { length: 191 }).notNull(),
   createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`).notNull(),
   updatedAt: timestamp("updatedAt").default(sql`CURRENT_TIMESTAMP`),
   expirationDate: datetime("expirationDate"),
@@ -219,11 +220,15 @@ export const listingsGeneral = mysqlTable("listingGeneral", {
   model: varchar("model", { length: 191 }),
   title: varchar("title", { length: 191 }),
   description: text("description"),
-  images: varchar("images", { length: 191 }),
+  images: text("images"),
   location: varchar("location", { length: 191 }),
   meetup: varchar("meetup", { length: 191 }),
   isAvailable: boolean("isAvailable").default(true).notNull(),
+},
+(listingGeneral) => ({
+  idIndex: uniqueIndex("listingGeneral__id__idx").on(listingGeneral.id),
 })
+)
 
 export const listingsGeneralRelations = relations(
   listingsGeneral,
@@ -240,11 +245,11 @@ export const listingsGeneralRelations = relations(
 
 export const chats = mysqlTable("chats", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  listingId: varchar("listingId", { length: 191 }).unique().notNull(),
+  listingId: varchar("listingId", { length: 191 }).notNull(),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  authorId: varchar("authorId", { length: 191 }).unique().notNull(),
+  authorId: varchar("authorId", { length: 191 }).notNull(),
   message: text("message"),
 })
 
@@ -284,8 +289,8 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
 // isActive will start true, and turn false after a time period. This determines whether the report counts towards the users cooldown status.
 export const offerReports = mysqlTable("offerReport", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  offerId: varchar("offerId", { length: 191 }).unique().notNull(),
-  userId: varchar("userId", { length: 191 }).unique().notNull(),
+  offerId: varchar("offerId", { length: 191 }).notNull(),
+  userId: varchar("userId", { length: 191 }).notNull(),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -309,9 +314,9 @@ export const offerReportsRelations = relations(offerReports, ({ one }) => ({
 // listingReports are user generated
 export const listingReports = mysqlTable("listingReport", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  authorId: varchar("authorId", { length: 191 }).unique().notNull(),
-  listingId: varchar("listingId", { length: 191 }).unique().notNull(),
-  userId: varchar("userId", { length: 191 }).unique().notNull(),
+  authorId: varchar("authorId", { length: 191 }).notNull(),
+  listingId: varchar("listingId", { length: 191 }).notNull(),
+  userId: varchar("userId", { length: 191 }).notNull(),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -334,8 +339,8 @@ export const listingReportsRelations = relations(listingReports, ({ one }) => ({
 
 export const userReports = mysqlTable("userReport", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  authorId: varchar("authorId", { length: 191 }).unique().notNull(),
-  userId: varchar("userId", { length: 191 }).unique().notNull(),
+  authorId: varchar("authorId", { length: 191 }).notNull(),
+  userId: varchar("userId", { length: 191 }).notNull(),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

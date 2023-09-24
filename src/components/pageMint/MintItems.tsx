@@ -1,11 +1,18 @@
 "use client"
 
-import React, { useEffect, useState } from "react"
+import React, { useCallback, useEffect, useState } from "react"
 import { useRouter } from "next/navigation"
+import { OurFileRouter } from "@/src/app/api/uploadthing/core"
 import { toast } from "@/src/hooks/use-toast"
+import { useUploadThing } from "@/src/hooks/useUploadThing"
 import { categoryItems } from "@/src/lib/categories/mintItems"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import { AdCreationRequest, MintValidator } from "@/src/lib/validators/mint"
+import { UploadDropzone, type FileWithPath } from "@uploadthing/react"
+import { useDropzone } from "@uploadthing/react/hooks"
+import { generateClientDropzoneAccept } from "uploadthing/client"
+
+import "@uploadthing/react/styles.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
@@ -31,26 +38,74 @@ import {
   SelectValue,
 } from "../components-ui/Select"
 import { Textarea } from "../components-ui/Textarea"
+import { ImagePlus } from "lucide-react"
 
 type FormData = z.infer<typeof MintValidator>
+
+
+
 
 export default function MintItems() {
   const router = useRouter()
 
-  // Initialise useForm
+  // UPLOADTHING
+  const [files, setFiles] = useState<File[]>([])
+  const [uploadData, setuploadData] = useState([])
+  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
+    setFiles(acceptedFiles)
+  }, [])
+  const fileUrls = uploadData.map((file: any) => file.fileUrl)
+  const urlJson = JSON.stringify(fileUrls)
+  console.log('urlJson:', urlJson)
+
+
+  const { startUpload, permittedFileInfo } = useUploadThing("imageUploader", {
+    onClientUploadComplete: (res: any) => {
+      const data = res
+      setuploadData(data)
+      return toast({
+        title: "Success!.",
+        description: "Your files have been uploaded successfully.",
+      })
+    },
+    onUploadError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description: "An error occured while uploading. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onUploadBegin: () => {
+      return toast({
+        title: "Please wait..",
+        description: "Your upload has started.",
+      })
+    },
+  })
+
+  const fileTypes = permittedFileInfo?.config
+    ? Object.keys(permittedFileInfo?.config)
+    : []
+
+  const { getRootProps, getInputProps } = useDropzone({
+    onDrop,
+    accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
+  })
+
+  // REACT-HOOK-FORM
   const form = useForm<FormData>({
     resolver: zodResolver(MintValidator),
     defaultValues: {
-      category: '',
+      category: "",
       price: 0,
-      title: '',
-      brand: '',
-      model: '',
-      description:'',
-      images: '',
-      location: '',
-      meetup: '',
-    }
+      title: "",
+      brand: "",
+      model: "",
+      description: "",
+      images: JSON.stringify(fileUrls),
+      location: "",
+      meetup: "",
+    },
   })
 
   const { mutate: createPost } = useMutation({
@@ -94,9 +149,6 @@ export default function MintItems() {
     // SUCCESS
     onSuccess: () => {
       router.push("/home")
-
-      router.refresh()
-
       return toast({
         description: "Your post has been published.",
       })
@@ -111,7 +163,7 @@ export default function MintItems() {
       brand: data.brand,
       model: data.model,
       description: data.description,
-      images: data.images,
+      images: urlJson,
       location: data.location,
       meetup: data.meetup,
     }
@@ -120,7 +172,38 @@ export default function MintItems() {
   }
 
   return (
-    <div className="mt-10 mx-auto w-full rounded-lg bg-background p-4">
+    <div className="mt-10 mx-auto w-full rounded-lg bg-background p-2">
+      {/* IMAGES */}
+      <p className="text-sm mb-3">Image Upload</p>
+      <div className="flex h-auto min-h-[100px] mb-3 text-center justify-center border border-dashed border-l-1 border-zinc-300 rounded-lg shadow-lg">
+        {fileUrls.length > 0 ? (
+          <div className="flex flex-wrap w-full h-full gap-2 p-2">
+            {fileUrls.map((file: any, index: number) => (
+              <div key={index}>
+                <img src={file} alt={`Image ${index}`} className="w-20 h-20 rounded-md shadow-md object-contain" />
+              </div>
+            ))}
+          </div>
+        ) : (
+          <div className="flex h-auto my-auto">
+            {files.length > 0 ? (
+              <Button onClick={() => startUpload(files)} variant="outline">
+                Upload {files.length} files
+              </Button>
+            ) : (
+              <div
+                {...getRootProps()}
+                className="h-auto my-auto text-zinc-400 italic"
+              >
+                <input {...getInputProps()} />
+                <ImagePlus className="w-10 h-10 animate-pulse"/>
+              </div>
+            )}
+          </div>
+        )}
+      </div>
+      <p className="text-xs text-slate-500 mb-10">(Max Images: 6 | Max file size: 2mb)</p>
+
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <div className="flex flex-row gap-10">
@@ -132,7 +215,10 @@ export default function MintItems() {
                 <FormItem>
                   <FormLabel>Category</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger className="w-60">
                         <SelectValue />
                       </SelectTrigger>
@@ -140,7 +226,10 @@ export default function MintItems() {
                         {categoryItems.map((category, index) => (
                           <div key={index}>
                             <hr className="mb-10"></hr>
-                            <p className="font-bold text-lg text-primary" key={category.name}>
+                            <p
+                              className="font-bold text-lg text-primary"
+                              key={category.name}
+                            >
                               {category.name}
                             </p>
                             {category.subCategories.map((subs) => (
@@ -259,15 +348,21 @@ export default function MintItems() {
                 <FormItem>
                   <FormLabel>Location</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger className="w-60">
-                        <SelectValue/>
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
                         {southAfrica.map((category, index) => (
                           <div key={index}>
                             <hr className="mb-10"></hr>
-                            <p className="font-bold text-lg text-primary" key={category.name}>
+                            <p
+                              className="font-bold text-lg text-primary"
+                              key={category.name}
+                            >
                               {category.name}
                             </p>
                             {category.subCategories.map((subs) => (
@@ -280,9 +375,7 @@ export default function MintItems() {
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <FormDescription>
-                    Where are you from?
-                  </FormDescription>
+                  <FormDescription>Where are you from?</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
@@ -295,9 +388,12 @@ export default function MintItems() {
                 <FormItem>
                   <FormLabel>Meeting Preferance</FormLabel>
                   <FormControl>
-                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
                       <SelectTrigger className="w-60">
-                        <SelectValue/>
+                        <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-60 overflow-auto p-2">
                         <SelectItem key="pub" value="public">
