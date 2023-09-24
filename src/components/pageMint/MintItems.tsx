@@ -11,7 +11,6 @@ import { useDropzone } from "@uploadthing/react/hooks"
 import { FileWithPath } from "react-dropzone"
 import { generateClientDropzoneAccept } from "uploadthing/client"
 
-import "@uploadthing/react/styles.css"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
