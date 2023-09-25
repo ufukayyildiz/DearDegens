@@ -3,22 +3,19 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
-import { GeneralListing } from "@/src/types/db"
+import { listingsGeneralType } from "@/src/types/db"
 
-interface GeneralListingProps {
-  listing: GeneralListing
+interface MyMintsProps {
+  listing: listingsGeneralType
 }
 
-export default function MyMintsComponent({
-  listing,
-}: GeneralListingProps) {
+export default function MyMintsComponent({ listing }: MyMintsProps) {
   const [adImage, setAdImage] = useState([])
   const jsonImage = listing.images
 
   useEffect(() => {
     if (jsonImage) {
       const images = JSON.parse(jsonImage)
-      console.log("images:", images)
       setAdImage(images)
     }
   }, [jsonImage])
@@ -49,9 +46,7 @@ export default function MyMintsComponent({
               <span>Listed</span>
               {formatTimeToNow(new Date(listing.createdAt))}
               <span>in</span>
-              <span className="text-red-400 font-bold">
-                {listing.location}
-              </span>
+              <span className="text-red-400 font-bold">{listing.location}</span>
             </div>
           </div>
 

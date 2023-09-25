@@ -7,15 +7,14 @@ import { useUploadThing } from "@/src/hooks/useUploadThing"
 import { categoryItems } from "@/src/lib/categories/mintItems"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import { AdCreationRequest, MintValidator } from "@/src/lib/validators/mint"
-import { useDropzone } from "@uploadthing/react/hooks"
-import { FileWithPath } from "react-dropzone"
-import { generateClientDropzoneAccept } from "uploadthing/client"
-
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
+import { useDropzone } from "@uploadthing/react/hooks"
 import axios from "axios"
 import { ImagePlus, Loader } from "lucide-react"
+import { FileWithPath } from "react-dropzone"
 import { useForm } from "react-hook-form"
+import { generateClientDropzoneAccept } from "uploadthing/client"
 import { z } from "zod"
 
 import { Button } from "../components-ui/Button"
@@ -52,7 +51,6 @@ export default function MintItems() {
   }, [])
   const fileUrls = uploadData.map((file: any) => file.fileUrl)
   const urlJson = JSON.stringify(fileUrls)
-  console.log("urlJson:", urlJson)
 
   const { startUpload, permittedFileInfo } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res: any) => {

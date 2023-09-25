@@ -356,5 +356,3 @@ export const userReportsRelations = relations(userReports, ({ one }) => ({
     references: [users.id],
   }),
 }))
-
-export type newListingsGeneral = InferInsertModel<typeof listingsGeneral>
