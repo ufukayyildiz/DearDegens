@@ -18,6 +18,12 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+
+        customColorOne: "hsl(var(--custom-color-one))",
+        customColorTwo: "hsl(var(--custom-color-two))",
+        customColorThr: "hsl(var(--custom-color-thr))",
+        customColorFou: "hsl(var(--custom-color-fou))",
+
         foreground: "hsl(var(--foreground))",
         primary: {
           DEFAULT: "hsl(var(--primary))",

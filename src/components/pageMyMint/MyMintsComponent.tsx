@@ -21,23 +21,23 @@ export default function MyMintsComponent({ listing }: MyMintsProps) {
   }, [jsonImage])
 
   return (
-    <div className="mx-auto w-full max-w-[800px] rounded-lg border border-l-4 border-secondary border-l-teal-400 bg-background shadow-md transition duration-500 hover:scale-[0.99]">
+    <div className="mx-auto w-full rounded-lg border border-l-4 border-background border-l-customColorTwo bg-background shadow-md transition duration-500 hover:scale-[0.99]">
       <Link href={`/fs/post/${listing.id}`}>
         <div className="relative h-48 flex justify-between ">
           {/* INFO */}
           <div className="relative w-8/12 p-3">
             <div>
-              <h1 className="text-primary font-bold group-hover:text-teal-400 md:text-xl mb-2">
+              <h1 className="text-primary font-bold hover:text-customColorTwo md:text-xl mb-2">
                 {listing.title}
               </h1>
             </div>
 
-            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-clip text-zinc-500">
+            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-clip text-muted-foreground">
               <p>{listing.description}</p>
             </div>
 
             <div className="absolute bottom-6">
-              <h1 className="text-primary group-hover:text-teal-400 font-semibold text-lg">
+              <h1 className="text-primary font-semibold text-lg">
                 R {listing.price}
               </h1>
             </div>
@@ -62,11 +62,11 @@ export default function MyMintsComponent({ listing }: MyMintsProps) {
           {/* TAGS */}
           <div className=" absolute -bottom-3 -right-3">
             {listing.isAvailable === true ? (
-              <div className="h-6 w-20 text-xs text-center justify-center italic bg-teal-400 rounded-full p-1 shadow-lg z-30">
+              <div className="h-6 w-20 text-xs text-center text-customColorFou justify-center italic bg-gradient-to-br from-customColorOne via-customColorTwo to-customColorThr rounded-full p-1 shadow-lg z-30">
                 Available!
               </div>
             ) : (
-              <div className="h-6 w-20 text-xs text-center justify-center italic bg-amber-300 rounded-full p-1 shadow-lg z-30">
+              <div className="h-6 w-20 text-xs text-center text-customColorFou justify-center italic bg-amber-300 rounded-full p-1 shadow-lg z-30">
                 Sold
               </div>
             )}

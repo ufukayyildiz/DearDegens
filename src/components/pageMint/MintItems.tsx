@@ -207,7 +207,7 @@ export default function MintItems() {
           </div>
         )}
       </div>
-      <p className="text-xs text-slate-500 mb-10">
+      <p className="text-xs text-muted-foreground mb-10">
         (Max Images: 6 | Max file size: 2mb)
       </p>
 

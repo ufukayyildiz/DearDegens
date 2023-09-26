@@ -31,7 +31,7 @@ export async function SiteHeader() {
     .where(eq(notifications.userId, userId))
 
   return (
-    <header className="sticky top-0 z-50 w-full border-b border-secondary backdrop-blur-md">
+    <header className="sticky top-0 z-50 w-full bg-muted/40 backdrop-blur-xl">
       <div className="container flex h-16 items-center space-x-4 sm:justify-between sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
         <div className="flex flex-1 items-center justify-end space-x-4">
