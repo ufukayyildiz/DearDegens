@@ -38,7 +38,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           <div className="flex flex-col space-y-1 leading-none">
             {user.name && <p className="font-medium">{user.name}</p>}
             {user.email && (
-              <p className="w-[200px] truncate text-sm text-customColorTwo">
+              <p className="w-[200px] truncate text-sm text-cyan-500">
                 {user.email}
               </p>
             )}
@@ -78,7 +78,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="cursor-pointer bg-rose-500 text-primary"
+          className="cursor-pointer bg-gradient-to-br from-rose-400 via-red-400 to-red-500 text-zinc-50 focus:text-zinc-50 transition duration-500 hover:scale-[0.99]"
           onSelect={(event) => {
             event.preventDefault()
             signOut({

@@ -21,16 +21,16 @@ interface NotificationsNavProps {
 export function NotificationsNav({ notification }: NotificationsNavProps) {
   const [unReadNotifications, setUnReadNotifications] = useState<number>(0)
 
-  useEffect(() => {
-    const isReadArray = []
-    for (let i = 0; i < notification.length; i++) {
-      if (notification[i].isRead === false) {
-        isReadArray.push(notification[i].isRead)
-      }
+  const isReadArray = []
+  for (let i = 0; i < notification.length; i++) {
+    if (notification[i].isRead === false) {
+      isReadArray.push(notification[i].isRead)
     }
-    console.log('isReadArray', isReadArray)
+  }
+
+  useEffect(() => {
     setUnReadNotifications(isReadArray.length)
-  }, [])
+  }, [isReadArray])
 
   return (
     <DropdownMenu>
