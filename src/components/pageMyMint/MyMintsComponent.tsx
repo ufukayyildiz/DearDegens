@@ -20,6 +20,14 @@ export default function MyMintsComponent({ listing }: MyMintsProps) {
     }
   }, [jsonImage])
 
+  const price = listing.price
+  const formatter = new Intl.NumberFormat('en-US', {
+    style: 'decimal',
+    minimumFractionDigits: 0, 
+  });
+  
+  const formattedPrice = formatter.format(price);
+
   return (
     <div className="mx-auto w-full rounded-lg border border-l-4 border-background border-l-customColorTwo bg-background shadow-md transition duration-500 hover:scale-[0.99]">
       <Link href={`/fs/post/${listing.id}`}>
@@ -32,21 +40,21 @@ export default function MyMintsComponent({ listing }: MyMintsProps) {
               </h1>
             </div>
 
-            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-clip text-muted-foreground">
+            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-clip text-secondary">
               <p>{listing.description}</p>
             </div>
 
             <div className="absolute bottom-6">
               <h1 className="text-primary font-semibold text-lg">
-                R {listing.price}
+                R {formattedPrice}
               </h1>
             </div>
 
-            <div className="absolute bottom-2 left-3 flex max-h-40 gap-1 text-xs italic text-capecod-500">
+            <div className="absolute bottom-2 left-3 flex max-h-40 gap-1 text-xs italic text-secondary">
               <span>Listed</span>
               {formatTimeToNow(new Date(listing.createdAt))}
               <span>in</span>
-              <span className="text-red-400 font-bold">{listing.location}</span>
+              <span className="text-primary font-bold">{listing.location}</span>
             </div>
           </div>
 

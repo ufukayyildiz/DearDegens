@@ -58,7 +58,7 @@ export function NotificationsNav({ notification }: NotificationsNavProps) {
                 className="grid grid-cols-1 content-start"
               >
                 <h1>{notify.title}</h1>
-                <div className="flex max-h-40 gap-1 text-xs italic text-zinc-400">
+                <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
                   <span>Created</span>
                   {formatTimeToNow(new Date(notify.createdAt))}
                 </div>
