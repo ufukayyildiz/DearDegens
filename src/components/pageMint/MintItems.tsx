@@ -16,7 +16,7 @@ import { FileWithPath } from "react-dropzone"
 import { useForm } from "react-hook-form"
 import { generateClientDropzoneAccept } from "uploadthing/client"
 import { z } from "zod"
-
+import { buttonVariants } from "../components-ui/Button"
 import { Button } from "../components-ui/Button"
 import {
   Form,
@@ -424,7 +424,7 @@ export default function MintItems() {
             />
           </div>
 
-          <Button type="submit" variant="outline">
+          <Button type="submit" variant="outline" size='lg'>
             Sell!
           </Button>
         </form>

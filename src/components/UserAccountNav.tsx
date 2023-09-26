@@ -36,7 +36,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
       <DropdownMenuContent className="relative" align="end">
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
-            {user.name && <p className="font-medium">{user.name}</p>}
+            {user.name && <p className="font-bold">{user.name}</p>}
             {user.email && (
               <p className="w-[200px] truncate text-sm text-primary">
                 {user.email}
@@ -78,7 +78,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="cursor-pointer bg-gradient-to-br from-rose-400 via-red-400 to-red-500 text-zinc-50 focus:text-zinc-50 transition duration-500 hover:scale-[0.99]"
+          className="cursor-pointer bg-gradient-to-br from-red-500 via-red-400 to-rose-400 text-zinc-50 focus:text-zinc-50 transition duration-500 hover:scale-[0.99]"
           onSelect={(event) => {
             event.preventDefault()
             signOut({
