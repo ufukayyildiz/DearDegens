@@ -143,7 +143,7 @@ export default function MintItems() {
 
     // SUCCESS
     onSuccess: () => {
-      router.push("/home")
+      router.push("/p/mymints")
       router.refresh()
       return toast({
         description: "Your post has been published.",

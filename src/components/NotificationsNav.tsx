@@ -12,29 +12,36 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./components-ui/DropdownMenu"
+import { useEffect, useState } from "react"
 
 interface NotificationsNavProps {
   notification: notificationsType
 }
 
 export function NotificationsNav({ notification }: NotificationsNavProps) {
+  // const [unReadNotifications, setUnReadNotifications] = useState<number>(0)
+
+  
   const isReadArray = []
   for (let i = 0; i < notification.length; i++) {
     if (notification[i].isRead === false) {
       isReadArray.push(notification[i].isRead)
     }
   }
-  const unReadNotifications = isReadArray.length
+  // setUnReadNotifications(isReadArray.length)
+  const note = isReadArray.length
+  // useEffect(() => {
+  // }, [])
 
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
         <div className="relative">
           <Bell className="w-6 h-6" />
-          {unReadNotifications > 0 && (
-            <div className="absolute -top-3 -right-3 w-auto min-w-[20px] h-5 bg-red-500 content-center rounded-full px-2">
+          {note > 0 && (
+            <div className="absolute -top-3 -right-3 w-auto min-w-[20px] h-5 bg-red-500 content-center rounded-full px-2 shadow-md">
               <p className="h-full my-auto text-white text-xs text-center inline-block align-middle">
-                {unReadNotifications}
+                {note}
               </p>
             </div>
           )}
@@ -49,10 +56,10 @@ export function NotificationsNav({ notification }: NotificationsNavProps) {
             <DropdownMenuItem asChild>
               <Link
                 href={`/notification/${notify.id}`}
-                className="flex flex-col content-start"
+                className="grid grid-cols-1 content-start"
               >
                 <h1>{notify.title}</h1>
-                <div className="flex max-h-40 gap-1 text-xs italic text-capecod-300">
+                <div className="flex max-h-40 gap-1 text-xs italic text-zinc-400">
                   <span>Created</span>
                   {formatTimeToNow(new Date(notify.createdAt))}
                 </div>

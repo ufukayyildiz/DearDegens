@@ -48,13 +48,13 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/mint">Create Ad</Link>
+          <Link href="/p/mint">Create Ad</Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/mymints">My Ads</Link>
+          <Link href="/p/mymints">My Ads</Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

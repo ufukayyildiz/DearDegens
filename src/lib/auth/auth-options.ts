@@ -54,7 +54,7 @@ export const authOptions: NextAuthOptions = {
       };
     },
     redirect() {
-      return '/home'
+      return '/p/home'
     },
   },
 }

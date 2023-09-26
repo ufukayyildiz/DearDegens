@@ -21,7 +21,7 @@ export default function MyMintsComponent({ listing }: MyMintsProps) {
   }, [jsonImage])
 
   return (
-    <div className="mx-auto w-full max-w-[800px] rounded-lg border border-l-4 border-secondary border-l-teal-400 bg-background shadow-md transition duration-500 hover:scale-95">
+    <div className="mx-auto w-full max-w-[800px] rounded-lg border border-l-4 border-secondary border-l-teal-400 bg-background shadow-md transition duration-500 hover:scale-[0.99]">
       <Link href={`/fs/post/${listing.id}`}>
         <div className="relative h-48 flex justify-between ">
           {/* INFO */}

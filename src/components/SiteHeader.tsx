@@ -10,13 +10,14 @@ import { MainNav } from "./MainNav"
 import { NotificationsNav } from "./NotificationsNav"
 import { UserAccountNav } from "./UserAccountNav"
 import { buttonVariants } from "./components-ui/Button"
+import { redirect } from "next/navigation"
 
 export async function SiteHeader() {
   const session = await getServerSession(authOptions)
   const userId = JSON.stringify(session?.user.id)
 
-  if (session == null) {
-    return console.log("No session, please login..")
+  if (!session) {
+    return console.log('Unauthorised, please login')
   }
 
   const user = await db
@@ -48,9 +49,12 @@ export async function SiteHeader() {
                 />
               </div>
             ) : (
+              <div>
+
               <Link href="/signin" className={buttonVariants()}>
                 Sign In
               </Link>
+              </div>
             )}
           </nav>
         </div>
