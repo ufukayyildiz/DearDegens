@@ -1,6 +1,7 @@
 import { z } from "zod"
+import { phoneNumberRegex } from "../regex"
 
-export const MintValidator = z.object({
+export const validateHousehold = z.object({
   category: z.string(),
   price: z
     .coerce.number()
@@ -17,7 +18,11 @@ export const MintValidator = z.object({
     })
     .max(64, {
       message: "Title must be less than 64 characters long",
-    }),
+    }).refine(
+      (value) => !phoneNumberRegex.test(value), {
+        message: "Phone number detected. You will be able to communicate with buyers once an offer is agreed upon."
+      }
+    ),
   brand: z
     .string()
     .min(3, {
@@ -25,7 +30,11 @@ export const MintValidator = z.object({
     })
     .max(64, {
       message: "Brand must be less than 64 characters long",
-    }),
+    }).refine(
+      (value) => !phoneNumberRegex.test(value), {
+        message: "Phone number detected. You will be able to communicate with buyers once an offer is agreed upon."
+      }
+    ),
   model: z
     .string()
     .min(3, {
@@ -33,7 +42,11 @@ export const MintValidator = z.object({
     })
     .max(128, {
       message: "Model must be less than 128 characters long",
-    }),
+    }).refine(
+      (value) => !phoneNumberRegex.test(value), {
+        message: "Phone number detected. You will be able to communicate with buyers once an offer is agreed upon."
+      }
+    ),
   description: z
     .string()
     .min(3, {
@@ -41,12 +54,16 @@ export const MintValidator = z.object({
     })
     .max(255, {
       message: "Description must be less than 255 characters long",
-    }),
+    }).refine(
+      (value) => !phoneNumberRegex.test(value), {
+        message: "Phone number detected. You will be able to communicate with buyers once an offer is agreed upon."
+      }
+    ),
   images: z.string(),
   location: z.string(),
   meetup: z.string(),
 })
 
-export type AdCreationRequest = z.infer<typeof MintValidator>
+export type HouseholdCreationRequest = z.infer<typeof validateHousehold>
 
 

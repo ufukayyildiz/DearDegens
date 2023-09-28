@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { listingsGeneralType } from "@/src/types/db"
+import { Image } from "lucide-react"
 
 interface MyMintsProps {
   listing: listingsGeneralType
@@ -60,11 +61,17 @@ export default function MyMintsComponent({ listing }: MyMintsProps) {
 
           {/* IMAGE */}
           <div className="h-full w-4/12">
-            <img
-              src={adImage[0]}
-              alt={adImage[0]}
-              className="h-full w-full object-cover rounded-lg"
-            />
+            {!adImage[0] ? (
+              <div className="flex w-full h-full justify-center align-middle bg-muted rounded-lg">
+                <Image className='w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse'/>
+              </div>
+            ):(
+              <img
+                src={adImage[0]}
+                alt={adImage[0]}
+                className="h-full w-full object-cover rounded-lg"
+              />
+            )}
           </div>
 
           {/* TAGS */}

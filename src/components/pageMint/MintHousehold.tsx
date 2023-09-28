@@ -4,9 +4,9 @@ import React, { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
-import { categoryItems } from "@/src/lib/categories/mintItems"
+import { categoryHousehold } from "@/src/lib/categories/mintHousehold"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
-import { AdCreationRequest, MintValidator } from "@/src/lib/validators/mint"
+import { HouseholdCreationRequest, validateHousehold } from "@/src/lib/validators/validateHousehold"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useDropzone } from "@uploadthing/react/hooks"
@@ -16,7 +16,6 @@ import { FileWithPath } from "react-dropzone"
 import { useForm } from "react-hook-form"
 import { generateClientDropzoneAccept } from "uploadthing/client"
 import { z } from "zod"
-import { buttonVariants } from "../components-ui/Button"
 import { Button } from "../components-ui/Button"
 import {
   Form,
@@ -37,9 +36,9 @@ import {
 } from "../components-ui/Select"
 import { Textarea } from "../components-ui/Textarea"
 
-type FormData = z.infer<typeof MintValidator>
+type FormData = z.infer<typeof validateHousehold>
 
-export default function MintItems() {
+export default function MintHousehold() {
   const router = useRouter()
 
   // UPLOADTHING
@@ -89,7 +88,7 @@ export default function MintItems() {
 
   // REACT-HOOK-FORM
   const form = useForm<FormData>({
-    resolver: zodResolver(MintValidator),
+    resolver: zodResolver(validateHousehold),
     defaultValues: {
       category: "",
       price: 0,
@@ -115,8 +114,8 @@ export default function MintItems() {
       images,
       location,
       meetup,
-    }: AdCreationRequest) => {
-      const payload: AdCreationRequest = {
+    }: HouseholdCreationRequest) => {
+      const payload: HouseholdCreationRequest = {
         category,
         price,
         title,
@@ -151,8 +150,10 @@ export default function MintItems() {
     },
   })
 
+  
+  
   async function onSubmit(data: FormData) {
-    const payload: AdCreationRequest = {
+    const payload: HouseholdCreationRequest = {
       category: data.category,
       price: data.price,
       title: data.title,
@@ -230,7 +231,7 @@ export default function MintItems() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
-                        {categoryItems.map((category, index) => (
+                        {categoryHousehold.map((category, index) => (
                           <div key={index}>
                             <hr className="mb-10"></hr>
                             <p

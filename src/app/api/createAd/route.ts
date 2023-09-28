@@ -1,7 +1,7 @@
 import { db } from "@/src/db"
 import { listingsGeneral, notifications } from "@/src/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
-import { MintValidator } from "@/src/lib/validators/mint"
+import { MintValidator } from "@/src/lib/validators/validateHousehold"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 

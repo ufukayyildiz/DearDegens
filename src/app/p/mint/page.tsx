@@ -5,7 +5,8 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/components-ui/Tabs"
-import MintItems from "@/src/components/pageMint/MintItems"
+import MintHousehold from "@/src/components/pageMint/MintHousehold"
+import MintProperty from "@/src/components/pageMint/MintProperty"
 
 export default function MintPage() {
   return (
@@ -19,17 +20,19 @@ export default function MintPage() {
           <TabsTrigger value="gaming" className="w-full">Gaming & Computers</TabsTrigger>
         </TabsList>
         <TabsContent value="items">
-          <MintItems />
+          <MintHousehold />
         </TabsContent>
         <TabsContent value="property">
-          <h1>Property</h1>
+          <MintProperty/>
         </TabsContent>
         <TabsContent value="vehicles">
           <h1>Vehicles</h1>
         </TabsContent>
         <TabsContent value="electronics">
+          <h1>Electronics</h1>
         </TabsContent>
         <TabsContent value="gaming">
+          <h1>Gaming</h1>
         </TabsContent>
       </Tabs>
     </div>

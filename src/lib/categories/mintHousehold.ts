@@ -1,4 +1,4 @@
-export const categoryItems = [
+export const categoryHousehold = [
   {
     name: "Home & Appliances",
     subCategories: [
