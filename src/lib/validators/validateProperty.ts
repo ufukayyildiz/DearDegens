@@ -44,8 +44,8 @@ export const validateProperty = z.object({
   petFriendly: z.boolean(),
   images: z.string(),
   location: z.string(),
-  availableStart: z.date(),
-  availableEnd: z.date(),
+  availableStart: z.coerce.date(),
+  availableEnd: z.coerce.date(),
 })
 
 export type PropertyCreationRequest = z.infer<typeof validateProperty>

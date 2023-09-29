@@ -14,6 +14,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
+    console.log('body household:', body)
     const authorId = JSON.stringify(session?.user.id)
 
     const generateListingId = nanoid()

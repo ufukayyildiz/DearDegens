@@ -183,6 +183,10 @@ export default function MintProperty() {
   })
 
   async function onSubmit(data: FormData) {
+
+    const availabilityStart = new Date(data.availableStart)
+    const availabilityEnd = new Date(data.availableEnd)
+
     const payload: PropertyCreationRequest = {
       category: data.category,
       price: data.price,
@@ -196,8 +200,8 @@ export default function MintProperty() {
       petFriendly: data.petFriendly,
       images: urlJson,
       location: data.location,
-      availableStart: data.availableStart,
-      availableEnd: data.availableEnd,
+      availableStart: availabilityStart,
+      availableEnd: availabilityEnd,
     }
     console.log('Property Payload:', payload)
     createPost(payload)

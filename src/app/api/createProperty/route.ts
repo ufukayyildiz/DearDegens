@@ -14,6 +14,8 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
+    console.log('body property:', body)
+
     const authorId = JSON.stringify(session?.user.id)
 
     const generateListingId = nanoid()
@@ -30,6 +32,14 @@ export async function POST(req: Request) {
       currentDate.getTime() + 60 * 24 * 60 * 60 * 1000
     )
 
+    const availabilityStart = new Date(body.availableStart);
+    const availabilityEnd = new Date(body.availableEnd);
+
+    console.log('dates:', availabilityStart, availabilityEnd)
+
+    console.log('typeof availabilityStart:', typeof availabilityStart);
+    console.log('typeof availabilityEnd:', typeof availabilityEnd);
+
     const {
       category,
       price,
@@ -43,8 +53,6 @@ export async function POST(req: Request) {
       petFriendly,
       images,
       location,
-      availableStart,
-      availableEnd,
     } = validateProperty.parse(body)
     console.log(
       "data:",
@@ -60,9 +68,10 @@ export async function POST(req: Request) {
       petFriendly,
       images,
       location,
-      availableStart,
-      availableEnd
     )
+
+    
+
 
     const post = await db.insert(listingsProperty).values({
       id: listingId,
@@ -83,8 +92,8 @@ export async function POST(req: Request) {
       petFriendly: petFriendly,
       images: images,
       location: location,
-      availableStart: availableStart,
-      availableEnd: availableEnd,
+      availableStart: availabilityStart,
+      availableEnd: availabilityEnd,
       isAvailable: true,
     })
 

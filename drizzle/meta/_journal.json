@@ -141,6 +141,20 @@
       "when": 1695935373441,
       "tag": "0019_glorious_nuke",
       "breakpoints": true
+    },
+    {
+      "idx": 20,
+      "version": "5",
+      "when": 1695968666138,
+      "tag": "0020_chilly_firelord",
+      "breakpoints": true
+    },
+    {
+      "idx": 21,
+      "version": "5",
+      "when": 1695968797891,
+      "tag": "0021_flawless_supreme_intelligence",
+      "breakpoints": true
     }
   ]
 }
