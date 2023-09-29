@@ -4,19 +4,32 @@ import React, { useCallback, useState } from "react"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
-import { categoryHousehold } from "@/src/lib/categories/mintHousehold"
+import {
+  categoryProperty,
+  fascilitiesQty,
+  internet,
+} from "@/src/lib/categories/mintProperty"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
-import { HouseholdCreationRequest, validateHousehold } from "@/src/lib/validators/validateHousehold"
+import { cn } from "@/src/lib/utils"
+import {
+  PropertyCreationRequest,
+  validateProperty,
+} from "@/src/lib/validators/validateProperty"
 import { zodResolver } from "@hookform/resolvers/zod"
+import { CalendarIcon } from "@radix-ui/react-icons"
 import { useMutation } from "@tanstack/react-query"
 import { useDropzone } from "@uploadthing/react/hooks"
 import axios from "axios"
+import { addDays, format } from "date-fns"
 import { ImagePlus, Loader } from "lucide-react"
+import { DateRange } from "react-day-picker"
 import { FileWithPath } from "react-dropzone"
 import { useForm } from "react-hook-form"
 import { generateClientDropzoneAccept } from "uploadthing/client"
 import { z } from "zod"
+
 import { Button } from "../components-ui/Button"
+import { Calendar } from "../components-ui/Calender"
 import {
   Form,
   FormControl,
@@ -28,18 +41,30 @@ import {
 } from "../components-ui/Form"
 import { Input } from "../components-ui/Input"
 import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "../components-ui/Popover"
+import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
 } from "../components-ui/Select"
+import { Switch } from "../components-ui/Switch"
 import { Textarea } from "../components-ui/Textarea"
 
-type FormData = z.infer<typeof validateHousehold>
+type FormData = z.infer<typeof validateProperty>
 
 export default function MintProperty() {
   const router = useRouter()
+
+  // DATEPICKER
+  const [date, setDate] = React.useState<DateRange | undefined>({
+    from: new Date(2022, 0, 20),
+    to: addDays(new Date(2022, 0, 20), 20),
+  })
 
   // UPLOADTHING
   const [files, setFiles] = useState<File[]>([])
@@ -88,17 +113,14 @@ export default function MintProperty() {
 
   // REACT-HOOK-FORM
   const form = useForm<FormData>({
-    resolver: zodResolver(validateHousehold),
+    resolver: zodResolver(validateProperty),
     defaultValues: {
       category: "",
       price: 0,
       title: "",
-      brand: "",
-      model: "",
       description: "",
       images: JSON.stringify(fileUrls),
       location: "",
-      meetup: "",
     },
   })
 
@@ -108,25 +130,35 @@ export default function MintProperty() {
       category,
       price,
       title,
-      brand,
-      model,
       description,
+      bedroom,
+      bathroom,
+      garage,
+      parkingSpace,
+      internet,
+      petFriendly,
       images,
       location,
-      meetup,
-    }: HouseholdCreationRequest) => {
-      const payload: HouseholdCreationRequest = {
+      availableStart,
+      availableEnd,
+    }: PropertyCreationRequest) => {
+      const payload: PropertyCreationRequest = {
         category,
         price,
         title,
-        brand,
-        model,
         description,
+        bedroom,
+        bathroom,
+        garage,
+        parkingSpace,
+        internet,
+        petFriendly,
         images,
         location,
-        meetup,
+        availableStart,
+        availableEnd,
       }
-      const { data } = await axios.post("/api/createAd", payload)
+      const { data } = await axios.post("/api/createProperty", payload)
 
       return data
     },
@@ -150,21 +182,24 @@ export default function MintProperty() {
     },
   })
 
-  
-  
   async function onSubmit(data: FormData) {
-    const payload: HouseholdCreationRequest = {
+    const payload: PropertyCreationRequest = {
       category: data.category,
       price: data.price,
       title: data.title,
-      brand: data.brand,
-      model: data.model,
       description: data.description,
+      bedroom: data.bedroom,
+      bathroom: data.bathroom,
+      garage: data.garage,
+      parkingSpace: data.parkingSpace,
+      internet: data.internet,
+      petFriendly: data.petFriendly,
       images: urlJson,
       location: data.location,
-      meetup: data.meetup,
+      availableStart: data.availableStart,
+      availableEnd: data.availableEnd,
     }
-    console.log("payload:", payload)
+    console.log('Property Payload:', payload)
     createPost(payload)
   }
 
@@ -209,13 +244,13 @@ export default function MintProperty() {
         )}
       </div>
       <p className="text-xs text-muted-foreground mb-10">
-        (Max Images: 6 | Max file size: 2mb)
+        (Max Images: 10 | Max file size: 1mb)
       </p>
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          {/* CATEGORY */}
           <div className="flex flex-row gap-10">
-            {/* CATEGORY */}
             <FormField
               control={form.control}
               name="category"
@@ -224,6 +259,7 @@ export default function MintProperty() {
                   <FormLabel>Category</FormLabel>
                   <FormControl>
                     <Select
+                      required
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -231,7 +267,7 @@ export default function MintProperty() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
-                        {categoryHousehold.map((category, index) => (
+                        {categoryProperty.map((category, index) => (
                           <div key={index}>
                             <hr className="mb-10"></hr>
                             <p
@@ -257,59 +293,23 @@ export default function MintProperty() {
                 </FormItem>
               )}
             />
-          </div>
 
-          <div className="w-full flex flex-col md:flex-row justify-between gap-10">
-            {/* BRAND */}
+            {/* PRICE */}
             <FormField
               control={form.control}
-              name="brand"
+              name="price"
               render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Brand</FormLabel>
+                <FormItem>
+                  <FormLabel>Price</FormLabel>
                   <FormControl>
-                    <Input {...field} />
+                    <Input {...field} type="number" className="w-60" />
                   </FormControl>
-                  <FormDescription>
-                    It's all about the branding..
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-
-            {/* MODEL */}
-            <FormField
-              control={form.control}
-              name="model"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Model</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>Model name/number..</FormDescription>
+                  <FormDescription>Have a price in mind?</FormDescription>
                   <FormMessage />
                 </FormItem>
               )}
             />
           </div>
-
-          {/* PRICE */}
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" className="w-60" />
-                </FormControl>
-                <FormDescription>Have a price in mind?</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
 
           {/* TITLE */}
           <FormField
@@ -329,6 +329,192 @@ export default function MintProperty() {
             )}
           />
 
+          <div className="flex flex-wrap gap-10">
+            {/* BEDS */}
+            <FormField
+              control={form.control}
+              name="bedroom"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Bedrooms</FormLabel>
+                  <FormControl>
+                    <Select
+                      required
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-60">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {fascilitiesQty.map((qty, index) => (
+                          <SelectItem key={index} value={qty}>
+                            {qty}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    Select the number of bedrooms..
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* BATHS */}
+            <FormField
+              control={form.control}
+              name="bathroom"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Bathrooms</FormLabel>
+                  <FormControl>
+                    <Select
+                      required
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-60">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {fascilitiesQty.map((qty, index) => (
+                          <SelectItem key={index} value={qty}>
+                            {qty}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    Select the number of bathrooms..
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* GARAGE */}
+            <FormField
+              control={form.control}
+              name="garage"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Garages</FormLabel>
+                  <FormControl>
+                    <Select
+                      required
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-60">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {fascilitiesQty.map((qty, index) => (
+                          <SelectItem key={index} value={qty}>
+                            {qty}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    Select the number of garages..
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* PARKING */}
+            <FormField
+              control={form.control}
+              name="parkingSpace"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Parking Spaces</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-60">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {fascilitiesQty.map((qty, index) => (
+                          <SelectItem key={index} value={qty}>
+                            {qty}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>
+                    Select the number of parking spaces..
+                  </FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            {/* INTERNET */}
+            <FormField
+              control={form.control}
+              name="internet"
+              render={({ field }) => (
+                <FormItem>
+                  <FormLabel>Connectivity</FormLabel>
+                  <FormControl>
+                    <Select
+                      onValueChange={field.onChange}
+                      defaultValue={field.value}
+                    >
+                      <SelectTrigger className="w-60">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {internet.map((type, index) => (
+                          <SelectItem key={index} value={type}>
+                            {type}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <FormDescription>Select a connection type..</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="petFriendly"
+              render={({ field }) => (
+                <FormItem className="flex flex-col justify-between">
+                  <FormLabel className="px-2 py-1 text-sm">
+                    Pet Friendly
+                  </FormLabel>
+                  <FormControl className="my-2">
+                    <Switch
+                      checked={field.value}
+                      onCheckedChange={field.onChange}
+                      aria-readonly
+                    />
+                  </FormControl>
+
+                  <FormDescription>
+                    Are the furry creatures allowed??
+                  </FormDescription>
+                </FormItem>
+              )}
+            />
+          </div>
+
           {/* DESCRIPTION */}
           <FormField
             control={form.control}
@@ -337,7 +523,7 @@ export default function MintProperty() {
               <FormItem>
                 <FormLabel>Description</FormLabel>
                 <FormControl>
-                  <Textarea {...field} />
+                  <Textarea {...field} required />
                 </FormControl>
                 <FormDescription>
                   Good descriptions = Speedy sales!
@@ -347,7 +533,7 @@ export default function MintProperty() {
             )}
           />
 
-          <div className="flex flex-col md:flex-row gap-10">
+          <div className="flex flex-col lg:flex-row gap-10">
             {/* LOCATION */}
             <FormField
               control={form.control}
@@ -357,6 +543,7 @@ export default function MintProperty() {
                   <FormLabel>Location</FormLabel>
                   <FormControl>
                     <Select
+                      required
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -388,44 +575,105 @@ export default function MintProperty() {
                 </FormItem>
               )}
             />
-            {/* MEET */}
-            <FormField
-              control={form.control}
-              name="meetup"
-              render={({ field }) => (
-                <FormItem>
-                  <FormLabel>Meeting Preferance</FormLabel>
-                  <FormControl>
-                    <Select
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
-                    >
-                      <SelectTrigger className="w-60">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-60 overflow-auto p-2">
-                        <SelectItem key="pub" value="public">
-                          Meet in public
-                        </SelectItem>
-                        <SelectItem key="col" value="collect">
-                          Buyer collects
-                        </SelectItem>
-                        <SelectItem key="del" value="deliver">
-                          Deliver to buyer
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                  </FormControl>
-                  <FormDescription>
-                    How is this deal going down?
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
+
+            <div className="flex flex-col md:flex-row gap-10">
+              {/* AVAILIBILITY START */}
+              <FormField
+                control={form.control}
+                name="availableStart"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col justify-between">
+                    <FormLabel className="h-5 py-1">
+                      Availability <span className="italic text-xs">(Start)</span>
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a start date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          // disabled={(date) =>
+                          //   date > new Date() || date < new Date("1900-01-01")
+                          // }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormDescription>Inna dah beninging..</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              {/* AVAILIBILITY END */}
+              <FormField
+                control={form.control}
+                name="availableEnd"
+                render={({ field }) => (
+                  <FormItem className="flex flex-col justify-between">
+                    <FormLabel className="h-5 py-1">
+                      Availability <span className="italic text-xs">(End)</span>
+                    </FormLabel>
+                    <Popover>
+                      <PopoverTrigger asChild>
+                        <FormControl>
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-[240px] pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick an end date</span>
+                            )}
+                            <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
+                          </Button>
+                        </FormControl>
+                      </PopoverTrigger>
+                      <PopoverContent className="w-auto p-0" align="start">
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          // disabled={(date) =>
+                          //   date > new Date() || date < new Date("1900-01-01")
+                          // }
+                          initialFocus
+                        />
+                      </PopoverContent>
+                    </Popover>
+                    <FormDescription>..is a thing of the past!</FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+            </div>
+
           </div>
 
-          <Button type="submit" variant="outline" size='lg'>
+          <Button type="submit" variant="outline" size="lg">
             Sell!
           </Button>
         </form>

@@ -243,6 +243,50 @@ export const listingsGeneralRelations = relations(
   })
 )
 
+
+export const listingsProperty = mysqlTable("listingProperty", {
+  id: varchar("id", { length: 191 }).primaryKey().notNull(),
+  authorId: varchar("authorId", { length: 191 }).notNull(),
+  createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  updatedAt: timestamp("updatedAt").default(sql`CURRENT_TIMESTAMP`),
+  expirationDate: datetime("expirationDate"),
+  purgeDate: datetime("purgeDate"),
+  category: varchar("category", { length: 191 }),
+  price: int("price"),
+  title: varchar("title", { length: 191 }),
+  description: text("description"),
+  bedroom: varchar("bedroom", { length: 191 }),
+  bathroom: varchar("bathroom", { length: 191 }),
+  garage: varchar("garage", { length: 191 }),
+  parkingSpace: varchar("parkingSpace", { length: 191 }),
+  internet: varchar("internet", { length: 191 }),
+  petFriendly: boolean("petFriendly").default(false),
+  availableStart: datetime("availableStart"),
+  availableEnd: datetime("availableEnd"),
+  images: text("images"),
+  location: varchar("location", { length: 191 }),
+  isAvailable: boolean("isAvailable").default(true).notNull(),
+},
+(listingProperty) => ({
+  idIndex: uniqueIndex("listingProperty__id__idx").on(listingProperty.id),
+})
+)
+
+export const listingsPropertyRelations = relations(
+  listingsProperty,
+  ({ one, many }) => ({
+    authorId: one(users, {
+      fields: [listingsProperty.authorId],
+      references: [users.id],
+    }),
+    offers: many(offers),
+    chats: many(chats),
+    listingReports: many(listingReports),
+  })
+)
+
+
+
 export const chats = mysqlTable("chats", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   listingId: varchar("listingId", { length: 191 }).notNull(),

@@ -126,7 +126,7 @@ export default function MintHousehold() {
         location,
         meetup,
       }
-      const { data } = await axios.post("/api/createAd", payload)
+      const { data } = await axios.post("/api/createHousehold", payload)
 
       return data
     },
@@ -209,7 +209,7 @@ export default function MintHousehold() {
         )}
       </div>
       <p className="text-xs text-muted-foreground mb-10">
-        (Max Images: 6 | Max file size: 2mb)
+        (Max Images: 10 | Max file size: 1mb)
       </p>
 
       <Form {...form}>
@@ -253,11 +253,45 @@ export default function MintHousehold() {
                   <FormDescription>
                     Select an appropriate category..
                   </FormDescription>
-                  <FormMessage />
+                  <FormMessage/>
                 </FormItem>
               )}
             />
+
+             {/* PRICE */}
+          <FormField
+            control={form.control}
+            name="price"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Price</FormLabel>
+                <FormControl>
+                  <Input {...field} type="number" className="w-60" />
+                </FormControl>
+                <FormDescription>Have a price in mind?</FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
           </div>
+
+          {/* TITLE */}
+          <FormField
+            control={form.control}
+            name="title"
+            render={({ field }) => (
+              <FormItem>
+                <FormLabel>Title</FormLabel>
+                <FormControl>
+                  <Input {...field} />
+                </FormControl>
+                <FormDescription>
+                  What are we listing for you today?
+                </FormDescription>
+                <FormMessage />
+              </FormItem>
+            )}
+          />
 
           <div className="w-full flex flex-col md:flex-row justify-between gap-10">
             {/* BRAND */}
@@ -294,41 +328,6 @@ export default function MintHousehold() {
               )}
             />
           </div>
-
-          {/* PRICE */}
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" className="w-60" />
-                </FormControl>
-                <FormDescription>Have a price in mind?</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
-          {/* TITLE */}
-          <FormField
-            control={form.control}
-            name="title"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Title</FormLabel>
-                <FormControl>
-                  <Input {...field} />
-                </FormControl>
-                <FormDescription>
-                  What are we listing for you today?
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
-
           {/* DESCRIPTION */}
           <FormField
             control={form.control}
