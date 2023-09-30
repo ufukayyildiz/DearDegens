@@ -23,8 +23,6 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         )}
       >
         <div className="flex w-full flex-col">
-          {/* @ts-expect-error Server Component */}
-          <SiteHeader />
           <div className="flex-1">{children}</div>
         </div>
       </div>

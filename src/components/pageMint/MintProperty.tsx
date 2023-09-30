@@ -183,7 +183,6 @@ export default function MintProperty() {
   })
 
   async function onSubmit(data: FormData) {
-
     const availabilityStart = new Date(data.availableStart)
     const availabilityEnd = new Date(data.availableEnd)
 
@@ -203,7 +202,7 @@ export default function MintProperty() {
       availableStart: availabilityStart,
       availableEnd: availabilityEnd,
     }
-    console.log('Property Payload:', payload)
+    console.log("Property Payload:", payload)
     createPost(payload)
   }
 
@@ -260,7 +259,12 @@ export default function MintProperty() {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Category </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
                       required
@@ -304,9 +308,14 @@ export default function MintProperty() {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Price</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Price </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
-                    <Input {...field} type="number" className="w-60" />
+                    <Input {...field} type="number" className="w-60" required />
                   </FormControl>
                   <FormDescription>Have a price in mind?</FormDescription>
                   <FormMessage />
@@ -321,9 +330,14 @@ export default function MintProperty() {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <div className="w-full h-5 flex justify-between">
+                  <FormLabel className="py-1">Title </FormLabel>
+                  <FormLabel className="text-xs italic text-rose-400 py-1">
+                    (required)
+                  </FormLabel>
+                </div>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} required />
                 </FormControl>
                 <FormDescription>
                   What are we listing for you today?
@@ -340,7 +354,12 @@ export default function MintProperty() {
               name="bedroom"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bedrooms</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Bedrooms </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
                       required
@@ -373,7 +392,12 @@ export default function MintProperty() {
               name="bathroom"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Bathrooms</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Bathrooms </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
                       required
@@ -406,7 +430,12 @@ export default function MintProperty() {
               name="garage"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Garages</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Garages </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
                       required
@@ -525,7 +554,12 @@ export default function MintProperty() {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <div className="w-full h-5 flex justify-between">
+                  <FormLabel className="py-1">Description </FormLabel>
+                  <FormLabel className="text-xs italic text-rose-400 py-1">
+                    (required)
+                  </FormLabel>
+                </div>
                 <FormControl>
                   <Textarea {...field} required />
                 </FormControl>
@@ -544,7 +578,12 @@ export default function MintProperty() {
               name="location"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Location</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Location </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
                       required
@@ -588,7 +627,8 @@ export default function MintProperty() {
                 render={({ field }) => (
                   <FormItem className="flex flex-col justify-between">
                     <FormLabel className="h-5 py-1">
-                      Availability <span className="italic text-xs">(Start)</span>
+                      Availability{" "}
+                      <span className="italic text-xs">(Start)</span>
                     </FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
@@ -672,9 +712,7 @@ export default function MintProperty() {
                   </FormItem>
                 )}
               />
-
             </div>
-
           </div>
 
           <Button type="submit" variant="outline" size="lg">

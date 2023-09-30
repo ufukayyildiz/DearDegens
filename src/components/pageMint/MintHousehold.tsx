@@ -6,7 +6,10 @@ import { toast } from "@/src/hooks/use-toast"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
 import { categoryHousehold } from "@/src/lib/categories/mintHousehold"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
-import { HouseholdCreationRequest, validateHousehold } from "@/src/lib/validators/validateHousehold"
+import {
+  HouseholdCreationRequest,
+  validateHousehold,
+} from "@/src/lib/validators/validateHousehold"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useDropzone } from "@uploadthing/react/hooks"
@@ -16,6 +19,7 @@ import { FileWithPath } from "react-dropzone"
 import { useForm } from "react-hook-form"
 import { generateClientDropzoneAccept } from "uploadthing/client"
 import { z } from "zod"
+
 import { Button } from "../components-ui/Button"
 import {
   Form,
@@ -150,8 +154,6 @@ export default function MintHousehold() {
     },
   })
 
-  
-  
   async function onSubmit(data: FormData) {
     const payload: HouseholdCreationRequest = {
       category: data.category,
@@ -221,9 +223,15 @@ export default function MintHousehold() {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Category</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Category </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
+                      required
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -253,26 +261,31 @@ export default function MintHousehold() {
                   <FormDescription>
                     Select an appropriate category..
                   </FormDescription>
-                  <FormMessage/>
+                  <FormMessage />
                 </FormItem>
               )}
             />
 
-             {/* PRICE */}
-          <FormField
-            control={form.control}
-            name="price"
-            render={({ field }) => (
-              <FormItem>
-                <FormLabel>Price</FormLabel>
-                <FormControl>
-                  <Input {...field} type="number" className="w-60" />
-                </FormControl>
-                <FormDescription>Have a price in mind?</FormDescription>
-                <FormMessage />
-              </FormItem>
-            )}
-          />
+            {/* PRICE */}
+            <FormField
+              control={form.control}
+              name="price"
+              render={({ field }) => (
+                <FormItem>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Price </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
+                  <FormControl>
+                    <Input {...field} type="number" className="w-60" required />
+                  </FormControl>
+                  <FormDescription>Have a price in mind?</FormDescription>
+                  <FormMessage />
+                </FormItem>
+              )}
+            />
           </div>
 
           {/* TITLE */}
@@ -281,9 +294,14 @@ export default function MintHousehold() {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Title</FormLabel>
+                <div className="w-full h-5 flex justify-between">
+                  <FormLabel className="py-1">Title </FormLabel>
+                  <FormLabel className="text-xs italic text-rose-400 py-1">
+                    (required)
+                  </FormLabel>
+                </div>
                 <FormControl>
-                  <Input {...field} />
+                  <Input {...field} required />
                 </FormControl>
                 <FormDescription>
                   What are we listing for you today?
@@ -334,9 +352,14 @@ export default function MintHousehold() {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <FormLabel>Description</FormLabel>
+                <div className="w-full h-5 flex justify-between">
+                  <FormLabel className="py-1">Description </FormLabel>
+                  <FormLabel className="text-xs italic text-rose-400 py-1">
+                    (required)
+                  </FormLabel>
+                </div>
                 <FormControl>
-                  <Textarea {...field} />
+                  <Textarea {...field} required />
                 </FormControl>
                 <FormDescription>
                   Good descriptions = Speedy sales!
@@ -353,9 +376,15 @@ export default function MintHousehold() {
               name="location"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Location</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Location </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
+                      required
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -393,9 +422,15 @@ export default function MintHousehold() {
               name="meetup"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Meeting Preferance</FormLabel>
+                  <div className="w-full h-5 flex justify-between">
+                    <FormLabel className="py-1">Meeting preferance </FormLabel>
+                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                      (required)
+                    </FormLabel>
+                  </div>
                   <FormControl>
                     <Select
+                      required
                       onValueChange={field.onChange}
                       defaultValue={field.value}
                     >
@@ -424,7 +459,7 @@ export default function MintHousehold() {
             />
           </div>
 
-          <Button type="submit" variant="outline" size='lg'>
+          <Button type="submit" variant="outline" size="lg">
             Sell!
           </Button>
         </form>
