@@ -38,8 +38,8 @@ export function NotificationsNav({ notification }: NotificationsNavProps) {
         <div className="relative">
           <Bell className="w-6 h-6" />
           {unReadNotifications > 0 && (
-            <div className="absolute -top-3 -right-3 w-auto min-w-[20px] h-5 bg-red-500 content-center rounded-full px-2 shadow-md">
-              <p className="h-full my-auto text-white text-xs text-center inline-block align-middle">
+            <div className="absolute flex -top-3 -right-3 w-6 h-6 bg-red-500 content-center rounded-full shadow-md">
+              <p className="absolute top-1 right-2 text-white text-xs text-center">
                 {unReadNotifications}
               </p>
             </div>
@@ -57,7 +57,7 @@ export function NotificationsNav({ notification }: NotificationsNavProps) {
                 href={`/notification/${notify.id}`}
                 className="grid grid-cols-1 content-start"
               >
-                <h1>{notify.title}</h1>
+                <h1 className="font-semibold">{notify.title}</h1>
                 <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
                   <span>Created</span>
                   {formatTimeToNow(new Date(notify.createdAt))}

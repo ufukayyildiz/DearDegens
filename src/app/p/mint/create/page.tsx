@@ -8,7 +8,7 @@ import {
 import MintHousehold from "@/src/components/pageMint/MintHousehold"
 import MintProperty from "@/src/components/pageMint/MintProperty"
 
-export default function MintPage() {
+export default function MinterPage() {
   return (
     <div className="p-10">
       <Tabs defaultValue="none" className="flex flex-col w-11/12 md:w-8/12 mx-auto">

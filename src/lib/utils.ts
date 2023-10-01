@@ -46,6 +46,18 @@ function formatDistance(token: string, count: number, options?: any): string {
 }
 
 export function formatTimeToNow(date: Date): string {
+  if (typeof date === 'string') {
+    // Parse the input string into a Date object
+    const parsedDate = new Date(date);
+
+    // Check if the parsed date is valid
+    if (!isNaN(parsedDate.getTime())) {
+      date = parsedDate;
+    } else {
+      // Handle invalid date input
+      return 'Invalid date';
+    }
+  }
   return formatDistanceToNowStrict(date, {
     addSuffix: true,
     locale: {

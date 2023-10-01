@@ -10,7 +10,7 @@ interface MyMintsProps {
   listing: listingsGeneralType
 }
 
-export default function MyMintsComponent({ listing }: MyMintsProps) {
+export default function MintCardComponent({ listing }: MyMintsProps) {
   const [adImage, setAdImage] = useState([])
   const jsonImage = listing.images
 

@@ -48,7 +48,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
-          <Link href="/p/mint">Create Ad</Link>
+          <Link href="/p/mint/create">Create Ad</Link>
         </DropdownMenuItem>
 
         <DropdownMenuSeparator />

@@ -1,6 +1,6 @@
 import React from "react"
 import { db } from "@/src/db"
-import MyMintsComponent from "@/src/components/pageMyMint/MyMintsComponent"
+import MintCardComponent from "@/src/components/pageMyMint/MintCardComponent"
 import { listingsGeneral, listingsProperty } from "@/src/db/schema"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/src/lib/auth/auth-options"
@@ -28,7 +28,7 @@ export default async function MyMints() {
       <ul className="mb-44 mt-10 flex w-full h-full flex-col space-y-8 px-5">
         {listings.map((listing) => {
           return (
-            <MyMintsComponent
+            <MintCardComponent
               key={listing.id}
               listing={listing}
             />
