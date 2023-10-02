@@ -1,17 +1,15 @@
 import React from "react"
 import { db } from "@/src/db"
 import { listingsGeneral, listingsProperty } from "@/src/db/schema"
-import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 
 import { authOptions } from "../lib/auth/auth-options"
-import SwipperComponent from "../components/pageHome/SwipperComponent"
+import SwipperComponent from "../components/pageHome/HomeCarousel"
 
 export default async function IndexPage() {
   const session = await getServerSession(authOptions)
   console.log("Session:", session)
 
-  const userId = JSON.stringify(session?.user.id)
   const household = await db
     .select()
     .from(listingsGeneral)

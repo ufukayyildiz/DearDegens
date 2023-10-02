@@ -3,7 +3,8 @@
 import React, { useEffect, useState } from "react"
 import useMediaQuery from "@/src/hooks/useMediaQuery"
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
-import { ArrowLeft, ArrowRight } from "lucide-react"
+
+import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
 
 import MiniMintCardComponent from "./MiniMintCardComponent"
 import "@splidejs/react-splide/css/core"
@@ -28,7 +29,6 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
     }
   }, [isBelowSmallScreens, isBelowLargeScreens, isBelowXLScreens])
 
-  console.log("slides:", slides)
 
   return (
     <div>
@@ -49,12 +49,12 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
         <div className="splide__arrows">
           <div className="absolute top-[50%] -left-6">
             <button className="splide__arrow splide__arrow--prev">
-              <ArrowLeft />
+              <ChevronLeftIcon />
             </button>
           </div>
           <div className="absolute top-[50%] -right-6">
             <button className="splide__arrow splide__arrow--next">
-              <ArrowRight />
+              <ChevronRightIcon/>
             </button>
           </div>
         </div>

@@ -31,8 +31,8 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
 
   return (
     <div className="mx-auto w-full rounded-lg border border-l-4 border-background border-l-customColorTwo bg-background shadow-md transition duration-500 hover:scale-[0.99]">
-      <Link href={`/fs/post/${listing.id}`}>
-        <div className="relative h-48 flex justify-between ">
+      <Link href={`/p/mint/${listing.id}`}>
+        <div className="relative h-52 flex justify-between ">
           {/* INFO */}
           <div className="relative w-8/12 p-3">
             <div>
@@ -41,7 +41,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
               </h1>
             </div>
 
-            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-clip text-secondary">
+            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-xs text-clip text-secondary">
               <p>{listing.description}</p>
             </div>
 

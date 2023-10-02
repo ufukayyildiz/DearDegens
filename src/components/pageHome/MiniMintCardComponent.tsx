@@ -31,7 +31,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
 
   return (
     <div className="w-40 h-60 rounded-lg border border-muted bg-background shadow-md transition duration-500 hover:scale-[0.99]">
-      <Link href={`/fs/post/${listing.id}`}>
+      <Link href={`/p/mint/${listing.id}`}>
         <div className="w-full h-full relative flex flex-col">
           <div>
             {/* IMAGE */}
@@ -70,10 +70,6 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
                 {listing.title}
               </h1>
             </div>
-
-            {/* <div className="relative max-h-20 overflow-hidden w-full mb-5 text-clip text-secondary">
-              <p>{listing.description}</p>
-            </div> */}
 
             <div className="">
               <h1 className="text-primary font-bold text-lg">
