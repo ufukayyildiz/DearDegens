@@ -24,7 +24,7 @@ export default async function MintPage({ params }: MintPageProps) {
 
   return (
     <div className='flex w-full h-auto'>
-      <div className='w-11/12 md:w-8/12 mx-auto'>
+      <div className='w-10/12 md:w-8/12 mx-auto'>
         {mint.map((item, index) => (
           <div key={index} >
             <MintCarousel listing={item.images}/>

@@ -26,8 +26,8 @@ export default function MintCarousel(listing: any) {
                   <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
                 </div>
               ) : (
-                <div className="w-full h-full rounded-md shadow-lg object-cover overflow-hidden">
-                  <img src={images} alt={images} className="object-cover"/>
+                <div className="w-full h-6/12 rounded-md shadow-lg object-cover overflow-hidden">
+                  <img src={images} alt={images} className="w-full h-full object-cover"/>
                 </div>
               )}
             </SplideSlide>
