@@ -1,7 +1,7 @@
 import "../../styles/globals.css"
 import { Metadata } from "next"
 import Head from "next/head"
-import { SiteHeader } from "@/src/components/SiteHeader"
+import { SiteHeader } from "@/src/components/AccountNav"
 import { fontSans } from "@/src/lib/fonts"
 import { cn } from "@/src/lib/utils"
 

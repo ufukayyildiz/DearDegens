@@ -311,6 +311,7 @@ export const chatsRelations = relations(chats, ({ one }) => ({
 export const notifications = mysqlTable("notification", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 }).notNull(),
+  adId: text("adId"),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),

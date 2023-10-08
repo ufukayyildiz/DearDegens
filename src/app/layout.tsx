@@ -7,7 +7,8 @@ import { siteConfig } from "@/src/config/site"
 import { fontSans } from "@/src/lib/fonts"
 import { cn } from "@/src/lib/utils"
 
-import { SiteHeader } from "../components/SiteHeader"
+import { AccountNav } from "../components/AccountNav"
+import NavBar from "../components/NavBar"
 import Providers from "../components/components-global/Providers"
 import { Toaster } from "../components/components-ui/Toaster"
 
@@ -32,7 +33,7 @@ interface RootLayoutProps {
   children: React.ReactNode
 }
 
-export default function RootLayout({ children }: RootLayoutProps) {
+export default async function RootLayout({ children }: RootLayoutProps) {
   return (
     <>
       <html lang="en" suppressHydrationWarning>
@@ -51,8 +52,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Providers>
               <div className="relative flex min-h-screen flex-col">
-                {/* @ts-expect-error Server Component */}
-                <SiteHeader />
+                <NavBar />
                 <div className="flex-1">{children}</div>
               </div>
               <TailwindIndicator />

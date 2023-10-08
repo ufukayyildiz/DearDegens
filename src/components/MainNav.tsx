@@ -1,9 +1,9 @@
 import * as React from "react"
 import Link from "next/link"
-
-import { NavItem } from "@/src/types/nav"
 import { siteConfig } from "@/src/config/site"
 import { cn } from "@/src/lib/utils"
+import { NavItem } from "@/src/types/nav"
+
 import { Icons } from "./components-ui/Icons"
 
 interface MainNavProps {
@@ -18,7 +18,7 @@ export function MainNav({ items }: MainNavProps) {
         <span className="inline-block font-bold">{siteConfig.name}</span>
       </Link>
       {items?.length ? (
-        <nav className="flex gap-6">
+        <div className="flex gap-6">
           {items?.map(
             (item, index) =>
               item.href && (
@@ -34,7 +34,7 @@ export function MainNav({ items }: MainNavProps) {
                 </Link>
               )
           )}
-        </nav>
+        </div>
       ) : null}
     </div>
   )
