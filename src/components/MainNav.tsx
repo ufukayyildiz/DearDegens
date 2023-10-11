@@ -3,8 +3,9 @@ import Link from "next/link"
 import { siteConfig } from "@/src/config/site"
 import { cn } from "@/src/lib/utils"
 import { NavItem } from "@/src/types/nav"
-
+import Logo from "@/src/assets/PepperMint.png"
 import { Icons } from "./components-ui/Icons"
+import Image from "next/image"
 
 interface MainNavProps {
   items?: NavItem[]
@@ -14,8 +15,9 @@ export function MainNav({ items }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
-        <Icons.logo className="h-6 w-6" />
-        <span className="inline-block font-bold">{siteConfig.name}</span>
+        <div className="h-8 w-auto bg-white p-1 rounded">
+          <Image className="w-full h-full object-contain" src={Logo} alt="pepperMintLogo"/>
+        </div>
       </Link>
       {items?.length ? (
         <div className="flex gap-6">
