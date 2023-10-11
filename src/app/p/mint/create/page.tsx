@@ -11,6 +11,7 @@ import MintProperty from "@/src/components/pageCreateMint/MintProperty"
 export default function MintCreatePage() {
   return (
     <div className="p-10">
+
       <Tabs defaultValue="none" className="flex flex-col w-11/12 md:w-8/12 mx-auto">
         <TabsList className="w-auto h-auto mx-auto flex flex-col md:flex-row gap-2 p-2 shadow">
           <TabsTrigger value="items" className="w-full">Home & Garden</TabsTrigger>

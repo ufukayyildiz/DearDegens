@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    console.log('body property:', body)
+    console.log("body property:", body)
 
     const authorId = JSON.stringify(session?.user.id)
 
@@ -32,13 +32,13 @@ export async function POST(req: Request) {
       currentDate.getTime() + 60 * 24 * 60 * 60 * 1000
     )
 
-    const availabilityStart = new Date(body.availableStart);
-    const availabilityEnd = new Date(body.availableEnd);
+    const availabilityStart = new Date(body.availableStart)
+    const availabilityEnd = new Date(body.availableEnd)
 
-    console.log('dates:', availabilityStart, availabilityEnd)
+    console.log("dates:", availabilityStart, availabilityEnd)
 
-    console.log('typeof availabilityStart:', typeof availabilityStart);
-    console.log('typeof availabilityEnd:', typeof availabilityEnd);
+    console.log("typeof availabilityStart:", typeof availabilityStart)
+    console.log("typeof availabilityEnd:", typeof availabilityEnd)
 
     const {
       category,
@@ -67,11 +67,8 @@ export async function POST(req: Request) {
       internet,
       petFriendly,
       images,
-      location,
+      location
     )
-
-    
-
 
     const post = await db.insert(listingsProperty).values({
       id: listingId,
@@ -100,6 +97,7 @@ export async function POST(req: Request) {
     const notification = await db.insert(notifications).values({
       id: notificationId,
       userId: authorId,
+      adId: listingId,
       createdAt: currentDate,
       title: `Property Listing ${title} is live!`,
       description: "Congratulations, your listing is live!",

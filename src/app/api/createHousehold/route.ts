@@ -14,7 +14,7 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    console.log('body household:', body)
+    console.log("body household:", body)
     const authorId = JSON.stringify(session?.user.id)
 
     const generateListingId = nanoid()
@@ -77,20 +77,20 @@ export async function POST(req: Request) {
     const notification = await db.insert(notifications).values({
       id: notificationId,
       userId: authorId,
+      adId: listingId,
       createdAt: currentDate,
       title: `Listing ${title} is live!`,
-      description: 'Congratulations, your listing is live!',
+      description: "Congratulations, your listing is live!",
       body: `Thank you for choosing PepperMint to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
       isRead: false,
     })
-    
 
     console.log("post:", post)
-    console.log('notification', notification)
+    console.log("notification", notification)
 
     return new Response(JSON.stringify(post), { status: 200 })
   } catch (error) {
-    console.error("error:", error);
+    console.error("error:", error)
     if (error instanceof z.ZodError) {
       return new Response(error.message, { status: 400 })
     }

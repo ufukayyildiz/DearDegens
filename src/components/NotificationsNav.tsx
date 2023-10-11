@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
+import axios from "axios"
 import { Bell } from "lucide-react"
 
 import { formatTimeToNow } from "../lib/utils"
@@ -25,22 +26,23 @@ import {
 
 interface NotificationsNavProps {
   notification: notificationsType
+  isRead: notificationsType
 }
 
 type Notication = {
   id: string
+  adId: string
   title: string
   body: string
   createdAt: Date
 }
 
-export function NotificationsNav({ notification }: NotificationsNavProps) {
-  const [unReadNotifications, setUnReadNotifications] = useState<number>(0)
+export function NotificationsNav({ notification, isRead }: NotificationsNavProps) {
+  // const [unReadNotifications, setUnReadNotifications] = useState<number>(0)
   const [selectedNotificationId, setSelectedNotificationId] =
     useState<string>("")
   const [displayedNotification, setDisplayedNotification] =
     useState<Notication | null>()
-  console.log("notify:", displayedNotification)
 
   useEffect(() => {
     const selectedNotification = notification.find(
@@ -51,16 +53,26 @@ export function NotificationsNav({ notification }: NotificationsNavProps) {
     }
   }, [selectedNotificationId])
 
-  const isReadArray = []
-  for (let i = 0; i < notification.length; i++) {
-    if (notification[i].isRead === false) {
-      isReadArray.push(notification[i].isRead)
+  
+  // useEffect(() => {
+  //   const isReadArray = []
+  //   for (let i = 0; i < notification.length; i++) {
+  //     if (notification[i].isRead === false) {
+  //       isReadArray.push(notification[i].isRead)
+  //     }
+  //   }
+  //   setUnReadNotifications(isReadArray.length)
+  // }, [selectedNotificationId])
+
+  const handleNotificationSelected = async (notify: any) => {
+    setSelectedNotificationId(notify.id)
+    try {
+      await axios.put("/api/readNotification", notify.id)
+      return "Notification successfully read"
+    } catch (error) {
+      console.error("Error updating notification read status:", error)
     }
   }
-
-  useEffect(() => {
-    setUnReadNotifications(isReadArray.length)
-  }, [isReadArray])
 
   return (
     <div>
@@ -69,34 +81,45 @@ export function NotificationsNav({ notification }: NotificationsNavProps) {
           <DropdownMenuTrigger>
             <div className="relative">
               <Bell className="w-6 h-6" />
-              {unReadNotifications > 0 && (
+              {isRead.length > 0 && (
                 <div className="absolute flex -top-3 -right-3 w-6 h-6 bg-red-500 content-center rounded-full shadow-md">
-                  <p className="absolute top-1 right-2 text-white text-xs text-center">
-                    {unReadNotifications}
+                  <p className="absolute top-1 w-full mx-auto text-white text-xs text-center">
+                    {isRead.length}
                   </p>
                 </div>
               )}
             </div>
           </DropdownMenuTrigger>
 
-          <DropdownMenuContent className="relative w-96 " align="end">
+          <DropdownMenuContent className="relative max-h-[350px] overflow-y-auto" align="end">
             <h1 className="font-bold">Notifications</h1>
             {notification.map((notify: any, index: number) => (
               <div key={index} className="relative">
                 <DropdownMenuSeparator />
-                {/* setState the notification ID onClick */}
                 <DialogTrigger
-                  onClick={() => setSelectedNotificationId(notify.id)}
+                  onClick={() => handleNotificationSelected(notify)}
                 >
-                  <DropdownMenuItem asChild>
-                    <div className="grid grid-cols-1 content-start">
-                      <h1 className="font-semibold">{notify.title}</h1>
-                      <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
-                        <span>Created</span>
-                        {formatTimeToNow(new Date(notify.createdAt))}
+                  {notify.isRead === false ? (
+                    <DropdownMenuItem asChild className="text-start w-64">
+                      <div className="grid grid-cols-1 w-full content-start border-teal-500 border-2 bg-teal-300/10">
+                        <h1 className="font-semibold truncate">{notify.title}</h1>
+                        <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
+                          <span>Created</span>
+                          {formatTimeToNow(new Date(notify.createdAt))}
+                        </div>
                       </div>
-                    </div>
-                  </DropdownMenuItem>
+                    </DropdownMenuItem>
+                  ) : (
+                    <DropdownMenuItem asChild className="text-start w-64">
+                      <div className="grid grid-cols-1 w-full content-start">
+                        <h1 className="font-semibold truncate">{notify.title}</h1>
+                        <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
+                          <span>Created</span>
+                          {formatTimeToNow(new Date(notify.createdAt))}
+                        </div>
+                      </div>
+                    </DropdownMenuItem>
+                  )}
                 </DialogTrigger>
               </div>
             ))}
@@ -111,7 +134,7 @@ export function NotificationsNav({ notification }: NotificationsNavProps) {
               </DialogTitle>
               <DialogDescription className="text-primary">
                 <p className="mb-5">{displayedNotification.body}</p>
-                <Link href={`/p/mint/${displayedNotification.id}`}>
+                <Link href={`/p/mint/${displayedNotification.adId}`}>
                   <p className="italic">Follow this link to the ad</p>
                 </Link>
               </DialogDescription>

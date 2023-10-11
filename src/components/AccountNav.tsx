@@ -1,5 +1,4 @@
 import Link from "next/link"
-import { siteConfig } from "@/src/config/site"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
@@ -27,13 +26,18 @@ export async function AccountNav() {
     .from(notifications)
     .where(eq(notifications.userId, userId))
 
+  const isRead = await db
+    .select()
+    .from(notifications)
+    .where(eq(notifications.isRead, false))
+
   return (
         <div className="flex flex-1 items-center justify-end space-x-4">
           <div className="flex items-center space-x-5">
             {/* SIGN IN */}
             {session?.user && user ? (
               <div className="flex items-center space-x-8">
-                <NotificationsNav notification={notification} />
+                <NotificationsNav notification={notification} isRead={isRead} />
                 <UserAccountNav
                   user={{
                     name: session.user.name || "",

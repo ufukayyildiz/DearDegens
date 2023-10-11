@@ -29,8 +29,8 @@ export const validateProperty = z.object({
     .min(3, {
       message: "Description must be at least 3 characters long",
     })
-    .max(1600, {
-      message: "Description must be less than 1,600 characters long",
+    .max(5000, {
+      message: "Description must be less than 5,000 characters long",
     })
     .refine((value) => !phoneNumberRegex.test(value), {
       message:
