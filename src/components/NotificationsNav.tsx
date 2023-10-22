@@ -1,6 +1,7 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { setUnReadNotifications } from "./components-global/store";
 import Link from "next/link"
 import axios from "axios"
 import { Bell } from "lucide-react"
@@ -38,11 +39,15 @@ type Notication = {
 }
 
 export function NotificationsNav({ notification, isRead }: NotificationsNavProps) {
-  // const [unReadNotifications, setUnReadNotifications] = useState<number>(0)
-  const [selectedNotificationId, setSelectedNotificationId] =
-    useState<string>("")
-  const [displayedNotification, setDisplayedNotification] =
-    useState<Notication | null>()
+
+
+  const initialUnreadNotifications = isRead.length
+  const [unReadNotifications, setUnReadNotifications] = useState<number>(initialUnreadNotifications)
+  const [selectedNotificationId, setSelectedNotificationId] = useState<string>("")
+  const [displayedNotification, setDisplayedNotification] = useState<Notication | null>()
+
+
+  
 
   useEffect(() => {
     const selectedNotification = notification.find(
@@ -53,26 +58,27 @@ export function NotificationsNav({ notification, isRead }: NotificationsNavProps
     }
   }, [selectedNotificationId])
 
-  
-  // useEffect(() => {
-  //   const isReadArray = []
-  //   for (let i = 0; i < notification.length; i++) {
-  //     if (notification[i].isRead === false) {
-  //       isReadArray.push(notification[i].isRead)
-  //     }
-  //   }
-  //   setUnReadNotifications(isReadArray.length)
-  // }, [selectedNotificationId])
 
   const handleNotificationSelected = async (notify: any) => {
     setSelectedNotificationId(notify.id)
+    setUnReadNotifications(initialUnreadNotifications - 1)
     try {
-      await axios.put("/api/readNotification", notify.id)
-      return "Notification successfully read"
+      const response = await axios.put("/api/readNotification", notify.id)
+      if (response.status === 200) {
+        const updatedIsRead = response.data; 
+        setUnReadNotifications(updatedIsRead)
+        return "Notification successfully read";
+      } else {
+        console.error("Error updating notification read status:", response.status, response.statusText);
+        setUnReadNotifications(initialUnreadNotifications);
+      }
     } catch (error) {
       console.error("Error updating notification read status:", error)
+      setUnReadNotifications(initialUnreadNotifications);
     }
   }
+
+  
 
   return (
     <div>
@@ -84,7 +90,7 @@ export function NotificationsNav({ notification, isRead }: NotificationsNavProps
               {isRead.length > 0 && (
                 <div className="absolute flex -top-3 -right-3 w-6 h-6 bg-red-500 content-center rounded-full shadow-md">
                   <p className="absolute top-1 w-full mx-auto text-white text-xs text-center">
-                    {isRead.length}
+                    {unReadNotifications}
                   </p>
                 </div>
               )}

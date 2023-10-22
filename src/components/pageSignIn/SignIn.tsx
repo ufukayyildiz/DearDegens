@@ -1,5 +1,5 @@
 import Image from "next/image"
-
+import Logo from "@/src/assets/PepperMint.png"
 import UserAuthForm from "./UserAuthForm"
 
 const SignIn = () => {
@@ -9,7 +9,7 @@ const SignIn = () => {
         <div>
           <Image
             alt="logo"
-            src={''}
+            src={Logo}
             className="mb-10 rounded-3xl bg-white p-10"
           />
         </div>
