@@ -7,7 +7,6 @@ import { siteConfig } from "@/src/config/site"
 import { fontSans } from "@/src/lib/fonts"
 import { cn } from "@/src/lib/utils"
 
-import { AccountNav } from "../components/AccountNav"
 import NavBar from "../components/NavBar"
 import Providers from "../components/components-global/Providers"
 import { Toaster } from "../components/components-ui/Toaster"

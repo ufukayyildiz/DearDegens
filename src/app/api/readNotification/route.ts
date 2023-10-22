@@ -26,7 +26,6 @@ export async function PUT(req: Request) {
     }
 
     const notificationId = await req.json()
-    console.log("apiNotificationId", notificationId)
 
     const id = JSON.stringify(notificationId)
 
@@ -34,7 +33,6 @@ export async function PUT(req: Request) {
       .update(notifications)
       .set({ isRead: true })
       .where(eq(notifications.id, id))
-    console.log('updateIsRead:', updateIsRead)
 
     const isReadArray = await db
       .select()

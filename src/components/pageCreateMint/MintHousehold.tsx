@@ -166,7 +166,6 @@ export default function MintHousehold() {
       location: data.location,
       meetup: data.meetup,
     }
-    console.log("payload:", payload)
     createPost(payload)
   }
 

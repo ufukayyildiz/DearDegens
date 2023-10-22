@@ -24,10 +24,11 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./components-ui/DropdownMenu"
+import { useRouter } from "next/navigation"
 
 interface NotificationsNavProps {
-  notification: notificationsType
-  isRead: notificationsType
+  notifications: notificationsType
+  // isRead: notificationsType
 }
 
 type Notication = {
@@ -38,60 +39,70 @@ type Notication = {
   createdAt: Date
 }
 
-export function NotificationsNav({
-  notification,
-  isRead,
-}: NotificationsNavProps) {
-  const initialUnreadNotifications = isRead.length
-  const [unReadNotifications, setUnReadNotifications] = useState<number>(
-    initialUnreadNotifications
-  )
+export function NotificationsNav({ notifications }: NotificationsNavProps) {
+
+  const router = useRouter()
+  const [notification, setNotification] = useState<notificationsType>()
+  const [unreadNotifications, setUnreadNotifications] = useState<number>()
   const [selectedNotificationId, setSelectedNotificationId] =
     useState<string>("")
   const [displayedNotification, setDisplayedNotification] =
     useState<Notication | null>()
 
-  const getUnreadNotifications = async () => {
-    try {
-      const response = await axios.get("/api/getNotification")
 
-      const unreadNotifications = response.data
-      setUnReadNotifications(unreadNotifications)
-      return "Successfully fetched unread notifications!"
+  const getNotifications = async () => {
+    try {
+      const response = await axios.get('/api/getNotification')
+      const notifications = response.data
+      setNotification(notifications)
     } catch (error) {
-      console.error(
-        "Error fetching unread notifications, please try again later.",
-        error
-      )
-      setUnReadNotifications(0)
+      console.error("Error fetching notifications:", error)
     }
   }
+  
 
   const handleNotificationSelected = async (notify: any) => {
     setSelectedNotificationId(notify.id)
-    setUnReadNotifications(initialUnreadNotifications - 1)
     try {
       const response = await axios.put("/api/readNotification", notify.id)
-
       const updatedIsRead = response.data
       setUnReadNotifications(updatedIsRead)
+      router.refresh()
       return "Notification successfully read"
     } catch (error) {
       console.error("Error updating notification read status:", error)
-      setUnReadNotifications(initialUnreadNotifications)
+    }
+  }
+
+  const getUnreadArray = () => {
+    if (notifications) {
+      const unread = []
+      for (let i = 0; i < notifications.length; i++) {
+        if (notifications[i].isRead === false) {
+          unread.push(notifications[i])
+        }
+      }
+      setUnreadNotifications(unread.length)
     }
   }
 
   useEffect(() => {
-    getUnreadNotifications()
-  }, [selectedNotificationId])
+    getUnreadArray()
+  }, [selectedNotificationId, notifications])
+
+  
+  useEffect(() => {
+    getNotifications()
+  }, [selectedNotificationId, notifications])
 
   useEffect(() => {
-    const selectedNotification = notification.find(
-      (notifications: any) => notifications.id === selectedNotificationId
-    )
-    if (selectedNotification) {
-      setDisplayedNotification(selectedNotification)
+    if (notification) {
+      const selectedNotification = notification.find(
+        (notifications: any) => notifications.id === selectedNotificationId
+      )
+      if (selectedNotification) {
+        setDisplayedNotification(selectedNotification)
+      }
     }
   }, [selectedNotificationId])
 
@@ -102,10 +113,10 @@ export function NotificationsNav({
           <DropdownMenuTrigger>
             <div className="relative">
               <Bell className="w-6 h-6" />
-              {isRead.length > 0 && (
+              {unreadNotifications !== undefined &&unreadNotifications > 0 && (
                 <div className="absolute flex -top-3 -right-3 w-6 h-6 bg-red-500 content-center rounded-full shadow-md">
                   <p className="absolute top-1 w-full mx-auto text-white text-xs text-center">
-                    {unReadNotifications}
+                    {unreadNotifications}
                   </p>
                 </div>
               )}
@@ -117,7 +128,7 @@ export function NotificationsNav({
             align="end"
           >
             <h1 className="font-bold">Notifications</h1>
-            {notification.map((notify: any, index: number) => (
+            {notifications && notifications.map((notify: any, index: number) => (
               <div key={index} className="relative">
                 <DropdownMenuSeparator />
                 <DialogTrigger

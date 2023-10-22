@@ -14,7 +14,6 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    console.log("body property:", body)
 
     const authorId = JSON.stringify(session?.user.id)
 
@@ -34,11 +33,6 @@ export async function POST(req: Request) {
 
     const availabilityStart = new Date(body.availableStart)
     const availabilityEnd = new Date(body.availableEnd)
-
-    console.log("dates:", availabilityStart, availabilityEnd)
-
-    console.log("typeof availabilityStart:", typeof availabilityStart)
-    console.log("typeof availabilityEnd:", typeof availabilityEnd)
 
     const {
       category,
@@ -105,8 +99,6 @@ export async function POST(req: Request) {
       isRead: false,
     })
 
-    console.log("post:", post)
-    console.log("notification", notification)
 
     return new Response(JSON.stringify(post), { status: 200 })
   } catch (error) {

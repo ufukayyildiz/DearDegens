@@ -21,15 +21,11 @@ export async function AccountNav() {
     .from(users)
     .where(eq(users.id, session.user.id))
 
-  const notification = await db
-    .select()
-    .from(notifications)
-    .where(eq(notifications.userId, userId))
+    const userNotifications = await db
+      .select()
+      .from(notifications)
+      .where(eq(notifications.userId, userId))
 
-  const isRead = await db
-    .select()
-    .from(notifications)
-    .where(eq(notifications.isRead, false))
 
   return (
         <div className="flex flex-1 items-center justify-end space-x-4">
@@ -37,7 +33,7 @@ export async function AccountNav() {
             {/* SIGN IN */}
             {session?.user && user ? (
               <div className="flex items-center space-x-8">
-                <NotificationsNav notification={notification} isRead={isRead} />
+                <NotificationsNav notifications={userNotifications} />
                 <UserAccountNav
                   user={{
                     name: session.user.name || "",
