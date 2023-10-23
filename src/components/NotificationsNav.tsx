@@ -27,8 +27,7 @@ import {
 import { useRouter } from "next/navigation"
 
 interface NotificationsNavProps {
-  notifications: notificationsType
-  // isRead: notificationsType
+  userNotifications: notificationsType
 }
 
 type Notication = {
@@ -39,26 +38,17 @@ type Notication = {
   createdAt: Date
 }
 
-export function NotificationsNav({ notifications }: NotificationsNavProps) {
+export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
 
+  const notifications = [...userNotifications]
+      notifications.sort((a: any, b: any) => b.createdAt - a.createdAt)
   const router = useRouter()
-  const [notification, setNotification] = useState<notificationsType>()
   const [unreadNotifications, setUnreadNotifications] = useState<number>()
   const [selectedNotificationId, setSelectedNotificationId] =
     useState<string>("")
   const [displayedNotification, setDisplayedNotification] =
     useState<Notication | null>()
 
-
-  const getNotifications = async () => {
-    try {
-      const response = await axios.get('/api/getNotification')
-      const notifications = response.data
-      setNotification(notifications)
-    } catch (error) {
-      console.error("Error fetching notifications:", error)
-    }
-  }
   
 
   const handleNotificationSelected = async (notify: any) => {
@@ -90,14 +80,10 @@ export function NotificationsNav({ notifications }: NotificationsNavProps) {
     getUnreadArray()
   }, [selectedNotificationId, notifications])
 
-  
-  useEffect(() => {
-    getNotifications()
-  }, [selectedNotificationId, notifications])
 
   useEffect(() => {
-    if (notification) {
-      const selectedNotification = notification.find(
+    if (notifications) {
+      const selectedNotification = notifications.find(
         (notifications: any) => notifications.id === selectedNotificationId
       )
       if (selectedNotification) {
@@ -135,8 +121,8 @@ export function NotificationsNav({ notifications }: NotificationsNavProps) {
                   onClick={() => handleNotificationSelected(notify)}
                 >
                   {notify.isRead === false ? (
-                    <DropdownMenuItem asChild className="text-start w-64">
-                      <div className="grid grid-cols-1 w-full content-start border-teal-500 border-2 bg-teal-300/10">
+                    <DropdownMenuItem asChild className="text-start">
+                      <div className="grid grid-cols-1 w-72 content-start border-teal-500 border-2 bg-teal-300/10">
                         <h1 className="font-semibold truncate">
                           {notify.title}
                         </h1>
@@ -147,8 +133,8 @@ export function NotificationsNav({ notifications }: NotificationsNavProps) {
                       </div>
                     </DropdownMenuItem>
                   ) : (
-                    <DropdownMenuItem asChild className="text-start w-64">
-                      <div className="grid grid-cols-1 w-full content-start">
+                    <DropdownMenuItem asChild className="text-start">
+                      <div className="grid grid-cols-1 w-72 content-start">
                         <h1 className="font-semibold truncate">
                           {notify.title}
                         </h1>

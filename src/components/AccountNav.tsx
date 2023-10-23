@@ -21,10 +21,13 @@ export async function AccountNav() {
     .from(users)
     .where(eq(users.id, session.user.id))
 
-    const userNotifications = await db
+    const notification = await db
       .select()
       .from(notifications)
       .where(eq(notifications.userId, userId))
+
+      const userNotifications = [...notification]
+      userNotifications.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
 
   return (
@@ -33,7 +36,7 @@ export async function AccountNav() {
             {/* SIGN IN */}
             {session?.user && user ? (
               <div className="flex items-center space-x-8">
-                <NotificationsNav notifications={userNotifications} />
+                <NotificationsNav userNotifications={userNotifications} />
                 <UserAccountNav
                   user={{
                     name: session.user.name || "",
