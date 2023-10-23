@@ -15,7 +15,6 @@ export default async function MyMints() {
   const property = await db.select().from(listingsProperty).where(eq(listingsProperty.authorId, userId))
 
   const listings = [...household, ...property]
-  console.log('listings:', listings)
   listings.sort((a:any, b: any) => b.createdAt - a.createdAt);
 
   

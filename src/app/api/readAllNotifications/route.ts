@@ -10,14 +10,14 @@ export async function PUT(req: Request) {
       return new Response("Unauthorized", { status: 401 })
     }
 
-    const notificationId = await req.json()
+    const userId = await req.json()
 
-    const id = JSON.stringify(notificationId)
+    const id = JSON.stringify(userId)
 
     const updateIsRead = await db
       .update(notifications)
       .set({ isRead: true })
-      .where(eq(notifications.id, id))
+      .where(eq(notifications.userId, id))
 
     const isReadArray = await db
       .select()

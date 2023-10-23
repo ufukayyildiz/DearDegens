@@ -8,7 +8,6 @@ import SwipperComponent from "../components/pageHome/HomeCarousel"
 
 export default async function IndexPage() {
   const session = await getServerSession(authOptions)
-  console.log("Session:", session)
 
   const household = await db
     .select()

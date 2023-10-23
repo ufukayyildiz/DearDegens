@@ -3,6 +3,17 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/src/components/components-ui/AlertDialog"
 import axios from "axios"
 import { Bell, MoreVertical } from "lucide-react"
 
@@ -29,6 +40,7 @@ import {
 
 interface NotificationsNavProps {
   userNotifications: notificationsType
+  userId: any
 }
 
 type Notication = {
@@ -39,7 +51,10 @@ type Notication = {
   createdAt: Date
 }
 
-export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
+export function NotificationsNav({
+  userNotifications,
+  userId,
+}: NotificationsNavProps) {
   const notifications = [...userNotifications]
   notifications.sort((a: any, b: any) => b.createdAt - a.createdAt)
   const router = useRouter()
@@ -49,7 +64,7 @@ export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
   const [displayedNotification, setDisplayedNotification] =
     useState<Notication | null>()
 
-  const handleNotificationSelected = async (notify: any) => {
+  const handleReadNotification = async (notify: any) => {
     setSelectedNotificationId(notify.id)
     try {
       const response = await axios.put("/api/readNotification", notify.id)
@@ -59,6 +74,36 @@ export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
       return "Notification successfully read"
     } catch (error) {
       console.error("Error updating notification read status:", error)
+    }
+  }
+
+  const handleReadAllNotifications = async () => {
+    try {
+      await axios.put("/api/readAllNotifications", userId)
+      router.refresh()
+      return "All notifications successfully deleted."
+    } catch (error) {
+      console.error("Error deleting all notifications, status", error)
+    }
+  }
+
+  const handleDeleteNotification = async (notify: any) => {
+    try {
+      await axios.put("/api/deleteNotification", notify.id)
+      router.refresh()
+      return "Notification successfully deleted."
+    } catch (error) {
+      console.error("Error deleting notification, status:", error)
+    }
+  }
+
+  const handleDeleteAllNotifications = async (userId: any) => {
+    try {
+      await axios.put("/api/deleteAllNotifications", userId)
+      router.refresh()
+      return "All notifications successfully deleted."
+    } catch (error) {
+      console.error("Error deleting all notifications, status", error)
     }
   }
 
@@ -107,14 +152,46 @@ export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="relative max-h-[350px] overflow-y-auto"
+            className="relative max-h-[350px] w-[312px] overflow-y-auto"
             align="end"
           >
             <h1 className="font-bold text-2xl">Notifications</h1>
+
             <div className="w-full flex py-2 justify-between">
-              <Button variant="outline">Mark all as read</Button>
-              <Button variant="outline">Delete all</Button>
+              <Button 
+                onClick={() => handleReadAllNotifications()}
+                variant="outline"
+              >
+                  Mark all as read
+              </Button>
+
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="outline">Delete all</Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure you want to delete all notifications?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      all notifications from your account.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => handleDeleteAllNotifications(userId)}
+                      className="hover:bg-red-300 bg-red-200 text-zinc-800 border border-zinc-400 hover:border-red-500"
+                    >
+                      Delete
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
             </div>
+
             {notifications &&
               notifications.map((notify: any, index: number) => (
                 <div key={index} className="relative">
@@ -124,9 +201,9 @@ export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
                     <DropdownMenuItem asChild className="text-start">
                       <div className="grid grid-cols-1 w-72 content-start border-teal-500 border-2 bg-teal-300/10">
                         <DialogTrigger
-                          onClick={() => handleNotificationSelected(notify)}
+                          onClick={() => handleReadNotification(notify)}
                         >
-                          <h1 className="text-start font-semibold truncate">
+                          <h1 className="w-10/12 text-start font-semibold truncate">
                             {notify.title}
                           </h1>
                           <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
@@ -137,7 +214,7 @@ export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
                         <DropdownMenu>
                           <DropdownMenuTrigger>
                             <Button className="w-10 h-10 bg-transparent group hover:bg-white border border-transparent rounded-full shadow-none hover:shadow-md absolute top-1 right-1">
-                              <MoreVertical className="w-6 h-6 mx-auto text-transparent group-hover:text-zinc-800 rounded-full absolute top-2" />
+                              <MoreVertical className="w-6 h-6 mx-auto text-primary group-hover:text-zinc-800 rounded-full absolute top-2" />
                             </Button>
                           </DropdownMenuTrigger>
                           <DropdownMenuContent
@@ -145,22 +222,37 @@ export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
                             align="end"
                           >
                             <DropdownMenuItem asChild className="text-start">
-                              <p>Delete</p>
+                              <Button
+                                onClick={() => {
+                                  setSelectedNotificationId(notify.id)
+                                  handleDeleteNotification(notify) 
+                                }}
+                                variant="outline"
+                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              >
+                                Delete
+                              </Button>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild className="text-start">
-                              <p>Mark as read</p>
+                              <Button
+                                onClick={() => handleReadNotification(notify)}
+                                variant="outline"
+                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              >
+                                Mark as read
+                              </Button>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
                     </DropdownMenuItem>
                   ) : (
-                    <DropdownMenuItem asChild className="text-start">
+                    <DropdownMenuItem asChild className="text-start group">
                       <div className="relative grid grid-cols-1 w-72 content-start">
                         <DialogTrigger
-                          onClick={() => handleNotificationSelected(notify)}
+                          onClick={() => handleReadNotification(notify)}
                         >
-                          <h1 className="text-start font-semibold truncate">
+                          <h1 className="w-10/12 text-start font-semibold truncate">
                             {notify.title}
                           </h1>
                           <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
@@ -170,19 +262,40 @@ export function NotificationsNav({ userNotifications }: NotificationsNavProps) {
                         </DialogTrigger>
                         <DropdownMenu>
                           <DropdownMenuTrigger>
-                            <Button className="w-10 h-10 bg-transparent group hover:bg-white border border-transparent rounded-full shadow-none hover:shadow-md absolute top-1 right-1">
+                            <Button
+                              onClick={() => {
+                                setSelectedNotificationId(notify.id)
+                              }}
+                              className="w-10 h-10 bg-transparent group hover:bg-white/50 border border-transparent rounded-full shadow-none hover:shadow-md absolute top-1 right-1"
+                            >
                               <MoreVertical className="w-6 h-6 mx-auto text-transparent group-hover:text-zinc-800 rounded-full absolute top-2" />
                             </Button>
                           </DropdownMenuTrigger>
+
                           <DropdownMenuContent
                             className="relative max-h-[350px] overflow-y-auto"
                             align="end"
                           >
                             <DropdownMenuItem asChild className="text-start">
-                              <p>Delete</p>
+                              <Button
+                                onClick={() => {
+                                  setSelectedNotificationId(notify.id)
+                                  handleDeleteNotification(notify) 
+                                }}
+                                variant="outline"
+                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              >
+                                Delete
+                              </Button>
                             </DropdownMenuItem>
                             <DropdownMenuItem asChild className="text-start">
-                              <p>Mark as read</p>
+                              <Button
+                                onClick={() => handleReadNotification(notify)}
+                                variant="outline"
+                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              >
+                                Mark as read
+                              </Button>
                             </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>

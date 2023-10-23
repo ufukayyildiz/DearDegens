@@ -36,7 +36,7 @@ export async function AccountNav() {
             {/* SIGN IN */}
             {session?.user && user ? (
               <div className="flex items-center space-x-8">
-                <NotificationsNav userNotifications={userNotifications} />
+                <NotificationsNav userNotifications={userNotifications} userId={userId} />
                 <UserAccountNav
                   user={{
                     name: session.user.name || "",
