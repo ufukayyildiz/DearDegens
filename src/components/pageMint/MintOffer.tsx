@@ -91,8 +91,7 @@ export default function MintOffer() {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button
-            variant="outline"
-            className="font-bold my-auto border-2 border-teal-500"
+            variant="outlinebold"
           >
             MAKE OFFER
           </Button>
@@ -151,7 +150,7 @@ export default function MintOffer() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction className="hover:bg-teal-300 bg-teal-200 text-zinc-800 border border-zinc-400 hover:border-teal-500">
+            <AlertDialogAction>
               Send
             </AlertDialogAction>
           </AlertDialogFooter>

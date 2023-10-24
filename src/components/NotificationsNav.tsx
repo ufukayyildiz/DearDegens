@@ -21,6 +21,7 @@ import { formatTimeToNow } from "../lib/utils"
 import { notificationsType } from "../types/db"
 import { setUnReadNotifications } from "./components-global/store"
 import { Button } from "./components-ui/Button"
+import { Checkbox } from "./components-ui/Checkbox"
 import {
   Dialog,
   DialogContent,
@@ -58,6 +59,7 @@ export function NotificationsNav({
   const notifications = [...userNotifications]
   notifications.sort((a: any, b: any) => b.createdAt - a.createdAt)
   const router = useRouter()
+  const [disabled, setDisabled] = useState<boolean>(true)
   const [unreadNotifications, setUnreadNotifications] = useState<number>()
   const [selectedNotificationId, setSelectedNotificationId] =
     useState<string>("")
@@ -158,16 +160,16 @@ export function NotificationsNav({
             <h1 className="font-bold text-2xl">Notifications</h1>
 
             <div className="w-full flex py-2 justify-between">
-              <Button 
+              <Button
                 onClick={() => handleReadAllNotifications()}
                 variant="outline"
               >
-                  Mark all as read
+                Mark all as read
               </Button>
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="outline">Delete all</Button>
+                  <Button variant="passivedestructive">Delete all</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
@@ -180,13 +182,34 @@ export function NotificationsNav({
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => handleDeleteAllNotifications(userId)}
-                      className="hover:bg-red-300 bg-red-200 text-zinc-800 border border-zinc-400 hover:border-red-500"
-                    >
-                      Delete
-                    </AlertDialogAction>
+                    <div className="flex w-full justify-between">
+                      <div className="flex items-center space-x-2 justify-start">
+                        <Checkbox
+                          id="disable"
+                          checked={!disabled}
+                          onCheckedChange={() => setDisabled(!disabled)}
+                        />
+                        <label
+                          htmlFor="disable"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Confirm deletion of listing.
+                        </label>
+                      </div>
+                      <div>
+                        <AlertDialogCancel>
+                          Cancel
+                        </AlertDialogCancel>
+                        <Button
+                          onClick={() => handleDeleteAllNotifications(userId)}
+                          disabled={disabled}
+                          variant="destructive"
+                          className="ml-5"
+                        >
+                          Delete
+                        </Button>
+                      </div>
+                    </div>
                   </AlertDialogFooter>
                 </AlertDialogContent>
               </AlertDialog>
@@ -225,7 +248,7 @@ export function NotificationsNav({
                               <Button
                                 onClick={() => {
                                   setSelectedNotificationId(notify.id)
-                                  handleDeleteNotification(notify) 
+                                  handleDeleteNotification(notify)
                                 }}
                                 variant="outline"
                                 className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
@@ -280,7 +303,7 @@ export function NotificationsNav({
                               <Button
                                 onClick={() => {
                                   setSelectedNotificationId(notify.id)
-                                  handleDeleteNotification(notify) 
+                                  handleDeleteNotification(notify)
                                 }}
                                 variant="outline"
                                 className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
