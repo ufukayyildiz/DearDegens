@@ -46,7 +46,7 @@ export default async function MintPage({ params }: MintPageProps) {
             <div className="flex flex-row w-full justify-between mt-10">
               <div className="my-auto w-full">
                 <div className="flex w-full justify-between">
-                  <h1 className="text-2xl font-bold mb-5 text-cyan-500">
+                  <h1 className="text-2xl font-bold mb-5 text-teal-500">
                     R {formatPrice(item.price)}
                   </h1>
                   <MintOffer />
