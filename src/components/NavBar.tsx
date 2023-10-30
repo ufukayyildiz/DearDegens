@@ -21,7 +21,7 @@ export default async function NavBar() {
             <AccountNav />
           </div>
         ) : (
-          <Button>
+          <Button variant="outlinebold">
             <Link href="/signin">Sign In</Link>
           </Button>
         )}

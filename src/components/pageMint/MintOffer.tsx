@@ -1,6 +1,6 @@
 "use client"
 
-import React from "react"
+import React, { useState } from "react"
 import { useRouter } from "next/navigation"
 import {
   AlertDialog,
@@ -25,29 +25,12 @@ import axios from "axios"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../components-ui/Form"
 import { Input } from "../components-ui/Input"
-
-type FormData = z.infer<typeof validateOffer>
+import { Label } from "../components-ui/Label"
 
 export default function MintOffer() {
   const router = useRouter()
-
-  // REACT-HOOK-FORM
-  const form = useForm<FormData>({
-    resolver: zodResolver(validateOffer),
-    defaultValues: {
-      price: 0,
-    },
-  })
+  const [input, setInput] = useState<string>("")
 
   const { mutate: createPost } = useMutation({
     // PAYLOAD
@@ -55,7 +38,7 @@ export default function MintOffer() {
       const payload: OfferCreationRequest = {
         price,
       }
-      const { data } = await axios.post("/api/createHousehold", payload)
+      const { data } = await axios.post("/api/", payload)
 
       return data
     },
@@ -71,30 +54,17 @@ export default function MintOffer() {
 
     // SUCCESS
     onSuccess: () => {
-      router.push("/p/mymints")
-      router.refresh()
       return toast({
         description: "Your post has been published.",
       })
     },
   })
 
-  async function onSubmit(data: FormData) {
-    const payload: OfferCreationRequest = {
-      price: data.price,
-    }
-    createPost(payload)
-  }
-
   return (
     <div className="">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button
-            variant="outlinebold"
-          >
-            MAKE OFFER
-          </Button>
+          <Button variant="outlinebold">MAKE OFFER</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>
@@ -107,39 +77,23 @@ export default function MintOffer() {
                 let's see if they'll take the bait!
               </p>
 
-              <Form {...form}>
-                <form
-                  className="mb-5"
-                  onSubmit={form.handleSubmit(onSubmit)}
-                >
-                  <div className="flex flex-row gap-10">
-                    {/* PRICE */}
-                    <FormField
-                      control={form.control}
-                      name="price"
-                      render={({ field }) => (
-                        <FormItem>
-                          <div className="w-full h-5 flex justify-between">
-                            <FormLabel className="py-1">Price </FormLabel>
-                            <FormLabel className="text-xs italic text-rose-400 py-1">
-                              (required)
-                            </FormLabel>
-                          </div>
-                          <FormControl>
-                            <Input
-                              {...field}
-                              type="number"
-                              className="w-60"
-                              required
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
-                      )}
-                    />
-                  </div>
-                </form>
-              </Form>
+              <div className="grid grid-cols-1 gap-2 mb-5">
+                {/* PRICE */}
+
+                <div className="w-6/12 h-5 flex justify-between">
+                  <Label className="py-1">Price </Label>
+                  <Label className="text-xs italic text-rose-400 py-1">
+                    (required)
+                  </Label>
+                </div>
+                <Input
+                  value={input}
+                  onChange={(event) => setInput(event.target.value)}
+                  type="number"
+                  className="w-60"
+                  required
+                />
+              </div>
 
               <p className="italic text-xs">
                 (Note: Once the seller has accepted your offer, you will gain
@@ -150,7 +104,7 @@ export default function MintOffer() {
           </AlertDialogHeader>
           <AlertDialogFooter>
             <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction>
+            <AlertDialogAction disabled={input.length === 0}>
               Send
             </AlertDialogAction>
           </AlertDialogFooter>
