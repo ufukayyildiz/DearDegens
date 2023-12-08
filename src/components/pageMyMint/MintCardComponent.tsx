@@ -41,7 +41,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
               </h1>
             </div>
 
-            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-xs text-clip text-secondary">
+            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-xs text-clip text-secondary whitespace-pre-line">
               <p>{listing.description}</p>
             </div>
 

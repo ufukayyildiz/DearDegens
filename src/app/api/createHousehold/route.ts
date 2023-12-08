@@ -1,9 +1,10 @@
 import { db } from "@/src/db"
-import { listingsGeneral, notifications } from "@/src/db/schema"
+import { listingsGeneral, notifications, users, usersRelations } from "@/src/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateHousehold } from "@/src/lib/validators/validateHousehold"
 import { nanoid } from "nanoid"
 import { z } from "zod"
+
 
 export async function POST(req: Request) {
   try {
@@ -82,6 +83,10 @@ export async function POST(req: Request) {
       description: "Congratulations, your listing is live!",
       body: `Thank you for choosing PepperMint to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
       isRead: false,
+    })
+
+    const updateUser = await db.update(usersRelations).set({
+      notifications: notification
     })
 
     return new Response(JSON.stringify(post), { status: 200 })

@@ -87,6 +87,7 @@ export default function MintProperty() {
       })
     },
     onUploadError: () => {
+      setIsLoading(true)
       return toast({
         title: "Something went wrong.",
         description: "An error occured while uploading. Please try again.",

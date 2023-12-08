@@ -162,6 +162,20 @@
       "when": 1696532302099,
       "tag": "0022_sweet_captain_flint",
       "breakpoints": true
+    },
+    {
+      "idx": 23,
+      "version": "5",
+      "when": 1698781661480,
+      "tag": "0023_typical_steel_serpent",
+      "breakpoints": true
+    },
+    {
+      "idx": 24,
+      "version": "5",
+      "when": 1698782287770,
+      "tag": "0024_happy_mephisto",
+      "breakpoints": true
     }
   ]
 }

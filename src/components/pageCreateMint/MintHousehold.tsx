@@ -66,6 +66,7 @@ export default function MintHousehold() {
       })
     },
     onUploadError: () => {
+      setIsLoading(true)
       return toast({
         title: "Something went wrong.",
         description: "An error occured while uploading. Please try again.",

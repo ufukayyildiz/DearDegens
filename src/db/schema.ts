@@ -84,7 +84,6 @@ export const users = mysqlTable(
   "users",
   {
     id: varchar("id", { length: 255 }).primaryKey().notNull(),
-
     admin: boolean("admin").default(false).notNull(),
     name: varchar("name", { length: 255 }),
     email: varchar("email", { length: 255 }).notNull(),
@@ -112,6 +111,7 @@ export const usersRelations = relations(users, ({ one, many }) => ({
   listingReports: many(listingReports),
   userReports: many(userReports),
   notifications: many(notifications),
+  wishlists: many(wishlists)
 }))
 
 
@@ -150,6 +150,24 @@ export const profileRelations = relations(profiles, ({ one }) => ({
   }),
 }))
 
+
+
+
+export const wishlists = mysqlTable("wishlist", {
+  id: varchar("id", { length: 191 }).primaryKey().notNull(),
+  userId: varchar("userId", { length: 191 }).notNull(),
+  listingId: varchar("listingId", { length: 191 }).notNull(),
+})
+
+export const wishlistRelations = relations(wishlists, ({ one }) => ({
+  user: one(users, {
+    fields: [wishlists.userId],
+    references: [users.id],
+  }),
+}))
+
+
+
 // agreedPrice is either the initial offer or the counter offer (if it exists). A buyer cannot counter and will need to create a new offer.
 // If the seller accepts, the buyer will need to confirm. A report will be automatically generated if the buyer ignores the seller after a period.
 export const offers = mysqlTable("offers", {
@@ -176,6 +194,10 @@ export const offerRelations = relations(offers, ({ one, many }) => ({
   listingId: one(listingsGeneral, {
     fields: [offers.listingId],
     references: [listingsGeneral.id],
+  }),
+  propertyListingId: one(listingsProperty, {
+    fields: [offers.listingId],
+    references: [listingsProperty.id],
   }),
   buyerId: one(users, {
     fields: [offers.buyerId],
@@ -302,6 +324,10 @@ export const chatsRelations = relations(chats, ({ one }) => ({
     fields: [chats.listingId],
     references: [listingsGeneral.id],
   }),
+  propertyListingId: one(listingsProperty, {
+    fields: [chats.listingId],
+    references: [listingsProperty.id],
+  }),
   sellerId: one(users, {
     fields: [chats.authorId],
     references: [users.id],
@@ -376,9 +402,13 @@ export const listingReportsRelations = relations(listingReports, ({ one }) => ({
     fields: [listingReports.authorId],
     references: [users.id],
   }),
-  offerId: one(listingsGeneral, {
+  listingId: one(listingsGeneral, {
     fields: [listingReports.listingId],
     references: [listingsGeneral.id],
+  }),
+  proprtyListingId: one(listingsProperty, {
+    fields: [listingReports.listingId],
+    references: [listingsProperty.id],
   }),
 }))
 
