@@ -12,9 +12,7 @@ export async function PUT(req: Request) {
 
     const notificationId = await req.json()
 
-    const id = JSON.stringify(notificationId)
-
-    const response = await db.delete(notifications).where(eq(notifications.id, id))
+    const response = await db.delete(notifications).where(eq(notifications.id, notificationId))
 
     console.log('Successfully deleted notification:', response)
     return new Response("Successfully deleted notification.", { status: 200 })

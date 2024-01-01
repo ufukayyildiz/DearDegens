@@ -10,7 +10,6 @@ import { UserAccountNav } from "./UserAccountNav"
 
 export async function AccountNav() {
   const session = await getServerSession(authOptions)
-  const userId = JSON.stringify(session?.user.id)
 
   if (!session) {
     return console.log("Unauthorised, please login")
@@ -21,13 +20,14 @@ export async function AccountNav() {
     .from(users)
     .where(eq(users.id, session.user.id))
 
-    const notification = await db
-      .select()
-      .from(notifications)
-      .where(eq(notifications.userId, userId))
+  
+  const notification = await db
+    .select()
+    .from(notifications)
+    .where(eq(notifications.userId, session?.user.id))
 
-      const userNotifications = [...notification]
-      userNotifications.sort((a: any, b: any) => b.createdAt - a.createdAt)
+  const userNotifications = [...notification]
+  userNotifications.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
 
   return (
@@ -36,7 +36,7 @@ export async function AccountNav() {
             {/* SIGN IN */}
             {session?.user && user ? (
               <div className="flex items-center space-x-8">
-                <NotificationsNav userNotifications={userNotifications} userId={userId} />
+                <NotificationsNav userNotifications={userNotifications} userId={session?.user.id} />
                 <UserAccountNav
                   user={{
                     name: session.user.name || "",

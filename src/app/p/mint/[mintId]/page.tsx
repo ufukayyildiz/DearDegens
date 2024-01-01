@@ -1,9 +1,10 @@
 import React from "react"
 import MintCarousel from "@/src/components/pageMint/MintCarousel"
 import MintOffer from "@/src/components/pageMint/MintOffer"
-import MintPageActions from "@/src/components/pageMint/MintPageActions"
+import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
+import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import { db } from "@/src/db"
-import { listingsGeneral, listingsProperty } from "@/src/db/schema"
+import { listingsGeneral, offers } from "@/src/db/schema"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
@@ -22,16 +23,23 @@ export default async function MintPage({ params }: MintPageProps) {
 
   const session = await getServerSession(authOptions)
 
-  const listingProperty = await db
-    .select()
-    .from(listingsProperty)
-    .where(eq(listingsProperty.id, decodedParam))
+  // const listingProperty = await db
+  //   .select()
+  //   .from(listingsProperty)
+  //   .where(eq(listingsProperty.id, decodedParam))
   const listingGeneral = await db
     .select()
     .from(listingsGeneral)
     .where(eq(listingsGeneral.id, decodedParam))
 
-  const mint = [...listingProperty, ...listingGeneral]
+  const mint = [...listingGeneral]
+
+  const adOffers = await db
+    .select()
+    .from(offers)
+    .where(eq(offers.adId, mint[0].id))
+
+  console.log('adOffers:', adOffers)
 
   const formatPrice = (price: any) => {
     const formatter = new Intl.NumberFormat("en-US", {
@@ -54,8 +62,8 @@ export default async function MintPage({ params }: MintPageProps) {
                   <h1 className="text-2xl font-bold mb-5 text-teal-500">
                     R {formatPrice(item.price)}
                   </h1>
-                    {session && item.authorId === session.user.id && (
-                      <MintOffer />
+                    {session && item.authorId !== session.user.id && (
+                      <MintOffer title={item.title} sellerId={item.authorId} adId={item.id} />
                     )}
                 </div>
                 <h1 className="text-xl font-bold mb-2">{item.title}</h1>
@@ -66,8 +74,10 @@ export default async function MintPage({ params }: MintPageProps) {
             </div>
             <hr className="my-2 border border-t-muted-foreground" />
             <div className="min-h-[40px] flex ">
-              {session && (
-                <MintPageActions listingId={item.id}/>
+              {session?.user.id === item.authorId ? (
+                <MintPageAuthorActions listingId={item.id} adOffers={adOffers}/>
+                ) : (
+                <MintPageUsersActions listingId={item.id}/>
               )}
             </div>
             <hr className="my-2 border border-t-muted-foreground" />

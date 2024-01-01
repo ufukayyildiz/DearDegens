@@ -12,12 +12,10 @@ export async function PUT(req: Request) {
 
     const notificationId = await req.json()
 
-    const id = JSON.stringify(notificationId)
-
     const updateIsRead = await db
       .update(notifications)
       .set({ isRead: true })
-      .where(eq(notifications.id, id))
+      .where(eq(notifications.id, notificationId))
 
     const isReadArray = await db
       .select()

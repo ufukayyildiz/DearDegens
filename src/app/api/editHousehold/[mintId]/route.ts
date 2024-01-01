@@ -1,13 +1,20 @@
 import { db } from "@/src/db"
-import { listingsGeneral, notifications, users, usersRelations } from "@/src/db/schema"
+import {
+  listingsGeneral,
+  notifications,
+  users,
+  usersRelations,
+} from "@/src/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateHousehold } from "@/src/lib/validators/validateHousehold"
+import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 
-
-export async function POST(req: Request) {
+export async function PATCH(req: Request, context: any) {
   try {
+    const listingId = context.params.mintId
+    console.log("listingId:", listingId)
     const session = await getAuthSession()
 
     if (!session?.user) {
@@ -17,19 +24,10 @@ export async function POST(req: Request) {
     const body = await req.json()
     const authorId = session?.user.id
 
-    const generateListingId = nanoid()
-    const listingId = generateListingId
-
     const generateNotificationId = nanoid()
     const notificationId = generateNotificationId
 
     const currentDate: Date = new Date()
-    const expirationDate: Date = new Date(
-      currentDate.getTime() + 30 * 24 * 60 * 60 * 1000
-    )
-    const purgeDate: Date = new Date(
-      currentDate.getTime() + 60 * 24 * 60 * 60 * 1000
-    )
 
     const {
       category,
@@ -55,36 +53,34 @@ export async function POST(req: Request) {
       meetup
     )
 
-    const post = await db.insert(listingsGeneral).values({
-      id: listingId,
-      authorId: authorId,
-      createdAt: currentDate,
-      updatedAt: currentDate,
-      expirationDate: expirationDate,
-      purgeDate: purgeDate,
-      category: category,
-      price: price,
-      title: title,
-      brand: brand,
-      model: model,
-      description: description,
-      images: images,
-      location: location,
-      meetup: meetup,
-    })
+    console.log("listingGeneral:", listingsGeneral)
+
+    const post = await db
+      .update(listingsGeneral)
+      .set({
+        updatedAt: currentDate,
+        category: category,
+        price: price,
+        title: title,
+        brand: brand,
+        model: model,
+        description: description,
+        images: images,
+        location: location,
+        meetup: meetup,
+      })
+      .where(eq(listingsGeneral.id, listingId))
 
     const notification = await db.insert(notifications).values({
       id: notificationId,
       userId: authorId,
       adId: listingId,
       createdAt: currentDate,
-      title: `Listing ${title} is live!`,
-      description: "Congratulations, your listing is live!",
-      body: `Thank you for choosing PepperMint to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
+      title: `${title} updated!`,
+      description: `Your listing titled:"${title}" has been updated.`,
+      body: `The updates to your listing have gone live, go check them out! Goodluck and happy selling!`,
       isRead: false,
     })
-
-
     return new Response(JSON.stringify(post), { status: 200 })
   } catch (error) {
     console.error("error:", error)

@@ -1,7 +1,7 @@
 import React from "react"
 import { db } from "@/src/db"
 import MintCardComponent from "@/src/components/pageMyMint/MintCardComponent"
-import { listingsGeneral, listingsProperty } from "@/src/db/schema"
+import { listingsGeneral } from "@/src/db/schema"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
@@ -10,11 +10,15 @@ import { eq } from "drizzle-orm"
 export default async function MyMints() {
   
   const session = await getServerSession(authOptions)
-  const userId = JSON.stringify(session?.user.id)
-  const household = await db.select().from(listingsGeneral).where(eq(listingsGeneral.authorId, userId))
-  const property = await db.select().from(listingsProperty).where(eq(listingsProperty.authorId, userId))
 
-  const listings = [...household, ...property]
+  if (!session) {
+    return console.log("Unauthorised, please login")
+  }
+
+  const household = await db.select().from(listingsGeneral).where(eq(listingsGeneral.authorId, session?.user.id))
+  // const property = await db.select().from(listingsProperty).where(eq(listingsProperty.authorId, userId))
+
+  const listings = [...household]
   listings.sort((a:any, b: any) => b.createdAt - a.createdAt);
 
   

@@ -11,9 +11,8 @@ export async function PUT(req: Request) {
     }
 
     const userId = await req.json()
-    const id = JSON.stringify(userId)
 
-    await db.delete(notifications).where(eq(notifications.userId, id))
+    await db.delete(notifications).where(eq(notifications.userId, userId))
 
     return new Response("Successfully deleted all notification.", { status: 200 })
   } catch (error) {

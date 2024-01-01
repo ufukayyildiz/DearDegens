@@ -69,7 +69,8 @@ export function NotificationsNav({
   const handleReadNotification = async (notify: any) => {
     setSelectedNotificationId(notify.id)
     try {
-      const response = await axios.put("/api/readNotification", notify.id)
+      const notifyId = JSON.stringify(notify.id)
+      const response = await axios.put("/api/readNotification", notifyId)
       const updatedIsRead = response.data
       setUnReadNotifications(updatedIsRead)
       router.refresh()
@@ -81,7 +82,8 @@ export function NotificationsNav({
 
   const handleReadAllNotifications = async () => {
     try {
-      await axios.put("/api/readAllNotifications", userId)
+      const usersId = JSON.stringify(userId)
+      await axios.put("/api/readAllNotifications", usersId)
       router.refresh()
       return "All notifications successfully deleted."
     } catch (error) {
@@ -91,7 +93,8 @@ export function NotificationsNav({
 
   const handleDeleteNotification = async (notify: any) => {
     try {
-      await axios.put("/api/deleteNotification", notify.id)
+      const notifyId = JSON.stringify(notify.id)
+      await axios.put("/api/deleteNotification", notifyId)
       router.refresh()
       return "Notification successfully deleted."
     } catch (error) {
@@ -101,7 +104,9 @@ export function NotificationsNav({
 
   const handleDeleteAllNotifications = async (userId: any) => {
     try {
-      await axios.put("/api/deleteAllNotifications", userId)
+      const usersId = JSON.stringify(userId)
+      await axios.put("/api/deleteAllNotifications", usersId)
+      setDisabled(true)
       router.refresh()
       return "All notifications successfully deleted."
     } catch (error) {
@@ -193,21 +198,23 @@ export function NotificationsNav({
                           htmlFor="disable"
                           className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                         >
-                          Confirm deletion of listing.
+                          Confirm deletion of all notifications.
                         </label>
                       </div>
                       <div>
                         <AlertDialogCancel>
                           Cancel
                         </AlertDialogCancel>
-                        <Button
-                          onClick={() => handleDeleteAllNotifications(userId)}
-                          disabled={disabled}
-                          variant="destructive"
-                          className="ml-5"
-                        >
-                          Delete
-                        </Button>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            onClick={() => handleDeleteAllNotifications(userId)}
+                            disabled={disabled}
+                            variant="destructive"
+                            className="ml-5"
+                          >
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
                       </div>
                     </div>
                   </AlertDialogFooter>

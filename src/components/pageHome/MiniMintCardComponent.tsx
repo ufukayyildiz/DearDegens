@@ -5,6 +5,7 @@ import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { listingsGeneralType } from "@/src/types/db"
 import { Image, MapPin } from "lucide-react"
+import AdTagsMini from "../adTags/AdTagsMini"
 
 interface MyMintsProps {
   listing: listingsGeneralType
@@ -33,7 +34,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
     <div className="w-40 h-60 rounded-lg border border-muted bg-background shadow-md transition duration-500 hover:scale-[0.99]">
       <Link href={`/p/mint/${listing.id}`}>
         <div className="w-full h-full relative flex flex-col">
-          <div>
+          <div className="w-full">
             {/* IMAGE */}
             <div className="h-28 w-full">
               {!adImage[0] ? (
@@ -44,22 +45,14 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
                 <img
                   src={adImage[0]}
                   alt={adImage[0]}
-                  className="h-full w-full object-cover rounded-lg"
+                  className="h-full w-full object-cover rounded-tl-lg rounded-tr-lg"
                 />
               )}
             </div>
 
             {/* TAGS */}
-            <div className=" absolute -top-3 -left-3">
-              {listing.isAvailable === true ? (
-                <div className="h-6 w-20 text-xs text-center text-customColorFou justify-center italic bg-gradient-to-br from-customColorOne via-customColorTwo to-customColorThr rounded-full p-1 shadow-lg z-30">
-                  Available!
-                </div>
-              ) : (
-                <div className="h-6 w-20 text-xs text-center text-customColorFou justify-center italic bg-amber-300 rounded-full p-1 shadow-lg z-30">
-                  Sold
-                </div>
-              )}
+            <div className="absolute w-full -top-3 -left-3">
+              <AdTagsMini listing={listing}/>
             </div>
           </div>
 

@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
+import Link from "next/link"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -25,20 +26,56 @@ import axios from "axios"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
+import { Checkbox } from "../components-ui/Checkbox"
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "../components-ui/Form"
 import { Input } from "../components-ui/Input"
 import { Label } from "../components-ui/Label"
 
-export default function MintOffer() {
-  const router = useRouter()
-  const [input, setInput] = useState<string>("")
+interface MintProps {
+  adId: string
+  sellerId: string
+  title: string | null
+}
 
-  const { mutate: createPost } = useMutation({
+type FormData = z.infer<typeof validateOffer>
+
+export default function MintOffer({ sellerId, title, adId }: MintProps) {
+  const [disabled, setDisabled] = useState<boolean>(true)
+
+  const form = useForm<FormData>({
+    resolver: zodResolver(validateOffer),
+    defaultValues: {
+      offerPrice: 0,
+      adId: adId,
+      sellerId: sellerId,
+      title: title,
+    },
+  })
+
+  const { mutate: createOffer } = useMutation({
     // PAYLOAD
-    mutationFn: async ({ price }: OfferCreationRequest) => {
+    mutationFn: async ({
+      offerPrice,
+      adId,
+      sellerId,
+      title,
+    }: OfferCreationRequest) => {
       const payload: OfferCreationRequest = {
-        price,
+        offerPrice,
+        adId,
+        sellerId,
+        title,
       }
-      const { data } = await axios.post("/api/", payload)
+
+      const { data } = await axios.post("/api/createOffer", payload)
 
       return data
     },
@@ -47,7 +84,7 @@ export default function MintOffer() {
     onError: () => {
       return toast({
         title: "Something went wrong.",
-        description: "Your post was not published. Please try again.",
+        description: "There was an error sending your offer. Please try again.",
         variant: "destructive",
       })
     },
@@ -55,10 +92,22 @@ export default function MintOffer() {
     // SUCCESS
     onSuccess: () => {
       return toast({
-        description: "Your post has been published.",
+        description: "Your offer is on the way to the seller.",
       })
     },
   })
+
+  async function onSubmit(data: FormData) {
+    const payload: OfferCreationRequest = {
+      offerPrice: data.offerPrice,
+      adId: adId,
+      sellerId: sellerId,
+      title: title,
+    }
+    setDisabled(true)
+    console.log("Submit Payload:", payload)
+    createOffer(payload)
+  }
 
   return (
     <div className="">
@@ -67,47 +116,85 @@ export default function MintOffer() {
           <Button variant="outlinebold">MAKE OFFER</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
-          <AlertDialogHeader>
-            <AlertDialogTitle className="font-bold">
-              Your one step closer to the deal of a lifetime!
-            </AlertDialogTitle>
-            <AlertDialogDescription>
-              <p className="mb-5 text-primary">
-                Not happy with the asking price? Send the seller an offer and
-                let's see if they'll take the bait!
-              </p>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+              <AlertDialogHeader>
+                <AlertDialogTitle className="font-bold mb-5">
+                  Your one step closer to the deal of a lifetime!
+                </AlertDialogTitle>
+                <AlertDialogDescription>
+                  
 
-              <div className="grid grid-cols-1 gap-2 mb-5">
-                {/* PRICE */}
+                  <div className="grid grid-cols-1 gap-2 mb-5">
+                    {/* PRICE */}
+                    <FormField
+                      control={form.control}
+                      name="offerPrice"
+                      render={({ field }) => (
+                        <FormItem>
+                          <div className="w-60 h-5 flex justify-between">
+                            <FormLabel className="py-1 text-primary">
+                              Offer amount:
+                            </FormLabel>
+                            <FormLabel className="text-xs italic text-rose-400 py-1">
+                              (required)
+                            </FormLabel>
+                          </div>
+                          <FormControl>
+                            <Input
+                              {...field}
+                              type="number"
+                              className="w-60 text-primary"
+                              required
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </div>
 
-                <div className="w-6/12 h-5 flex justify-between">
-                  <Label className="py-1">Price </Label>
-                  <Label className="text-xs italic text-rose-400 py-1">
-                    (required)
-                  </Label>
+                  <div>
+                    <p className="italic text-xs">
+                      (Note: Once the seller has accepted your offer, you will
+                      gain access to the chat area where you'll make contact with
+                      the seller and make arrangments to complete the
+                      transaction.)
+                    </p>
+                  </div>
+
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <div className="w-full flex justify-between">
+                  <div className="flex items-center space-x-2 justify-start">
+                    <Checkbox
+                      id="disable"
+                      checked={!disabled}
+                      onCheckedChange={() => setDisabled(!disabled)}
+                    />
+                    <Label
+                      htmlFor="disable"
+                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      <Link href="/termsofservice" className='underline'>
+                        Agree to terms of service.
+                      </Link>
+                    </Label>
+                  </div>
+                  <div className="flex gap-5">
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      type="submit"
+                      disabled={disabled}
+                    >
+                      Send
+                    </AlertDialogAction>
+                  </div>
                 </div>
-                <Input
-                  value={input}
-                  onChange={(event) => setInput(event.target.value)}
-                  type="number"
-                  className="w-60"
-                  required
-                />
-              </div>
-
-              <p className="italic text-xs">
-                (Note: Once the seller has accepted your offer, you will gain
-                access to the chat area where you'll make contact with the
-                seller and make arrangments to complete the transaction.)
-              </p>
-            </AlertDialogDescription>
-          </AlertDialogHeader>
-          <AlertDialogFooter>
-            <AlertDialogCancel>Cancel</AlertDialogCancel>
-            <AlertDialogAction disabled={input.length === 0}>
-              Send
-            </AlertDialogAction>
-          </AlertDialogFooter>
+              </AlertDialogFooter>
+            </form>
+          </Form>
         </AlertDialogContent>
       </AlertDialog>
     </div>

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { listingsGeneralType } from "@/src/types/db"
+import AdTags from "../adTags/AdTags"
 import { Image } from "lucide-react"
 
 interface MyMintsProps {
@@ -30,7 +31,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
   const formattedPrice = formatter.format(price);
 
   return (
-    <div className="mx-auto w-full rounded-lg border border-l-4 border-background border-l-customColorTwo bg-background shadow-md transition duration-500 hover:scale-[0.99]">
+    <div className="mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-500 hover:scale-[0.99]">
       <Link href={`/p/mint/${listing.id}`}>
         <div className="relative h-52 flex justify-between ">
           {/* INFO */}
@@ -75,16 +76,8 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
           </div>
 
           {/* TAGS */}
-          <div className=" absolute -bottom-3 -right-3">
-            {listing.isAvailable === true ? (
-              <div className="h-6 w-20 text-xs text-center text-customColorFou justify-center italic bg-gradient-to-br from-customColorOne via-customColorTwo to-customColorThr rounded-full p-1 shadow-lg z-30">
-                Available!
-              </div>
-            ) : (
-              <div className="h-6 w-20 text-xs text-center text-customColorFou justify-center italic bg-amber-300 rounded-full p-1 shadow-lg z-30">
-                Sold
-              </div>
-            )}
+          <div className=" absolute -top-3 -right-3">
+          <AdTags listing={listing}/>
           </div>
         </div>
       </Link>
