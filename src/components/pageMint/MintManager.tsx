@@ -1,6 +1,8 @@
 import React from "react"
-import { MessageCircle } from "lucide-react"
-
+import MintOffers from "./MintOffers"
+import MintQuestions from "./MintQuestions"
+import { offerType } from "@/src/types/db"
+import { Gavel} from "lucide-react"
 import { Button } from "../components-ui/Button"
 import {
   ResizableHandle,
@@ -16,25 +18,32 @@ import {
   SheetTrigger,
 } from "../components-ui/Sheet"
 
-export default function ChatSheet(ListingId: any) {
+type ManagerType = {
+  adOffers: offerType[];
+};
+
+export default function MintManager({ adOffers }: ManagerType) {
+
+
   return (
     <Sheet>
       <SheetTrigger>
-        <Button className="group hover:text-blue-500" variant="icon">
-          <MessageCircle />
+        <Button className="group hover:text-teal-500" variant="icon">
+          <Gavel />
         </Button>
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="h-full">
-          <SheetTitle>Chat Section</SheetTitle>
           <SheetDescription className="h-full">
             <ResizablePanelGroup direction="vertical">
-              <ResizablePanel className="relative">
-                <div className="text-primary">Chat list will go here</div>
+              <ResizablePanel className="relative h-full">
+                <SheetTitle>Offers:</SheetTitle>
+                <MintOffers adOffers={adOffers}/>
               </ResizablePanel>
               <ResizableHandle withHandle className="border-muted"/>
               <ResizablePanel className="relative">
-                <div className="mt-5 text-primary">Messages will go here</div>
+                <SheetTitle>Queries:</SheetTitle>
+                <MintQuestions/>
               </ResizablePanel>
             </ResizablePanelGroup>
           </SheetDescription>

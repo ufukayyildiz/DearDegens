@@ -9,6 +9,7 @@ export const validateOffer = z.object({
     .max(999999999, {
     message: "Your price cannot be higher than 999,999,999 Rand",
   }),
+  askPrice: z.coerce.number(),
   adId: z.string(),
   sellerId: z.string(),
   title: z.string().nullable()

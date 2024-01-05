@@ -41,6 +41,7 @@
     --custom-color-two: 171, 77%, 64%; 
     --custom-color-thr: 156, 72%, 67%; 
     --custom-color-fou: 0, 0%, 15%;
+    --custom-accent: 171, 100%, 45%;
   }
 
   .dark {
@@ -81,6 +82,7 @@
     --custom-color-two: 171, 77%, 64%; 
     --custom-color-thr: 156, 72%, 67%; 
     --custom-color-fou: 0, 0%, 15%;
+    --custom-accent: 171, 77%, 64%;
   }
 }
 

@@ -16,6 +16,7 @@ export async function POST(req: Request) {
 
     const body = await req.json()
     const userId = session?.user.id
+    const userName = session.user.name
 
     const offerId = nanoid()
 
@@ -29,18 +30,21 @@ export async function POST(req: Request) {
       currentDate.getTime() + 60 * 24 * 60 * 60 * 1000
     )
 
-    const { sellerId, adId, offerPrice, title } = body
+    const { sellerId, adId, offerPrice, askPrice, title } = body
 
     console.log('body:', body)
 
     const post = await db.insert(offers).values({
       id: offerId,
       userId: userId,
+      userName: userName,
       adId: adId,
+      adTitle: title,
       createdAt: currentDate,
       expirationDate: expirationDate,
       purgeDate: purgeDate,
       offerPrice: offerPrice,
+      askPrice: askPrice
     })
 
     const notification = await db.insert(notifications).values({

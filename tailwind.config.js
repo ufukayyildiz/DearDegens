@@ -23,6 +23,7 @@ module.exports = {
         customColorTwo: "hsl(var(--custom-color-two))",
         customColorThr: "hsl(var(--custom-color-thr))",
         customColorFou: "hsl(var(--custom-color-fou))",
+        customAccent: "hsl(var(--custom-accent))",
 
         foreground: "hsl(var(--foreground))",
         primary: {

@@ -40,7 +40,7 @@ import {
 } from "./components-ui/DropdownMenu"
 
 interface NotificationsNavProps {
-  userNotifications: notificationsType
+  userNotifications: notificationsType[]
   userId: any
 }
 

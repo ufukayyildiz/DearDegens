@@ -201,10 +201,13 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
 export const offers = mysqlTable("offers", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 }).notNull().references(() => users.id),
+  userName: varchar("userName", { length: 191 }),
   adId: varchar("adId", { length: 191 }).notNull(),
+  adTitle: varchar("adTitle", { length: 191 }),
   createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`).notNull(),
   expirationDate: datetime("expirationDate"),
   purgeDate: datetime("purgeDate"),
+  askPrice: int("askPrice"),
   offerPrice: int("offerPrice"),
   counterPrice: int("counterPrice"),
   isAccepted: boolean("isAccepted").default(false),

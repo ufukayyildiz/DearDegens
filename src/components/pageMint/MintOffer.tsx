@@ -20,6 +20,7 @@ import {
   OfferCreationRequest,
   validateOffer,
 } from "@/src/lib/validators/validateOffer"
+import { offerType } from "@/src/types/db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
@@ -40,6 +41,7 @@ import { Input } from "../components-ui/Input"
 import { Label } from "../components-ui/Label"
 
 interface MintProps {
+  askPrice: number
   adId: string
   sellerId: string
   title: string | null
@@ -47,13 +49,14 @@ interface MintProps {
 
 type FormData = z.infer<typeof validateOffer>
 
-export default function MintOffer({ sellerId, title, adId }: MintProps) {
+export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
 
   const form = useForm<FormData>({
     resolver: zodResolver(validateOffer),
     defaultValues: {
       offerPrice: 0,
+      askPrice: askPrice,
       adId: adId,
       sellerId: sellerId,
       title: title,
@@ -64,12 +67,14 @@ export default function MintOffer({ sellerId, title, adId }: MintProps) {
     // PAYLOAD
     mutationFn: async ({
       offerPrice,
+      askPrice,
       adId,
       sellerId,
       title,
     }: OfferCreationRequest) => {
       const payload: OfferCreationRequest = {
         offerPrice,
+        askPrice,
         adId,
         sellerId,
         title,
@@ -100,6 +105,7 @@ export default function MintOffer({ sellerId, title, adId }: MintProps) {
   async function onSubmit(data: FormData) {
     const payload: OfferCreationRequest = {
       offerPrice: data.offerPrice,
+      askPrice: askPrice,
       adId: adId,
       sellerId: sellerId,
       title: title,

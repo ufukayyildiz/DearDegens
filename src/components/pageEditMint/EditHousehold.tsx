@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useCallback, useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
@@ -48,11 +49,9 @@ interface EditHouseholdProps {
 }
 
 export default function EditHousehold({ listing }: EditHouseholdProps) {
-
   const router = useRouter()
-  const mintId = listing[0].id 
-  console.log('mintId:', mintId)
-
+  const mintId = listing[0].id
+  console.log("mintId:", mintId)
 
   // ----------------------------------------------------------------------------------
   // UPLOADTHING
@@ -101,7 +100,6 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
     accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
   })
 
-
   // ----------------------------------------------------------------------------------
   // REACT-HOOK-FORM
   const form = useForm<FormData>({
@@ -143,7 +141,10 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
         location,
         meetup,
       }
-      const { data } = await axios.patch(`/api/editHousehold/${mintId}`, payload)
+      const { data } = await axios.patch(
+        `/api/editHousehold/${mintId}`,
+        payload
+      )
 
       return data
     },
@@ -179,10 +180,9 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       location: data.location,
       meetup: data.meetup,
     }
-    console.log('edit payload:', payload)
+    console.log("edit payload:", payload)
     updatePost(payload)
   }
-
 
   // ----------------------------------------------------------------------------------
   // UI
@@ -475,9 +475,14 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
             />
           </div>
 
-          <Button type="submit" variant="outline" size="lg">
-            Update
-          </Button>
+          <div className="flex gap-10">
+            <Button variant="outlineTwo" size='lg'>
+              <Link href={`/p/mint/${mintId}`}>Cancel</Link>
+            </Button>
+            <Button type="submit" variant="outline" size="lg">
+              Update
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

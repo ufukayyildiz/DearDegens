@@ -39,7 +39,7 @@ export default async function MintPage({ params }: MintPageProps) {
     .from(offers)
     .where(eq(offers.adId, mint[0].id))
 
-  console.log('adOffers:', adOffers)
+  const offersArray = [...adOffers]
 
   const formatPrice = (price: any) => {
     const formatter = new Intl.NumberFormat("en-US", {
@@ -50,6 +50,8 @@ export default async function MintPage({ params }: MintPageProps) {
     return formatter.format(price)
   }
 
+ 
+
   return (
     <div className="flex w-full h-auto">
       <div className="w-10/12 md:w-8/12 mx-auto">
@@ -59,11 +61,11 @@ export default async function MintPage({ params }: MintPageProps) {
             <div className="flex flex-row w-full justify-between mt-10">
               <div className="my-auto w-full">
                 <div className="flex w-full justify-between">
-                  <h1 className="text-2xl font-bold mb-5 text-teal-500">
+                  <h1 className="text-2xl font-bold mb-5 text-customAccent">
                     R {formatPrice(item.price)}
                   </h1>
-                    {session && item.authorId !== session.user.id && (
-                      <MintOffer title={item.title} sellerId={item.authorId} adId={item.id} />
+                    {session && item.price && item.authorId === session.user.id && (
+                      <MintOffer title={item.title} sellerId={item.authorId} adId={item.id} askPrice={item.price} />
                     )}
                 </div>
                 <h1 className="text-xl font-bold mb-2">{item.title}</h1>
@@ -75,7 +77,7 @@ export default async function MintPage({ params }: MintPageProps) {
             <hr className="my-2 border border-t-muted-foreground" />
             <div className="min-h-[40px] flex ">
               {session?.user.id === item.authorId ? (
-                <MintPageAuthorActions listingId={item.id} adOffers={adOffers}/>
+                <MintPageAuthorActions listingId={item.id} adOffers={offersArray}/>
                 ) : (
                 <MintPageUsersActions listingId={item.id}/>
               )}

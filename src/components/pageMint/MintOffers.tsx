@@ -1,32 +1,23 @@
 import React from "react"
-import { Gavel} from "lucide-react"
-import { Button } from "../components-ui/Button"
-import {
-  Sheet,
-  SheetContent,
-  SheetDescription,
-  SheetHeader,
-  SheetTitle,
-  SheetTrigger,
-} from "../components-ui/Sheet"
+import { offerType } from "@/src/types/db"
+import MintOfferCard from "./MintOfferCard"
+import { ScrollArea } from "../components-ui/ScrollArea";
 
-export default function MintOffers(adOffers: any) {
+type MintOfferType = {
+  adOffers: offerType[];
+};
+
+export default function MintOffers({ adOffers }: MintOfferType) {
+
+  console.log("adOffers sheet:", adOffers);
+  const sortedOffers = adOffers && adOffers.slice().sort((a, b) => a.offerPrice - b.offerPrice);
+
+
   return (
-    <Sheet>
-      <SheetTrigger>
-        <Button className="group hover:text-teal-500" variant="icon">
-          <Gavel/>
-        </Button>
-      </SheetTrigger>
-      <SheetContent>
-        <SheetHeader>
-          <SheetTitle>Are you sure absolutely sure?</SheetTitle>
-          <SheetDescription>
-            This action cannot be undone. This will permanently delete your
-            account and remove your data from our servers.
-          </SheetDescription>
-        </SheetHeader>
-      </SheetContent>
-    </Sheet>
+    <ScrollArea className="flex h-full flex-col pr-5 mt-5 pb-12">
+      {adOffers.map((item: offerType, index) => {
+        return <MintOfferCard key={index} adOffer={item} />
+      })}
+    </ScrollArea>
   )
 }
