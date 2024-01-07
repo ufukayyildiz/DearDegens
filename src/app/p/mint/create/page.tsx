@@ -6,7 +6,6 @@ import {
   TabsTrigger,
 } from "@/src/components/components-ui/Tabs"
 import MintHousehold from "@/src/components/pageCreateMint/MintHousehold"
-import MintProperty from "@/src/components/pageCreateMint/MintProperty"
 
 export default function MintCreatePage() {
   return (
@@ -36,7 +35,7 @@ export default function MintCreatePage() {
           <MintHousehold />
         </TabsContent>
         <TabsContent value="property">
-          <MintProperty />
+        <h1>Property</h1>
         </TabsContent>
         <TabsContent value="vehicles">
           <h1>Vehicles</h1>

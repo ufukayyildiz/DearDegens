@@ -6,7 +6,6 @@ import {
   TabsTrigger,
 } from "@/src/components/components-ui/Tabs"
 import EditHousehold from "@/src/components/pageEditMint/EditHousehold"
-import EditProperty from "@/src/components/pageEditMint/EditProperty"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listingsGeneral } from "@/src/server/db/schema"
@@ -26,10 +25,6 @@ export default async function MintEditPage({ params }: MintPageProps) {
 
   const session = await getServerSession(authOptions)
 
-  // const listingProperty = await db
-  //   .select()
-  //   .from(listingsProperty)
-  //   .where(eq(listingsProperty.id, decodedParam))
   const listingGeneralData = await db
     .select()
     .from(listingsGeneral)
@@ -62,7 +57,7 @@ export default async function MintEditPage({ params }: MintPageProps) {
           <EditHousehold listing={listingGeneralData} />
         </TabsContent>
         <TabsContent value="property">
-          <EditProperty />
+        <h1>Property</h1>
         </TabsContent>
         <TabsContent value="vehicles">
           <h1>Vehicles</h1>
