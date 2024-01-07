@@ -4,8 +4,9 @@ import { useEffect, useState } from "react"
 import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { listingsGeneralType } from "@/src/types/db"
-import AdTags from "../adTags/AdTags"
 import { Image } from "lucide-react"
+
+import AdTags from "../adTags/AdTags"
 
 interface MyMintsProps {
   listing: listingsGeneralType
@@ -23,12 +24,12 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
   }, [jsonImage])
 
   const price = listing.price
-  const formatter = new Intl.NumberFormat('en-US', {
-    style: 'decimal',
-    minimumFractionDigits: 0, 
-  });
-  
-  const formattedPrice = formatter.format(price);
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+  })
+
+  const formattedPrice = formatter.format(price)
 
   return (
     <div className="mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-500 hover:scale-[0.99]">
@@ -64,9 +65,9 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
           <div className="h-full w-4/12">
             {!adImage[0] ? (
               <div className="flex w-full h-full justify-center align-middle bg-muted rounded-lg">
-                <Image className='w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse'/>
+                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
               </div>
-            ):(
+            ) : (
               <img
                 src={adImage[0]}
                 alt={adImage[0]}
@@ -77,7 +78,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
 
           {/* TAGS */}
           <div className=" absolute -top-3 -right-3">
-          <AdTags listing={listing}/>
+            <AdTags listing={listing} />
           </div>
         </div>
       </Link>

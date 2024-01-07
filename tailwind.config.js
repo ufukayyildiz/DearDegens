@@ -18,6 +18,7 @@ module.exports = {
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
+        backgroundForeground: "hsl(var(--background-foreground))",
 
         customColorOne: "hsl(var(--custom-color-one))",
         customColorTwo: "hsl(var(--custom-color-two))",

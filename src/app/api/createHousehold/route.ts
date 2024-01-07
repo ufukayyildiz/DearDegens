@@ -1,5 +1,5 @@
-import { db } from "@/src/db"
-import { listingsGeneral, notifications, users, usersRelations } from "@/src/db/schema"
+import { db } from "@/src/server/db"
+import { listingsGeneral, notifications, users, usersRelations } from "@/src/server/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateHousehold } from "@/src/lib/validators/validateHousehold"
 import { nanoid } from "nanoid"

@@ -22,7 +22,7 @@ import {
 } from "@/src/lib/validators/validateOffer"
 import { offerType } from "@/src/types/db"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -50,6 +50,7 @@ interface MintProps {
 type FormData = z.infer<typeof validateOffer>
 
 export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps) {
+  const queryClient = useQueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
 
   const form = useForm<FormData>({
@@ -84,8 +85,6 @@ export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps
 
       return data
     },
-
-    // ERROR
     onError: () => {
       return toast({
         title: "Something went wrong.",
@@ -93,13 +92,18 @@ export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps
         variant: "destructive",
       })
     },
-
-    // SUCCESS
     onSuccess: () => {
       return toast({
         description: "Your offer is on the way to the seller.",
       })
     },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log('onSettled error:', error)
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ['notify']})
+      }
+    }
   })
 
   async function onSubmit(data: FormData) {

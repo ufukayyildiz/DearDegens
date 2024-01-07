@@ -1,8 +1,6 @@
 import React from "react"
-import MintOffers from "./MintOffers"
-import MintQuestions from "./MintQuestions"
-import { offerType } from "@/src/types/db"
-import { Gavel} from "lucide-react"
+import { Gavel } from "lucide-react"
+
 import { Button } from "../components-ui/Button"
 import {
   ResizableHandle,
@@ -17,14 +15,10 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../components-ui/Sheet"
+import MintOffers from "./MintOffers"
+import MintQuestions from "./MintQuestions"
 
-type ManagerType = {
-  adOffers: offerType[];
-};
-
-export default function MintManager({ adOffers }: ManagerType) {
-
-
+export default function MintManager() {
   return (
     <Sheet>
       <SheetTrigger>
@@ -38,12 +32,12 @@ export default function MintManager({ adOffers }: ManagerType) {
             <ResizablePanelGroup direction="vertical">
               <ResizablePanel className="relative h-full">
                 <SheetTitle>Offers:</SheetTitle>
-                <MintOffers adOffers={adOffers}/>
+                <MintOffers />
               </ResizablePanel>
-              <ResizableHandle withHandle className="border-muted"/>
+              <ResizableHandle withHandle className="border-muted" />
               <ResizablePanel className="relative">
                 <SheetTitle>Queries:</SheetTitle>
-                <MintQuestions/>
+                <MintQuestions />
               </ResizablePanel>
             </ResizablePanelGroup>
           </SheetDescription>

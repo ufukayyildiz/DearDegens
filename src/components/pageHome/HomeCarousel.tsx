@@ -40,8 +40,8 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
       >
         <SplideTrack>
           {listings.map((listing: any, index: any) => (
-            <SplideSlide tabIndex={index} className="p-5">
-              <MiniMintCardComponent listing={listing} />
+            <SplideSlide key={index} tabIndex={index} className="p-5">
+              <MiniMintCardComponent  listing={listing} />
             </SplideSlide>
           ))}
         </SplideTrack>

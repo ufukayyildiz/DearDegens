@@ -1,10 +1,10 @@
-import { db } from '@/src/db/index'
+import { db } from '@/src/server/db/index'
 import { eq } from 'drizzle-orm'
 import { DrizzleAdapter } from './drizzle-adapter'
 import type { NextAuthOptions } from 'next-auth'
 import { getServerSession } from 'next-auth'
 import GoogleProvider from 'next-auth/providers/google'
-import { users } from '../../db/schema'
+import { users } from '../../server/db/schema'
 
 export const authOptions: NextAuthOptions = {
   adapter: DrizzleAdapter(db),

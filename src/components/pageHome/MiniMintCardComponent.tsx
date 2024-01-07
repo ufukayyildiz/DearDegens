@@ -5,6 +5,7 @@ import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { listingsGeneralType } from "@/src/types/db"
 import { Image, MapPin } from "lucide-react"
+
 import AdTagsMini from "../adTags/AdTagsMini"
 
 interface MyMintsProps {
@@ -52,7 +53,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
 
             {/* TAGS */}
             <div className="absolute w-full -top-3 -left-3">
-              <AdTagsMini listing={listing}/>
+              <AdTagsMini listing={listing} />
             </div>
           </div>
 
@@ -69,10 +70,12 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
                 R {formattedPrice}
               </h1>
             </div>
-            
+
             <div className="absolute bottom-6 left-1 flex gap-1 text-xs italic text-secondary">
-              <MapPin className="h-4 w-4 justify-center"/>
-              <span className="text-primary font-bold text-xs">{listing.location}</span>
+              <MapPin className="h-4 w-4 justify-center" />
+              <span className="text-primary font-bold text-xs">
+                {listing.location}
+              </span>
             </div>
 
             <div className="absolute bottom-1 left-2 flex gap-1 text-xs italic text-secondary">

@@ -1,21 +1,21 @@
-import React, { useEffect, useState } from "react"
-import { cn, formatTimeToNow } from "@/src/lib/utils"
-import { offerType } from "@/src/types/db"
-import { Button } from "../components-ui/Button"
-import { Check, X, RotateCcw } from "lucide-react"
+import React from "react"
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
 } from "@/src/components/components-ui/Tooltip"
+import { cn, formatTimeToNow } from "@/src/lib/utils"
+import { offerType } from "@/src/types/db"
+import { Check, RotateCcw, X } from "lucide-react"
+
+import { Button } from "../components-ui/Button"
 
 interface MintOfferCardProps {
   adOffer: offerType
 }
 
 export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
-
   const offerPrice = adOffer.offerPrice
   const formatter = new Intl.NumberFormat("en-US", {
     style: "decimal",
@@ -26,8 +26,6 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
   const orangePrice = askPrice && askPrice * 0.75
   const redPrice = askPrice && askPrice * 0.5
 
-  console.log('ask:', askPrice, "offer", offerPrice, "orange", orangePrice, "red:", redPrice)
-
   return (
     <div className="h-20 p-2 mb-3 border border-muted text-primary shadow rounded-lg">
       <div className="flex w-full mb-2 justify-between">
@@ -36,14 +34,14 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           <h1
             className={cn(
               "italic font-bold",
-              offerPrice > orangePrice && offerPrice <= askPrice 
-                && "text-primary",
-              offerPrice > askPrice 
-                && "text-customAccent font-semibold",
-              offerPrice > redPrice && offerPrice <= orangePrice 
-                && "text-amber-500",
-              redPrice >= offerPrice 
-                && "text-rose-500"
+              offerPrice > orangePrice &&
+                offerPrice <= askPrice &&
+                "text-primary",
+              offerPrice > askPrice && "text-customAccent font-semibold",
+              offerPrice > redPrice &&
+                offerPrice <= orangePrice &&
+                "text-amber-500",
+              redPrice >= offerPrice && "text-rose-500"
             )}
           >
             R {formatter.format(offerPrice)}
@@ -65,10 +63,14 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           </div>
         </div>
         <div className="flex w-1/2 gap-1 items-end justify-end">
-        <Tooltip>
+          <Tooltip>
             <TooltipTrigger>
-              <Button variant="icon" size="icon" className="hover:text-blue-500">
-                <RotateCcw size={20}/>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-blue-500"
+              >
+                <RotateCcw size={20} />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -77,8 +79,12 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
-              <Button variant="icon" size="icon" className="hover:text-rose-500">
-                <X size={20}/>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-rose-500"
+              >
+                <X size={20} />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -87,8 +93,12 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           </Tooltip>
           <Tooltip>
             <TooltipTrigger>
-              <Button variant="icon" size="icon" className="hover:text-customAccent">
-                <Check size={20}/>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-customAccent"
+              >
+                <Check size={20} />
               </Button>
             </TooltipTrigger>
             <TooltipContent>
@@ -97,7 +107,6 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           </Tooltip>
         </div>
       </div>
-
     </div>
   )
 }

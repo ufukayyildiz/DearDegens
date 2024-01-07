@@ -32,7 +32,7 @@ export default function ChatSheet(ListingId: any) {
               <ResizablePanel className="relative">
                 <div className="text-primary">Chat list will go here</div>
               </ResizablePanel>
-              <ResizableHandle withHandle className="border-muted"/>
+              <ResizableHandle withHandle className="border-muted" />
               <ResizablePanel className="relative">
                 <div className="mt-5 text-primary">Messages will go here</div>
               </ResizablePanel>

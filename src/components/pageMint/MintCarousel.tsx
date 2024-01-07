@@ -2,12 +2,11 @@
 
 import React, { useEffect, useState } from "react"
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
-import { Image, ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon, Image } from "lucide-react"
 
 import "@splidejs/react-splide/css/core"
 
 export default function MintCarousel(listing: any) {
-
   const imageUrls = JSON.parse(listing.listing)
 
   return (
@@ -27,7 +26,11 @@ export default function MintCarousel(listing: any) {
                 </div>
               ) : (
                 <div className="w-full h-6/12 rounded-md shadow-lg object-cover overflow-hidden">
-                  <img src={images} alt={images} className="w-full h-full object-cover"/>
+                  <img
+                    src={images}
+                    alt={images}
+                    className="w-full h-full object-cover"
+                  />
                 </div>
               )}
             </SplideSlide>

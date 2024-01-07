@@ -1,6 +1,6 @@
 import React from "react"
-import { db } from "@/src/db"
-import { listingsGeneral } from "@/src/db/schema"
+import { db } from "@/src/server/db"
+import { listingsGeneral } from "@/src/server/db/schema"
 import SwipperComponent from "../components/pageHome/HomeCarousel"
 
 export default async function IndexPage() {

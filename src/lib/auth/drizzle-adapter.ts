@@ -1,6 +1,6 @@
 import { createId } from '@paralleldrive/cuid2';
 import { and, eq } from 'drizzle-orm';
-import { accounts, sessions, users, verificationTokens } from '../../db/schema';
+import { accounts, sessions, users, verificationTokens } from '../../server/db/schema';
 import type { Adapter } from 'next-auth/adapters';
 import type { PlanetScaleDatabase } from 'drizzle-orm/planetscale-serverless';
 

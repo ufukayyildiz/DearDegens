@@ -1,5 +1,5 @@
-import { db } from "@/src/db"
-import { notifications } from "@/src/db/schema"
+import { db } from "@/src/server/db"
+import { notifications } from "@/src/server/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 

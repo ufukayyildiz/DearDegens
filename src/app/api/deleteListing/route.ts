@@ -1,5 +1,5 @@
-import { db } from "@/src/db"
-import { listingsGeneral, listingsProperty } from "@/src/db/schema"
+import { db } from "@/src/server/db"
+import { listingsGeneral, listingsProperty } from "@/src/server/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 

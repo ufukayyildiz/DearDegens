@@ -2,7 +2,6 @@
 
 import { useEffect, useState } from "react"
 import Link from "next/link"
-import { useRouter } from "next/navigation"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,12 +13,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/components-ui/AlertDialog"
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { Bell, MoreVertical } from "lucide-react"
+import { Bell, Loader, MoreVertical } from "lucide-react"
 
+import { toast } from "../hooks/use-toast"
 import { formatTimeToNow } from "../lib/utils"
+import { getNotifications } from "../server/actions"
 import { notificationsType } from "../types/db"
-import { setUnReadNotifications } from "./components-global/store"
 import { Button } from "./components-ui/Button"
 import { Checkbox } from "./components-ui/Checkbox"
 import {
@@ -40,80 +41,116 @@ import {
 } from "./components-ui/DropdownMenu"
 
 interface NotificationsNavProps {
-  userNotifications: notificationsType[]
   userId: any
 }
 
-type Notication = {
-  id: string
-  adId: string
-  title: string
-  body: string
-  createdAt: Date
-}
-
-export function NotificationsNav({
-  userNotifications,
-  userId,
-}: NotificationsNavProps) {
-  const notifications = [...userNotifications]
-  notifications.sort((a: any, b: any) => b.createdAt - a.createdAt)
-  const router = useRouter()
+export function NotificationsNav({ userId }: NotificationsNavProps) {
+  // STATE
   const [disabled, setDisabled] = useState<boolean>(true)
   const [unreadNotifications, setUnreadNotifications] = useState<number>()
   const [selectedNotificationId, setSelectedNotificationId] =
     useState<string>("")
   const [displayedNotification, setDisplayedNotification] =
-    useState<Notication | null>()
+    useState<notificationsType>()
 
-  const handleReadNotification = async (notify: any) => {
-    setSelectedNotificationId(notify.id)
-    try {
+  // QUERIES
+  const queryClient = useQueryClient()
+  const { data, error, isFetching } = useQuery({
+    queryKey: ["notify"],
+    queryFn: getNotifications,
+  })
+  const notifications = data
+
+  // MUTATION: Read Notification
+  const { mutate: handleReadNotification } = useMutation({
+    mutationFn: async (notify: any) => {
+      setSelectedNotificationId(notify.id)
       const notifyId = JSON.stringify(notify.id)
-      const response = await axios.put("/api/readNotification", notifyId)
-      const updatedIsRead = response.data
-      setUnReadNotifications(updatedIsRead)
-      router.refresh()
-      return "Notification successfully read"
-    } catch (error) {
-      console.error("Error updating notification read status:", error)
-    }
-  }
+      await axios.put("/api/readNotification", notifyId)
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description: "Error updating notification status. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log("onSettled error:", error)
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["notify"] })
+      }
+    },
+  })
 
-  const handleReadAllNotifications = async () => {
-    try {
+  // MUTATION: Read all notifications
+  const { mutate: handleReadAllNotifications } = useMutation({
+    mutationFn: async (userId: any) => {
       const usersId = JSON.stringify(userId)
       await axios.put("/api/readAllNotifications", usersId)
-      router.refresh()
-      return "All notifications successfully deleted."
-    } catch (error) {
-      console.error("Error deleting all notifications, status", error)
-    }
-  }
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description: "Error updating notification status. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log("onSettled error:", error)
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["notify"] })
+      }
+    },
+  })
 
-  const handleDeleteNotification = async (notify: any) => {
-    try {
+  // MUTATION: Delete notifications
+  const { mutate: handleDeleteNotification } = useMutation({
+    mutationFn: async (notify: any) => {
       const notifyId = JSON.stringify(notify.id)
       await axios.put("/api/deleteNotification", notifyId)
-      router.refresh()
-      return "Notification successfully deleted."
-    } catch (error) {
-      console.error("Error deleting notification, status:", error)
-    }
-  }
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description: "Error deleting notification. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log("onSettled error:", error)
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["notify"] })
+      }
+    },
+  })
 
-  const handleDeleteAllNotifications = async (userId: any) => {
-    try {
+  // MUTATION: Delete all notifications
+  const { mutate: handleDeleteAllNotifications } = useMutation({
+    mutationFn: async (userId: any) => {
       const usersId = JSON.stringify(userId)
       await axios.put("/api/deleteAllNotifications", usersId)
-      setDisabled(true)
-      router.refresh()
-      return "All notifications successfully deleted."
-    } catch (error) {
-      console.error("Error deleting all notifications, status", error)
-    }
-  }
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description: "Error deleting notification. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log("onSettled error:", error)
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["notify"] })
+      }
+    },
+  })
 
+  // Get array of unread notifications
   const getUnreadArray = () => {
     if (notifications) {
       const unread = []
@@ -130,6 +167,7 @@ export function NotificationsNav({
     getUnreadArray()
   }, [selectedNotificationId, notifications])
 
+  // Set the currently selected notification by ID
   useEffect(() => {
     if (notifications) {
       const selectedNotification = notifications.find(
@@ -148,13 +186,18 @@ export function NotificationsNav({
           <DropdownMenuTrigger>
             <div className="relative">
               <Bell className="w-6 h-6" />
-              {unreadNotifications !== undefined && unreadNotifications > 0 && (
-                <div className="absolute flex -top-3 -right-3 w-6 h-6 bg-red-500 content-center rounded-full shadow-md">
+              <div className="absolute flex -top-3 -right-3 w-6 h-6 bg-red-500 content-center rounded-full shadow-md">
+                {isFetching === true ? (
+                  <Loader
+                    className="absolute top-1 w-full mx-auto text-white animate-spin"
+                    size={15}
+                  />
+                ) : (
                   <p className="absolute top-1 w-full mx-auto text-white text-xs text-center">
                     {unreadNotifications}
                   </p>
-                </div>
-              )}
+                )}
+              </div>
             </div>
           </DropdownMenuTrigger>
 
@@ -166,7 +209,7 @@ export function NotificationsNav({
 
             <div className="w-full flex py-2 justify-between">
               <Button
-                onClick={() => handleReadAllNotifications()}
+                onClick={() => handleReadAllNotifications(userId)}
                 variant="outline"
               >
                 Mark all as read
@@ -202,9 +245,7 @@ export function NotificationsNav({
                         </label>
                       </div>
                       <div>
-                        <AlertDialogCancel>
-                          Cancel
-                        </AlertDialogCancel>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogTrigger asChild>
                           <Button
                             onClick={() => handleDeleteAllNotifications(userId)}
