@@ -7,7 +7,7 @@ import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { getAdOffers, getListings } from "@/src/server/actions"
 import { db } from "@/src/server/db"
-import { listingsGeneral } from "@/src/server/db/schema"
+import { listings } from "@/src/server/db/schema"
 import {
   HydrationBoundary,
   QueryClient,
@@ -35,12 +35,12 @@ export default async function MintPage({ params }: MintPageProps) {
     queryFn: () => getListings(decodedParam),
   })
 
-  const listingGeneral = await db
+  const listing = await db
     .select()
-    .from(listingsGeneral)
-    .where(eq(listingsGeneral.id, decodedParam))
+    .from(listings)
+    .where(eq(listings.id, decodedParam))
 
-  const mint = [...listingGeneral]
+  const mint = listing
 
   // OFFER QUERIES
   await queryClient.prefetchQuery({
@@ -73,7 +73,7 @@ export default async function MintPage({ params }: MintPageProps) {
                     </h1>
                     {session &&
                       item.price &&
-                      item.authorId === session.user.id && (
+                      item.authorId !== session.user.id && (
                         <MintOffer
                           title={item.title}
                           sellerId={item.authorId}

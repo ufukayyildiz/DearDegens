@@ -11,7 +11,7 @@ import {
   HouseholdCreationRequest,
   validateHousehold,
 } from "@/src/lib/validators/validateHousehold"
-import { listingsGeneralType } from "@/src/types/db"
+import { listingsType } from "@/src/types/db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useDropzone } from "@uploadthing/react/hooks"
@@ -45,7 +45,7 @@ import { Textarea } from "../components-ui/Textarea"
 type FormData = z.infer<typeof validateHousehold>
 
 interface EditHouseholdProps {
-  listing: listingsGeneralType
+  listing: listingsType
 }
 
 export default function EditHousehold({ listing }: EditHouseholdProps) {

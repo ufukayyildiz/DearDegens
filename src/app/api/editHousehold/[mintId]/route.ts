@@ -1,6 +1,6 @@
 import { db } from "@/src/server/db"
 import {
-  listingsGeneral,
+  listings,
   notifications,
   users,
   usersRelations,
@@ -53,10 +53,10 @@ export async function PATCH(req: Request, context: any) {
       meetup
     )
 
-    console.log("listingGeneral:", listingsGeneral)
+    console.log("listingGeneral:", listings)
 
     const post = await db
-      .update(listingsGeneral)
+      .update(listings)
       .set({
         updatedAt: currentDate,
         category: category,
@@ -69,7 +69,7 @@ export async function PATCH(req: Request, context: any) {
         location: location,
         meetup: meetup,
       })
-      .where(eq(listingsGeneral.id, listingId))
+      .where(eq(listings.id, listingId))
 
     const notification = await db.insert(notifications).values({
       id: notificationId,

@@ -1,1 +1,2 @@
-ALTER TABLE `notification` ADD `adId` text;
+ALTER TABLE `notification`
+ADD `adId` text;

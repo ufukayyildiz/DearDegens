@@ -2,17 +2,17 @@ import React from "react"
 import Link from "next/link"
 import { siteConfig } from "@/src/config/site"
 import {
+  dehydrate,
   HydrationBoundary,
   QueryClient,
-  dehydrate,
 } from "@tanstack/react-query"
 import { getServerSession } from "next-auth"
 
 import { authOptions } from "../lib/auth/auth-options"
 import { getNotifications } from "../server/actions"
 import { AccountNav } from "./AccountNav"
-import { MainNav } from "./MainNav"
 import { Button } from "./components-ui/Button"
+import { MainNav } from "./MainNav"
 
 export default async function NavBar() {
   const session = await getServerSession(authOptions)

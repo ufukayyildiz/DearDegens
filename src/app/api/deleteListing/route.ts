@@ -1,5 +1,5 @@
 import { db } from "@/src/server/db"
-import { listingsGeneral, listingsProperty } from "@/src/server/db/schema"
+import { listings } from "@/src/server/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 
@@ -14,10 +14,9 @@ export async function PUT(req: Request) {
     const id = JSON.stringify(listingId)
     console.log('id:', id)
 
-    const responseGeneral = await db.delete(listingsGeneral).where(eq(listingsGeneral.id, id))
-    const responseProperty = await db.delete(listingsProperty).where(eq(listingsProperty.id, id))
+    const response = await db.delete(listings).where(eq(listings.id, id))
 
-    console.log('Successfully deleted listing:', responseGeneral, responseProperty)
+    console.log('Successfully deleted listing:', response)
     return new Response("Successfully deleted notification.", { status: 200 })
   } catch (error) {
     console.error("Deletion listing error:", error)

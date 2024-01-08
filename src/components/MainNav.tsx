@@ -5,7 +5,6 @@ import Logo from "@/src/assets/PepperMint.png"
 import { cn } from "@/src/lib/utils"
 import { NavItem } from "@/src/types/nav"
 
-
 interface MainNavProps {
   items?: NavItem[]
 }

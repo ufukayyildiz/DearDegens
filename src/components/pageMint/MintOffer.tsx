@@ -1,7 +1,6 @@
 "use client"
 
 import React, { useState } from "react"
-import { useRouter } from "next/navigation"
 import Link from "next/link"
 import {
   AlertDialog,
@@ -20,7 +19,6 @@ import {
   OfferCreationRequest,
   validateOffer,
 } from "@/src/lib/validators/validateOffer"
-import { offerType } from "@/src/types/db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
@@ -123,7 +121,7 @@ export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps
     <div className="">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="outlinebold">MAKE OFFER</Button>
+          <Button variant="outlinebold">SEND OFFER</Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <Form {...form}>

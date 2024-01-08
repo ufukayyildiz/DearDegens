@@ -43,13 +43,16 @@ export async function getListings(decodedParam: string) {
 }
 
 // Get listing offers
-export async function getAdOffers (mintId: string) {
+export async function getAdOffers(mintId: string) {
   try {
-    const adOffers = await db.select().from(offers).where(eq(offers.adId, mintId))
+    const adOffers = await db
+      .select()
+      .from(offers)
+      .where(eq(offers.adId, mintId))
 
     adOffers && adOffers.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
-    console.log('Ad offers query successful')
+    console.log("Ad offers query successful")
     return adOffers
   } catch (error) {
     console.error("Server error: Failed to fetch ad offers - ", error)

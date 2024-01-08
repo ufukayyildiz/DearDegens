@@ -82,29 +82,21 @@
       "compositePrimaryKeys": {
         "chats_id": {
           "name": "chats_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "chats_listingId_unique": {
           "name": "chats_listingId_unique",
-          "columns": [
-            "listingId"
-          ]
+          "columns": ["listingId"]
         },
         "chats_sellerId_unique": {
           "name": "chats_sellerId_unique",
-          "columns": [
-            "sellerId"
-          ]
+          "columns": ["sellerId"]
         },
         "chats_buyerId_unique": {
           "name": "chats_buyerId_unique",
-          "columns": [
-            "buyerId"
-          ]
+          "columns": ["buyerId"]
         }
       }
     },
@@ -175,29 +167,21 @@
       "compositePrimaryKeys": {
         "listingQuestions_id": {
           "name": "listingQuestions_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "listingQuestions_listingId_unique": {
           "name": "listingQuestions_listingId_unique",
-          "columns": [
-            "listingId"
-          ]
+          "columns": ["listingId"]
         },
         "listingQuestions_authorId_unique": {
           "name": "listingQuestions_authorId_unique",
-          "columns": [
-            "authorId"
-          ]
+          "columns": ["authorId"]
         },
         "listingQuestions_sellerId_unique": {
           "name": "listingQuestions_sellerId_unique",
-          "columns": [
-            "sellerId"
-          ]
+          "columns": ["sellerId"]
         }
       }
     },
@@ -276,29 +260,21 @@
       "compositePrimaryKeys": {
         "listingReport_id": {
           "name": "listingReport_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "listingReport_authorId_unique": {
           "name": "listingReport_authorId_unique",
-          "columns": [
-            "authorId"
-          ]
+          "columns": ["authorId"]
         },
         "listingReport_listingId_unique": {
           "name": "listingReport_listingId_unique",
-          "columns": [
-            "listingId"
-          ]
+          "columns": ["listingId"]
         },
         "listingReport_userId_unique": {
           "name": "listingReport_userId_unique",
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         }
       }
     },
@@ -394,17 +370,13 @@
       "compositePrimaryKeys": {
         "listingGeneral_id": {
           "name": "listingGeneral_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "listingGeneral_authorId_unique": {
           "name": "listingGeneral_authorId_unique",
-          "columns": [
-            "authorId"
-          ]
+          "columns": ["authorId"]
         }
       }
     },
@@ -469,9 +441,7 @@
       "compositePrimaryKeys": {
         "notification_id": {
           "name": "notification_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -544,23 +514,17 @@
       "compositePrimaryKeys": {
         "offerReport_id": {
           "name": "offerReport_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "offerReport_offerId_unique": {
           "name": "offerReport_offerId_unique",
-          "columns": [
-            "offerId"
-          ]
+          "columns": ["offerId"]
         },
         "offerReport_userId_unique": {
           "name": "offerReport_userId_unique",
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         }
       }
     },
@@ -663,29 +627,21 @@
       "compositePrimaryKeys": {
         "offers_id": {
           "name": "offers_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "offers_listingId_unique": {
           "name": "offers_listingId_unique",
-          "columns": [
-            "listingId"
-          ]
+          "columns": ["listingId"]
         },
         "offers_buyerId_unique": {
           "name": "offers_buyerId_unique",
-          "columns": [
-            "buyerId"
-          ]
+          "columns": ["buyerId"]
         },
         "offers_sellerId_unique": {
           "name": "offers_sellerId_unique",
-          "columns": [
-            "sellerId"
-          ]
+          "columns": ["sellerId"]
         }
       }
     },
@@ -740,23 +696,17 @@
       "compositePrimaryKeys": {
         "profile_id": {
           "name": "profile_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "profile_userId_unique": {
           "name": "profile_userId_unique",
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         },
         "profile_email_unique": {
           "name": "profile_email_unique",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       }
     },
@@ -828,23 +778,17 @@
       "compositePrimaryKeys": {
         "userReport_id": {
           "name": "userReport_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "userReport_authorId_unique": {
           "name": "userReport_authorId_unique",
-          "columns": [
-            "authorId"
-          ]
+          "columns": ["authorId"]
         },
         "userReport_userId_unique": {
           "name": "userReport_userId_unique",
-          "columns": [
-            "userId"
-          ]
+          "columns": ["userId"]
         }
       }
     },
@@ -901,17 +845,13 @@
       "compositePrimaryKeys": {
         "users_id": {
           "name": "users_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {
         "users_email_unique": {
           "name": "users_email_unique",
-          "columns": [
-            "email"
-          ]
+          "columns": ["email"]
         }
       }
     }

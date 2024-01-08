@@ -218,6 +218,27 @@
       "when": 1704184434504,
       "tag": "0030_overrated_toad_men",
       "breakpoints": true
+    },
+    {
+      "idx": 31,
+      "version": "5",
+      "when": 1704656944757,
+      "tag": "0031_smiling_squadron_sinister",
+      "breakpoints": true
+    },
+    {
+      "idx": 32,
+      "version": "5",
+      "when": 1704657325313,
+      "tag": "0032_sloppy_photon",
+      "breakpoints": true
+    },
+    {
+      "idx": 33,
+      "version": "5",
+      "when": 1704657859922,
+      "tag": "0033_unique_magneto",
+      "breakpoints": true
     }
   ]
 }

@@ -3,11 +3,11 @@ import { authOptions } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 
-import { notifications, users } from "..//server/db/schema"
+import { users } from "..//server/db/schema"
 import { db } from "../server/db"
+import { Button } from "./components-ui/Button"
 import { NotificationsNav } from "./NotificationsNav"
 import { UserAccountNav } from "./UserAccountNav"
-import { Button } from "./components-ui/Button"
 
 export async function AccountNav() {
   const session = await getServerSession(authOptions)

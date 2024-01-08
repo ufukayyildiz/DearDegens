@@ -112,17 +112,12 @@
       "indexes": {
         "accounts__provider__providerAccountId__idx": {
           "name": "accounts__provider__providerAccountId__idx",
-          "columns": [
-            "provider",
-            "providerAccountId"
-          ],
+          "columns": ["provider", "providerAccountId"],
           "isUnique": true
         },
         "accounts__userId__idx": {
           "name": "accounts__userId__idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -130,9 +125,7 @@
       "compositePrimaryKeys": {
         "accounts_id": {
           "name": "accounts_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -182,9 +175,7 @@
       "compositePrimaryKeys": {
         "chats_id": {
           "name": "chats_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -255,9 +246,7 @@
       "compositePrimaryKeys": {
         "listingQuestions_id": {
           "name": "listingQuestions_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -336,9 +325,7 @@
       "compositePrimaryKeys": {
         "listingReport_id": {
           "name": "listingReport_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -465,9 +452,7 @@
       "indexes": {
         "listingGeneral__id__idx": {
           "name": "listingGeneral__id__idx",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         }
       },
@@ -475,9 +460,7 @@
       "compositePrimaryKeys": {
         "listingGeneral_id": {
           "name": "listingGeneral_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -640,9 +623,7 @@
       "indexes": {
         "listingProperty__id__idx": {
           "name": "listingProperty__id__idx",
-          "columns": [
-            "id"
-          ],
+          "columns": ["id"],
           "isUnique": true
         }
       },
@@ -650,9 +631,7 @@
       "compositePrimaryKeys": {
         "listingProperty_id": {
           "name": "listingProperty_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -724,9 +703,7 @@
       "compositePrimaryKeys": {
         "notification_id": {
           "name": "notification_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -798,9 +775,7 @@
       "compositePrimaryKeys": {
         "offerReport_id": {
           "name": "offerReport_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -903,9 +878,7 @@
       "compositePrimaryKeys": {
         "offers_id": {
           "name": "offers_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -961,9 +934,7 @@
       "compositePrimaryKeys": {
         "profile_id": {
           "name": "profile_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1020,16 +991,12 @@
       "indexes": {
         "sessions__sessionToken__idx": {
           "name": "sessions__sessionToken__idx",
-          "columns": [
-            "sessionToken"
-          ],
+          "columns": ["sessionToken"],
           "isUnique": true
         },
         "sessions__userId__idx": {
           "name": "sessions__userId__idx",
-          "columns": [
-            "userId"
-          ],
+          "columns": ["userId"],
           "isUnique": false
         }
       },
@@ -1037,9 +1004,7 @@
       "compositePrimaryKeys": {
         "sessions_id": {
           "name": "sessions_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1111,9 +1076,7 @@
       "compositePrimaryKeys": {
         "userReport_id": {
           "name": "userReport_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1193,9 +1156,7 @@
       "indexes": {
         "users__email__idx": {
           "name": "users__email__idx",
-          "columns": [
-            "email"
-          ],
+          "columns": ["email"],
           "isUnique": true
         }
       },
@@ -1203,9 +1164,7 @@
       "compositePrimaryKeys": {
         "users_id": {
           "name": "users_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}
@@ -1255,9 +1214,7 @@
       "indexes": {
         "verification_tokens__token__idx": {
           "name": "verification_tokens__token__idx",
-          "columns": [
-            "token"
-          ],
+          "columns": ["token"],
           "isUnique": true
         }
       },
@@ -1265,9 +1222,7 @@
       "compositePrimaryKeys": {
         "verification_tokens_identifier": {
           "name": "verification_tokens_identifier",
-          "columns": [
-            "identifier"
-          ]
+          "columns": ["identifier"]
         }
       },
       "uniqueConstraints": {}
@@ -1302,9 +1257,7 @@
       "compositePrimaryKeys": {
         "wishlist_id": {
           "name": "wishlist_id",
-          "columns": [
-            "id"
-          ]
+          "columns": ["id"]
         }
       },
       "uniqueConstraints": {}

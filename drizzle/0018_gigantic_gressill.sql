@@ -1,1 +1,2 @@
-ALTER TABLE `listingGeneral` MODIFY COLUMN `images` text;
+ALTER TABLE `listingGeneral`
+MODIFY COLUMN `images` text;

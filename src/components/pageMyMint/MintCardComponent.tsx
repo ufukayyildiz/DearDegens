@@ -3,13 +3,13 @@
 import { useEffect, useState } from "react"
 import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
-import { listingsGeneralType } from "@/src/types/db"
+import { listingsType } from "@/src/types/db"
 import { Image } from "lucide-react"
 
 import AdTags from "../adTags/AdTags"
 
 interface MyMintsProps {
-  listing: listingsGeneralType
+  listing: listingsType
 }
 
 export default function MintCardComponent({ listing }: MyMintsProps) {

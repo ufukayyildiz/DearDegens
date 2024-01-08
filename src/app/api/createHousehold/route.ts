@@ -1,5 +1,5 @@
 import { db } from "@/src/server/db"
-import { listingsGeneral, notifications, users, usersRelations } from "@/src/server/db/schema"
+import { listings, notifications, users, usersRelations } from "@/src/server/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateHousehold } from "@/src/lib/validators/validateHousehold"
 import { nanoid } from "nanoid"
@@ -55,7 +55,7 @@ export async function POST(req: Request) {
       meetup
     )
 
-    const post = await db.insert(listingsGeneral).values({
+    const post = await db.insert(listings).values({
       id: listingId,
       authorId: authorId,
       createdAt: currentDate,

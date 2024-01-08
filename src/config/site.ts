@@ -2,8 +2,7 @@ export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
   name: "PepperMint",
-  description:
-    "The next generation experience in public classified ads.",
+  description: "The next generation experience in public classified ads.",
   mainNav: [
     {
       title: "Home",

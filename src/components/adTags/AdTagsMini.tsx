@@ -1,5 +1,5 @@
 import React from "react"
-import { listingsGeneralType } from "@/src/types/db"
+import { listingsType } from "@/src/types/db"
 import IsNew from "./IsNew"
 import IsUrgent from "./IsUrgent"
 import IsHot from "./IsHot"
@@ -7,7 +7,7 @@ import IsPending from "./IsPending"
 import IsSold from "./IsSold"
 
 interface MyMintsProps {
-  listing: listingsGeneralType
+  listing: listingsType
 }
 
 export default function AdTagsMini({ listing }: MyMintsProps) {

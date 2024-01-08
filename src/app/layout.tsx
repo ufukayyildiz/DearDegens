@@ -1,4 +1,5 @@
 import "@/src/styles/globals.css"
+
 import { Metadata } from "next"
 import Head from "next/head"
 import { TailwindIndicator } from "@/src/components/components-global/tailwind-indicator"
@@ -7,9 +8,9 @@ import { siteConfig } from "@/src/config/site"
 import { fontSans } from "@/src/lib/fonts"
 import { cn } from "@/src/lib/utils"
 
-import NavBar from "../components/NavBar"
 import Providers from "../components/components-global/Providers"
 import { Toaster } from "../components/components-ui/Toaster"
+import NavBar from "../components/NavBar"
 
 export const metadata: Metadata = {
   title: {

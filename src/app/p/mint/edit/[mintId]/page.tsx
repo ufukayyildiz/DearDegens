@@ -8,7 +8,7 @@ import {
 import EditHousehold from "@/src/components/pageEditMint/EditHousehold"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { listingsGeneral } from "@/src/server/db/schema"
+import { listings } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 
@@ -27,8 +27,8 @@ export default async function MintEditPage({ params }: MintPageProps) {
 
   const listingGeneralData = await db
     .select()
-    .from(listingsGeneral)
-    .where(eq(listingsGeneral.id, decodedParam))
+    .from(listings)
+    .where(eq(listings.id, decodedParam))
 
   return (
     <div className="p-10">

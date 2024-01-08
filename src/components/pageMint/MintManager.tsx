@@ -1,4 +1,7 @@
 import React from "react"
+import { useParams } from "next/navigation"
+import { getAdOffers } from "@/src/server/actions"
+import { useQuery } from "@tanstack/react-query"
 import { Gavel } from "lucide-react"
 
 import { Button } from "../components-ui/Button"
@@ -16,9 +19,15 @@ import {
   SheetTrigger,
 } from "../components-ui/Sheet"
 import MintOffers from "./MintOffers"
-import MintQuestions from "./MintQuestions"
+import MintQuestions from "./MintQueries"
 
 export default function MintManager() {
+  const { mintId }: any = useParams()
+  const { data } = useQuery({
+    queryKey: ["adOffer"],
+    queryFn: () => getAdOffers(mintId),
+  })
+
   return (
     <Sheet>
       <SheetTrigger>

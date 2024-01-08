@@ -2,7 +2,7 @@ import React from "react"
 import MintCardComponent from "@/src/components/pageMyMint/MintCardComponent"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { listingsGeneral } from "@/src/server/db/schema"
+import { listings } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 
@@ -13,20 +13,19 @@ export default async function MyMints() {
     return console.log("Unauthorised, please login")
   }
 
-  const household = await db
+  const adListings = await db
     .select()
-    .from(listingsGeneral)
-    .where(eq(listingsGeneral.authorId, session?.user.id))
+    .from(listings)
+    .where(eq(listings.authorId, session?.user.id))
 
-  const listings = [...household]
-  listings.sort((a: any, b: any) => b.createdAt - a.createdAt)
+  adListings.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
   return (
     <div className="z-20 mx-auto w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
       <h1 className="mt-10 text-primary text-xl font-bold">My Ads</h1>
       <hr className="my-2 border border-t-muted-foreground" />
       <ul className="mb-44 mt-10 flex w-full h-full flex-col space-y-8 px-5">
-        {listings.map((listing) => {
+        {adListings.map((listing) => {
           return <MintCardComponent key={listing.id} listing={listing} />
         })}
       </ul>

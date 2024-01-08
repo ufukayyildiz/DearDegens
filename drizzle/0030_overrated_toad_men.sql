@@ -1,1 +1,2 @@
-ALTER TABLE `offers` ADD `askPrice` int;
+ALTER TABLE `offers`
+ADD `askPrice` int;

@@ -1,7 +1,6 @@
 import { db } from "@/src/server/db"
 import { notifications, offers } from "@/src/server/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
-import { validateHousehold } from "@/src/lib/validators/validateHousehold"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 
@@ -38,6 +37,7 @@ export async function POST(req: Request) {
       id: offerId,
       userId: userId,
       userName: userName,
+      sellerId: sellerId,
       adId: adId,
       adTitle: title,
       createdAt: currentDate,

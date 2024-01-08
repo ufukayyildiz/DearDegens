@@ -63,11 +63,11 @@ module.exports = {
       },
       fontFamily: {
         sans: ["Prompt", ...fontFamily.sans],
-        prompt: ['Prompt', ...fontFamily.sans],
-        indie: ['Indie Flower', ...fontFamily.sans],
-        bangers: ['Bangers', ...fontFamily.sans],
-        galada: ['Galada', ...fontFamily.sans],
-        chivo: ['Chivo Mono', ...fontFamily.sans],
+        prompt: ["Prompt", ...fontFamily.sans],
+        indie: ["Indie Flower", ...fontFamily.sans],
+        bangers: ["Bangers", ...fontFamily.sans],
+        galada: ["Galada", ...fontFamily.sans],
+        chivo: ["Chivo Mono", ...fontFamily.sans],
       },
       keyframes: {
         "accordion-down": {

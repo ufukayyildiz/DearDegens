@@ -108,7 +108,7 @@ export const users = mysqlTable(
 export const usersRelations = relations(users, ({ one, many }) => ({
   accounts: one(accounts),
   sessions: many(sessions),
-  listingsGeneral: many(listingsGeneral),
+  listings: many(listings),
   notifications: many(notifications),
   offers: many(offers),
 }))
@@ -134,8 +134,8 @@ export const verificationTokens = mysqlTable(
 
 
 // __________________________________________________________________________________________________________________
-// LISTING - GENERAL
-export const listingsGeneral = mysqlTable("listingGeneral", {
+// LISTING
+export const listings = mysqlTable("listings", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   authorId: varchar("authorId", { length: 191 }).notNull().references(() => users.id),
   createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`).notNull(),
@@ -157,25 +157,24 @@ export const listingsGeneral = mysqlTable("listingGeneral", {
   isHot: boolean("isHot").default(false),
   isSold: boolean("isSold").default(false),
 },
-(listingGeneral) => ({
-  idIndex: uniqueIndex("listingGeneral__id__idx").on(listingGeneral.id),
+(listing) => ({
+  idIndex: uniqueIndex("listings__id__idx").on(listing.id),
 })
 )
 
-export const listingsGeneralRelations = relations(
-  listingsGeneral,
-  ({ one }) => ({
+export const listingsRelations = relations(listings, ({ one, many }) => ({
     authorId: one(users, {
-      fields: [listingsGeneral.authorId],
+      fields: [listings.authorId],
       references: [users.id],
-    })
+    }),
+    queries: many(queries),
   })
 )
 
 
 // __________________________________________________________________________________________________________________
 // NOTIFICATIONS
-export const notifications = mysqlTable("notification", {
+export const notifications = mysqlTable("notifications", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 }).notNull().references(() => users.id),
   adId: text("adId"),
@@ -202,7 +201,8 @@ export const offers = mysqlTable("offers", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 }).notNull().references(() => users.id),
   userName: varchar("userName", { length: 191 }),
-  adId: varchar("adId", { length: 191 }).notNull(),
+  adId: varchar("adId", { length: 191 }).notNull().references(() => listings.id),
+  sellerId: varchar("sellerId", { length: 191 }),
   adTitle: varchar("adTitle", { length: 191 }),
   createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`).notNull(),
   expirationDate: datetime("expirationDate"),
@@ -218,5 +218,30 @@ export const offersRelations = relations(offers, ({ one }) => ({
   userId: one(users, {
     fields: [offers.userId],
     references: [users.id],
+  }),
+}))
+
+
+// __________________________________________________________________________________________________________________
+// QUERIES
+export const queries = mysqlTable("queries", {
+  id: varchar("id", { length: 191 }).primaryKey().notNull(),
+  userId: varchar("userId", { length: 191 }).notNull().references(() => users.id),
+  userName: varchar("userName", { length: 191 }),
+  adId: varchar("adId", { length: 191 }).notNull().references(() => listings.id),
+  sellerId: varchar("sellerId", { length: 191 }),
+  adTitle: varchar("adTitle", { length: 191 }),
+  createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`).notNull(),
+  expirationDate: datetime("expirationDate"),
+  purgeDate: datetime("purgeDate"),
+  query: varchar("query", { length: 191 }),
+  reply: varchar("reply", { length: 191 }),
+  isAnswered: boolean("isAnswered").default(false),
+})
+
+export const queriesRelations = relations(queries, ({ one }) => ({
+  adId: one(listings, {
+    fields: [queries.id],
+    references: [listings.id],
   }),
 }))
