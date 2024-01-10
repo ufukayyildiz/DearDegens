@@ -187,7 +187,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
   // ----------------------------------------------------------------------------------
   // UI
   return (
-    <div className="mt-10 mx-auto w-full rounded-lg bg-background p-2">
+    <div className="mt-10 mb-32 mx-auto w-full rounded-lg bg-background p-2">
       {/* IMAGES */}
       <p className="text-sm mb-3">Image Upload</p>
       <div className="relative flex h-auto min-h-[100px] mb-3 text-center justify-center border border-dashed border-l-1 border-zinc-300 rounded-lg shadow-lg">

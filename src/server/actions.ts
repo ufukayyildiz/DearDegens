@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth"
 
 import { authOptions, getAuthSession } from "../lib/auth/auth-options"
 import { db } from "./db"
-import { listingsGeneral, notifications, offers } from "./db/schema"
+import { listings, notifications, offers } from "./db/schema"
 
 // Get all notifications by userId
 export async function getNotifications() {
@@ -33,8 +33,8 @@ export async function getListings(decodedParam: string) {
   try {
     const listingGeneral = await db
       .select()
-      .from(listingsGeneral)
-      .where(eq(listingsGeneral.id, decodedParam))
+      .from(listings)
+      .where(eq(listings.id, decodedParam))
     console.log("General listing query successful.")
     return listingGeneral
   } catch (error) {

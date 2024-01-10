@@ -239,6 +239,13 @@
       "when": 1704657859922,
       "tag": "0033_unique_magneto",
       "breakpoints": true
+    },
+    {
+      "idx": 34,
+      "version": "5",
+      "when": 1704742753259,
+      "tag": "0034_low_wolfsbane",
+      "breakpoints": true
     }
   ]
 }

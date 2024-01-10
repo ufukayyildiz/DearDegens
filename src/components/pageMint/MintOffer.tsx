@@ -47,7 +47,12 @@ interface MintProps {
 
 type FormData = z.infer<typeof validateOffer>
 
-export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps) {
+export default function MintOffer({
+  askPrice,
+  sellerId,
+  title,
+  adId,
+}: MintProps) {
   const queryClient = useQueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
 
@@ -97,11 +102,11 @@ export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps
     },
     onSettled: async (_, error) => {
       if (error) {
-        console.log('onSettled error:', error)
+        console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ['notify']})
+        await queryClient.invalidateQueries({ queryKey: ["notify"] })
       }
-    }
+    },
   })
 
   async function onSubmit(data: FormData) {
@@ -131,8 +136,6 @@ export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps
                   Your one step closer to the deal of a lifetime!
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  
-
                   <div className="grid grid-cols-1 gap-2 mb-5">
                     {/* PRICE */}
                     <FormField
@@ -165,12 +168,11 @@ export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps
                   <div>
                     <p className="italic text-xs">
                       (Note: Once the seller has accepted your offer, you will
-                      gain access to the chat area where you'll make contact with
-                      the seller and make arrangments to complete the
-                      transaction.)
+                      gain access to the chat area where you'll make contact
+                      with the seller to make arrangments regarding completing
+                      the transaction.)
                     </p>
                   </div>
-
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
@@ -185,17 +187,16 @@ export default function MintOffer({ askPrice, sellerId, title, adId }: MintProps
                       htmlFor="disable"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
-                      <Link href="/termsofservice" className='underline'>
+                      <Link href="/termsofservice" className="underline">
                         Agree to terms of service.
                       </Link>
                     </Label>
                   </div>
                   <div className="flex gap-5">
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      type="submit"
-                      disabled={disabled}
-                    >
+                    <AlertDialogCancel onClick={() => setDisabled(true)}>
+                      Cancel
+                    </AlertDialogCancel>
+                    <AlertDialogAction type="submit" disabled={disabled}>
                       Send
                     </AlertDialogAction>
                   </div>

@@ -1,20 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
-import MintManager from "./MintManager"
-import ChatSheet from "../components-chat/ChatSheet"
-import { useRouter } from "next/navigation"
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/src/components/components-ui/AlertDialog"
+import React from "react"
 import { Button } from "@/src/components/components-ui/Button"
 import {
   Tooltip,
@@ -24,12 +10,14 @@ import {
 } from "@/src/components/components-ui/Tooltip"
 import { AlertTriangle, Heart } from "lucide-react"
 
+import ChatSheet from "../components-chat/ChatSheet"
+import MintManager from "./MintManager"
+
 export default function MintPageUsersActions(listingId: any) {
   return (
     <div className="w-full flex justify-end pr-5">
       <div className=" w-4/12 flex justify-end">
         <TooltipProvider>
-
           <Tooltip>
             <TooltipTrigger>
               <Button className="hover:text-rose-500" variant="icon">

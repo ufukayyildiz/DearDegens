@@ -8,14 +8,20 @@ import {
 import { cn, formatTimeToNow } from "@/src/lib/utils"
 import { offerType } from "@/src/types/db"
 import { Check, RotateCcw, X } from "lucide-react"
+import { useSession } from "next-auth/react"
 
 import { Button } from "../components-ui/Button"
+import MintOfferCardAuthorActions from "./MintOfferCardAuthorActions"
+import MintOfferCardStatus from "./MintOfferCardStatus"
+import MintOfferCardUserActions from "./MintOfferCardUserActions"
 
 interface MintOfferCardProps {
   adOffer: offerType
 }
 
 export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
+  const { data: session } = useSession()
+  const userId = session?.user.id
   const offerPrice = adOffer.offerPrice
   const formatter = new Intl.NumberFormat("en-US", {
     style: "decimal",
@@ -27,13 +33,13 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
   const redPrice = askPrice && askPrice * 0.5
 
   return (
-    <div className="h-20 p-2 mb-3 border border-muted text-primary shadow rounded-lg transition duration-500 hover:scale-[0.99]">
-      <div className="flex w-full mb-2 justify-between">
-        <h1 className="font-bold italic">Offer Amount:</h1>
+    <div className="flex flex-col h-[120px] p-2 mb-3 border border-muted justify-between text-primary shadow rounded-lg transition duration-500 hover:scale-[0.99]">
+      <div className="flex w-full justify-between">
+        <h1 className="text-lg font-bold italic">Offer Amount:</h1>
         {askPrice && offerPrice && orangePrice && redPrice && (
           <h1
             className={cn(
-              "italic font-bold",
+              "italic text-lg font-bold",
               offerPrice > orangePrice &&
                 offerPrice <= askPrice &&
                 "text-primary",
@@ -49,6 +55,8 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
         )}
       </div>
 
+      <MintOfferCardStatus adOffer={adOffer} />
+
       <div className="flex">
         <div className="flex flex-col w-1/2">
           <div className="flex w-full gap-1">
@@ -62,50 +70,12 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
             </p>
           </div>
         </div>
-        <div className="flex w-1/2 gap-1 items-end justify-end">
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                variant="icon"
-                size="icon"
-                className="hover:text-blue-500"
-              >
-                <RotateCcw size={20} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Counter</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                variant="icon"
-                size="icon"
-                className="hover:text-rose-500"
-              >
-                <X size={20} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Decline</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button
-                variant="icon"
-                size="icon"
-                className="hover:text-customAccent"
-              >
-                <Check size={20} />
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Accept</p>
-            </TooltipContent>
-          </Tooltip>
-        </div>
+
+        {userId === adOffer.sellerId ? (
+          <MintOfferCardAuthorActions adOffer={adOffer} />
+        ) : (
+          <MintOfferCardUserActions adOffer={adOffer} />
+        )}
       </div>
     </div>
   )

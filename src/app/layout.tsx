@@ -11,6 +11,7 @@ import { cn } from "@/src/lib/utils"
 import Providers from "../components/components-global/Providers"
 import { Toaster } from "../components/components-ui/Toaster"
 import NavBar from "../components/NavBar"
+import Footer from "../components/Footer"
 
 export const metadata: Metadata = {
   title: {
@@ -53,6 +54,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
             <Providers>
               <div className="relative flex min-h-screen flex-col">
                 <NavBar />
+                <Footer/>
                 <div className="flex-1">{children}</div>
               </div>
               <TailwindIndicator />

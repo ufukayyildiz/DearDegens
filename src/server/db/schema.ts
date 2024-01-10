@@ -210,6 +210,8 @@ export const offers = mysqlTable("offers", {
   askPrice: int("askPrice"),
   offerPrice: int("offerPrice"),
   counterPrice: int("counterPrice"),
+  isCountered: boolean("isCountered").default(false),
+  isDeclined: boolean("isDeclined").default(false),
   isAccepted: boolean("isAccepted").default(false),
   isConfirmed: boolean("isConfirmed").default(false),
 })

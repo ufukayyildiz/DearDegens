@@ -1,7 +1,5 @@
-import React from 'react'
+import React from "react"
 
 export default function MintQueries() {
-  return (
-    <div>MintQueries</div>
-  )
+  return <div>MintQueries</div>
 }

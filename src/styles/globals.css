@@ -38,11 +38,15 @@
 
     --inputbg: 0 0% 100%;
 
+    --gr-one: 0 0% 100%;
+    --gr-two: 0 0% 97%;
+    --gr-thr: 0 0% 95%;
+
     --custom-color-one: 187, 92%, 69%;
     --custom-color-two: 171, 77%, 64%;
     --custom-color-thr: 156, 72%, 67%;
     --custom-color-fou: 0, 0%, 15%;
-    --custom-accent: 171, 100%, 45%;
+    --custom-accent: 171, 100%, 40%;
   }
 
   .dark {
@@ -79,6 +83,10 @@
     --radius: 0.5rem;
 
     --inputbg: 210 15% 22%;
+
+    --gr-one: 240, 5%, 26%;
+    --gr-two: 240, 5%, 29%;
+    --gr-thr: 240, 5%, 32%;
 
     --custom-color-one: 187, 92%, 69%;
     --custom-color-two: 171, 77%, 64%;

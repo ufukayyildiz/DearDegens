@@ -20,6 +20,10 @@ module.exports = {
         background: "hsl(var(--background))",
         backgroundForeground: "hsl(var(--background-foreground))",
 
+        grOne: "hsl(var(--gr-one))",
+        grTwo: "hsl(var(--gr-two))",
+        grThr: "hsl(var(--gr-thr))",
+
         customColorOne: "hsl(var(--custom-color-one))",
         customColorTwo: "hsl(var(--custom-color-two))",
         customColorThr: "hsl(var(--custom-color-thr))",
