@@ -1,16 +1,8 @@
 import React from "react"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/src/components/components-ui/Tooltip"
 import { cn, formatTimeToNow } from "@/src/lib/utils"
 import { offerType } from "@/src/types/db"
-import { Check, RotateCcw, X } from "lucide-react"
 import { useSession } from "next-auth/react"
 
-import { Button } from "../components-ui/Button"
 import MintOfferCardAuthorActions from "./MintOfferCardAuthorActions"
 import MintOfferCardStatus from "./MintOfferCardStatus"
 import MintOfferCardUserActions from "./MintOfferCardUserActions"
@@ -23,6 +15,7 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
   const { data: session } = useSession()
   const userId = session?.user.id
   const offerPrice = adOffer.offerPrice
+  const createdAt = JSON.stringify(adOffer.createdAt)
   const formatter = new Intl.NumberFormat("en-US", {
     style: "decimal",
     minimumFractionDigits: 0,
@@ -66,7 +59,7 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           <div className="flex w-full gap-1 text-muted-foreground">
             <p className="text-xs italic">sent</p>
             <p className="text-xs italic">
-              {formatTimeToNow(new Date(adOffer.createdAt))}
+              {formatTimeToNow(new Date(createdAt))}
             </p>
           </div>
         </div>

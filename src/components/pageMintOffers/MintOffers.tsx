@@ -17,9 +17,9 @@ export default function MintOffers() {
 
   const { mintId }: any = useParams()
 
-  const { data, error, isLoading } = useQuery({
+  const { data, error, isLoading } = useQuery<offerType[]>({
     queryKey: ["adOffers"],
-    queryFn: () => getAdOffers(mintId) as offerType,
+    queryFn: () => mintId && getAdOffers(mintId),
   })
 
   const adOffers = data

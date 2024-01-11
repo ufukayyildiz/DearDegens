@@ -5,7 +5,7 @@ import { getServerSession } from "next-auth"
 
 import { authOptions, getAuthSession } from "../lib/auth/auth-options"
 import { db } from "./db"
-import { listings, notifications, offers } from "./db/schema"
+import { listings, notifications, offers, queries } from "./db/schema"
 
 // Get all notifications by userId
 export async function getNotifications() {
@@ -56,5 +56,19 @@ export async function getAdOffers(mintId: string) {
     return adOffers
   } catch (error) {
     console.error("Server error: Failed to fetch ad offers - ", error)
+  }
+}
+
+// Get listing Queries
+export async function getAdQueries(mintId: string) {
+  try {
+    const adQueries = await db.select().from(queries).where(eq(queries.adId, mintId))
+
+    adQueries && adQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
+    
+    console.log("Ad queries query successful")
+    return adQueries
+  } catch (error) {
+    console.error("Server error: Failed to fetch ad queries - ", error)
   }
 }

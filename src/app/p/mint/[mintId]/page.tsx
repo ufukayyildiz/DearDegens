@@ -1,20 +1,22 @@
 import React from "react"
 import MintCarousel from "@/src/components/pageMint/MintCarousel"
-import MintOffer from "@/src/components/pageMint/MintOffer"
 import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
+import MintOffer from "@/src/components/pageMintOffers/MintOffer"
+import MintQuery from "@/src/components/pageMintQueries/MintQuery"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
-import { getAdOffers, getListings } from "@/src/server/actions"
+import { getAdOffers, getAdQueries, getListings } from "@/src/server/actions"
 import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
 import {
+  dehydrate,
   HydrationBoundary,
   QueryClient,
-  dehydrate,
 } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
+import { listingsType, offerType, queryType } from "@/src/types/db"
 
 interface MintPageProps {
   params: {
@@ -28,7 +30,7 @@ export default async function MintPage({ params }: MintPageProps) {
 
   const session = await getServerSession(authOptions)
 
-  // LISTING QUERIES
+  // LISTING QUERY
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
     queryKey: ["prelisting"],
@@ -40,12 +42,18 @@ export default async function MintPage({ params }: MintPageProps) {
     .from(listings)
     .where(eq(listings.id, decodedParam))
 
-  const mint = listing
+  const mint: listingsType[] = listing || []
 
-  // OFFER QUERIES
+  // OFFER QUERY
   await queryClient.prefetchQuery({
     queryKey: ["adOffers"],
     queryFn: () => mint && getAdOffers(mint[0].id),
+  })
+
+  // QUERIES QUERY
+  await queryClient.prefetchQuery({
+    queryKey: ["adQueries"],
+    queryFn: () => mint && getAdQueries(mint[0].id)
   })
 
   // PRICE TEXT FORMATTER
@@ -72,7 +80,7 @@ export default async function MintPage({ params }: MintPageProps) {
                       R {formatPrice(item.price)}
                     </h1>
                     {session &&
-                      item.price &&
+                      item.price && item.title &&
                       item.authorId !== session.user.id && (
                         <MintOffer
                           title={item.title}
@@ -84,7 +92,7 @@ export default async function MintPage({ params }: MintPageProps) {
                   </div>
                   <h1 className="text-xl font-bold mb-2">{item.title}</h1>
                   <p className="text-xs italic text-secondary">
-                    Listed {formatTimeToNow(new Date(item.createdAt))}
+                    Listed {formatTimeToNow(new Date(JSON.stringify(item.createdAt)))}
                   </p>
                 </div>
               </div>
@@ -95,7 +103,9 @@ export default async function MintPage({ params }: MintPageProps) {
                     <MintPageAuthorActions listingId={item.id} />
                   </HydrationBoundary>
                 ) : (
-                  <MintPageUsersActions listingId={item.id} />
+                  <HydrationBoundary state={dehydrate(queryClient)}>
+                    <MintPageUsersActions listingId={item.id} />
+                  </HydrationBoundary>
                 )}
               </div>
               <hr className="my-2 border border-t-muted-foreground" />

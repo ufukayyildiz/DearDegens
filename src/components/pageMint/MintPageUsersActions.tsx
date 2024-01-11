@@ -8,8 +8,8 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/src/components/components-ui/Tooltip"
-import { AlertTriangle, Heart } from "lucide-react"
-
+import { AlertTriangle, Heart, HelpCircle } from "lucide-react"
+import MintQuery from "../pageMintQueries/MintQuery"
 import ChatSheet from "../components-chat/ChatSheet"
 import MintManager from "./MintManager"
 
@@ -42,6 +42,14 @@ export default function MintPageUsersActions(listingId: any) {
             </TooltipTrigger>
             <TooltipContent>
               <p>Offers / Questions</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <MintQuery/>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Ask the seller</p>
             </TooltipContent>
           </Tooltip>
           <Tooltip>

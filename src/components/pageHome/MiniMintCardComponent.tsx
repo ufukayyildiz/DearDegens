@@ -60,7 +60,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
           {/* INFO */}
           <div className="h-full w-full p-1">
             <div>
-              <h1 className="text-primary font-bold hover:text-customColorTwo text-sm mb-2 truncate">
+              <h1 className="text-primary font-bold text-sm mb-2 truncate">
                 {listing.title}
               </h1>
             </div>
