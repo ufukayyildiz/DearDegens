@@ -10,26 +10,26 @@ export default function MintCarousel(listing: any) {
   const imageUrls = JSON.parse(listing.listing)
 
   return (
-    <div>
+    <div className="flex w-full h-52 overflow-hidden">
       <Splide
         hasTrack={false}
         aria-label="..."
-        className="relative w-11/12 h-full mx-auto"
+        className="w-full h-full mx-auto"
         options={{ perPage: 1, autoplay: true, type: "loop" }}
       >
         <SplideTrack>
           {imageUrls.map((images: any, index: any) => (
             <SplideSlide tabIndex={index} className="p-5">
               {imageUrls.length === 0 ? (
-                <div className="flex w-full h-52 justify-center align-middle bg-muted rounded-lg">
+                <div className="flex justify-center align-middle bg-muted rounded-lg">
                   <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
                 </div>
               ) : (
-                <div className="w-full h-3/12 rounded-md shadow-lg object-cover overflow-hidden">
+                <div className="rounded-md h-full shadow-lg object-cover overflow-hidden">
                   <img
                     src={images}
                     alt={images}
-                    className="w-full h-full object-cover"
+                    className="object-cover"
                   />
                 </div>
               )}

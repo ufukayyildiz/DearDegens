@@ -25,7 +25,7 @@ import { listingsType, queryType } from "@/src/types/db"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { HelpCircle } from "lucide-react"
+import { MessageCircle } from "lucide-react"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
 
@@ -45,7 +45,7 @@ import { Textarea } from "../components-ui/Textarea"
 
 type FormData = z.infer<typeof validateQuery>
 
-export default function MintQuery() {
+export default function MintQueryReply() {
   const queryClient = useQueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
   const { mintId }: any = useParams()
@@ -124,7 +124,7 @@ export default function MintQuery() {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button className="hover:text-blue-500" variant="icon">
-            <HelpCircle />
+            <MessageCircle/>
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>

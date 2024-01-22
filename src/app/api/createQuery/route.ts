@@ -1,9 +1,8 @@
+import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { notifications, queries } from "@/src/server/db/schema"
-import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { nanoid } from "nanoid"
 import { z } from "zod"
-
 
 export async function POST(req: Request) {
   try {
@@ -17,7 +16,7 @@ export async function POST(req: Request) {
     const userId = session?.user.id
     const userName = session.user.name
 
-    const offerId = nanoid()
+    const queryId = nanoid()
 
     const notificationId = nanoid()
 
@@ -29,22 +28,22 @@ export async function POST(req: Request) {
       currentDate.getTime() + 60 * 24 * 60 * 60 * 1000
     )
 
-    const { sellerId, adId, offerPrice, askPrice, title } = body
+    const { sellerId, adId, adTitle, query } = body
 
-    console.log('body:', body)
+    console.log("body:", body)
 
     const post = await db.insert(queries).values({
-      id: offerId,
+      id: queryId,
       userId: userId,
       userName: userName,
       sellerId: sellerId,
       adId: adId,
-      adTitle: title,
+      adTitle: adTitle,
       createdAt: currentDate,
       expirationDate: expirationDate,
       purgeDate: purgeDate,
-      offerPrice: offerPrice,
-      askPrice: askPrice
+      query: query,
+      reply: "",
     })
 
     const notification = await db.insert(notifications).values({
@@ -52,12 +51,11 @@ export async function POST(req: Request) {
       userId: sellerId,
       adId: adId,
       createdAt: currentDate,
-      title: `Offer recieved!`,
-      description: `Your listing ${title} has recieved an offer!`,
-      body: `An offer of R ${offerPrice} has been placed on your listing. Head over to your listings page to either accept or make a counter offer.`,
+      title: `Query recieved!`,
+      description: `Your listing ${adTitle} has recieved a query`,
+      body: `A potential buyer has sent you a query regarding your listing, head over to your listings page to send them a reply. You can also make the query public after replying to assist other users who may have the same question.`,
       isRead: false,
     })
-
 
     return new Response(JSON.stringify(post), { status: 200 })
   } catch (error) {
@@ -66,7 +64,7 @@ export async function POST(req: Request) {
       return new Response(error.message, { status: 400 })
     }
     return new Response(
-      "Could not send an offer at this time. Please try again later",
+      "Could not send an query at this time. Please try again later",
       { status: 500 }
     )
   }

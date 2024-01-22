@@ -5,6 +5,9 @@ import { queryType } from "@/src/types/db"
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
 
+import MintQueriesCard from "./MintQueriesCard"
+import { ScrollArea } from "@radix-ui/react-scroll-area"
+
 export default function MintQueries() {
   const { data: session } = useSession()
   const userId = session?.user.id
@@ -19,14 +22,22 @@ export default function MintQueries() {
   const adQueries = data
   adQueries?.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
-  let offers: queryType[] = []
+  let queries: queryType[] = []
 
   if (adQueries) {
     for (let i = 0; i < adQueries.length; i++) {
       if (adQueries[i].userId === userId || adQueries[i].sellerId === userId) {
-        offers.push(adQueries[i])
+        queries.push(adQueries[i])
       }
     }
   }
-  return <div>MintQueries</div>
+
+  return (
+    <ScrollArea className="flex h-full flex-col pr-5 mt-5 pb-12">
+       {queries &&
+        queries.map((item: any, index) => {
+          return <MintQueriesCard query={item}/>
+        })}
+    </ScrollArea>
+  )
 }

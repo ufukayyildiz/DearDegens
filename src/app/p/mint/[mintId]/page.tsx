@@ -1,5 +1,6 @@
 import React from "react"
 import MintCarousel from "@/src/components/pageMint/MintCarousel"
+import MintCarouselTwo from "@/src/components/pageMint/MintCarouselTwo"
 import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
@@ -27,7 +28,6 @@ interface MintPageProps {
 export default async function MintPage({ params }: MintPageProps) {
   const param = params
   const decodedParam = decodeURIComponent(param.mintId)
-
   const session = await getServerSession(authOptions)
 
   // LISTING QUERY
@@ -72,7 +72,7 @@ export default async function MintPage({ params }: MintPageProps) {
         {mint &&
           mint.map((item, index) => (
             <div key={index} className="mb-60">
-              <MintCarousel listing={item.images} />
+              <MintCarouselTwo listing={item.images} />
               <div className="flex flex-row w-full justify-between mt-10">
                 <div className="my-auto w-full">
                   <div className="flex w-full justify-between">
@@ -92,7 +92,7 @@ export default async function MintPage({ params }: MintPageProps) {
                   </div>
                   <h1 className="text-xl font-bold mb-2">{item.title}</h1>
                   <p className="text-xs italic text-secondary">
-                    Listed {formatTimeToNow(new Date(JSON.stringify(item.createdAt)))}
+                    Listed {formatTimeToNow(item.createdAt!)}
                   </p>
                 </div>
               </div>

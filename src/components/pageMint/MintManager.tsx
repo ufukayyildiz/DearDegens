@@ -36,7 +36,7 @@ export default function MintManager() {
               </ResizablePanel>
               <ResizableHandle withHandle className="border-muted" />
               <ResizablePanel className="relative">
-                <SheetTitle>Queries:</SheetTitle>
+                <SheetTitle className="mt-5">Queries:</SheetTitle>
                 <MintQueries />
               </ResizablePanel>
             </ResizablePanelGroup>

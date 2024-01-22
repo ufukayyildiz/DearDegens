@@ -15,7 +15,6 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
   const { data: session } = useSession()
   const userId = session?.user.id
   const offerPrice = adOffer.offerPrice
-  const createdAt = JSON.stringify(adOffer.createdAt)
   const formatter = new Intl.NumberFormat("en-US", {
     style: "decimal",
     minimumFractionDigits: 0,
@@ -59,7 +58,7 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           <div className="flex w-full gap-1 text-muted-foreground">
             <p className="text-xs italic">sent</p>
             <p className="text-xs italic">
-              {formatTimeToNow(new Date(createdAt))}
+              {formatTimeToNow(adOffer.createdAt!)}
             </p>
           </div>
         </div>

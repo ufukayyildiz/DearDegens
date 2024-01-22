@@ -12,7 +12,7 @@ export default function Footer() {
         </div>
         <div className="flex h-full w-full items-end justify-center">
           <Link href="/" className="flex w-full text-center justify-center font-bold">
-            PepperMint (Pty) Ltd
+            DearDegen (Pty) Ltd
           </Link>
         </div>
         <div className="flex flex-col h-full w-full items-end justify-end gap-5">
