@@ -7,12 +7,12 @@ export default function Footer() {
       <div className="w-full h-full flex flex-col md:flex-row justify-between">
       <div className="flex h-full w-full items-end justify-center">
           <p className="flex w-full text-center justify-center">
-            support@ppmnt.co.za
+            support@deardegens.com
           </p>
         </div>
         <div className="flex h-full w-full items-end justify-center">
           <Link href="/" className="flex w-full text-center justify-center font-bold">
-            DearDegen (Pty) Ltd
+            DearDegens (Pty) Ltd
           </Link>
         </div>
         <div className="flex flex-col h-full w-full items-end justify-end gap-5">

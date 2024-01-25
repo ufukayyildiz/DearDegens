@@ -12,13 +12,13 @@ const buttonVariants = cva(
           "bg-muted text-primary shadow-lg border border-transparent hover:border-muted-foreground",
         icon: "bg-transparent text-primary border border-transparent",
         destructive:
-          "hover:bg-red-500 bg-red-300 hover:text-primary text-zinc-800 border border-transparent shadow-md",
+          "hover:bg-red-500 hover:text-white bg-red-400 text-primary border border-red-500 shadow-md",
         passivedestructive:
-          "hover:bg-red-500 bg-muted text-primary border border-transparent shadow-md",
+          "hover:bg-red-500 hover:text-white bg-muted text-primary border border-red-500 shadow-md",
         outline:
-          "border border-transparent hover:border-customAccent bg-muted shadow-lg hover:bg-gradient-to-br from-customColorOne via-customColorTwo to-customColorThr hover:text-customColorFou",
+          "border-2 border-transparent hover:border-customAccent bg-muted shadow-lg",
         outlineTwo:
-          "border border-transparent bg-muted shadow-lg hover:bg-muted-foreground hover:text-customColorFou",
+          "border-2 border-transparent bg-muted shadow-lg hover:bg-muted-foreground hover:text-customColorFou",
         outlinebold:
           "font-bold border-2 border-customAccent bg-muted shadow-lg hover:bg-gradient-to-br from-customColorOne via-customColorTwo to-customColorThr hover:text-customColorFou",
         secondary:

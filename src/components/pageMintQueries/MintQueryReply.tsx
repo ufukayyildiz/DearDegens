@@ -52,7 +52,7 @@ export default function MintQueryReply() {
 
   const { data } = useQuery<listingsType[]>({
     queryKey: ["listing"],
-    queryFn: () => mintId && getListings(mintId)
+    queryFn: () => mintId && getListings(mintId),
   })
 
   const listing = data && data[0]
@@ -63,7 +63,7 @@ export default function MintQueryReply() {
       query: "",
       adId: listing?.id,
       sellerId: listing?.authorId,
-      adTitle: listing?.title || '',
+      adTitle: listing?.title || "",
     },
   })
 
@@ -110,9 +110,9 @@ export default function MintQueryReply() {
   async function onSubmit(data: FormData) {
     const payload: QueryCreationRequest = {
       query: data.query,
-      adId: listing?.id || '',
-      sellerId: listing?.authorId || '',
-      adTitle: listing?.title || '',
+      adId: listing?.id || "",
+      sellerId: listing?.authorId || "",
+      adTitle: listing?.title || "",
     }
     setDisabled(true)
     console.log("Submit Payload:", payload)
@@ -124,7 +124,7 @@ export default function MintQueryReply() {
       <AlertDialog>
         <AlertDialogTrigger asChild>
           <Button className="hover:text-blue-500" variant="icon">
-            <MessageCircle/>
+            <MessageCircle />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
@@ -132,7 +132,8 @@ export default function MintQueryReply() {
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <AlertDialogHeader>
                 <AlertDialogTitle className="font-bold mb-5">
-                  Have a question for the seller?
+                  <p className="italic">"Answsers pave the way to enlightenment"</p>
+                  <p>- Somebody</p>
                 </AlertDialogTitle>
                 <AlertDialogDescription>
                   <div className="grid grid-cols-1 gap-2 mb-5">
@@ -163,13 +164,20 @@ export default function MintQueryReply() {
                     />
                   </div>
 
+                  <div className="flex items-center space-x-2 mb-5 justify-start">
+                    <Checkbox />
+                    <Label
+                      className="text-sm text-primary font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                    >
+                      Make public.
+                    </Label>
+                  </div>
+
                   <div>
                     <p className="italic text-xs">
-                      (Note: Once the seller recieves this message, they will
-                      have the option of making the query public when they
-                      reply. Both your message and the sellers reply will be
-                      displayed on the listing page to better inform other
-                      potential buyers.)
+                      (Note: By selecting "Make public" you agree to sharing both the question and your answer
+                      with other users on your ad listing page. This is to better inform other users and  
+                      reduce the chances of them potentially asking the same question.)
                     </p>
                   </div>
                 </AlertDialogDescription>

@@ -1,4 +1,7 @@
 const { fontFamily } = require("tailwindcss/defaultTheme")
+import { GeistSans } from 'geist/font/sans';
+import { GeistMono } from 'geist/font/mono';
+
 
 /** @type {import('tailwindcss').Config} */
 module.exports = {
@@ -66,7 +69,7 @@ module.exports = {
         sm: "calc(var(--radius) - 4px)",
       },
       fontFamily: {
-        sans: ["Prompt", ...fontFamily.sans],
+        sans: ['var(--font-geist-sans)'],
         prompt: ["Prompt", ...fontFamily.sans],
         indie: ["Indie Flower", ...fontFamily.sans],
         bangers: ["Bangers", ...fontFamily.sans],

@@ -270,7 +270,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
 
                   {notify.isRead === false ? (
                     <DropdownMenuItem asChild className="text-start">
-                      <div className="grid grid-cols-1 w-72 content-start border-teal-500 border-2 bg-teal-300/10">
+                      <div className="grid grid-cols-1 w-72 content-start bg-orange-500/20">
                         <DialogTrigger
                           onClick={() => handleReadNotification(notify)}
                         >
@@ -284,15 +284,20 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                         </DialogTrigger>
                         <DropdownMenu>
                           <DropdownMenuTrigger>
-                            <Button className="w-10 h-10 bg-transparent group hover:bg-white border border-transparent rounded-full shadow-none hover:shadow-md absolute top-1 right-1">
-                              <MoreVertical className="w-6 h-6 mx-auto text-primary group-hover:text-zinc-800 rounded-full absolute top-2" />
+                            <Button
+                              onClick={() => {
+                                setSelectedNotificationId(notify.id)
+                              }}
+                              className="w-10 h-10 bg-transparent group border border-transparent hover:border-customAccent rounded-full shadow-none hover:shadow-md absolute top-1 right-1"
+                            >
+                              <MoreVertical className="w-6 h-6 mx-auto rounded-full absolute top-2" />
                             </Button>
                           </DropdownMenuTrigger>
+
                           <DropdownMenuContent
-                            className="relative max-h-[350px] overflow-y-auto"
+                            className="flex flex-col overflow-y-auto gap-1"
                             align="end"
                           >
-                            <DropdownMenuItem asChild className="text-start">
                               <Button
                                 onClick={() => {
                                   setSelectedNotificationId(notify.id)
@@ -303,8 +308,6 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               >
                                 Delete
                               </Button>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="text-start">
                               <Button
                                 onClick={() => handleReadNotification(notify)}
                                 variant="outline"
@@ -312,7 +315,6 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               >
                                 Mark as read
                               </Button>
-                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
@@ -337,17 +339,16 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               onClick={() => {
                                 setSelectedNotificationId(notify.id)
                               }}
-                              className="w-10 h-10 bg-transparent group hover:bg-white/50 border border-transparent rounded-full shadow-none hover:shadow-md absolute top-1 right-1"
+                              className="w-10 h-10 bg-transparent group border border-transparent hover:border-customAccent rounded-full shadow-none hover:shadow-md absolute top-1 right-1"
                             >
-                              <MoreVertical className="w-6 h-6 mx-auto text-transparent group-hover:text-zinc-800 rounded-full absolute top-2" />
+                              <MoreVertical className="w-6 h-6 mx-auto text-transparent rounded-full absolute top-2" />
                             </Button>
                           </DropdownMenuTrigger>
 
                           <DropdownMenuContent
-                            className="relative max-h-[350px] overflow-y-auto"
+                            className="flex flex-col overflow-y-auto gap-1"
                             align="end"
                           >
-                            <DropdownMenuItem asChild className="text-start">
                               <Button
                                 onClick={() => {
                                   setSelectedNotificationId(notify.id)
@@ -358,8 +359,6 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               >
                                 Delete
                               </Button>
-                            </DropdownMenuItem>
-                            <DropdownMenuItem asChild className="text-start">
                               <Button
                                 onClick={() => handleReadNotification(notify)}
                                 variant="outline"
@@ -367,7 +366,6 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               >
                                 Mark as read
                               </Button>
-                            </DropdownMenuItem>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>

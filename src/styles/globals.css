@@ -2,8 +2,11 @@
 @tailwind components;
 @tailwind utilities;
 
+
 @layer base {
   :root {
+
+
     --background: 0 0% 100%;
     --background-foreground: 0 0% 98%;
     --foreground: 0 0% 20%;
@@ -42,20 +45,26 @@
     --gr-two: 0 0% 97%;
     --gr-thr: 0 0% 95%;
 
-    --custom-color-one: 187, 92%, 69%;
+    --custom-color-one: 24, 92%, 79%;
+    --custom-color-two: 24, 100%, 74%;
+    --custom-color-thr: 24, 100%, 70%;
+    --custom-color-fou: 0, 0%, 15%;
+    --custom-accent: 24, 100%, 50%;
+
+    /* --custom-color-one: 187, 92%, 69%;
     --custom-color-two: 171, 77%, 64%;
     --custom-color-thr: 156, 72%, 67%;
     --custom-color-fou: 0, 0%, 15%;
-    --custom-accent: 171, 100%, 40%;
+    --custom-accent: 171, 100%, 40%; */
   }
 
   .dark {
-    --background: 240, 5%, 26%;
-    --background-foreground: 240 5% 30%;
+    --background: 240, 5%, 16%;
+    --background-foreground: 240 5% 20%;
     --foreground: 213 31% 91%;
 
-    --muted: 240, 4%, 46%;
-    --muted-foreground: 0, 0%, 64%;
+    --muted: 240, 4%, 36%;
+    --muted-foreground: 0, 0%, 54%;
 
     --accent: 216 34% 17%;
     --accent-foreground: 210 40% 98%;
@@ -84,15 +93,15 @@
 
     --inputbg: 210 15% 22%;
 
-    --gr-one: 240, 5%, 26%;
-    --gr-two: 240, 5%, 29%;
-    --gr-thr: 240, 5%, 32%;
+    --gr-one: 240, 5%, 16%;
+    --gr-two: 240, 5%, 19%;
+    --gr-thr: 240, 5%, 22%;
 
-    --custom-color-one: 187, 92%, 69%;
-    --custom-color-two: 171, 77%, 64%;
-    --custom-color-thr: 156, 72%, 67%;
-    --custom-color-fou: 0, 0%, 15%;
-    --custom-accent: 171, 77%, 64%;
+    --custom-color-one: 25, 92%, 69%;
+    --custom-color-two: 24, 100%, 64%;
+    --custom-color-thr: 24, 100%, 60%;
+    --custom-color-fou: 0, 0%, 20%;
+    --custom-accent: 24, 100%, 50%;
   }
 }
 
@@ -103,7 +112,8 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings:
-      "rlig" 1,
-      "calt" 1;
+    "rlig" 1,
+    "calt" 1;
+    GeistSans: --font-geist-sans;
   }
 }

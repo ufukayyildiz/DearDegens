@@ -45,25 +45,21 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           </div>
         </div>
 
-        <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
           <Link href="/p/mint/create">Create Ad</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
           <Link href="/p/mymints">My Ads</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuSeparator />
 
         <DropdownMenuItem asChild>
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
 
-        <DropdownMenuSeparator />
 
         <DropdownMenuItem
           asChild
@@ -78,7 +74,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="cursor-pointer bg-gradient-to-br from-red-500 via-red-400 to-rose-400 text-zinc-50 focus:text-zinc-50 transition duration-500 hover:scale-[0.99]"
+          className="cursor-pointer text-red-500 focus:text-red-500 border-2 focus:border-red-500"
           onSelect={(event) => {
             event.preventDefault()
             signOut({

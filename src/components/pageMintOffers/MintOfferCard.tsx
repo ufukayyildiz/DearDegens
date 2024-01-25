@@ -35,7 +35,7 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
               offerPrice > orangePrice &&
                 offerPrice <= askPrice &&
                 "text-primary",
-              offerPrice > askPrice && "text-customAccent font-semibold",
+              offerPrice > askPrice && "text-teal-500 font-semibold",
               offerPrice > redPrice &&
                 offerPrice <= orangePrice &&
                 "text-amber-500",
