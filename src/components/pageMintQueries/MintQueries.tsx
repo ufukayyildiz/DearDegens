@@ -1,6 +1,7 @@
 import React from "react"
 import { useParams } from "next/navigation"
 import { getAdQueries } from "@/src/server/actions"
+import { useGetQueries } from "@/src/server/services"
 import { queryType } from "@/src/types/db"
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
@@ -14,12 +15,7 @@ export default function MintQueries() {
 
   const { mintId }: any = useParams()
 
-  const { data, error, isLoading } = useQuery<queryType[]>({
-    queryKey: ["adQueries"],
-    queryFn: () => mintId && getAdQueries(mintId),
-  })
-
-  const adQueries = data
+  const adQueries = useGetQueries(mintId).data
   adQueries?.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
   let queries: queryType[] = []

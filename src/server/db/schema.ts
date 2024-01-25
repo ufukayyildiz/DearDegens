@@ -258,6 +258,7 @@ export const queries = mysqlTable("queries", {
   query: varchar("query", { length: 191 }),
   reply: varchar("reply", { length: 191 }),
   isAnswered: boolean("isAnswered").default(false),
+  isPublic: boolean("isPublic").default(false),
 })
 
 export const queriesRelations = relations(queries, ({ one }) => ({

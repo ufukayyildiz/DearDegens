@@ -20,6 +20,7 @@ import { Bell, Loader, MoreVertical } from "lucide-react"
 import { toast } from "../hooks/use-toast"
 import { formatTimeToNow } from "../lib/utils"
 import { getNotifications } from "../server/actions"
+import { useGetNotifications } from "../server/services"
 import { notificationsType } from "../types/db"
 import { Button } from "./components-ui/Button"
 import { Checkbox } from "./components-ui/Checkbox"
@@ -55,11 +56,8 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
 
   // QUERIES
   const queryClient = useQueryClient()
-  const { data, error, isFetching } = useQuery({
-    queryKey: ["notify"],
-    queryFn: getNotifications,
-  })
-  const notifications = data
+  const notifications = useGetNotifications().data
+  const isFetching = useGetNotifications().isFetching
 
   // MUTATION: Read Notification
   const { mutate: handleReadNotification } = useMutation({
@@ -392,7 +390,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
             <DialogFooter>
               <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
                 <span>Created</span>
-                {formatTimeToNow(new Date(displayedNotification.createdAt))}
+                {formatTimeToNow(new Date(displayedNotification.createdAt!))}
               </div>
             </DialogFooter>
           </DialogContent>

@@ -13,36 +13,57 @@ import {
 
 export default function MintCarouselTwo(listing: any) {
   const imageUrls = JSON.parse(listing.listing)
-  return (
-    <div className="flex items-center justify-center">
-      <Carousel
-        opts={{
-          align: "start",
-          loop: true,
-        }}
-        className="w-6/12 h-full"
-      >
-        <CarouselContent className="flex">
-          {imageUrls.map((images: any, index: any) => (
-            <CarouselItem
-              key={index}
-              className="flex items-center justify-center p-5"
-            >
-              {imageUrls.length === 0 ? (
-                <div className="flex justify-center align-middle bg-muted rounded-lg">
-                  <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
-                </div>
-              ) : (
-                <div className="flex rounded-md aspect-square object-cover shadow-lg overflow-hidden">
-                  <img src={images} alt={images} />
-                </div>
-              )}
+
+  if (imageUrls.length === 0) {
+    return (
+      <div className="flex items-center justify-center mt-16">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-6/12 h-full"
+        >
+          <CarouselContent className="flex">
+            <CarouselItem className="flex items-center justify-center">
+              <div className="flex w-full min-h-[40vh] justify-center bg-muted rounded-lg">
+                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
+              </div>
             </CarouselItem>
-          ))}
-        </CarouselContent>
-        <CarouselPrevious variant='icon' />
-        <CarouselNext variant='icon' />
-      </Carousel>
-    </div>
-  )
+          </CarouselContent>
+          <CarouselPrevious variant="icon" />
+          <CarouselNext variant="icon" />
+        </Carousel>
+      </div>
+    )
+  }
+
+  if (imageUrls.length !== 0) {
+    return (
+      <div className="flex items-center justify-center mt-16">
+        <Carousel
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+          className="w-6/12 h-full min-h-[30vh]"
+        >
+          <CarouselContent className="flex">
+            {imageUrls.map((images: any, index: any) => (
+              <CarouselItem
+                key={index}
+                className="flex items-center justify-center"
+              >
+                <div className="flex max-h-[40vh] rounded-md shadow-lg overflow-hidden">
+                  <img src={images} alt={images} className="object-cover"/>
+                </div>
+              </CarouselItem>
+            ))}
+          </CarouselContent>
+          <CarouselPrevious variant="icon" />
+          <CarouselNext variant="icon" />
+        </Carousel>
+      </div>
+    )
+  }
 }

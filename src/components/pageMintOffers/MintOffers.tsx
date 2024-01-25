@@ -3,6 +3,7 @@
 import React from "react"
 import { useParams } from "next/navigation"
 import { getAdOffers } from "@/src/server/actions"
+import { useGetOffers } from "@/src/server/services"
 import { offerType } from "@/src/types/db"
 import { useQuery } from "@tanstack/react-query"
 import { useSession } from "next-auth/react"
@@ -17,12 +18,8 @@ export default function MintOffers() {
 
   const { mintId }: any = useParams()
 
-  const { data, error, isLoading } = useQuery<offerType[]>({
-    queryKey: ["adOffers"],
-    queryFn: () => mintId && getAdOffers(mintId),
-  })
-
-  const adOffers = data
+  const adOffers = useGetOffers(mintId).data
+  const isLoading = useGetOffers(mintId).isLoading
   adOffers?.sort((a: any, b: any) => b.offerPrice - a.offerPrice)
 
   let offers: offerType[] = []

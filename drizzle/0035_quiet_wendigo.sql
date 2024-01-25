@@ -1,0 +1,1 @@
+ALTER TABLE `queries` ADD `isPublic` boolean DEFAULT false;

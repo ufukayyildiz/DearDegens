@@ -10,7 +10,7 @@ interface QueryCardProps {
 
 export default function MintQueriesCard({ query }: QueryCardProps) {
   return (
-    <div className="flex flex-col h-[250px] p-2 mb-3 border border-muted text-primary shadow rounded-lg transition duration-500 hover:scale-[0.99]">
+    <div className="flex flex-col h-[250px] p-2 mb-3 border border-muted hover:border-customAccent text-primary shadow rounded-lg transition duration-500 hover:scale-[0.99]">
       <div>
         <p className="text-lg font-bold mb-2">{query.userName}</p>
       </div>
@@ -27,7 +27,7 @@ export default function MintQueriesCard({ query }: QueryCardProps) {
       </div>
       <div className="flex justify-between items-center">
         <p className="text-xs italic">Sent {formatTimeToNow(query.createdAt!)}</p>
-        <MintQueryReply />
+        <MintQueryReply queryId={query.id}/>
       </div>
     </div>
   )

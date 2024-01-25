@@ -1,15 +1,13 @@
 import React from "react"
-import MintCarousel from "@/src/components/pageMint/MintCarousel"
 import MintCarouselTwo from "@/src/components/pageMint/MintCarouselTwo"
 import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
-import MintQuery from "@/src/components/pageMintQueries/MintQuery"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { getAdOffers, getAdQueries, getListings } from "@/src/server/actions"
 import { db } from "@/src/server/db"
-import { listings } from "@/src/server/db/schema"
+import { listings, queries } from "@/src/server/db/schema"
 import {
   dehydrate,
   HydrationBoundary,
@@ -17,7 +15,8 @@ import {
 } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
-import { listingsType, offerType, queryType } from "@/src/types/db"
+import { listingsType, queryType } from "@/src/types/db"
+import MintQA from "@/src/components/pageMint/MintQA"
 
 interface MintPageProps {
   params: {
@@ -37,23 +36,24 @@ export default async function MintPage({ params }: MintPageProps) {
     queryFn: () => getListings(decodedParam),
   })
 
-  const listing = await db
+  const listing: listingsType[] = await db
     .select()
     .from(listings)
-    .where(eq(listings.id, decodedParam))
+    .where(eq(listings.id, decodedParam)) || []
 
-  const mint: listingsType[] = listing || []
+  const query: queryType[] = await db.select().from(queries).where(eq(queries.adId, decodedParam)) || []
+
 
   // OFFER QUERY
   await queryClient.prefetchQuery({
     queryKey: ["adOffers"],
-    queryFn: () => mint && getAdOffers(mint[0].id),
+    queryFn: () => listing && getAdOffers(listing[0].id),
   })
 
   // QUERIES QUERY
   await queryClient.prefetchQuery({
     queryKey: ["adQueries"],
-    queryFn: () => mint && getAdQueries(mint[0].id)
+    queryFn: () => listing && getAdQueries(listing[0].id)
   })
 
   // PRICE TEXT FORMATTER
@@ -69,14 +69,14 @@ export default async function MintPage({ params }: MintPageProps) {
   return (
     <div className="flex w-full h-auto">
       <div className="w-10/12 md:w-8/12 mx-auto">
-        {mint &&
-          mint.map((item, index) => (
+        {listing &&
+          listing.map((item, index) => (
             <div key={index} className="mb-60">
               <MintCarouselTwo listing={item.images} />
               <div className="flex flex-row w-full justify-between mt-10">
                 <div className="my-auto w-full">
                   <div className="flex w-full justify-between">
-                    <h1 className="text-2xl font-bold mb-5 text-customAccent">
+                    <h1 className="text-3xl font-bold mb-5 text-customAccent">
                       R {formatPrice(item.price)}
                     </h1>
                     {session &&
@@ -90,7 +90,7 @@ export default async function MintPage({ params }: MintPageProps) {
                         />
                       )}
                   </div>
-                  <h1 className="text-xl font-bold mb-2">{item.title}</h1>
+                  <h1 className="text-2xl font-bold mb-2">{item.title}</h1>
                   <p className="text-xs italic text-secondary">
                     Listed {formatTimeToNow(item.createdAt!)}
                   </p>
@@ -110,8 +110,10 @@ export default async function MintPage({ params }: MintPageProps) {
               </div>
               <hr className="my-2 border border-t-muted-foreground" />
               <h1 className="text-lg font-bold mt-5">Description</h1>
-              <p className="mt-5 whitespace-pre-line">{item.description}</p>
+              <p className="my-5 whitespace-pre-line">{item.description}</p>
               <hr className="my-2 border border-t-muted-foreground" />
+              <h1 className="text-lg font-bold mt-5">Queries</h1>
+              <MintQA queries={query}/>
             </div>
           ))}
       </div>

@@ -1,7 +1,7 @@
 export type SiteConfig = typeof siteConfig
 
 export const siteConfig = {
-  name: "PepperMint",
+  name: "DearDegens",
   description: "The next generation experience in public classified ads.",
   mainNav: [
     {

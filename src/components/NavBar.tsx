@@ -36,7 +36,7 @@ export default async function NavBar() {
             </HydrationBoundary>
           </div>
         ) : (
-          <Button variant="outlinebold">
+          <Button variant="outlinebold" className="rounded-full bg-transparent">
             <Link href="/signin">Sign In</Link>
           </Button>
         )}

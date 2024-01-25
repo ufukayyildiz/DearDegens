@@ -3,7 +3,7 @@
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 
-import { authOptions, getAuthSession } from "../lib/auth/auth-options"
+import { authOptions } from "../lib/auth/auth-options"
 import { db } from "./db"
 import { listings, notifications, offers, queries } from "./db/schema"
 

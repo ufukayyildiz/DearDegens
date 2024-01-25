@@ -2,7 +2,6 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,107 +16,99 @@ import {
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import {
-  QueryCreationRequest,
-  validateQuery,
-} from "@/src/lib/validators/validateQuery"
-import { getListings } from "@/src/server/actions"
-import { listingsType, queryType } from "@/src/types/db"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+  QueryReplyCreationRequest,
+  validateQueryReply,
+} from "@/src/lib/validators/validateQueryReply"
+import { useForm } from "@tanstack/react-form"
+import type { FieldApi } from "@tanstack/react-form"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { zodValidator } from "@tanstack/zod-form-adapter"
 import axios from "axios"
-import { MessageCircle } from "lucide-react"
-import { useForm } from "react-hook-form"
+import { MessageCircle, X } from "lucide-react"
 import { z } from "zod"
 
 import { Checkbox } from "../components-ui/Checkbox"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../components-ui/Form"
-import { Input } from "../components-ui/Input"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
 
-type FormData = z.infer<typeof validateQuery>
+interface QueryReplyProps {
+  queryId: string
+}
 
-export default function MintQueryReply() {
+function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
+  return (
+    <>
+      {field.state.meta.touchedErrors ? (
+        <em className="absolute -bottom-8 text-rose-500">
+          {field.state.meta.touchedErrors}
+        </em>
+      ) : null}
+    </>
+  )
+}
+
+export default function MintQueryReply({ queryId }: QueryReplyProps) {
   const queryClient = useQueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
-  const { mintId }: any = useParams()
+  const [isPublic, setIsPublic] = useState<boolean>(false)
+  const [submitted, setSubmitted] = useState<boolean>(false)
+  console.log("submitted", submitted)
 
-  const { data } = useQuery<listingsType[]>({
-    queryKey: ["listing"],
-    queryFn: () => mintId && getListings(mintId),
-  })
-
-  const listing = data && data[0]
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(validateQuery),
+  const form = useForm({
+    validatorAdapter: zodValidator,
     defaultValues: {
-      query: "",
-      adId: listing?.id,
-      sellerId: listing?.authorId,
-      adTitle: listing?.title || "",
+      id: queryId,
+      reply: "",
+      isPublic: false,
+    },
+    onSubmit: async ({ value }) => {
+      const payload: QueryReplyCreationRequest = {
+        id: queryId,
+        reply: value.reply,
+        isPublic: isPublic,
+      }
+      createQuery(payload)
+      setDisabled(true)
+      setIsPublic(false)
+      console.log("Submit Payload:", payload)
     },
   })
 
   const { mutate: createQuery } = useMutation({
     // PAYLOAD
-    mutationFn: async ({
-      query,
-      adId,
-      sellerId,
-      adTitle,
-    }: QueryCreationRequest) => {
-      const payload: QueryCreationRequest = {
-        query,
-        adId,
-        sellerId,
-        adTitle,
+    mutationFn: async ({ id, reply, isPublic }: QueryReplyCreationRequest) => {
+      const payload: QueryReplyCreationRequest = {
+        id,
+        reply,
+        isPublic,
       }
 
-      const { data } = await axios.post("/api/createQuery", payload)
+      const { data } = await axios.patch("/api/editQuery", payload)
 
       return data
     },
     onError: () => {
       return toast({
         title: "Something went wrong.",
-        description: "There was an error sending your query. Please try again.",
+        description:
+          "There was an error sending your answer. Please try again.",
         variant: "destructive",
       })
     },
     onSuccess: () => {
+      setSubmitted(true)
       return toast({
-        description: "Your query is on the way to the seller.",
+        description: "Your answer is on the way to the buyer.",
       })
     },
     onSettled: async (_, error) => {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["notify"] })
+        await queryClient.invalidateQueries({ queryKey: ["adQueries"] })
       }
     },
   })
-
-  async function onSubmit(data: FormData) {
-    const payload: QueryCreationRequest = {
-      query: data.query,
-      adId: listing?.id || "",
-      sellerId: listing?.authorId || "",
-      adTitle: listing?.title || "",
-    }
-    setDisabled(true)
-    console.log("Submit Payload:", payload)
-    createQuery(payload)
-  }
 
   return (
     <div>
@@ -128,93 +119,164 @@ export default function MintQueryReply() {
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form.Provider>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+                void form.handleSubmit()
+              }}
+              className="space-y-8"
+            >
               <AlertDialogHeader>
                 <AlertDialogTitle className="font-bold mb-5">
-                  <p className="italic">"Answsers pave the way to enlightenment"</p>
-                  <p>- Somebody</p>
+                  <p className="italic">
+                    "Answsers pave the way to enlightenment"
+                  </p>
+                  <p className="text-xs">- Somebody</p>
                 </AlertDialogTitle>
+
                 <AlertDialogDescription>
-                  <div className="grid grid-cols-1 gap-2 mb-5">
-                    {/* QUERY */}
-                    <FormField
-                      control={form.control}
-                      name="query"
-                      render={({ field }) => (
-                        <FormItem>
+                  <div className="relative grid grid-cols-1 gap-2 mb-10">
+                    {/* REPLY */}
+                    <form.Field
+                      name="reply"
+                      validators={{
+                        onChange: z
+                          .string()
+                          .min(3, "Your reply must be at least 3 characters")
+                          .max(
+                            191,
+                            "Your reply cannot be greater than 191 characters"
+                          ),
+                        onChangeAsyncDebounceMs: 500,
+                        onChangeAsync: z.string().refine(
+                          async (value) => {
+                            await new Promise((resolve) =>
+                              setTimeout(resolve, 1000)
+                            )
+                            return !value.includes("error")
+                          },
+                          {
+                            message: "No 'error' allowed in reply",
+                          }
+                        ),
+                      }}
+                      children={(field) => (
+                        <>
                           <div className="w-full h-5 flex justify-between">
-                            <FormLabel className="py-1 text-primary">
-                              Type your message here (Max 191 characters):
-                            </FormLabel>
-                            <FormLabel className="text-xs italic text-rose-400 py-1">
+                            <label className="py-1 text-primary">
+                              Type your message here:
+                            </label>
+                            <label className="text-xs italic text-rose-400 py-1">
                               (required)
-                            </FormLabel>
+                            </label>
                           </div>
-                          <FormControl>
-                            <Textarea
-                              {...field}
-                              className="w-full text-primary"
-                              required
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                          <Textarea
+                            id={field.name}
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            className="w-full h-32 text-primary"
+                            required
+                          />
+                          <FieldInfo field={field} />
+                        </>
                       )}
                     />
                   </div>
 
-                  <div className="flex items-center space-x-2 mb-5 justify-start">
-                    <Checkbox />
-                    <Label
-                      className="text-sm text-primary font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      Make public.
-                    </Label>
+                  <div className="mb-5">
+                    {/* ISPUBLIC */}
+                    <form.Field
+                      name="isPublic"
+                      children={(field) => (
+                        <>
+                          <div className="flex items-center space-x-2 justify-start">
+                            <Checkbox
+                              id={field.name}
+                              name={field.name}
+                              checked={isPublic}
+                              onCheckedChange={() => setIsPublic(!isPublic)}
+                              onChange={(e) => setIsPublic(true)}
+                            />
+                            <Label className="text-sm text-primary font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                              Make public.
+                            </Label>
+                          </div>
+                          <FieldInfo field={field} />
+                        </>
+                      )}
+                    />
                   </div>
 
                   <div>
                     <p className="italic text-xs">
-                      (Note: By selecting "Make public" you agree to sharing both the question and your answer
-                      with other users on your ad listing page. This is to better inform other users and  
-                      reduce the chances of them potentially asking the same question.)
+                      (Note: By selecting "Make public" you agree to sharing
+                      both the question and your answer with other users on your
+                      ad listing page. This is to better inform other users and
+                      reduce the chances of them potentially asking the same
+                      question.)
                     </p>
                   </div>
                 </AlertDialogDescription>
               </AlertDialogHeader>
+
               <AlertDialogFooter>
-                <div className="w-full flex justify-between">
-                  <div className="flex items-center space-x-2 justify-start">
-                    <Checkbox
-                      id="disable"
-                      checked={!disabled}
-                      onCheckedChange={() => setDisabled(!disabled)}
-                    />
-                    <Label
-                      htmlFor="disable"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      <Link href="/termsofservice" className="underline">
-                        Agree to terms of service.
-                      </Link>
-                    </Label>
-                  </div>
-                  <div className="flex gap-5">
-                    <AlertDialogCancel onClick={() => setDisabled(true)}>
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      type="submit"
-                      disabled={disabled}
-                      onClick={() => onSubmit(form.getValues())}
-                    >
-                      Send
-                    </AlertDialogAction>
-                  </div>
-                </div>
+                <form.Subscribe
+                  selector={(state) => [
+                    state.canSubmit,
+                    state.isSubmitting,
+                    state.isSubmitted,
+                    state.errors,
+                  ]}
+                  children={([canSubmit, isSubmitting]) =>
+                    !submitted ? (
+                      <div className="w-full flex justify-between">
+                        <div className="flex items-center space-x-2 justify-start">
+                          <Checkbox
+                            id="disable"
+                            checked={!disabled}
+                            onCheckedChange={() => setDisabled(!disabled)}
+                          />
+                          <Label
+                            htmlFor="disable"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            <Link href="/termsofservice" className="underline">
+                              Agree to terms of service.
+                            </Link>
+                          </Label>
+                        </div>
+                        <div className="flex gap-5">
+                          <AlertDialogCancel onClick={() => setDisabled(true)}>
+                            Cancel
+                          </AlertDialogCancel>
+                          <Button
+                            type="submit"
+                            disabled={disabled || !canSubmit}
+                            variant="outlinebold"
+                            className="w-28"
+                          >
+                            {isSubmitting ? (
+                              <p className="italic">whoosh!!</p>
+                            ) : (
+                              "Send"
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <AlertDialogAction onClick={() => setSubmitted(false)}>
+                        Close
+                      </AlertDialogAction>
+                    )
+                  }
+                />
               </AlertDialogFooter>
             </form>
-          </Form>
+          </form.Provider>
         </AlertDialogContent>
       </AlertDialog>
     </div>
