@@ -58,7 +58,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
             <Providers>
               <div className="relative flex min-h-screen flex-col">
+                {/* @ts-expect-error Server Component */}
                 <NavBar />
+                {/* @ts-expect-error Server Component */}
                 <Footer />
                 <div className="flex-1">{children}</div>
               </div>
