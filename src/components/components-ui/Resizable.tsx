@@ -33,7 +33,7 @@ const ResizableHandle = ({
   >
     {withHandle && (
       <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full border border-muted-foreground bg-background">
-        <ChevronsUpDown size={20} className="text-muted-foreground rotate-90" />
+        <ChevronsUpDown size={20} className="rotate-90 text-muted-foreground" />
       </div>
     )}
   </ResizablePrimitive.PanelResizeHandle>

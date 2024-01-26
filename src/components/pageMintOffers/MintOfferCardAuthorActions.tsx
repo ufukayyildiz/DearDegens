@@ -125,7 +125,7 @@ export default function MintOfferCardAuthorActions({
     adOffer.isDeclined === false
   ) {
     return (
-      <div className="flex w-1/2 gap-1 items-end justify-end">
+      <div className="flex w-1/2 items-end justify-end gap-1">
         <Tooltip>
           <TooltipTrigger>
             <Button variant="icon" size="icon" className="hover:text-blue-500">
@@ -186,7 +186,7 @@ export default function MintOfferCardAuthorActions({
   // DECLINED ACTIONS
   if (adOffer.isDeclined === true) {
     return (
-      <div className="flex w-1/2 gap-1 items-end justify-end">
+      <div className="flex w-1/2 items-end justify-end gap-1">
         <Tooltip>
           <TooltipTrigger>
             <Button variant="icon" size="icon" className="hover:text-blue-500">

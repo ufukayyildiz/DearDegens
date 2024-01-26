@@ -16,8 +16,8 @@ import MintManager from "./MintManager"
 
 export default function MintPageUsersActions(listingId: any) {
   return (
-    <div className="w-full flex justify-end pr-5">
-      <div className=" w-4/12 flex justify-end space-x-5">
+    <div className="flex w-full justify-end pr-5">
+      <div className=" flex w-4/12 justify-end space-x-5">
         <div className="group flex h-10 w-10 items-center justify-center hover:text-rose-500">
           <Heart />
         </div>

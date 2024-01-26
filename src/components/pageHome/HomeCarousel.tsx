@@ -46,12 +46,12 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
         </SplideTrack>
 
         <div className="splide__arrows">
-          <div className="absolute top-[50%] -left-6">
+          <div className="absolute -left-6 top-[50%]">
             <button className="splide__arrow splide__arrow--prev">
               <ChevronLeftIcon />
             </button>
           </div>
-          <div className="absolute top-[50%] -right-6">
+          <div className="absolute -right-6 top-[50%]">
             <button className="splide__arrow splide__arrow--next">
               <ChevronRightIcon />
             </button>

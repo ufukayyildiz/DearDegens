@@ -11,27 +11,27 @@ interface QueryCardProps {
 
 export default function MintQueriesCard({ query, userId }: QueryCardProps) {
   return (
-    <div className="relative flex flex-col h-auto max-w-[310px] min-h-[250px] p-2 mb-3 border border-muted hover:border-customAccent text-primary overflow-hidden shadow-lg rounded-lg transition duration-75 hover:scale-[0.99]">
-      <div className="flex space-x-2 items-center mb-5">
+    <div className="relative mb-3 flex h-auto min-h-[250px] max-w-[310px] flex-col overflow-hidden rounded-lg border border-muted p-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent">
+      <div className="mb-5 flex items-center space-x-2">
         <p className="font-semibold italic">Name:</p>
         <p>{query.userName}</p>
       </div>
       <div>
-        <hr className="flex w-full h-[2px] mx-auto mb-1 bg-muted" />
-        <p className="font-semibold mb-1 italic">Question:</p>
+        <hr className="mx-auto mb-1 flex h-[2px] w-full bg-muted" />
+        <p className="mb-1 font-semibold italic">Question:</p>
         <p className="">{query.query}</p>
       </div>
       <div className="mb-10">
-        <hr className="flex w-full h-[2px] mx-auto mt-5 mb-1 bg-muted" />
-        <p className="font-semibold mb-1 italic">Response:</p>
+        <hr className="mx-auto mb-1 mt-5 flex h-[2px] w-full bg-muted" />
+        <p className="mb-1 font-semibold italic">Response:</p>
         {query.reply ? (
           <p>{query.reply}</p>
         ) : (
           <p className="italic text-rose-500">pending</p>
         )}
       </div>
-      <div className="absolute w-full bottom-0 ">
-        <div className="flex h-8 w-full justify-between items-center ">
+      <div className="absolute bottom-0 w-full ">
+        <div className="flex h-8 w-full items-center justify-between ">
           <p className="text-xs italic">
             Sent {formatTimeToNow(query.createdAt!)}
           </p>

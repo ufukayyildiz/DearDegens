@@ -34,21 +34,21 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
   return (
     <div className="mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-500 hover:scale-[0.99]">
       <Link href={`/p/mint/${listing.id}`}>
-        <div className="relative h-52 flex justify-between ">
+        <div className="relative flex h-52 justify-between ">
           {/* INFO */}
           <div className="relative w-8/12 p-3">
             <div>
-              <h1 className="text-primary font-bold hover:text-customColorTwo md:text-xl mb-2">
+              <h1 className="mb-2 font-bold text-primary hover:text-customColorTwo md:text-xl">
                 {listing.title}
               </h1>
             </div>
 
-            <div className="relative max-h-20 overflow-hidden w-full mb-5 text-xs text-clip text-secondary whitespace-pre-line">
+            <div className="relative mb-5 max-h-20 w-full overflow-hidden text-clip whitespace-pre-line text-xs text-secondary">
               <p>{listing.description}</p>
             </div>
 
             <div className="absolute bottom-6">
-              <h1 className="text-primary font-semibold text-lg">
+              <h1 className="text-lg font-semibold text-primary">
                 R {formattedPrice}
               </h1>
             </div>
@@ -57,27 +57,30 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
               <span>Listed</span>
               {formatTimeToNow(new Date(listing.createdAt!))}
               <span>in</span>
-              <span className="text-primary font-bold">{listing.location}</span>
+              <span className="font-bold text-primary">{listing.location}</span>
             </div>
           </div>
 
           {/* IMAGE */}
           <div className="h-full w-4/12">
             {!adImage[0] ? (
-              <div className="flex w-full h-full justify-center align-middle bg-muted rounded-lg">
-                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" alst="imageLoader"/>
+              <div className="flex h-full w-full justify-center rounded-lg bg-muted align-middle">
+                <Image
+                  className="my-auto h-[50%] w-[50%] animate-pulse text-muted-foreground"
+                  alst="imageLoader"
+                />
               </div>
             ) : (
               <img
                 src={adImage[0]}
                 alt={adImage[0]}
-                className="h-full w-full object-cover rounded-lg"
+                className="h-full w-full rounded-lg object-cover"
               />
             )}
           </div>
 
           {/* TAGS */}
-          <div className=" absolute -top-3 -right-3">
+          <div className=" absolute -right-3 -top-3">
             <AdTags listing={listing} />
           </div>
         </div>

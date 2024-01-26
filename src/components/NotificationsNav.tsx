@@ -181,15 +181,15 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
         <DropdownMenu>
           <DropdownMenuTrigger>
             <div className="relative">
-              <Bell className="w-6 h-6" />
-              <div className="absolute flex -top-3 -right-3 w-6 h-6 bg-red-500 content-center rounded-full shadow-md">
+              <Bell className="h-6 w-6" />
+              <div className="absolute -right-3 -top-3 flex h-6 w-6 content-center rounded-full bg-red-500 shadow-md">
                 {isFetching === true ? (
                   <Loader
-                    className="absolute top-1 w-full mx-auto text-white animate-spin"
+                    className="absolute top-1 mx-auto w-full animate-spin text-white"
                     size={15}
                   />
                 ) : (
-                  <p className="absolute top-1 w-full mx-auto text-white text-xs text-center">
+                  <p className="absolute top-1 mx-auto w-full text-center text-xs text-white">
                     {unreadNotifications}
                   </p>
                 )}
@@ -201,9 +201,9 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
             className="relative max-h-[350px] w-[312px] overflow-y-auto"
             align="end"
           >
-            <h1 className="font-bold text-2xl">Notifications</h1>
+            <h1 className="text-2xl font-bold">Notifications</h1>
 
-            <div className="w-full flex py-2 justify-between">
+            <div className="flex w-full justify-between py-2">
               <Button
                 onClick={() => handleReadAllNotifications(userId)}
                 variant="outline"
@@ -230,7 +230,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <div className="flex w-full justify-between">
-                      <div className="flex items-center space-x-2 justify-start">
+                      <div className="flex items-center justify-start space-x-2">
                         <Checkbox
                           id="disable"
                           checked={!disabled}
@@ -269,11 +269,11 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
 
                   {notify.isRead === false ? (
                     <DropdownMenuItem asChild className="text-start">
-                      <div className="grid grid-cols-1 w-72 content-start bg-orange-500/20">
+                      <div className="grid w-72 grid-cols-1 content-start bg-orange-500/20">
                         <DialogTrigger
                           onClick={() => handleReadNotification(notify)}
                         >
-                          <h1 className="w-10/12 text-start font-semibold truncate">
+                          <h1 className="w-10/12 truncate text-start font-semibold">
                             {notify.title}
                           </h1>
                           <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
@@ -287,14 +287,14 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               onClick={() => {
                                 setSelectedNotificationId(notify.id)
                               }}
-                              className="w-10 h-10 bg-transparent hover:bg-transparent  group border border-transparent rounded-full shadow-none absolute top-1 right-1"
+                              className="group absolute right-1 top-1  h-10 w-10 rounded-full border border-transparent bg-transparent shadow-none hover:bg-transparent"
                             >
-                              <MoreVertical className="w-6 h-6 mx-auto text-transparent hover:text-customAccent rounded-full absolute top-2" />
+                              <MoreVertical className="absolute top-2 mx-auto h-6 w-6 rounded-full text-transparent hover:text-customAccent" />
                             </Button>
                           </DropdownMenuTrigger>
 
                           <DropdownMenuContent
-                            className="flex flex-col overflow-y-auto gap-1"
+                            className="flex flex-col gap-1 overflow-y-auto"
                             align="end"
                           >
                             <Button
@@ -303,14 +303,14 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                                 handleDeleteNotification(notify)
                               }}
                               variant="outline"
-                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
                             >
                               Delete
                             </Button>
                             <Button
                               onClick={() => handleReadNotification(notify)}
                               variant="outline"
-                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
                             >
                               Mark as read
                             </Button>
@@ -319,12 +319,12 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                       </div>
                     </DropdownMenuItem>
                   ) : (
-                    <DropdownMenuItem asChild className="text-start group">
-                      <div className="relative grid grid-cols-1 w-72 content-start">
+                    <DropdownMenuItem asChild className="group text-start">
+                      <div className="relative grid w-72 grid-cols-1 content-start">
                         <DialogTrigger
                           onClick={() => handleReadNotification(notify)}
                         >
-                          <h1 className="w-10/12 text-start font-semibold truncate">
+                          <h1 className="w-10/12 truncate text-start font-semibold">
                             {notify.title}
                           </h1>
                           <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
@@ -338,14 +338,14 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               onClick={() => {
                                 setSelectedNotificationId(notify.id)
                               }}
-                              className="w-10 h-10 bg-transparent hover:bg-transparent group border border-transparent rounded-full shadow-none absolute top-1 right-1"
+                              className="group absolute right-1 top-1 h-10 w-10 rounded-full border border-transparent bg-transparent shadow-none hover:bg-transparent"
                             >
-                              <MoreVertical className="w-6 h-6 mx-auto text-transparent hover:text-customAccent rounded-full absolute top-2" />
+                              <MoreVertical className="absolute top-2 mx-auto h-6 w-6 rounded-full text-transparent hover:text-customAccent" />
                             </Button>
                           </DropdownMenuTrigger>
 
                           <DropdownMenuContent
-                            className="flex flex-col overflow-y-auto gap-1"
+                            className="flex flex-col gap-1 overflow-y-auto"
                             align="end"
                           >
                             <Button
@@ -354,14 +354,14 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                                 handleDeleteNotification(notify)
                               }}
                               variant="outline"
-                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
                             >
                               Delete
                             </Button>
                             <Button
                               onClick={() => handleReadNotification(notify)}
                               variant="outline"
-                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
                             >
                               Mark as read
                             </Button>

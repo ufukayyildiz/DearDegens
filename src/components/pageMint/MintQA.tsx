@@ -12,14 +12,14 @@ export default function MintQA({ queries }: QAProps) {
         queries.map((qa) => {
           if (qa.isPublic === true) {
             return (
-              <div className="flex flex-col w-full">
+              <div className="flex w-full flex-col">
                 <div className="flex space-x-5">
                   <p className="w-5 font-bold">Q:</p>
                   <p className="w-full">{qa.query}</p>
                 </div>
                 <div className="flex space-x-5">
                   <p className="w-5 font-bold">A:</p>
-                  <p className="w-full text-customAccent italic">{qa.reply}</p>
+                  <p className="w-full italic text-customAccent">{qa.reply}</p>
                 </div>
                 <hr className="my-2 border border-t-muted" />
               </div>

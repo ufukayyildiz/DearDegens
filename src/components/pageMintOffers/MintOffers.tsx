@@ -31,7 +31,7 @@ export default function MintOffers() {
   }
 
   return (
-    <ScrollArea className="flex h-full flex-col pr-5 mt-5 pb-12">
+    <ScrollArea className="mt-5 flex h-full flex-col pb-12 pr-5">
       {offers &&
         offers.map((item: any, index) => {
           return isLoading === true ? (

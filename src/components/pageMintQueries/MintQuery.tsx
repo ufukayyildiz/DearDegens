@@ -131,12 +131,12 @@ export default function MintQuery() {
               className="space-y-8"
             >
               <AlertDialogHeader>
-                <AlertDialogTitle className="font-bold mb-5">
+                <AlertDialogTitle className="mb-5 font-bold">
                   <p className="italic">Have a question for the seller?</p>
                 </AlertDialogTitle>
 
                 <AlertDialogDescription>
-                  <div className="relative grid grid-cols-1 gap-2 mb-10">
+                  <div className="relative mb-10 grid grid-cols-1 gap-2">
                     {/* REPLY */}
                     <form.Field
                       name="query"
@@ -163,11 +163,11 @@ export default function MintQuery() {
                       }}
                       children={(field) => (
                         <>
-                          <div className="w-full h-5 flex justify-between">
+                          <div className="flex h-5 w-full justify-between">
                             <label className="py-1 text-primary">
                               Type your message here:
                             </label>
-                            <label className="text-xs italic text-rose-400 py-1">
+                            <label className="py-1 text-xs italic text-rose-400">
                               (required)
                             </label>
                           </div>
@@ -177,7 +177,7 @@ export default function MintQuery() {
                             value={field.state.value}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
-                            className="w-full h-32 text-primary"
+                            className="h-32 w-full text-primary"
                             required
                           />
                           <FieldInfo field={field} />
@@ -187,7 +187,7 @@ export default function MintQuery() {
                   </div>
 
                   <div>
-                    <p className="italic text-xs">
+                    <p className="text-xs italic">
                       (Note: Once the seller recieves this message, they will
                       have the option of making the query public when they
                       reply. Both your message and the sellers reply will be
@@ -208,8 +208,8 @@ export default function MintQuery() {
                   ]}
                   children={([canSubmit, isSubmitting]) =>
                     !submitted ? (
-                      <div className="w-full flex justify-between">
-                        <div className="flex items-center space-x-2 justify-start">
+                      <div className="flex w-full justify-between">
+                        <div className="flex items-center justify-start space-x-2">
                           <Checkbox
                             id="disable"
                             checked={!disabled}

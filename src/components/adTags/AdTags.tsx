@@ -13,7 +13,7 @@ interface MyMintsProps {
 
 export default function AdTags({ listing }: MyMintsProps) {
   return (
-    <div className="flex gap-3 w-full">
+    <div className="flex w-full gap-3">
       {listing.isNew === true && <IsNew />}
       {listing.isUrgent === true && <IsUrgent />}
       {listing.isHot === true && <IsHot />}

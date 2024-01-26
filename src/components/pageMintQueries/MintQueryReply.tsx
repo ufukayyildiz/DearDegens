@@ -130,7 +130,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
               className="space-y-8"
             >
               <AlertDialogHeader>
-                <AlertDialogTitle className="font-bold mb-5">
+                <AlertDialogTitle className="mb-5 font-bold">
                   <p className="italic">
                     &apos;Answsers pave the way to enlightenment&apos;
                   </p>
@@ -138,7 +138,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                 </AlertDialogTitle>
 
                 <AlertDialogDescription>
-                  <div className="relative grid grid-cols-1 gap-2 mb-10">
+                  <div className="relative mb-10 grid grid-cols-1 gap-2">
                     {/* REPLY */}
                     <form.Field
                       name="reply"
@@ -165,11 +165,11 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                       }}
                       children={(field) => (
                         <>
-                          <div className="w-full h-5 flex justify-between">
+                          <div className="flex h-5 w-full justify-between">
                             <label className="py-1 text-primary">
                               Type your message here:
                             </label>
-                            <label className="text-xs italic text-rose-400 py-1">
+                            <label className="py-1 text-xs italic text-rose-400">
                               (required)
                             </label>
                           </div>
@@ -179,7 +179,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                             value={field.state.value}
                             onBlur={field.handleBlur}
                             onChange={(e) => field.handleChange(e.target.value)}
-                            className="w-full h-32 text-primary"
+                            className="h-32 w-full text-primary"
                             required
                           />
                           <FieldInfo field={field} />
@@ -194,7 +194,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                       name="isPublic"
                       children={(field) => (
                         <>
-                          <div className="flex items-center space-x-2 justify-start">
+                          <div className="flex items-center justify-start space-x-2">
                             <Checkbox
                               id={field.name}
                               name={field.name}
@@ -202,7 +202,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                               onCheckedChange={() => setIsPublic(!isPublic)}
                               onChange={(e) => setIsPublic(true)}
                             />
-                            <Label className="text-sm text-primary font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+                            <Label className="text-sm font-medium leading-none text-primary peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
                               Make public.
                             </Label>
                           </div>
@@ -213,12 +213,12 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                   </div>
 
                   <div>
-                    <p className="italic text-xs">
-                      (Note: By selecting &apos;Make public&apos; you agree to sharing
-                      both the question and your answer with other users on your
-                      ad listing page. This is to better inform other users and
-                      reduce the chances of them potentially asking the same
-                      question.)
+                    <p className="text-xs italic">
+                      (Note: By selecting &apos;Make public&apos; you agree to
+                      sharing both the question and your answer with other users
+                      on your ad listing page. This is to better inform other
+                      users and reduce the chances of them potentially asking
+                      the same question.)
                     </p>
                   </div>
                 </AlertDialogDescription>
@@ -234,8 +234,8 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                   ]}
                   children={([canSubmit, isSubmitting]) =>
                     !submitted ? (
-                      <div className="w-full flex justify-between">
-                        <div className="flex items-center space-x-2 justify-start">
+                      <div className="flex w-full justify-between">
+                        <div className="flex items-center justify-start space-x-2">
                           <Checkbox
                             id="disable"
                             checked={!disabled}

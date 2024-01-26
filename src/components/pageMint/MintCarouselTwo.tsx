@@ -16,18 +16,21 @@ export default function MintCarouselTwo(listing: any) {
 
   if (imageUrls.length === 0) {
     return (
-      <div className="flex items-center justify-center mt-16">
+      <div className="mt-16 flex items-center justify-center">
         <Carousel
           opts={{
             align: "start",
             loop: true,
           }}
-          className="w-6/12 h-full"
+          className="h-full w-6/12"
         >
           <CarouselContent className="flex">
             <CarouselItem className="flex items-center justify-center">
-              <div className="flex w-full min-h-[40vh] justify-center bg-muted rounded-lg">
-                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" alt='imageLoader'/>
+              <div className="flex min-h-[40vh] w-full justify-center rounded-lg bg-muted">
+                <Image
+                  className="my-auto h-[50%] w-[50%] animate-pulse text-muted-foreground"
+                  alt="imageLoader"
+                />
               </div>
             </CarouselItem>
           </CarouselContent>
@@ -40,13 +43,13 @@ export default function MintCarouselTwo(listing: any) {
 
   if (imageUrls.length !== 0) {
     return (
-      <div className="flex items-center justify-center mt-16">
+      <div className="mt-16 flex items-center justify-center">
         <Carousel
           opts={{
             align: "start",
             loop: true,
           }}
-          className="w-6/12 h-full min-h-[30vh]"
+          className="h-full min-h-[30vh] w-6/12"
         >
           <CarouselContent className="flex">
             {imageUrls.map((images: any, index: any) => (
@@ -54,7 +57,7 @@ export default function MintCarouselTwo(listing: any) {
                 key={index}
                 className="flex items-center justify-center shadow-lg"
               >
-                <div className="flex max-h-[40vh] rounded-md overflow-hidden">
+                <div className="flex max-h-[40vh] overflow-hidden rounded-md">
                   <img src={images} alt={images} className="object-cover" />
                 </div>
               </CarouselItem>

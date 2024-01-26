@@ -13,9 +13,9 @@ export function MainNav({ items }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
-        <div className="h-16 w-auto p-1 bg-zinc-100 rounded-xl">
+        <div className="h-16 w-auto rounded-xl bg-zinc-100 p-1">
           <Image
-            className="w-full h-full object-contain"
+            className="h-full w-full object-contain"
             src={Logo}
             alt="pepperMintLogo"
           />

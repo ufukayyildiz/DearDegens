@@ -132,22 +132,22 @@ export default function MintOffer({
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
               <AlertDialogHeader>
-                <AlertDialogTitle className="font-bold mb-5">
+                <AlertDialogTitle className="mb-5 font-bold">
                   Your one step closer to the deal of a lifetime!
                 </AlertDialogTitle>
                 <AlertDialogDescription>
-                  <div className="grid grid-cols-1 gap-2 mb-5">
+                  <div className="mb-5 grid grid-cols-1 gap-2">
                     {/* PRICE */}
                     <FormField
                       control={form.control}
                       name="offerPrice"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="w-60 h-5 flex justify-between">
+                          <div className="flex h-5 w-60 justify-between">
                             <FormLabel className="py-1 text-primary">
                               Offer amount:
                             </FormLabel>
-                            <FormLabel className="text-xs italic text-rose-400 py-1">
+                            <FormLabel className="py-1 text-xs italic text-rose-400">
                               (required)
                             </FormLabel>
                           </div>
@@ -166,18 +166,18 @@ export default function MintOffer({
                   </div>
 
                   <div>
-                    <p className="italic text-xs">
+                    <p className="text-xs italic">
                       (Note: Once the seller has accepted your offer, you will
-                      gain access to the chat area where you&apos;ll make contact
-                      with the seller to make arrangments regarding completing
-                      the transaction.)
+                      gain access to the chat area where you&apos;ll make
+                      contact with the seller to make arrangments regarding
+                      completing the transaction.)
                     </p>
                   </div>
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <div className="w-full flex justify-between">
-                  <div className="flex items-center space-x-2 justify-start">
+                <div className="flex w-full justify-between">
+                  <div className="flex items-center justify-start space-x-2">
                     <Checkbox
                       id="disable"
                       checked={!disabled}

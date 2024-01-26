@@ -42,7 +42,7 @@ const AccordionContentMod = React.forwardRef<
   <AccordionPrimitive.Content
     ref={ref}
     className={cn(
-      "overflow-hidden text-sm transition-all data-[state=closed]:animate-accordion-right data-[state=open]:animate-accordion-left",
+      "data-[state=closed]:animate-accordion-right data-[state=open]:animate-accordion-left overflow-hidden text-sm transition-all",
       className
     )}
     {...props}

@@ -25,17 +25,17 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
   const redPrice = askPrice && askPrice * 0.5
 
   return (
-    <div className="flex flex-col h-[120px] p-2 mb-3 border border-muted hover:border-customAccent justify-between text-primary shadow-lg rounded-lg transition duration-75 hover:scale-[0.99]">
+    <div className="mb-3 flex h-[120px] flex-col justify-between rounded-lg border border-muted p-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent">
       <div className="flex w-full justify-between">
         <h1 className="text-lg font-bold italic">Offer Amount:</h1>
         {askPrice && offerPrice && orangePrice && redPrice && (
           <h1
             className={cn(
-              "italic text-lg font-bold",
+              "text-lg font-bold italic",
               offerPrice > orangePrice &&
                 offerPrice <= askPrice &&
                 "text-primary",
-              offerPrice > askPrice && "text-teal-500 font-semibold",
+              offerPrice > askPrice && "font-semibold text-teal-500",
               offerPrice > redPrice &&
                 offerPrice <= orangePrice &&
                 "text-amber-500",
@@ -50,7 +50,7 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
       <MintOfferCardStatus adOffer={adOffer} />
 
       <div className="flex">
-        <div className="flex flex-col w-1/2">
+        <div className="flex w-1/2 flex-col">
           <div className="flex w-full gap-1">
             <p className="text-xs italic">Buyer:</p>
             <p className="text-xs">{adOffer.userName}</p>

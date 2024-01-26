@@ -12,9 +12,9 @@ export default function MintCreatePage() {
     <div className="p-10">
       <Tabs
         defaultValue="none"
-        className="flex flex-col w-11/12 md:w-8/12 mx-auto"
+        className="mx-auto flex w-11/12 flex-col md:w-8/12"
       >
-        <TabsList className="w-auto h-auto mx-auto flex flex-col md:flex-row gap-2 p-2 shadow">
+        <TabsList className="mx-auto flex h-auto w-auto flex-col gap-2 p-2 shadow md:flex-row">
           <TabsTrigger value="items" className="w-full">
             Home & Garden
           </TabsTrigger>

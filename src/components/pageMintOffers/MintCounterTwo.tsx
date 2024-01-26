@@ -90,9 +90,9 @@ export default function MintCounterTwo({ adOffer }: CounterProps) {
       counterPrice: counterPrice,
       userId: adOffer.userId,
       offerId: adOffer.id,
-      sellerId: adOffer.sellerId || '',
+      sellerId: adOffer.sellerId || "",
       adId: adOffer.adId,
-      adTitle: adOffer.adTitle || '',
+      adTitle: adOffer.adTitle || "",
     }
     setDisabled(true)
     console.log("Submit Payload:", payload)
@@ -110,16 +110,16 @@ export default function MintCounterTwo({ adOffer }: CounterProps) {
         <AlertDialogContent>
           <form className="space-y-8">
             <AlertDialogHeader>
-              <AlertDialogTitle className="font-bold mb-5">
+              <AlertDialogTitle className="mb-5 font-bold">
                 The buyers offer was not good enough?
               </AlertDialogTitle>
               <AlertDialogDescription>
-                <div className="grid grid-cols-1 gap-2 mb-5">
+                <div className="mb-5 grid grid-cols-1 gap-2">
                   {/* PRICE */}
 
-                  <div className="w-60 h-5 flex justify-between">
+                  <div className="flex h-5 w-60 justify-between">
                     <label className="py-1 text-primary">Counter amount:</label>
-                    <label className="text-xs italic text-rose-400 py-1">
+                    <label className="py-1 text-xs italic text-rose-400">
                       (required)
                     </label>
                   </div>
@@ -135,18 +135,18 @@ export default function MintCounterTwo({ adOffer }: CounterProps) {
                 </div>
 
                 <div>
-                  <p className="italic text-xs">
+                  <p className="text-xs italic">
                     (Note: Once the buyer has accepted your counter offer, you
-                    will gain access to the chat area where you&apos;ll make contact
-                    with the buyer to make arrangments regarding completing the
-                    transaction.)
+                    will gain access to the chat area where you&apos;ll make
+                    contact with the buyer to make arrangments regarding
+                    completing the transaction.)
                   </p>
                 </div>
               </AlertDialogDescription>
             </AlertDialogHeader>
             <AlertDialogFooter>
-              <div className="w-full flex justify-between">
-                <div className="flex items-center space-x-2 justify-start">
+              <div className="flex w-full justify-between">
+                <div className="flex items-center justify-start space-x-2">
                   <Checkbox
                     id="disable"
                     checked={!disabled}

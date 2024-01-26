@@ -70,7 +70,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         <DropdownMenuSeparator />
 
         <DropdownMenuItem
-          className="cursor-pointer text-red-500 focus:text-red-500 border-2 focus:border-red-500"
+          className="cursor-pointer border-2 text-red-500 focus:border-red-500 focus:text-red-500"
           onSelect={(event) => {
             event.preventDefault()
             signOut({

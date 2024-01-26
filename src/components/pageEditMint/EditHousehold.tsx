@@ -186,29 +186,29 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
   // ----------------------------------------------------------------------------------
   // UI
   return (
-    <div className="mt-10 mb-32 mx-auto w-full rounded-lg bg-background p-2">
+    <div className="mx-auto mb-32 mt-10 w-full rounded-lg bg-background p-2">
       {/* IMAGES */}
-      <p className="text-sm mb-3">Image Upload</p>
-      <div className="relative flex h-auto min-h-[100px] mb-3 text-center justify-center border border-dashed border-l-1 border-zinc-300 rounded-lg shadow-lg">
+      <p className="mb-3 text-sm">Image Upload</p>
+      <div className="border-l-1 relative mb-3 flex h-auto min-h-[100px] justify-center rounded-lg border border-dashed border-zinc-300 text-center shadow-lg">
         {isLoading === true && (
-          <div className="absolute inset-0 flex w-full h-full z-50 bg-slate-300/30 justify-center backdrop-blur-sm rounded-lg">
-            <Loader className="h-16 w-16 my-auto animate-spin text-slate-500" />
+          <div className="absolute inset-0 z-50 flex h-full w-full justify-center rounded-lg bg-slate-300/30 backdrop-blur-sm">
+            <Loader className="my-auto h-16 w-16 animate-spin text-slate-500" />
           </div>
         )}
         {fileUrls.length > 0 ? (
-          <div className="flex flex-wrap w-full h-full gap-2 p-2">
+          <div className="flex h-full w-full flex-wrap gap-2 p-2">
             {fileUrls.map((file: any, index: number) => (
               <div key={index}>
                 <img
                   src={file}
                   alt={`Image ${index}`}
-                  className="w-20 h-20 rounded-md shadow-md object-contain"
+                  className="h-20 w-20 rounded-md object-contain shadow-md"
                 />
               </div>
             ))}
           </div>
         ) : (
-          <div className="flex h-auto my-auto">
+          <div className="my-auto flex h-auto">
             {files.length > 0 ? (
               <Button onClick={() => startUpload(files)} variant="outline">
                 Upload {files.length} files
@@ -216,16 +216,16 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
             ) : (
               <div
                 {...getRootProps()}
-                className="h-auto my-auto text-zinc-400 italic"
+                className="my-auto h-auto italic text-zinc-400"
               >
                 <input {...getInputProps()} />
-                <ImagePlus className="w-10 h-10 animate-pulse" />
+                <ImagePlus className="h-10 w-10 animate-pulse" />
               </div>
             )}
           </div>
         )}
       </div>
-      <p className="text-xs text-muted-foreground mb-10">
+      <p className="mb-10 text-xs text-muted-foreground">
         (Max Images: 10 | Max file size: 1mb)
       </p>
 
@@ -238,9 +238,9 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
               name="category"
               render={({ field }) => (
                 <FormItem>
-                  <div className="w-full h-5 flex justify-between">
+                  <div className="flex h-5 w-full justify-between">
                     <FormLabel className="py-1">Category </FormLabel>
-                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                    <FormLabel className="py-1 text-xs italic text-rose-400">
                       (required)
                     </FormLabel>
                   </div>
@@ -258,7 +258,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
                           <div key={index}>
                             <hr className="mb-10"></hr>
                             <p
-                              className="font-bold text-lg text-primary"
+                              className="text-lg font-bold text-primary"
                               key={category.name}
                             >
                               {category.name}
@@ -287,9 +287,9 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
               name="price"
               render={({ field }) => (
                 <FormItem>
-                  <div className="w-full h-5 flex justify-between">
+                  <div className="flex h-5 w-full justify-between">
                     <FormLabel className="py-1">Price </FormLabel>
-                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                    <FormLabel className="py-1 text-xs italic text-rose-400">
                       (required)
                     </FormLabel>
                   </div>
@@ -309,9 +309,9 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
             name="title"
             render={({ field }) => (
               <FormItem>
-                <div className="w-full h-5 flex justify-between">
+                <div className="flex h-5 w-full justify-between">
                   <FormLabel className="py-1">Title </FormLabel>
-                  <FormLabel className="text-xs italic text-rose-400 py-1">
+                  <FormLabel className="py-1 text-xs italic text-rose-400">
                     (required)
                   </FormLabel>
                 </div>
@@ -326,7 +326,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
             )}
           />
 
-          <div className="w-full flex flex-col md:flex-row justify-between gap-10">
+          <div className="flex w-full flex-col justify-between gap-10 md:flex-row">
             {/* BRAND */}
             <FormField
               control={form.control}
@@ -367,9 +367,9 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
             name="description"
             render={({ field }) => (
               <FormItem>
-                <div className="w-full h-5 flex justify-between">
+                <div className="flex h-5 w-full justify-between">
                   <FormLabel className="py-1">Description </FormLabel>
-                  <FormLabel className="text-xs italic text-rose-400 py-1">
+                  <FormLabel className="py-1 text-xs italic text-rose-400">
                     (required)
                   </FormLabel>
                 </div>
@@ -384,16 +384,16 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
             )}
           />
 
-          <div className="flex flex-col md:flex-row gap-10">
+          <div className="flex flex-col gap-10 md:flex-row">
             {/* LOCATION */}
             <FormField
               control={form.control}
               name="location"
               render={({ field }) => (
                 <FormItem>
-                  <div className="w-full h-5 flex justify-between">
+                  <div className="flex h-5 w-full justify-between">
                     <FormLabel className="py-1">Location </FormLabel>
-                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                    <FormLabel className="py-1 text-xs italic text-rose-400">
                       (required)
                     </FormLabel>
                   </div>
@@ -411,7 +411,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
                           <div key={index}>
                             <hr className="mb-10"></hr>
                             <p
-                              className="font-bold text-lg text-primary"
+                              className="text-lg font-bold text-primary"
                               key={category.name}
                             >
                               {category.name}
@@ -437,9 +437,9 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
               name="meetup"
               render={({ field }) => (
                 <FormItem>
-                  <div className="w-full h-5 flex justify-between">
+                  <div className="flex h-5 w-full justify-between">
                     <FormLabel className="py-1">Meeting preferance </FormLabel>
-                    <FormLabel className="text-xs italic text-rose-400 py-1">
+                    <FormLabel className="py-1 text-xs italic text-rose-400">
                       (required)
                     </FormLabel>
                   </div>

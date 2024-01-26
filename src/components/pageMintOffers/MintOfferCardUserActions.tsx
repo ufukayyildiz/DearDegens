@@ -123,7 +123,7 @@ export default function MintOfferCardUserActions({
   // CONFIRMATION ACTIONS
   if (adOffer.isAccepted) {
     return (
-      <div className="flex w-1/2 gap-1 items-end justify-end">
+      <div className="flex w-1/2 items-end justify-end gap-1">
         <Button
           onClick={() => offerConfirmation()}
           variant="outlineTwo"
@@ -139,7 +139,7 @@ export default function MintOfferCardUserActions({
   // COUNTERED ACTIONS
   if (adOffer.isCountered) {
     return (
-      <div className="flex w-1/2 gap-1 items-end justify-end">
+      <div className="flex w-1/2 items-end justify-end gap-1">
         <Tooltip>
           <TooltipTrigger>
             <Button
