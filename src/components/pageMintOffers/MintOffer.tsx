@@ -168,7 +168,7 @@ export default function MintOffer({
                   <div>
                     <p className="italic text-xs">
                       (Note: Once the seller has accepted your offer, you will
-                      gain access to the chat area where you'll make contact
+                      gain access to the chat area where you&apos;ll make contact
                       with the seller to make arrangments regarding completing
                       the transaction.)
                     </p>

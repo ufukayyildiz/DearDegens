@@ -27,7 +27,7 @@ export default function MintCarouselTwo(listing: any) {
           <CarouselContent className="flex">
             <CarouselItem className="flex items-center justify-center">
               <div className="flex w-full min-h-[40vh] justify-center bg-muted rounded-lg">
-                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
+                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" alt='imageLoader'/>
               </div>
             </CarouselItem>
           </CarouselContent>

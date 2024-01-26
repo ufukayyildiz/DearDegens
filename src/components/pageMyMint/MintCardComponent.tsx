@@ -65,7 +65,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
           <div className="h-full w-4/12">
             {!adImage[0] ? (
               <div className="flex w-full h-full justify-center align-middle bg-muted rounded-lg">
-                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
+                <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" alst="imageLoader"/>
               </div>
             ) : (
               <img

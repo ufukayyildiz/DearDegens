@@ -147,20 +147,19 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
     },
   })
 
-  // Get array of unread notifications
-  const getUnreadArray = () => {
-    if (notifications) {
-      const unread = []
-      for (let i = 0; i < notifications.length; i++) {
-        if (notifications[i].isRead === false) {
-          unread.push(notifications[i])
-        }
-      }
-      setUnreadNotifications(unread.length)
-    }
-  }
-
   useEffect(() => {
+    // Get array of unread notifications
+    const getUnreadArray = () => {
+      if (notifications) {
+        const unread = []
+        for (let i = 0; i < notifications.length; i++) {
+          if (notifications[i].isRead === false) {
+            unread.push(notifications[i])
+          }
+        }
+        setUnreadNotifications(unread.length)
+      }
+    }
     getUnreadArray()
   }, [selectedNotificationId, notifications])
 
@@ -215,7 +214,9 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="passivedestructive" className="bg-muted">Delete all</Button>
+                  <Button variant="passivedestructive" className="bg-muted">
+                    Delete all
+                  </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>

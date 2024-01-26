@@ -40,13 +40,13 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
             <div className="h-28 w-full">
               {!adImage[0] ? (
                 <div className="flex w-full h-full justify-center align-middle bg-muted rounded-lg">
-                  <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" />
+                  <Image className="w-[50%] h-[50%] my-auto text-muted-foreground animate-pulse" alt='imageLoad'/>
                 </div>
               ) : (
                 <img
                   src={adImage[0]}
                   alt={adImage[0]}
-                  className="h-full w-full object-cover rounded-tl-lg rounded-tr-lg"
+                  className="h-full w-full object-cover rounded-t-lg"
                 />
               )}
             </div>

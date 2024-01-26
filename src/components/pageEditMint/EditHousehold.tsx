@@ -191,7 +191,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       <p className="text-sm mb-3">Image Upload</p>
       <div className="relative flex h-auto min-h-[100px] mb-3 text-center justify-center border border-dashed border-l-1 border-zinc-300 rounded-lg shadow-lg">
         {isLoading === true && (
-          <div className="absolute inset-0 flex w-full h-full z-50 top-0 left-0 bg-slate-300/30 justify-center backdrop-blur-sm rounded-lg">
+          <div className="absolute inset-0 flex w-full h-full z-50 bg-slate-300/30 justify-center backdrop-blur-sm rounded-lg">
             <Loader className="h-16 w-16 my-auto animate-spin text-slate-500" />
           </div>
         )}
@@ -338,7 +338,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
                     <Input {...field} />
                   </FormControl>
                   <FormDescription>
-                    It's all about the branding..
+                    It&apos;s all about the branding..
                   </FormDescription>
                   <FormMessage />
                 </FormItem>

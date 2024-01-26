@@ -132,7 +132,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
               <AlertDialogHeader>
                 <AlertDialogTitle className="font-bold mb-5">
                   <p className="italic">
-                    "Answsers pave the way to enlightenment"
+                    &apos;Answsers pave the way to enlightenment&apos;
                   </p>
                   <p className="text-xs">- Somebody</p>
                 </AlertDialogTitle>
@@ -214,7 +214,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
 
                   <div>
                     <p className="italic text-xs">
-                      (Note: By selecting "Make public" you agree to sharing
+                      (Note: By selecting &apos;Make public&apos; you agree to sharing
                       both the question and your answer with other users on your
                       ad listing page. This is to better inform other users and
                       reduce the chances of them potentially asking the same

@@ -6,12 +6,10 @@ import {
   TabsTrigger,
 } from "@/src/components/components-ui/Tabs"
 import EditHousehold from "@/src/components/pageEditMint/EditHousehold"
-import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
 import { listingsType } from "@/src/types/db"
 import { eq } from "drizzle-orm"
-import { getServerSession } from "next-auth"
 
 interface MintPageProps {
   params: {

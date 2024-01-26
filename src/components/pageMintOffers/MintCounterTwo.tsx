@@ -137,7 +137,7 @@ export default function MintCounterTwo({ adOffer }: CounterProps) {
                 <div>
                   <p className="italic text-xs">
                     (Note: Once the buyer has accepted your counter offer, you
-                    will gain access to the chat area where you'll make contact
+                    will gain access to the chat area where you&apos;ll make contact
                     with the buyer to make arrangments regarding completing the
                     transaction.)
                   </p>

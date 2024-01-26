@@ -12,7 +12,6 @@ import axios from "axios"
 import { Check, X } from "lucide-react"
 
 import { Button } from "../components-ui/Button"
-import MintCounter from "./MintCounter"
 import MintCounterTwo from "./MintCounterTwo"
 
 interface MintOfferCardProps {
@@ -130,7 +129,7 @@ export default function MintOfferCardAuthorActions({
         <Tooltip>
           <TooltipTrigger>
             <Button variant="icon" size="icon" className="hover:text-blue-500">
-              <MintCounter adOffer={adOffer} />
+              <MintCounterTwo adOffer={adOffer} />
             </Button>
           </TooltipTrigger>
           <TooltipContent>
