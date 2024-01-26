@@ -17,12 +17,7 @@ export async function PUT(req: Request) {
     const currentDate: Date = new Date()
 
     const body = await req.json()
-    const { offerId,
-      counterPrice,
-      userId,
-      sellerId,
-      adId,
-      adTitle, } = body
+    const { offerId, counterPrice, userId, sellerId, adId, adTitle } = body
 
     console.log("body:", body)
 

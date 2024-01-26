@@ -1,10 +1,11 @@
 import React from "react"
 import { listingsType } from "@/src/types/db"
-import IsNew from "./IsNew"
-import IsUrgent from "./IsUrgent"
+
 import IsHot from "./IsHot"
+import IsNew from "./IsNew"
 import IsPending from "./IsPending"
 import IsSold from "./IsSold"
+import IsUrgent from "./IsUrgent"
 
 interface MyMintsProps {
   listing: listingsType
@@ -13,21 +14,11 @@ interface MyMintsProps {
 export default function AdTagsMini({ listing }: MyMintsProps) {
   return (
     <div className="flex flex-col gap-1 w-full">
-        {listing.isNew === true && (
-          <IsNew/>
-        )}
-        {listing.isUrgent === true && (
-          <IsUrgent/>
-        )}
-        {listing.isHot === true && (
-          <IsHot/>
-        )}
-        {listing.isPending === true && (
-          <IsPending/>
-        )}
-        {listing.isSold === true && (
-          <IsSold/>
-        )}
+      {listing.isNew === true && <IsNew />}
+      {listing.isUrgent === true && <IsUrgent />}
+      {listing.isHot === true && <IsHot />}
+      {listing.isPending === true && <IsPending />}
+      {listing.isSold === true && <IsSold />}
     </div>
   )
 }

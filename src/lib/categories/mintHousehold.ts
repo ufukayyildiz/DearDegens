@@ -7,56 +7,56 @@ export const categoryHousehold = [
       "Kitchen Consumables",
       "Dining",
       "Bathroom",
-      "Bedroom"
+      "Bedroom",
     ],
   },
   {
     name: "Clothing & Accessories",
     subCategories: [
       "Womans Clothing & Shoes",
-      "Mens Clothing & Shoes", 
+      "Mens Clothing & Shoes",
       "Childrens Clothing & Shoes",
-      "Bags & Luggage", 
-      "Jewelry & Accessories", 
+      "Bags & Luggage",
+      "Jewelry & Accessories",
     ],
   },
   {
     name: "Baby & Toddler",
     subCategories: [
-      "Baby Toys & Activity Gear", 
-      "Baby Clothing", 
+      "Baby Toys & Activity Gear",
+      "Baby Clothing",
       "Travel",
-      "Nursing",  
+      "Nursing",
       "Safety Equipment",
-      "Health Equipment"
+      "Health Equipment",
     ],
   },
   {
     name: "Family",
     subCategories: [
-      "Health & Beauty", 
-      "Pet Supplies",  
+      "Health & Beauty",
+      "Pet Supplies",
       "Toys & Games",
       "Books",
-      "Movies & Media"
+      "Movies & Media",
     ],
   },
   {
     name: "Hobbies",
     subCategories: [
-      "Arts & Crafts", 
-      "Sports & Outdoors", 
-      "Musical Instruments", 
-      "Antiques & Collectables"
+      "Arts & Crafts",
+      "Sports & Outdoors",
+      "Musical Instruments",
+      "Antiques & Collectables",
     ],
   },
   {
     name: "Camping & Outdoors",
     subCategories: [
-      "Tents & Sheltering", 
-      "Camping Furniture", 
+      "Tents & Sheltering",
+      "Camping Furniture",
       "Outdoor Culinary",
-      "Lighting & Gadgets", 
+      "Lighting & Gadgets",
       "Camping Accessories",
       "Fishing",
       "Hiking",
@@ -66,11 +66,11 @@ export const categoryHousehold = [
   {
     name: "Garden & Patio",
     subCategories: [
-      "Patio Furniture", 
+      "Patio Furniture",
       "Patio Accessories",
       "Braais & Accessories",
       "Lighting & Heaters",
-      "Garden Tools", 
+      "Garden Tools",
       "Garden Accessories",
       "Plants & Flowers",
       "Pools & Hot Tubs",

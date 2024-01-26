@@ -1,6 +1,6 @@
+import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { notifications } from "@/src/server/db/schema"
-import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 
 export async function PUT(req: Request) {
@@ -14,7 +14,9 @@ export async function PUT(req: Request) {
 
     await db.delete(notifications).where(eq(notifications.userId, userId))
 
-    return new Response("Successfully deleted all notification.", { status: 200 })
+    return new Response("Successfully deleted all notification.", {
+      status: 200,
+    })
   } catch (error) {
     console.error("Deletion notification error:", error)
     return new Response("Could not delete all notifications.", { status: 500 })

@@ -1,6 +1,6 @@
+import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { offers } from "@/src/server/db/schema"
-import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 
 export async function PUT(req: Request) {

@@ -2,9 +2,9 @@ import React from "react"
 import { useParams } from "next/navigation"
 import { useGetQueries } from "@/src/server/services"
 import { queryType } from "@/src/types/db"
-import { ScrollArea } from "../components-ui/ScrollArea"
 import { useSession } from "next-auth/react"
 
+import { ScrollArea } from "../components-ui/ScrollArea"
 import MintQueriesCard from "./MintQueriesCard"
 
 export default function MintQueries() {
@@ -28,7 +28,8 @@ export default function MintQueries() {
 
   return (
     <ScrollArea className="flex h-full flex-col pr-5 mt-5 pb-16">
-      {queries && userId &&
+      {queries &&
+        userId &&
         queries.map((item: any, index) => {
           return <MintQueriesCard key={index} query={item} userId={userId} />
         })}

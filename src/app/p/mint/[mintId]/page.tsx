@@ -2,12 +2,14 @@ import React from "react"
 import MintCarouselTwo from "@/src/components/pageMint/MintCarouselTwo"
 import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
+import MintQA from "@/src/components/pageMint/MintQA"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { getAdOffers, getAdQueries, getListings } from "@/src/server/actions"
 import { db } from "@/src/server/db"
 import { listings, queries } from "@/src/server/db/schema"
+import { listingsType, queryType } from "@/src/types/db"
 import {
   dehydrate,
   HydrationBoundary,
@@ -15,8 +17,6 @@ import {
 } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
-import { listingsType, queryType } from "@/src/types/db"
-import MintQA from "@/src/components/pageMint/MintQA"
 
 interface MintPageProps {
   params: {
@@ -36,13 +36,13 @@ export default async function MintPage({ params }: MintPageProps) {
     queryFn: () => getListings(decodedParam),
   })
 
-  const listing: listingsType[] = await db
-    .select()
-    .from(listings)
-    .where(eq(listings.id, decodedParam)) || []
+  const listing: listingsType[] =
+    (await db.select().from(listings).where(eq(listings.id, decodedParam))) ||
+    []
 
-  const query: queryType[] = await db.select().from(queries).where(eq(queries.adId, decodedParam)) || []
-
+  const query: queryType[] =
+    (await db.select().from(queries).where(eq(queries.adId, decodedParam))) ||
+    []
 
   // OFFER QUERY
   await queryClient.prefetchQuery({
@@ -53,7 +53,7 @@ export default async function MintPage({ params }: MintPageProps) {
   // QUERIES QUERY
   await queryClient.prefetchQuery({
     queryKey: ["adQueries"],
-    queryFn: () => listing && getAdQueries(listing[0].id)
+    queryFn: () => listing && getAdQueries(listing[0].id),
   })
 
   // PRICE TEXT FORMATTER
@@ -80,7 +80,8 @@ export default async function MintPage({ params }: MintPageProps) {
                       R {formatPrice(item.price)}
                     </h1>
                     {session &&
-                      item.price && item.title &&
+                      item.price &&
+                      item.title &&
                       item.authorId !== session.user.id && (
                         <MintOffer
                           title={item.title}
@@ -113,7 +114,7 @@ export default async function MintPage({ params }: MintPageProps) {
               <p className="my-5 whitespace-pre-line">{item.description}</p>
               <hr className="my-2 border border-t-muted-foreground" />
               <h1 className="text-lg font-bold mt-5">Queries</h1>
-              <MintQA queries={query}/>
+              <MintQA queries={query} />
             </div>
           ))}
       </div>

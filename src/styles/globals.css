@@ -2,11 +2,8 @@
 @tailwind components;
 @tailwind utilities;
 
-
 @layer base {
   :root {
-
-
     --background: 0 0% 100%;
     --background-foreground: 0 0% 98%;
     --foreground: 0 0% 20%;
@@ -50,6 +47,7 @@
     --custom-color-thr: 24, 100%, 70%;
     --custom-color-fou: 0, 0%, 15%;
     --custom-accent: 24, 100%, 50%;
+    --custom-accent-two: 24, 100%, 85%;
 
     /* --custom-color-one: 187, 92%, 69%;
     --custom-color-two: 171, 77%, 64%;
@@ -102,6 +100,7 @@
     --custom-color-thr: 24, 100%, 60%;
     --custom-color-fou: 0, 0%, 20%;
     --custom-accent: 24, 100%, 50%;
+    --custom-accent-two: 24, 100%, 50%;
   }
 }
 
@@ -112,8 +111,8 @@
   body {
     @apply bg-background text-foreground;
     font-feature-settings:
-    "rlig" 1,
-    "calt" 1;
-    GeistSans: --font-geist-sans;
+      "rlig" 1,
+      "calt" 1;
+    geistsans: --font-geist-sans;
   }
 }

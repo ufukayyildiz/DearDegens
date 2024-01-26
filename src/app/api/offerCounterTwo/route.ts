@@ -1,9 +1,9 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { offers, notifications } from "@/src/server/db/schema"
+import { notifications, offers } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
-import { z } from "zod"
 import { nanoid } from "nanoid"
+import { z } from "zod"
 
 export async function PUT(req: Request) {
   try {
@@ -17,12 +17,7 @@ export async function PUT(req: Request) {
     const currentDate: Date = new Date()
 
     const body = await req.json()
-    const { offerId,
-      counterPrice,
-      userId,
-      sellerId,
-      adId,
-      adTitle, } = body
+    const { offerId, counterPrice, userId, sellerId, adId, adTitle } = body
 
     console.log("body:", body)
 
@@ -31,16 +26,16 @@ export async function PUT(req: Request) {
       .set({ isCountered: true, isDeclined: false, counterPrice: counterPrice })
       .where(eq(offers.id, offerId))
 
-      const notification = await db.insert(notifications).values({
-        id: notificationId,
-        userId: userId,
-        adId: adId,
-        createdAt: currentDate,
-        title: `Counter offer recieved!`,
-        description: `Counter offer for listing ${adTitle} recieved!`,
-        body: `A counter offer of R ${counterPrice} has been sent for listing ${adTitle}. Head over to the listing page to either accept or decline the offer.`,
-        isRead: false,
-      })
+    const notification = await db.insert(notifications).values({
+      id: notificationId,
+      userId: userId,
+      adId: adId,
+      createdAt: currentDate,
+      title: `Counter offer recieved!`,
+      description: `Counter offer for listing ${adTitle} recieved!`,
+      body: `A counter offer of R ${counterPrice} has been sent for listing ${adTitle}. Head over to the listing page to either accept or decline the offer.`,
+      isRead: false,
+    })
 
     return new Response(JSON.stringify(counterOffer), { status: 200 })
   } catch (error) {

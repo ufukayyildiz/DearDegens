@@ -90,9 +90,9 @@ export default function MintCounterTwo({ adOffer }: CounterProps) {
       counterPrice: counterPrice,
       userId: adOffer.userId,
       offerId: adOffer.id,
-      sellerId: adOffer.sellerId,
+      sellerId: adOffer.sellerId || '',
       adId: adOffer.adId,
-      adTitle: adOffer.adTitle,
+      adTitle: adOffer.adTitle || '',
     }
     setDisabled(true)
     console.log("Submit Payload:", payload)

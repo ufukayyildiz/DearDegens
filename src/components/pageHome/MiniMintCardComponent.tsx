@@ -29,10 +29,10 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
     minimumFractionDigits: 0,
   })
 
-  const formattedPrice = formatter.format(price)
+  const formattedPrice = formatter.format(price!)
 
   return (
-    <div className="w-40 h-60 rounded-lg border border-muted bg-background shadow-md transition duration-500 hover:scale-[0.99]">
+    <div className="w-40 h-60 rounded-lg border border-muted hover:border-customAccent bg-background shadow-md hover:shadow-lg hover:shadow-customAccentTwo transition duration-75 hover:scale-[0.99]">
       <Link href={`/p/mint/${listing.id}`}>
         <div className="w-full h-full relative flex flex-col">
           <div className="w-full">
@@ -80,7 +80,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
 
             <div className="absolute bottom-1 left-2 flex gap-1 text-xs italic text-secondary">
               <span>Listed</span>
-              {formatTimeToNow(new Date(listing.createdAt))}
+              {formatTimeToNow(new Date(listing.createdAt!))}
             </div>
           </div>
         </div>

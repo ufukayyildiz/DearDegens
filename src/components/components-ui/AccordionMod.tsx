@@ -1,10 +1,9 @@
 "use client"
 
 import * as React from "react"
-import * as AccordionPrimitive from "@radix-ui/react-accordion"
-import { ChevronDown } from "lucide-react"
-import { Menu } from "lucide-react"
 import { cn } from "@/src/lib/utils"
+import * as AccordionPrimitive from "@radix-ui/react-accordion"
+import { ChevronDown, Menu } from "lucide-react"
 
 const AccordionMod = AccordionPrimitive.Root
 
@@ -12,11 +11,7 @@ const AccordionItemMod = React.forwardRef<
   React.ElementRef<typeof AccordionPrimitive.Item>,
   React.ComponentPropsWithoutRef<typeof AccordionPrimitive.Item>
 >(({ className, ...props }, ref) => (
-  <AccordionPrimitive.Item
-    ref={ref}
-    className={cn(className)}
-    {...props}
-  />
+  <AccordionPrimitive.Item ref={ref} className={cn(className)} {...props} />
 ))
 AccordionItemMod.displayName = "AccordionItem"
 
@@ -57,4 +52,9 @@ const AccordionContentMod = React.forwardRef<
 ))
 AccordionContentMod.displayName = AccordionPrimitive.Content.displayName
 
-export { AccordionMod, AccordionItemMod, AccordionTriggerMod, AccordionContentMod }
+export {
+  AccordionMod,
+  AccordionItemMod,
+  AccordionTriggerMod,
+  AccordionContentMod,
+}

@@ -1,6 +1,6 @@
+import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
-import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { eq } from "drizzle-orm"
 
 export async function PUT(req: Request) {
@@ -12,11 +12,11 @@ export async function PUT(req: Request) {
 
     const listingId = await req.json()
     const id = JSON.stringify(listingId)
-    console.log('id:', id)
+    console.log("id:", id)
 
     const response = await db.delete(listings).where(eq(listings.id, id))
 
-    console.log('Successfully deleted listing:', response)
+    console.log("Successfully deleted listing:", response)
     return new Response("Successfully deleted notification.", { status: 200 })
   } catch (error) {
     console.error("Deletion listing error:", error)

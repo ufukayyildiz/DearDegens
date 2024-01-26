@@ -9,9 +9,9 @@ import EditHousehold from "@/src/components/pageEditMint/EditHousehold"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
+import { listingsType } from "@/src/types/db"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
-import { listingsType } from "@/src/types/db"
 
 interface MintPageProps {
   params: {
@@ -55,7 +55,7 @@ export default async function MintEditPage({ params }: MintPageProps) {
           <EditHousehold listing={listing} />
         </TabsContent>
         <TabsContent value="property">
-        <h1>Property</h1>
+          <h1>Property</h1>
         </TabsContent>
         <TabsContent value="vehicles">
           <h1>Vehicles</h1>

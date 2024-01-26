@@ -3,10 +3,10 @@
 import React, { useEffect, useState } from "react"
 import useMediaQuery from "@/src/hooks/useMediaQuery"
 import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
-
-import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
 import MiniMintCardComponent from "./MiniMintCardComponent"
+
 import "@splidejs/react-splide/css/core"
 
 export default function SwipperComponent({ listings }: { listings: any[] }) {
@@ -29,19 +29,18 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
     }
   }, [isBelowSmallScreens, isBelowLargeScreens, isBelowXLScreens])
 
-
   return (
     <div>
       <Splide
         hasTrack={false}
         aria-label="..."
         className="relative"
-        options={{ perPage: slides, gap: '5rem', autoplay: true, type: "loop" }}
+        options={{ perPage: slides, gap: "5rem", autoplay: true, type: "loop" }}
       >
         <SplideTrack>
           {listings.map((listing: any, index: any) => (
             <SplideSlide key={index} tabIndex={index} className="p-5">
-              <MiniMintCardComponent  listing={listing} />
+              <MiniMintCardComponent listing={listing} />
             </SplideSlide>
           ))}
         </SplideTrack>
@@ -54,7 +53,7 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
           </div>
           <div className="absolute top-[50%] -right-6">
             <button className="splide__arrow splide__arrow--next">
-              <ChevronRightIcon/>
+              <ChevronRightIcon />
             </button>
           </div>
         </div>

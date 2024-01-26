@@ -1,6 +1,12 @@
-import { useQuery } from "@tanstack/react-query";
-import { queryType, offerType, listingsType } from "../types/db";
-import { getAdQueries, getNotifications, getAdOffers, getListings } from "./actions";
+import { useQuery } from "@tanstack/react-query"
+
+import { listingsType, offerType, queryType } from "../types/db"
+import {
+  getAdOffers,
+  getAdQueries,
+  getListings,
+  getNotifications,
+} from "./actions"
 
 export function useGetQueries(mintId: any) {
   return useQuery<queryType[]>({
@@ -26,6 +32,6 @@ export function useGetOffers(mintId: any) {
 export function useGetListing(mintId: any) {
   return useQuery<listingsType[]>({
     queryKey: ["listing"],
-    queryFn: () => mintId && getListings(mintId)
+    queryFn: () => mintId && getListings(mintId),
   })
 }

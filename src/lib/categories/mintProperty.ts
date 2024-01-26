@@ -17,7 +17,7 @@ export const categoryProperty = [
       "Room for rent",
       "Commercial Property for rent",
       "Industrial Property for rent",
-      "Warehousing / Storage Space for rent"
+      "Warehousing / Storage Space for rent",
     ],
   },
   {
@@ -32,19 +32,6 @@ export const categoryProperty = [
   },
 ]
 
+export const fascilitiesQty = ["N/A", "1", "2", "3", "4", "5", "6+"]
 
-export const fascilitiesQty = [
-  "N/A",
-  "1",
-  "2",
-  "3",
-  "4",
-  "5",
-  "6+"
-]
-
-export const internet = [
-  "LTE Router",
-  "ADSL",
-  "Fibre"
-]
+export const internet = ["LTE Router", "ADSL", "Fibre"]

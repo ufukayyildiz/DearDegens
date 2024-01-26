@@ -9,12 +9,9 @@ interface QueryCardProps {
   userId: string
 }
 
-export default function MintQueriesCard({
-  query,
-  userId,
-}: QueryCardProps) {
+export default function MintQueriesCard({ query, userId }: QueryCardProps) {
   return (
-    <div className="relative flex flex-col h-auto max-w-[310px] min-h-[250px] p-2 mb-3 border border-muted hover:border-customAccent text-primary overflow-hidden shadow-lg rounded-lg">
+    <div className="relative flex flex-col h-auto max-w-[310px] min-h-[250px] p-2 mb-3 border border-muted hover:border-customAccent text-primary overflow-hidden shadow-lg rounded-lg transition duration-75 hover:scale-[0.99]">
       <div className="flex space-x-2 items-center mb-5">
         <p className="font-semibold italic">Name:</p>
         <p>{query.userName}</p>
@@ -39,7 +36,7 @@ export default function MintQueriesCard({
             Sent {formatTimeToNow(query.createdAt!)}
           </p>
           <div>
-          {query.sellerId === userId && <MintQueryReply queryId={query.id} />}
+            {query.sellerId === userId && <MintQueryReply queryId={query.id} />}
           </div>
         </div>
       </div>

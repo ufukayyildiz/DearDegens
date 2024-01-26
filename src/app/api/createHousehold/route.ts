@@ -1,10 +1,14 @@
-import { db } from "@/src/server/db"
-import { listings, notifications, users, usersRelations } from "@/src/server/db/schema"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateHousehold } from "@/src/lib/validators/validateHousehold"
+import { db } from "@/src/server/db"
+import {
+  listings,
+  notifications,
+  users,
+  usersRelations,
+} from "@/src/server/db/schema"
 import { nanoid } from "nanoid"
 import { z } from "zod"
-
 
 export async function POST(req: Request) {
   try {
@@ -83,7 +87,6 @@ export async function POST(req: Request) {
       body: `Thank you for choosing PepperMint to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
       isRead: false,
     })
-
 
     return new Response(JSON.stringify(post), { status: 200 })
   } catch (error) {

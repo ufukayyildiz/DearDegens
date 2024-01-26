@@ -45,21 +45,17 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           </div>
         </div>
 
-
         <DropdownMenuItem asChild>
           <Link href="/p/mint/create">Create Ad</Link>
         </DropdownMenuItem>
-
 
         <DropdownMenuItem asChild>
           <Link href="/p/mymints">My Ads</Link>
         </DropdownMenuItem>
 
-
         <DropdownMenuItem asChild>
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
-
 
         <DropdownMenuItem
           asChild

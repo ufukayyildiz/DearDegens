@@ -62,10 +62,13 @@ export async function getAdOffers(mintId: string) {
 // Get listing Queries
 export async function getAdQueries(mintId: string) {
   try {
-    const adQueries = await db.select().from(queries).where(eq(queries.adId, mintId))
+    const adQueries = await db
+      .select()
+      .from(queries)
+      .where(eq(queries.adId, mintId))
 
     adQueries && adQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
-    
+
     console.log("Ad queries query successful")
     return adQueries
   } catch (error) {

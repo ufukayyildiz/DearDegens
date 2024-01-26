@@ -22,7 +22,7 @@ export default function TermsOfService() {
         verifying product details.
       </p>
       <h1 className="font-bold text-lg mb-2">In-Person Meetings:</h1>
-      <p className="mb-5"> 
+      <p className="mb-5">
         When meeting in person, exercise caution and prioritize safety. The app
         is not responsible for any harm or damages resulting from in-person
         meetings arranged through the platform.

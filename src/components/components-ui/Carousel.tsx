@@ -1,13 +1,13 @@
 "use client"
 
 import * as React from "react"
-import { ChevronRightIcon, ChevronLeftIcon } from "lucide-react"
+import { cn } from "@/src/lib/utils"
 import { ArrowLeftIcon, ArrowRightIcon } from "@radix-ui/react-icons"
 import useEmblaCarousel, {
   type UseEmblaCarouselType,
 } from "embla-carousel-react"
+import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
 
-import { cn } from "@/src/lib/utils"
 import { Button } from "./Button"
 
 type CarouselApi = UseEmblaCarouselType[1]

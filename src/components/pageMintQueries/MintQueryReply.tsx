@@ -17,7 +17,7 @@ import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import {
   QueryReplyCreationRequest,
-  validateQueryReply
+  validateQueryReply,
 } from "@/src/lib/validators/validateQueryReply"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
@@ -104,7 +104,9 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["adQueries", "listing"] })
+        await queryClient.invalidateQueries({
+          queryKey: ["adQueries", "listing"],
+        })
       }
     },
   })

@@ -10,9 +10,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
     return (
       <div className="flex w-full justify-between">
         <p className="font-semibold italic">Offer Status:</p>
-        <p className="font-semibold italic text-teal-500">
-          Deal is sealed!
-        </p>
+        <p className="font-semibold italic text-teal-500">Deal is sealed!</p>
       </div>
     )
   }
@@ -21,9 +19,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
     return (
       <div className="flex w-full justify-between">
         <p className="font-semibold italic">Offer Status:</p>
-        <p className="font-semibold italic text-teal-500">
-          Offer accepted! 
-        </p>
+        <p className="font-semibold italic text-teal-500">Offer accepted!</p>
       </div>
     )
   }

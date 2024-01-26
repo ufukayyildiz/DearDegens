@@ -1,9 +1,8 @@
+import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { notifications, offers } from "@/src/server/db/schema"
-import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { nanoid } from "nanoid"
 import { z } from "zod"
-
 
 export async function POST(req: Request) {
   try {
@@ -31,7 +30,7 @@ export async function POST(req: Request) {
 
     const { sellerId, adId, offerPrice, askPrice, title } = body
 
-    console.log('body:', body)
+    console.log("body:", body)
 
     const post = await db.insert(offers).values({
       id: offerId,
@@ -44,7 +43,7 @@ export async function POST(req: Request) {
       expirationDate: expirationDate,
       purgeDate: purgeDate,
       offerPrice: offerPrice,
-      askPrice: askPrice
+      askPrice: askPrice,
     })
 
     const notification = await db.insert(notifications).values({
@@ -57,7 +56,6 @@ export async function POST(req: Request) {
       body: `An offer of R ${offerPrice} has been placed on your listing. Head over to your listings page to either accept or make a counter offer.`,
       isRead: false,
     })
-
 
     return new Response(JSON.stringify(post), { status: 200 })
   } catch (error) {

@@ -1,3 +1,5 @@
+import { getAuthSession } from "@/src/lib/auth/auth-options"
+import { validateHousehold } from "@/src/lib/validators/validateHousehold"
 import { db } from "@/src/server/db"
 import {
   listings,
@@ -5,8 +7,6 @@ import {
   users,
   usersRelations,
 } from "@/src/server/db/schema"
-import { getAuthSession } from "@/src/lib/auth/auth-options"
-import { validateHousehold } from "@/src/lib/validators/validateHousehold"
 import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"

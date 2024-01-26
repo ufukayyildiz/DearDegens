@@ -35,7 +35,7 @@ export default function MintCreatePage() {
           <MintHousehold />
         </TabsContent>
         <TabsContent value="property">
-        <h1>Property</h1>
+          <h1>Property</h1>
         </TabsContent>
         <TabsContent value="vehicles">
           <h1>Vehicles</h1>

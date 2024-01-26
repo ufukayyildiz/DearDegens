@@ -55,7 +55,7 @@ export default function MintCarouselTwo(listing: any) {
                 className="flex items-center justify-center shadow-lg"
               >
                 <div className="flex max-h-[40vh] rounded-md overflow-hidden">
-                  <img src={images} alt={images} className="object-cover"/>
+                  <img src={images} alt={images} className="object-cover" />
                 </div>
               </CarouselItem>
             ))}

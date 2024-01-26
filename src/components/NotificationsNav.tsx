@@ -208,13 +208,14 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
               <Button
                 onClick={() => handleReadAllNotifications(userId)}
                 variant="outline"
+                className="bg-muted"
               >
                 Mark all as read
               </Button>
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="passivedestructive">Delete all</Button>
+                  <Button variant="passivedestructive" className="bg-muted">Delete all</Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>

@@ -1,5 +1,6 @@
 import Image from "next/image"
 import Logo from "@/src/assets/deardegens2.png"
+
 import UserAuthForm from "./UserAuthForm"
 
 const SignIn = () => {

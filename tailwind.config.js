@@ -32,6 +32,7 @@ module.exports = {
         customColorThr: "hsl(var(--custom-color-thr))",
         customColorFou: "hsl(var(--custom-color-fou))",
         customAccent: "hsl(var(--custom-accent))",
+        customAccentTwo: "hsl(var(--custom-accent-two))",
 
         foreground: "hsl(var(--foreground))",
         primary: {

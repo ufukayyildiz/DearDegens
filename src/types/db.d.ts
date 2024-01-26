@@ -1,6 +1,6 @@
 import { InferInsertModel, InferSelectModel } from "drizzle-orm"
 
-import { queries, notifications, offers, listings } from "../server/db/schema"
+import { listings, notifications, offers, queries } from "../server/db/schema"
 
 export type listingsType = InferInsertModel<typeof listings>
 export type notificationsType = InferInsertModel<typeof notifications>

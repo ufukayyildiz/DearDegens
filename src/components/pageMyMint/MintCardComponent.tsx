@@ -29,7 +29,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
     minimumFractionDigits: 0,
   })
 
-  const formattedPrice = formatter.format(price)
+  const formattedPrice = formatter.format(price!)
 
   return (
     <div className="mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-500 hover:scale-[0.99]">
@@ -55,7 +55,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
 
             <div className="absolute bottom-2 left-3 flex max-h-40 gap-1 text-xs italic text-secondary">
               <span>Listed</span>
-              {formatTimeToNow(new Date(listing.createdAt))}
+              {formatTimeToNow(new Date(listing.createdAt!))}
               <span>in</span>
               <span className="text-primary font-bold">{listing.location}</span>
             </div>
