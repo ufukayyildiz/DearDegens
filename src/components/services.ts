@@ -1,3 +1,4 @@
+'use client'
 import { useQuery } from "@tanstack/react-query"
 
 import { listingsType, offerType, queryType } from "../types/db"
@@ -6,7 +7,7 @@ import {
   getAdQueries,
   getListings,
   getNotifications,
-} from "./actions"
+} from "../server/actions"
 
 export function useGetQueries(mintId: any) {
   return useQuery<queryType[]>({

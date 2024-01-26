@@ -68,56 +68,54 @@ export default async function MintPage({ params }: MintPageProps) {
 
   return (
     <div className="flex h-auto w-full">
-      <div className="mx-auto w-10/12 md:w-8/12">
-        {listing &&
-          listing.map((item, index) => (
-            <div key={index} className="mb-60">
-              <MintCarouselTwo listing={item.images} />
-              <div className="mt-10 flex w-full flex-row justify-between">
-                <div className="my-auto w-full">
-                  <div className="flex w-full justify-between">
-                    <h1 className="mb-5 text-3xl font-bold text-customAccent">
-                      R {formatPrice(item.price)}
-                    </h1>
-                    {session &&
-                      item.price &&
-                      item.title &&
-                      item.authorId !== session.user.id && (
-                        <MintOffer
-                          title={item.title}
-                          sellerId={item.authorId}
-                          adId={item.id}
-                          askPrice={item.price}
-                        />
-                      )}
+      <HydrationBoundary state={dehydrate(queryClient)}>
+        <div className="mx-auto w-10/12 md:w-8/12">
+          {listing &&
+            listing.map((item, index) => (
+              <div key={index} className="mb-60">
+                <MintCarouselTwo listing={item.images} />
+                <div className="mt-10 flex w-full flex-row justify-between">
+                  <div className="my-auto w-full">
+                    <div className="flex w-full justify-between">
+                      <h1 className="mb-5 text-3xl font-bold text-customAccent">
+                        R {formatPrice(item.price)}
+                      </h1>
+                      {session &&
+                        item.price &&
+                        item.title &&
+                        item.authorId !== session.user.id && (
+                          <MintOffer
+                            title={item.title}
+                            sellerId={item.authorId}
+                            adId={item.id}
+                            askPrice={item.price}
+                          />
+                        )}
+                    </div>
+                    <h1 className="mb-2 text-2xl font-bold">{item.title}</h1>
+                    <p className="text-xs italic text-secondary">
+                      Listed {formatTimeToNow(item.createdAt!)}
+                    </p>
                   </div>
-                  <h1 className="mb-2 text-2xl font-bold">{item.title}</h1>
-                  <p className="text-xs italic text-secondary">
-                    Listed {formatTimeToNow(item.createdAt!)}
-                  </p>
                 </div>
-              </div>
-              <hr className="my-2 border border-t-muted-foreground" />
-              <div className="flex min-h-[40px] ">
-                {session?.user.id === item.authorId ? (
-                  <HydrationBoundary state={dehydrate(queryClient)}>
+                <hr className="my-2 border border-t-muted-foreground" />
+                <div className="flex min-h-[40px] ">
+                  {session?.user.id === item.authorId ? (
                     <MintPageAuthorActions listingId={item.id} />
-                  </HydrationBoundary>
-                ) : (
-                  <HydrationBoundary state={dehydrate(queryClient)}>
+                  ) : (
                     <MintPageUsersActions listingId={item.id} />
-                  </HydrationBoundary>
-                )}
+                  )}
+                </div>
+                <hr className="my-2 border border-t-muted-foreground" />
+                <h1 className="mt-5 text-lg font-bold">Description</h1>
+                <p className="my-5 whitespace-pre-line">{item.description}</p>
+                <hr className="my-2 border border-t-muted-foreground" />
+                <h1 className="mt-5 text-lg font-bold">Queries</h1>
+                <MintQA />
               </div>
-              <hr className="my-2 border border-t-muted-foreground" />
-              <h1 className="mt-5 text-lg font-bold">Description</h1>
-              <p className="my-5 whitespace-pre-line">{item.description}</p>
-              <hr className="my-2 border border-t-muted-foreground" />
-              <h1 className="mt-5 text-lg font-bold">Queries</h1>
-              <MintQA queries={query} />
-            </div>
-          ))}
-      </div>
+            ))}
+        </div>
+      </HydrationBoundary>
     </div>
   )
 }

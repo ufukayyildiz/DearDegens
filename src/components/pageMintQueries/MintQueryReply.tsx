@@ -105,7 +105,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({
-          queryKey: ["adQueries", "listing"],
+          queryKey: ["adQueries"],
         })
       }
     },
@@ -163,7 +163,8 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                           }
                         ),
                       }}
-                      children={(field) => (
+                    >
+                      {(field) => (
                         <>
                           <div className="flex h-5 w-full justify-between">
                             <label className="py-1 text-primary">
@@ -185,14 +186,13 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                           <FieldInfo field={field} />
                         </>
                       )}
-                    />
+                    </form.Field>
                   </div>
 
                   <div className="mb-5">
                     {/* ISPUBLIC */}
-                    <form.Field
-                      name="isPublic"
-                      children={(field) => (
+                    <form.Field name="isPublic">
+                      {(field) => (
                         <>
                           <div className="flex items-center justify-start space-x-2">
                             <Checkbox
@@ -209,7 +209,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                           <FieldInfo field={field} />
                         </>
                       )}
-                    />
+                    </form.Field>
                   </div>
 
                   <div>
@@ -232,7 +232,8 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                     state.isSubmitted,
                     state.errors,
                   ]}
-                  children={([canSubmit, isSubmitting]) =>
+                >
+                  {([canSubmit, isSubmitting]) =>
                     !submitted ? (
                       <div className="flex w-full justify-between">
                         <div className="flex items-center justify-start space-x-2">
@@ -274,7 +275,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                       </AlertDialogAction>
                     )
                   }
-                />
+                </form.Subscribe>
               </AlertDialogFooter>
             </form>
           </form.Provider>

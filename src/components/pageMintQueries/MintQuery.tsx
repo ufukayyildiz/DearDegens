@@ -17,7 +17,7 @@ import {
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { QueryCreationRequest } from "@/src/lib/validators/validateQuery"
-import { useGetListing } from "@/src/server/services"
+import { useGetListing } from "@/src/components/services"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -161,7 +161,8 @@ export default function MintQuery() {
                           }
                         ),
                       }}
-                      children={(field) => (
+                    >
+                      {(field) => (
                         <>
                           <div className="flex h-5 w-full justify-between">
                             <label className="py-1 text-primary">
@@ -183,7 +184,7 @@ export default function MintQuery() {
                           <FieldInfo field={field} />
                         </>
                       )}
-                    />
+                    </form.Field>
                   </div>
 
                   <div>
@@ -206,7 +207,8 @@ export default function MintQuery() {
                     state.isSubmitted,
                     state.errors,
                   ]}
-                  children={([canSubmit, isSubmitting]) =>
+                >
+                  {([canSubmit, isSubmitting]) =>
                     !submitted ? (
                       <div className="flex w-full justify-between">
                         <div className="flex items-center justify-start space-x-2">
@@ -248,7 +250,7 @@ export default function MintQuery() {
                       </AlertDialogAction>
                     )
                   }
-                />
+                </form.Subscribe>
               </AlertDialogFooter>
             </form>
           </form.Provider>
