@@ -22,7 +22,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
       <div className="flex w-full justify-between">
         <p className="font-semibold italic">Offer Status:</p>
         <p className="font-semibold italic text-teal-500">
-          Accepted, awaiting confirmation
+          Offer accepted! 
         </p>
       </div>
     )

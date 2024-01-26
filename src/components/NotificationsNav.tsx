@@ -13,13 +13,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/components-ui/AlertDialog"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Bell, Loader, MoreVertical } from "lucide-react"
 
 import { toast } from "../hooks/use-toast"
 import { formatTimeToNow } from "../lib/utils"
-import { getNotifications } from "../server/actions"
 import { useGetNotifications } from "../server/services"
 import { notificationsType } from "../types/db"
 import { Button } from "./components-ui/Button"
@@ -286,9 +285,9 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               onClick={() => {
                                 setSelectedNotificationId(notify.id)
                               }}
-                              className="w-10 h-10 bg-transparent group border border-transparent hover:border-customAccent rounded-full shadow-none hover:shadow-md absolute top-1 right-1"
+                              className="w-10 h-10 bg-transparent hover:bg-transparent  group border border-transparent rounded-full shadow-none absolute top-1 right-1"
                             >
-                              <MoreVertical className="w-6 h-6 mx-auto rounded-full absolute top-2" />
+                              <MoreVertical className="w-6 h-6 mx-auto text-transparent hover:text-customAccent rounded-full absolute top-2" />
                             </Button>
                           </DropdownMenuTrigger>
 
@@ -296,23 +295,23 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                             className="flex flex-col overflow-y-auto gap-1"
                             align="end"
                           >
-                              <Button
-                                onClick={() => {
-                                  setSelectedNotificationId(notify.id)
-                                  handleDeleteNotification(notify)
-                                }}
-                                variant="outline"
-                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
-                              >
-                                Delete
-                              </Button>
-                              <Button
-                                onClick={() => handleReadNotification(notify)}
-                                variant="outline"
-                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
-                              >
-                                Mark as read
-                              </Button>
+                            <Button
+                              onClick={() => {
+                                setSelectedNotificationId(notify.id)
+                                handleDeleteNotification(notify)
+                              }}
+                              variant="outline"
+                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                            >
+                              Delete
+                            </Button>
+                            <Button
+                              onClick={() => handleReadNotification(notify)}
+                              variant="outline"
+                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                            >
+                              Mark as read
+                            </Button>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>
@@ -337,9 +336,9 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                               onClick={() => {
                                 setSelectedNotificationId(notify.id)
                               }}
-                              className="w-10 h-10 bg-transparent group border border-transparent hover:border-customAccent rounded-full shadow-none hover:shadow-md absolute top-1 right-1"
+                              className="w-10 h-10 bg-transparent hover:bg-transparent group border border-transparent rounded-full shadow-none absolute top-1 right-1"
                             >
-                              <MoreVertical className="w-6 h-6 mx-auto text-transparent rounded-full absolute top-2" />
+                              <MoreVertical className="w-6 h-6 mx-auto text-transparent hover:text-customAccent rounded-full absolute top-2" />
                             </Button>
                           </DropdownMenuTrigger>
 
@@ -347,23 +346,23 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                             className="flex flex-col overflow-y-auto gap-1"
                             align="end"
                           >
-                              <Button
-                                onClick={() => {
-                                  setSelectedNotificationId(notify.id)
-                                  handleDeleteNotification(notify)
-                                }}
-                                variant="outline"
-                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
-                              >
-                                Delete
-                              </Button>
-                              <Button
-                                onClick={() => handleReadNotification(notify)}
-                                variant="outline"
-                                className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
-                              >
-                                Mark as read
-                              </Button>
+                            <Button
+                              onClick={() => {
+                                setSelectedNotificationId(notify.id)
+                                handleDeleteNotification(notify)
+                              }}
+                              variant="outline"
+                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                            >
+                              Delete
+                            </Button>
+                            <Button
+                              onClick={() => handleReadNotification(notify)}
+                              variant="outline"
+                              className="w-full h-8 flex text-start bg-transparent border border-transparent shadow-none"
+                            >
+                              Mark as read
+                            </Button>
                           </DropdownMenuContent>
                         </DropdownMenu>
                       </div>

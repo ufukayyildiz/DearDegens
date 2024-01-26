@@ -126,8 +126,8 @@ export default function MintOfferCardUserActions({
       <div className="flex w-1/2 gap-1 items-end justify-end">
         <Button
           onClick={() => offerConfirmation()}
-          variant="outlinebold"
-          className="h-8"
+          variant="outlineTwo"
+          className="h-8 border-teal-500 hover:text-teal-500"
         >
           Confirm
         </Button>

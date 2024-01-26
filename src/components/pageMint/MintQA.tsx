@@ -19,7 +19,7 @@ export default function MintQA({ queries }: QAProps) {
                 </div>
                 <div className="flex space-x-5">
                   <p className="w-5 font-bold">A:</p>
-                  <p className="w-full italic">{qa.reply}</p>
+                  <p className="w-full text-customAccent italic">{qa.reply}</p>
                 </div>
                 <hr className="my-2 border border-t-muted" />
               </div>

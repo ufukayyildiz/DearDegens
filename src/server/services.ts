@@ -1,5 +1,5 @@
 import { useQuery } from "@tanstack/react-query";
-import { queryType, offerType } from "../types/db";
+import { queryType, offerType, listingsType } from "../types/db";
 import { getAdQueries, getNotifications, getAdOffers, getListings } from "./actions";
 
 export function useGetQueries(mintId: any) {
@@ -20,5 +20,12 @@ export function useGetOffers(mintId: any) {
   return useQuery<offerType[]>({
     queryKey: ["adOffers"],
     queryFn: () => mintId && getAdOffers(mintId),
+  })
+}
+
+export function useGetListing(mintId: any) {
+  return useQuery<listingsType[]>({
+    queryKey: ["listing"],
+    queryFn: () => mintId && getListings(mintId)
   })
 }

@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useCallback, useState } from "react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
@@ -459,9 +460,14 @@ export default function MintHousehold() {
             />
           </div>
 
-          <Button type="submit" variant="outline" size="lg">
-            Sell!
-          </Button>
+          <div className="flex gap-10">
+            <Button type="submit" variant="outline">
+              Send
+            </Button>
+            <Button>
+              <Link href={`/`}>Cancel</Link>
+            </Button>
+          </div>
         </form>
       </Form>
     </div>

@@ -9,16 +9,16 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default:
-          "bg-muted text-primary shadow-lg border border-transparent hover:border-muted-foreground",
+          "bg-background text-primary shadow-lg border border-transparent hover:bg-muted",
         icon: "bg-transparent text-primary border border-transparent",
         destructive:
           "hover:bg-red-500 hover:text-white bg-red-400 text-primary border border-red-500 shadow-md",
         passivedestructive:
-          "hover:bg-red-500 hover:text-white bg-muted text-primary border border-red-500 shadow-md",
+          "hover:bg-red-500 hover:text-white bg-background text-primary border-2 border-red-500 shadow-md",
         outline:
-          "border-2 border-transparent hover:border-customAccent bg-muted shadow-lg",
+          "border-2 border-transparent hover:border-customAccent bg-background shadow-lg",
         outlineTwo:
-          "border-2 border-transparent bg-muted shadow-lg hover:bg-muted-foreground hover:text-customColorFou",
+          "border-2 border-customAccent bg-background shadow-lg hover:text-customAccent",
         outlinebold:
           "font-bold border-2 border-customAccent bg-background shadow-lg hover:bg-gradient-to-br from-customColorOne via-customColorTwo to-customColorThr hover:text-customColorFou",
         secondary:

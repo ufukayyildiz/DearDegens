@@ -45,14 +45,12 @@ import { Textarea } from "../components-ui/Textarea"
 type FormData = z.infer<typeof validateHousehold>
 
 interface EditHouseholdProps {
-  listing: listingsType
+  listing: listingsType[]
 }
 
 export default function EditHousehold({ listing }: EditHouseholdProps) {
-  console.log('listing', listing)
   const router = useRouter()
   const mintId = listing[0].id
-  console.log("mintId:", mintId)
 
   // ----------------------------------------------------------------------------------
   // UPLOADTHING
@@ -106,15 +104,15 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
   const form = useForm<FormData>({
     resolver: zodResolver(validateHousehold),
     defaultValues: {
-      category: listing[0].category,
-      price: listing[0].price,
-      title: listing[0].title,
-      brand: listing[0].brand,
-      model: listing[0].model,
-      description: listing[0].description,
-      images: listing[0].images,
-      location: listing[0].location,
-      meetup: listing[0].meetup,
+      category: listing[0].category || "",
+      price: listing[0].price || 0,
+      title: listing[0].title || "",
+      brand: listing[0].brand || "",
+      model: listing[0].model || "",
+      description: listing[0].description || "",
+      images: listing[0].images || "",
+      location: listing[0].location || "",
+      meetup: listing[0].meetup || "",
     },
   })
 
@@ -177,7 +175,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       brand: data.brand,
       model: data.model,
       description: data.description,
-      images: listing[0].images,
+      images: listing[0].images || "",
       location: data.location,
       meetup: data.meetup,
     }
@@ -477,11 +475,11 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
           </div>
 
           <div className="flex gap-10">
-            <Button variant="outlineTwo" size='lg'>
-              <Link href={`/p/mint/${mintId}`}>Cancel</Link>
-            </Button>
-            <Button type="submit" variant="outline" size="lg">
+            <Button type="submit" variant="outline">
               Update
+            </Button>
+            <Button>
+              <Link href={`/p/mint/${mintId}`}>Cancel</Link>
             </Button>
           </div>
         </form>

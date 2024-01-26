@@ -24,45 +24,16 @@ export default function MintPageAuthorActions({
 }: AuthorActionsProps) {
   return (
     <div className="w-full flex justify-end pr-5">
-      <div className=" w-4/12 flex justify-end">
-        <TooltipProvider>
-          <Tooltip>
-            <TooltipTrigger>
-              <ChatSheet />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Message Box</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <MintManager />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Offers / Questions</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <Button className="hover:text-amber-500" variant="icon">
-                <Link href={`/p/mint/edit/${listingId.listingId}`}>
-                  <FileEdit />
-                </Link>
-              </Button>
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Edit Listing</p>
-            </TooltipContent>
-          </Tooltip>
-          <Tooltip>
-            <TooltipTrigger>
-              <MintDelete listingId={listingId} />
-            </TooltipTrigger>
-            <TooltipContent>
-              <p>Delete Listing</p>
-            </TooltipContent>
-          </Tooltip>
-        </TooltipProvider>
+      <div className="w-4/12 flex justify-end space-x-5">
+        <ChatSheet />
+        <MintManager />
+        <Link
+          href={`/p/mint/edit/${listingId.listingId}`}
+          className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"
+        >
+          <FileEdit />
+        </Link>
+        <MintDelete listingId={listingId} />
       </div>
     </div>
   )

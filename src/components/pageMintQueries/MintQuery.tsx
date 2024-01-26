@@ -16,54 +16,60 @@ import {
 } from "@/src/components/components-ui/AlertDialog"
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
-import {
-  QueryCreationRequest,
-  validateQuery,
-} from "@/src/lib/validators/validateQuery"
-import { getListings } from "@/src/server/actions"
-import { listingsType, queryType } from "@/src/types/db"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query"
+import { QueryCreationRequest } from "@/src/lib/validators/validateQuery"
+import { useGetListing } from "@/src/server/services"
+import { useForm } from "@tanstack/react-form"
+import type { FieldApi } from "@tanstack/react-form"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { zodValidator } from "@tanstack/zod-form-adapter"
 import axios from "axios"
 import { HelpCircle } from "lucide-react"
-import { useForm } from "react-hook-form"
 import { z } from "zod"
 
 import { Checkbox } from "../components-ui/Checkbox"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../components-ui/Form"
-import { Input } from "../components-ui/Input"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
 
-type FormData = z.infer<typeof validateQuery>
+function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
+  return (
+    <>
+      {field.state.meta.touchedErrors ? (
+        <em className="absolute -bottom-8 text-rose-500">
+          {field.state.meta.touchedErrors}
+        </em>
+      ) : null}
+    </>
+  )
+}
 
 export default function MintQuery() {
   const queryClient = useQueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
+  const [submitted, setSubmitted] = useState<boolean>(false)
+
   const { mintId }: any = useParams()
 
-  const { data } = useQuery<listingsType[]>({
-    queryKey: ["listing"],
-    queryFn: () => mintId && getListings(mintId)
-  })
+  const getListing = useGetListing(mintId).data
+  const listing = getListing && getListing[0]
 
-  const listing = data && data[0]
-
-  const form = useForm<FormData>({
-    resolver: zodResolver(validateQuery),
+  const form = useForm({
+    validatorAdapter: zodValidator,
     defaultValues: {
       query: "",
       adId: listing?.id,
       sellerId: listing?.authorId,
-      adTitle: listing?.title || '',
+      adTitle: listing?.title || "",
+    },
+    onSubmit: async ({ value }) => {
+      const payload: QueryCreationRequest = {
+        query: value.query,
+        adId: listing?.id || "",
+        sellerId: listing?.authorId || "",
+        adTitle: listing?.title || "",
+      }
+      createQuery(payload)
+      setDisabled(true)
+      console.log("Submit Payload:", payload)
     },
   })
 
@@ -94,6 +100,7 @@ export default function MintQuery() {
       })
     },
     onSuccess: () => {
+      setSubmitted(true)
       return toast({
         description: "Your query is on the way to the seller.",
       })
@@ -107,58 +114,74 @@ export default function MintQuery() {
     },
   })
 
-  async function onSubmit(data: FormData) {
-    const payload: QueryCreationRequest = {
-      query: data.query,
-      adId: listing?.id || '',
-      sellerId: listing?.authorId || '',
-      adTitle: listing?.title || '',
-    }
-    setDisabled(true)
-    console.log("Submit Payload:", payload)
-    createQuery(payload)
-  }
-
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button className="hover:text-blue-500" variant="icon">
-            <HelpCircle />
-          </Button>
+        <AlertDialogTrigger className="group flex h-10 w-7 items-center justify-center hover:text-blue-500">
+          <HelpCircle />
         </AlertDialogTrigger>
         <AlertDialogContent>
-          <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+          <form.Provider>
+            <form
+              onSubmit={(event) => {
+                event.preventDefault()
+                event.stopPropagation()
+                void form.handleSubmit()
+              }}
+              className="space-y-8"
+            >
               <AlertDialogHeader>
                 <AlertDialogTitle className="font-bold mb-5">
-                  Have a question for the seller?
+                  <p className="italic">Have a question for the seller?</p>
                 </AlertDialogTitle>
+
                 <AlertDialogDescription>
-                  <div className="grid grid-cols-1 gap-2 mb-5">
-                    {/* QUERY */}
-                    <FormField
-                      control={form.control}
+                  <div className="relative grid grid-cols-1 gap-2 mb-10">
+                    {/* REPLY */}
+                    <form.Field
                       name="query"
-                      render={({ field }) => (
-                        <FormItem>
+                      validators={{
+                        onChange: z
+                          .string()
+                          .min(3, "Your message must be at least 3 characters")
+                          .max(
+                            191,
+                            "Your message cannot be greater than 191 characters"
+                          ),
+                        onChangeAsyncDebounceMs: 500,
+                        onChangeAsync: z.string().refine(
+                          async (value) => {
+                            await new Promise((resolve) =>
+                              setTimeout(resolve, 1000)
+                            )
+                            return !value.includes("error")
+                          },
+                          {
+                            message: "No 'error' allowed in message",
+                          }
+                        ),
+                      }}
+                      children={(field) => (
+                        <>
                           <div className="w-full h-5 flex justify-between">
-                            <FormLabel className="py-1 text-primary">
-                              Type your message here (Max 191 characters):
-                            </FormLabel>
-                            <FormLabel className="text-xs italic text-rose-400 py-1">
+                            <label className="py-1 text-primary">
+                              Type your message here:
+                            </label>
+                            <label className="text-xs italic text-rose-400 py-1">
                               (required)
-                            </FormLabel>
+                            </label>
                           </div>
-                          <FormControl>
-                            <Textarea
-                              {...field}
-                              className="w-full text-primary"
-                              required
-                            />
-                          </FormControl>
-                          <FormMessage />
-                        </FormItem>
+                          <Textarea
+                            id={field.name}
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(e) => field.handleChange(e.target.value)}
+                            className="w-full h-32 text-primary"
+                            required
+                          />
+                          <FieldInfo field={field} />
+                        </>
                       )}
                     />
                   </div>
@@ -174,39 +197,61 @@ export default function MintQuery() {
                   </div>
                 </AlertDialogDescription>
               </AlertDialogHeader>
+
               <AlertDialogFooter>
-                <div className="w-full flex justify-between">
-                  <div className="flex items-center space-x-2 justify-start">
-                    <Checkbox
-                      id="disable"
-                      checked={!disabled}
-                      onCheckedChange={() => setDisabled(!disabled)}
-                    />
-                    <Label
-                      htmlFor="disable"
-                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                    >
-                      <Link href="/termsofservice" className="underline">
-                        Agree to terms of service.
-                      </Link>
-                    </Label>
-                  </div>
-                  <div className="flex gap-5">
-                    <AlertDialogCancel onClick={() => setDisabled(true)}>
-                      Cancel
-                    </AlertDialogCancel>
-                    <AlertDialogAction
-                      type="submit"
-                      disabled={disabled}
-                      onClick={() => onSubmit(form.getValues())}
-                    >
-                      Send
-                    </AlertDialogAction>
-                  </div>
-                </div>
+                <form.Subscribe
+                  selector={(state) => [
+                    state.canSubmit,
+                    state.isSubmitting,
+                    state.isSubmitted,
+                    state.errors,
+                  ]}
+                  children={([canSubmit, isSubmitting]) =>
+                    !submitted ? (
+                      <div className="w-full flex justify-between">
+                        <div className="flex items-center space-x-2 justify-start">
+                          <Checkbox
+                            id="disable"
+                            checked={!disabled}
+                            onCheckedChange={() => setDisabled(!disabled)}
+                          />
+                          <Label
+                            htmlFor="disable"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                          >
+                            <Link href="/termsofservice" className="underline">
+                              Agree to terms of service.
+                            </Link>
+                          </Label>
+                        </div>
+                        <div className="flex gap-5">
+                          <AlertDialogCancel onClick={() => setDisabled(true)}>
+                            Cancel
+                          </AlertDialogCancel>
+                          <Button
+                            type="submit"
+                            disabled={disabled || !canSubmit}
+                            variant="outline"
+                            className="w-28"
+                          >
+                            {isSubmitting ? (
+                              <p className="italic">whoosh!!</p>
+                            ) : (
+                              "Send"
+                            )}
+                          </Button>
+                        </div>
+                      </div>
+                    ) : (
+                      <AlertDialogAction onClick={() => setSubmitted(false)}>
+                        Close
+                      </AlertDialogAction>
+                    )
+                  }
+                />
               </AlertDialogFooter>
             </form>
-          </Form>
+          </form.Provider>
         </AlertDialogContent>
       </AlertDialog>
     </div>

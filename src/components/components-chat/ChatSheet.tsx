@@ -19,10 +19,8 @@ import {
 export default function ChatSheet(ListingId: any) {
   return (
     <Sheet>
-      <SheetTrigger>
-        <Button className="group hover:text-blue-500" variant="icon">
-          <MessageCircle />
-        </Button>
+      <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-blue-500">
+        <MessageCircle />
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="h-full">

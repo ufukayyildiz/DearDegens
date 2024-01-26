@@ -1,7 +1,6 @@
 import React from "react"
 import { Gavel } from "lucide-react"
 
-import { Button } from "../components-ui/Button"
 import {
   ResizableHandle,
   ResizablePanel,
@@ -21,22 +20,22 @@ import MintQueries from "../pageMintQueries/MintQueries"
 export default function MintManager() {
   return (
     <Sheet>
-      <SheetTrigger>
-        <Button className="group hover:text-teal-500" variant="icon">
-          <Gavel />
-        </Button>
+      <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
+        <Gavel />
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="h-full">
           <SheetDescription className="h-full">
             <ResizablePanelGroup direction="vertical">
-              <ResizablePanel className="relative h-full">
-                <SheetTitle>Offers:</SheetTitle>
+              <ResizablePanel className="h-full">
+                <SheetTitle className="text-customAccent">Offers:</SheetTitle>
                 <MintOffers />
               </ResizablePanel>
               <ResizableHandle withHandle className="border-muted" />
-              <ResizablePanel className="relative">
-                <SheetTitle className="mt-5">Queries:</SheetTitle>
+              <ResizablePanel className="relative h-full">
+                <SheetTitle className="mt-5 text-customAccent">
+                  Queries:
+                </SheetTitle>
                 <MintQueries />
               </ResizablePanel>
             </ResizablePanelGroup>

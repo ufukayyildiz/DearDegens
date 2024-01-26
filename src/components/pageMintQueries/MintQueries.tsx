@@ -1,13 +1,11 @@
 import React from "react"
 import { useParams } from "next/navigation"
-import { getAdQueries } from "@/src/server/actions"
 import { useGetQueries } from "@/src/server/services"
 import { queryType } from "@/src/types/db"
-import { useQuery } from "@tanstack/react-query"
+import { ScrollArea } from "../components-ui/ScrollArea"
 import { useSession } from "next-auth/react"
 
 import MintQueriesCard from "./MintQueriesCard"
-import { ScrollArea } from "@radix-ui/react-scroll-area"
 
 export default function MintQueries() {
   const { data: session } = useSession()
@@ -29,10 +27,10 @@ export default function MintQueries() {
   }
 
   return (
-    <ScrollArea className="flex h-full flex-col pr-5 mt-5 pb-12">
-       {queries &&
+    <ScrollArea className="flex h-full flex-col pr-5 mt-5 pb-16">
+      {queries && userId &&
         queries.map((item: any, index) => {
-          return <MintQueriesCard query={item}/>
+          return <MintQueriesCard key={index} query={item} userId={userId} />
         })}
     </ScrollArea>
   )

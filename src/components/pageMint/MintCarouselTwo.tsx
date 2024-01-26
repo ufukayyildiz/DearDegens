@@ -52,9 +52,9 @@ export default function MintCarouselTwo(listing: any) {
             {imageUrls.map((images: any, index: any) => (
               <CarouselItem
                 key={index}
-                className="flex items-center justify-center"
+                className="flex items-center justify-center shadow-lg"
               >
-                <div className="flex max-h-[40vh] rounded-md shadow-lg overflow-hidden">
+                <div className="flex max-h-[40vh] rounded-md overflow-hidden">
                   <img src={images} alt={images} className="object-cover"/>
                 </div>
               </CarouselItem>

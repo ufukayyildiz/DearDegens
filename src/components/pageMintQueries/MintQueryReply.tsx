@@ -17,7 +17,7 @@ import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import {
   QueryReplyCreationRequest,
-  validateQueryReply,
+  validateQueryReply
 } from "@/src/lib/validators/validateQueryReply"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
@@ -52,7 +52,6 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const [isPublic, setIsPublic] = useState<boolean>(false)
   const [submitted, setSubmitted] = useState<boolean>(false)
-  console.log("submitted", submitted)
 
   const form = useForm({
     validatorAdapter: zodValidator,
@@ -105,7 +104,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["adQueries"] })
+        await queryClient.invalidateQueries({ queryKey: ["adQueries", "listing"] })
       }
     },
   })
@@ -256,7 +255,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                           <Button
                             type="submit"
                             disabled={disabled || !canSubmit}
-                            variant="outlinebold"
+                            variant="outline"
                             className="w-28"
                           >
                             {isSubmitting ? (

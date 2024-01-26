@@ -35,10 +35,8 @@ export default function MintDelete(listingId: any) {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button className="hover:text-rose-500" variant="icon">
-            <Trash2 />
-          </Button>
+        <AlertDialogTrigger className="group flex h-10 w-10 items-center justify-center hover:text-rose-500 ">
+          <Trash2 />
         </AlertDialogTrigger>
         <AlertDialogContent>
           <AlertDialogHeader>

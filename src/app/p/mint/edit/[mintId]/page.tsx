@@ -11,6 +11,7 @@ import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
+import { listingsType } from "@/src/types/db"
 
 interface MintPageProps {
   params: {
@@ -21,11 +22,8 @@ interface MintPageProps {
 export default async function MintEditPage({ params }: MintPageProps) {
   const param = params
   const decodedParam = decodeURIComponent(param.mintId)
-  console.log("params:", decodedParam)
 
-  const session = await getServerSession(authOptions)
-
-  const listingGeneralData = await db
+  const listing: listingsType[] = await db
     .select()
     .from(listings)
     .where(eq(listings.id, decodedParam))
@@ -54,7 +52,7 @@ export default async function MintEditPage({ params }: MintPageProps) {
           </TabsTrigger>
         </TabsList>
         <TabsContent value="items">
-          <EditHousehold listing={listingGeneralData} />
+          <EditHousehold listing={listing} />
         </TabsContent>
         <TabsContent value="property">
         <h1>Property</h1>
