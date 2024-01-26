@@ -31,7 +31,7 @@ export default function MintManager() {
                 <SheetTitle className="text-customAccent">Offers:</SheetTitle>
                 <MintOffers />
               </ResizablePanel>
-              <ResizableHandle withHandle className="border-muted" />
+              <ResizableHandle withHandle />
               <ResizablePanel className="relative h-full">
                 <SheetTitle className="mt-5 text-customAccent">
                   Queries:
