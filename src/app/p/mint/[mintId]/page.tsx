@@ -73,6 +73,7 @@ export default async function MintPage({ params }: MintPageProps) {
           {listing &&
             listing.map((item, index) => (
               <div key={index} className="mb-60">
+                {/* @ts-expect-error Server Component */}
                 <MintCarouselTwo listing={item.images} />
                 <div className="mt-10 flex w-full flex-row justify-between">
                   <div className="my-auto w-full">
