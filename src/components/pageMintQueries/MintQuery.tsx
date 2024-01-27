@@ -201,6 +201,7 @@ export default function MintQuery() {
 
               <AlertDialogFooter>
                 <form.Subscribe
+                  /* @ts-ignore */
                   selector={(state) => [
                     state.canSubmit,
                     state.isSubmitting,

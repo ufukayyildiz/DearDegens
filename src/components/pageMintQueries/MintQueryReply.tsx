@@ -226,6 +226,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
 
               <AlertDialogFooter>
                 <form.Subscribe
+                  /* @ts-ignore */
                   selector={(state) => [
                     state.canSubmit,
                     state.isSubmitting,
