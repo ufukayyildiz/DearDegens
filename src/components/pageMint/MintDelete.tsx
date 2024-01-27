@@ -19,11 +19,12 @@ import { Checkbox } from "../components-ui/Checkbox"
 
 export default function MintDelete(listingId: any) {
   const [disabled, setDisabled] = useState<boolean>(true)
+  const id = JSON.stringify(listingId.listingId) 
   const router = useRouter()
   const handleDeleteListing = async () => {
     try {
       console.log("listingId:", listingId.listingId)
-      await axios.put("/api/deleteListing/", listingId.listingId)
+      await axios.put("/api/deleteListing/", id)
       router.push("/p/mymints")
       router.refresh()
       return "Listing has been successfully deleted."
