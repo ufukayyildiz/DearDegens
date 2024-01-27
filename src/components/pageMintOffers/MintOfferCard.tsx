@@ -64,10 +64,10 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
         </div>
 
         {userId === adOffer.sellerId ? (
-          {/* @ts-expect-error Server Component */}
+          /* @ts-expect-error Server Component */
           <MintOfferCardAuthorActions adOffer={adOffer} />
         ) : (
-          {/* @ts-expect-error Server Component */}
+          /* @ts-expect-error Server Component */
           <MintOfferCardUserActions adOffer={adOffer} />
         )}
       </div>
