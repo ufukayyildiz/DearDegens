@@ -46,7 +46,7 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           </h1>
         )}
       </div>
-
+      {/* @ts-expect-error Server Component */}
       <MintOfferCardStatus adOffer={adOffer} />
 
       <div className="flex">

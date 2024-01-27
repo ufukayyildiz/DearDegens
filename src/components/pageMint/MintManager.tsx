@@ -30,10 +30,7 @@ export default function MintManager() {
               </Panel>
               <PanelResizeHandle className="flex h-0 w-full  items-center justify-center border border-customAccent">
                 <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full border border-customAccent bg-background">
-                  <ChevronsUpDown
-                    size={20}
-                    className="text-customAccent"
-                  />
+                  <ChevronsUpDown size={20} className="text-customAccent" />
                 </div>
               </PanelResizeHandle>
               <Panel className="relative h-full">
