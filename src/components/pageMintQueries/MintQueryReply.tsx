@@ -234,6 +234,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                     state.errors,
                   ]}
                 >
+                  {/* @ts-ignore */}
                   {([canSubmit, isSubmitting]) =>
                     !submitted ? (
                       <div className="flex w-full justify-between">
