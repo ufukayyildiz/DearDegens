@@ -126,46 +126,52 @@ export default function MintOfferCardAuthorActions({
   ) {
     return (
       <div className="flex w-1/2 items-end justify-end gap-1">
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant="icon" size="icon" className="hover:text-blue-500">
-              <MintCounterTwo adOffer={adOffer} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Counter</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              variant="icon"
-              size="icon"
-              className="hover:text-rose-500"
-              onClick={() => declineOffer()}
-            >
-              <X size={20} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Decline</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              variant="icon"
-              size="icon"
-              className="hover:text-customAccent"
-              onClick={() => acceptOffer()}
-            >
-              <Check size={20} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Accept</p>
-          </TooltipContent>
-        </Tooltip>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-blue-500"
+              >
+                <MintCounterTwo adOffer={adOffer} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Counter</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-rose-500"
+                onClick={() => declineOffer()}
+              >
+                <X size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Decline</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-customAccent"
+                onClick={() => acceptOffer()}
+              >
+                <Check size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Accept</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     )
   }
@@ -187,31 +193,37 @@ export default function MintOfferCardAuthorActions({
   if (adOffer.isDeclined === true) {
     return (
       <div className="flex w-1/2 items-end justify-end gap-1">
-        <Tooltip>
-          <TooltipTrigger>
-            <Button variant="icon" size="icon" className="hover:text-blue-500">
-              <MintCounterTwo adOffer={adOffer} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Counter</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              variant="icon"
-              size="icon"
-              className="hover:text-customAccent"
-              onClick={() => reAcceptOffer()}
-            >
-              <Check size={20} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Accept</p>
-          </TooltipContent>
-        </Tooltip>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-blue-500"
+              >
+                <MintCounterTwo adOffer={adOffer} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Counter</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                variant="icon"
+                size="icon"
+                className="hover:text-customAccent"
+                onClick={() => reAcceptOffer()}
+              >
+                <Check size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Accept</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     )
   }

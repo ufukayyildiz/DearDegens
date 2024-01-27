@@ -2,13 +2,6 @@
 
 import React from "react"
 import Link from "next/link"
-import { Button } from "@/src/components/components-ui/Button"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/src/components/components-ui/Tooltip"
 import { FileEdit } from "lucide-react"
 
 import ChatSheet from "../components-chat/ChatSheet"
@@ -28,7 +21,7 @@ export default function MintPageAuthorActions({
         <ChatSheet />
         <MintManager />
         <Link
-          href={`/p/mint/edit/${listingId.listingId}`}
+          href={`/p/mint/edit/${listingId}`}
           className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"
         >
           <FileEdit />

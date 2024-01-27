@@ -140,36 +140,38 @@ export default function MintOfferCardUserActions({
   if (adOffer.isCountered) {
     return (
       <div className="flex w-1/2 items-end justify-end gap-1">
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              onClick={() => offerBuyerDecline()}
-              variant="icon"
-              size="icon"
-              className="hover:text-rose-500"
-            >
-              <X size={20} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Decline</p>
-          </TooltipContent>
-        </Tooltip>
-        <Tooltip>
-          <TooltipTrigger>
-            <Button
-              onClick={() => offerBuyerAcceptance()}
-              variant="icon"
-              size="icon"
-              className="hover:text-customAccent"
-            >
-              <Check size={20} />
-            </Button>
-          </TooltipTrigger>
-          <TooltipContent>
-            <p>Accept</p>
-          </TooltipContent>
-        </Tooltip>
+        <TooltipProvider>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                onClick={() => offerBuyerDecline()}
+                variant="icon"
+                size="icon"
+                className="hover:text-rose-500"
+              >
+                <X size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Decline</p>
+            </TooltipContent>
+          </Tooltip>
+          <Tooltip>
+            <TooltipTrigger>
+              <Button
+                onClick={() => offerBuyerAcceptance()}
+                variant="icon"
+                size="icon"
+                className="hover:text-customAccent"
+              >
+                <Check size={20} />
+              </Button>
+            </TooltipTrigger>
+            <TooltipContent>
+              <p>Accept</p>
+            </TooltipContent>
+          </Tooltip>
+        </TooltipProvider>
       </div>
     )
   }

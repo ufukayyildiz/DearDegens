@@ -51,6 +51,7 @@ interface EditHouseholdProps {
 export default function EditHousehold({ listing }: EditHouseholdProps) {
   const router = useRouter()
   const mintId = listing[0].id
+  console.log('listing:', listing)
 
   // ----------------------------------------------------------------------------------
   // UPLOADTHING
