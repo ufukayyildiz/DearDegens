@@ -1,11 +1,8 @@
 import React from "react"
-import { Gavel } from "lucide-react"
+import { Gavel, ChevronsUpDown } from "lucide-react"
 
-import {
-  ResizableHandle,
-  ResizablePanel,
-  ResizablePanelGroup,
-} from "../components-ui/Resizable"
+import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+
 import {
   Sheet,
   SheetContent,
@@ -26,19 +23,26 @@ export default function MintManager() {
       <SheetContent>
         <SheetHeader className="h-full">
           <SheetDescription className="h-full">
-            <ResizablePanelGroup direction="vertical">
-              <ResizablePanel className="h-full">
+            <PanelGroup direction="vertical">
+              <Panel className="h-full">
                 <SheetTitle className="text-customAccent">Offers:</SheetTitle>
                 <MintOffers />
-              </ResizablePanel>
-              <ResizableHandle withHandle />
-              <ResizablePanel className="relative h-full">
+              </Panel>
+              <PanelResizeHandle className="flex h-0 w-full  items-center justify-center border border-customAccent">
+                <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full border border-customAccent bg-background">
+                  <ChevronsUpDown
+                    size={20}
+                    className="text-customAccent"
+                  />
+                </div>
+              </PanelResizeHandle>
+              <Panel className="relative h-full">
                 <SheetTitle className="mt-5 text-customAccent">
                   Queries:
                 </SheetTitle>
                 <MintQueries />
-              </ResizablePanel>
-            </ResizablePanelGroup>
+              </Panel>
+            </PanelGroup>
           </SheetDescription>
         </SheetHeader>
       </SheetContent>
