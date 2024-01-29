@@ -354,7 +354,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
             <DialogDescription>
               <ScrollArea>
                 <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">
-                  {bucket && bucket[0].length < 0
+                  {bucket && bucket[0].length > 0
                     ? bucket[0].map((image: any, index: number) => (
                         <div key={index} className="relative h-32 w-32">
                           <Checkbox
