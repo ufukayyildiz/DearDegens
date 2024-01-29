@@ -16,7 +16,7 @@ import { zodResolver } from "@hookform/resolvers/zod"
 import { QueryClient, useMutation } from "@tanstack/react-query"
 import { useDropzone } from "@uploadthing/react/hooks"
 import axios from "axios"
-import { Image, Loader } from "lucide-react"
+import { Image, Loader, Trash2 } from "lucide-react"
 import { FileWithPath } from "react-dropzone"
 import { useForm } from "react-hook-form"
 import { generateClientDropzoneAccept } from "uploadthing/client"
@@ -50,6 +50,17 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/components-ui/Dialog"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "@/src/components/components-ui/AlertDialog"
 
 import { Textarea } from "../components-ui/Textarea"
 
@@ -57,8 +68,9 @@ type FormData = z.infer<typeof validateHousehold>
 
 export default function MintHousehold() {
   const router = useRouter()
-  const images = ["1", "2", "3", "4", "5"]
+  const images = ["1", "2", "3", "4", "5", "6"]
   const queryClient = new QueryClient()
+  const [disabled, setDisabled] = useState<boolean>(true)
 
   // USER BUCKET
   const getBucket = useGetBucket()
@@ -86,7 +98,7 @@ export default function MintHousehold() {
     setIsUploading(true)
   }, [])
 
-  // MUTATION IMAGE BUCKET
+  // MUTATION CREATE IMAGE BUCKET
   const { mutate: createImageBucket } = useMutation({
     mutationFn: async (fileUrls: any) => {
       const { data } = await axios.patch("/api/createImageBucket", fileUrls)
@@ -110,11 +122,46 @@ export default function MintHousehold() {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["listing"] })
+        await queryClient.invalidateQueries({ queryKey: ["getBucket"] })
       }
     },
   })
 
+  // MUTATION DELETE IMAGE
+  const { mutate: deleteImage } = useMutation({
+    mutationFn: async (selectDelete: any) => {
+      const { data } = await axios.patch(
+        "/api/deleteImageBucket",
+        JSON.stringify(selectDelete)
+      )
+      setDisabled(true)
+      return data
+    },
+    onError: () => {
+      setDisabled(true)
+      return toast({
+        title: "Something went wrong.",
+        description:
+          "Error deleteing image from your bucket. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSuccess: () => {
+      return toast({
+        title: "Success!",
+        description: "Successfully deleted image from your bucket!",
+      })
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log("onSettled error:", error)
+      } else {
+        await queryClient.invalidateQueries({ queryKey: ["getBucket"] })
+      }
+    },
+  })
+
+  // UPLOADTHING UPLOAD LOGIC
   const { startUpload, permittedFileInfo } = useUploadThing("imageUploader", {
     onClientUploadComplete: (res: any) => {
       const data = res
@@ -266,7 +313,7 @@ export default function MintHousehold() {
 
       {/* LISTING IMAGES */}
       <Dialog>
-        <DialogTrigger className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm hover:border-customAccent">
+        <DialogTrigger className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-customAccent">
           Select Images
         </DialogTrigger>
         <DialogContent>
@@ -276,22 +323,83 @@ export default function MintHousehold() {
             </DialogTitle>
             <DialogDescription>
               <ScrollArea>
-                <div className="flex h-[60vh] w-full flex-wrap justify-center gap-5 p-2">
-                  {bucket &&
-                    bucket[0].map((image: any, index: number) => (
-                      <div key={index} className="relative">
-                        <Checkbox
-                          checked={selectedImages.includes(image)}
-                          onCheckedChange={() => toggleImageSelection(image)}
-                          className="absolute right-1 top-1 h-8 w-8 rounded-full"
-                        />
-                        <img
-                          src={image}
-                          alt={`Image ${index}`}
-                          className="h-32 w-32 rounded-md object-contain text-muted"
-                        />
-                      </div>
-                    ))}
+                <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">
+                  {bucket && bucket[0].length < 0
+                    ? bucket[0].map((image: any, index: number) => (
+                        <div key={index} className="relative h-32 w-32">
+                          <Checkbox
+                            checked={selectedImages.includes(image)}
+                            onCheckedChange={() => toggleImageSelection(image)}
+                            className="absolute right-1 top-1 h-8 w-8 rounded-full"
+                          />
+                          <AlertDialog>
+                            <AlertDialogTrigger
+                              asChild
+                              className="absolute bottom-1 right-1 h-8 w-8 items-center justify-center rounded-full p-1 hover:bg-muted"
+                            >
+                              <Trash2 className=" text-rose-500 hover:cursor-pointer" />
+                            </AlertDialogTrigger>
+                            <AlertDialogContent>
+                              <AlertDialogHeader>
+                                <AlertDialogTitle>
+                                  Are you sure you want to delete this image?
+                                </AlertDialogTitle>
+                                <AlertDialogDescription>
+                                  This action cannot be undone. This will
+                                  permanently delete your image: {image}
+                                </AlertDialogDescription>
+                              </AlertDialogHeader>
+                              <AlertDialogFooter>
+                                <div className="flex w-full justify-between">
+                                  <div className="flex items-center justify-start space-x-2">
+                                    <Checkbox
+                                      id="disable"
+                                      checked={!disabled}
+                                      onCheckedChange={() =>
+                                        setDisabled(!disabled)
+                                      }
+                                    />
+                                    <label
+                                      htmlFor="disable"
+                                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                    >
+                                      Confirm image deletion.
+                                    </label>
+                                  </div>
+                                  <div>
+                                    <AlertDialogCancel>
+                                      Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogTrigger asChild>
+                                      <Button
+                                        onClick={() => deleteImage(image)}
+                                        disabled={disabled}
+                                        variant="destructive"
+                                        className="ml-5"
+                                      >
+                                        Delete
+                                      </Button>
+                                    </AlertDialogTrigger>
+                                  </div>
+                                </div>
+                              </AlertDialogFooter>
+                            </AlertDialogContent>
+                          </AlertDialog>
+                          <img
+                            src={image}
+                            alt={`Image ${index}`}
+                            className="h-32 w-32 rounded-md object-contain text-muted"
+                          />
+                        </div>
+                      ))
+                    : images.map((file: any, index: number) => (
+                        <div key={index}>
+                          <Image
+                            alt={`Image ${index}`}
+                            className="h-32 w-32 animate-pulse rounded-md object-contain text-muted"
+                          />
+                        </div>
+                      ))}
                 </div>
               </ScrollArea>
             </DialogDescription>
