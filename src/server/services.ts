@@ -1,4 +1,4 @@
-'use client'
+"use client"
 import { useQuery } from "@tanstack/react-query"
 
 import { listingsType, offerType, queryType } from "../types/db"
@@ -7,12 +7,20 @@ import {
   getAdQueries,
   getListings,
   getNotifications,
-} from "../server/actions"
+  getBucket,
+} from "./actions"
 
 export function useGetQueries(mintId: any) {
   return useQuery<queryType[]>({
     queryKey: ["adQueries"],
     queryFn: () => mintId && getAdQueries(mintId),
+  })
+}
+
+export function useGetBucket() {
+  return useQuery({
+    queryKey: ["getBucket"],
+    queryFn: getBucket,
   })
 }
 

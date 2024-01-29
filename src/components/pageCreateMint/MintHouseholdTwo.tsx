@@ -1,19 +1,19 @@
 "use client"
 
-import React, { useCallback, useState, useEffect } from "react"
+import React, { useCallback, useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
+import { ScrollArea } from "../components-ui/ScrollArea"
 import { categoryHousehold } from "@/src/lib/categories/mintHousehold"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import {
   HouseholdCreationRequest,
   validateHousehold,
 } from "@/src/lib/validators/validateHousehold"
-import { listingsType } from "@/src/types/db"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation } from "@tanstack/react-query"
+import { QueryClient, useMutation } from "@tanstack/react-query"
 import { useDropzone } from "@uploadthing/react/hooks"
 import axios from "axios"
 import { Image, Loader } from "lucide-react"
@@ -23,6 +23,7 @@ import { generateClientDropzoneAccept } from "uploadthing/client"
 import { z } from "zod"
 
 import { Button } from "../components-ui/Button"
+import { Checkbox } from "../components-ui/Checkbox"
 import {
   Form,
   FormControl,
@@ -33,6 +34,7 @@ import {
   FormMessage,
 } from "../components-ui/Form"
 import { Input } from "../components-ui/Input"
+import { useGetBucket } from "@/src/server/services"
 import {
   Select,
   SelectContent,
@@ -48,32 +50,22 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/src/components/components-ui/Dialog"
-import { ScrollArea } from "../components-ui/ScrollArea"
-import { Checkbox } from "../components-ui/Checkbox"
+
 import { Textarea } from "../components-ui/Textarea"
-import { QueryClient } from "@tanstack/react-query"
-import { useGetBucket } from "@/src/server/services"
 
 type FormData = z.infer<typeof validateHousehold>
 
-interface EditHouseholdProps {
-  listing: listingsType[]
-}
-
-export default function EditHousehold({ listing }: EditHouseholdProps) {
+export default function MintHousehold() {
   const router = useRouter()
-  const mintId = listing[0].id
-  console.log("listing:", listing)
-
   const images = ["1", "2", "3", "4", "5"]
   const queryClient = new QueryClient()
 
   // USER BUCKET
   const getBucket = useGetBucket()
   const bucket: any = getBucket.data
+  console.log("bucket:", bucket)
 
   const [selectedImages, setSelectedImages] = useState<string[]>([])
-  console.log("selectedImages:", selectedImages)
 
   const toggleImageSelection = (imageName: any) => {
     if (imageName) {
@@ -84,24 +76,6 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       }
     }
   }
-
-  const defaultImages = () => {
-    const getDefaultImages = listing[0]?.images
-    console.log("getDefaultImages:", getDefaultImages?.split(","))
-
-    if (getDefaultImages) {
-      const currentBucket = getDefaultImages.split(",")
-      const formattedBucket: any = currentBucket.map((item) => {
-        const matchResult = item.match(/"([^"]*)"/)
-        return matchResult ? matchResult[1] : null
-      })
-      setSelectedImages(formattedBucket)
-    }
-  }
-
-  useEffect(() => {
-    defaultImages()
-  }, [])
 
   // UPLOADTHING
   const [files, setFiles] = useState<File[]>([])
@@ -182,24 +156,24 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
     accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
   })
 
-  // ----------------------------------------------------------------------------------
   // REACT-HOOK-FORM
   const form = useForm<FormData>({
     resolver: zodResolver(validateHousehold),
     defaultValues: {
-      category: listing[0].category || "",
-      price: listing[0].price || 0,
-      title: listing[0].title || "",
-      brand: listing[0].brand || "",
-      model: listing[0].model || "",
-      description: listing[0].description || "",
-      images: listing[0].images || "",
-      location: listing[0].location || "",
-      meetup: listing[0].meetup || "",
+      category: "",
+      price: 0,
+      title: "",
+      brand: "",
+      model: "",
+      description: "",
+      images: "",
+      location: "",
+      meetup: "",
     },
   })
 
-  const { mutate: updatePost } = useMutation({
+  // MUTATION LISTING
+  const { mutate: createPost } = useMutation({
     // PAYLOAD
     mutationFn: async ({
       category,
@@ -223,10 +197,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
         location,
         meetup,
       }
-      const { data } = await axios.patch(
-        `/api/editHousehold/${mintId}`,
-        payload
-      )
+      const { data } = await axios.post("/api/createHousehold", payload)
 
       return data
     },
@@ -235,7 +206,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
     onError: () => {
       return toast({
         title: "Something went wrong.",
-        description: "Your listing was not updated. Please try again.",
+        description: "Your post was not published. Please try again.",
         variant: "destructive",
       })
     },
@@ -245,7 +216,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       router.push("/p/mymints")
       router.refresh()
       return toast({
-        description: "Your listing has been successfully updated.",
+        description: "Your post has been published.",
       })
     },
   })
@@ -258,16 +229,13 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       brand: data.brand,
       model: data.model,
       description: data.description,
-      images: listing[0].images || "",
+      images: JSON.stringify(selectedImages),
       location: data.location,
       meetup: data.meetup,
     }
-    console.log("edit payload:", payload)
-    updatePost(payload)
+    createPost(payload)
   }
 
-  // ----------------------------------------------------------------------------------
-  // UI
   return (
     <div className="mx-auto mb-32 mt-10 w-full rounded-lg bg-background p-2">
       {/* UPLOAD IMAGES */}

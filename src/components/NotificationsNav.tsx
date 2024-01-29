@@ -19,7 +19,7 @@ import { Bell, Loader, MoreVertical } from "lucide-react"
 
 import { toast } from "../hooks/use-toast"
 import { formatTimeToNow } from "../lib/utils"
-import { useGetNotifications } from "./services"
+import { useGetNotifications } from "../server/services"
 import { notificationsType } from "../types/db"
 import { Button } from "./components-ui/Button"
 import { Checkbox } from "./components-ui/Checkbox"

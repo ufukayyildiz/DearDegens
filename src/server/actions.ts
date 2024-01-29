@@ -5,7 +5,34 @@ import { getServerSession } from "next-auth"
 
 import { authOptions } from "../lib/auth/auth-options"
 import { db } from "./db"
-import { listings, notifications, offers, queries } from "./db/schema"
+import { listings, notifications, offers, queries, users } from "./db/schema"
+
+// Get user image bucket by userId
+export async function getBucket() {
+  try {
+    const session = await getServerSession(authOptions)
+    const user =
+      session &&
+      (await db.select().from(users).where(eq(users.id, session?.user.id)))
+
+    if (user) {
+      const getBucket = user[0].imageBucket
+      const bucket = []
+      if (getBucket) {
+        const currentBucket = getBucket.split(",")
+        const formattedBucket = currentBucket.map((item) => {
+          const matchResult = item.match(/"([^"]*)"/)
+          return matchResult ? matchResult[1] : null
+        })
+        bucket.push(formattedBucket)
+      }
+      console.log("User bucket query successful")
+      return bucket
+    }
+  } catch (error) {
+    console.error("Server Error: Failed to fetch user image bucket - ", error)
+  }
+}
 
 // Get all notifications by userId
 export async function getNotifications() {

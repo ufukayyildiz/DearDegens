@@ -253,6 +253,13 @@
       "when": 1706173197241,
       "tag": "0035_quiet_wendigo",
       "breakpoints": true
+    },
+    {
+      "idx": 36,
+      "version": "5",
+      "when": 1706438428278,
+      "tag": "0036_living_mauler",
+      "breakpoints": true
     }
   ]
 }

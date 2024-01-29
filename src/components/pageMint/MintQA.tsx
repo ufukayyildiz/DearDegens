@@ -1,7 +1,7 @@
 "use client"
 import React from "react"
 import { useParams } from "next/navigation"
-import { useGetQueries } from "../services"
+import { useGetQueries } from "../../server/services"
 
 export default function MintQA() {
   const { mintId }: any = useParams()

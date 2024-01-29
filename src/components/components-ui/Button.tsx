@@ -22,7 +22,7 @@ const buttonVariants = cva(
         outlinebold:
           "font-bold border-2 border-customAccent bg-background shadow-lg hover:bg-gradient-to-br from-customColorOne via-customColorTwo to-customColorThr hover:text-customColorFou",
         secondary:
-          "bg-secondary text-secondary-foreground shadow-sm hover:bg-secondary/80",
+          " bg-transparent text-primary",
         ghost: "hover:bg-accent hover:text-accent-foreground",
         link: "text-primary underline-offset-4 hover:underline",
       },
