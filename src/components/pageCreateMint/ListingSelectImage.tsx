@@ -24,8 +24,8 @@ import { Checkbox } from "../components-ui/Checkbox"
 import { Button } from "../components-ui/Button"
 import { Image, Trash2 } from "lucide-react"
 import { toast } from "@/src/hooks/use-toast"
-import { QueryClient, useMutation } from "@tanstack/react-query"
-import { useGetBucket } from "@/src/server/services"
+import { QueryClient, useMutation, useQuery } from "@tanstack/react-query"
+import { useGetBucket } from "@/src/components/components-global/services"
 import axios from "axios"
 
 interface ListingSelectImageProps {
@@ -37,12 +37,14 @@ export default function ListingSelectImage({
 }: ListingSelectImageProps) {
   const queryClient = new QueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
-  const images = ["1", "2", "3", "4", "5", "6"]
+  const images = ["1", "2", "3"]
 
   // USER BUCKET
   const getBucket = useGetBucket()
+
   const bucket: any = getBucket.data || ""
-  const bucketString = JSON.stringify(bucket[0])
+  const isLoading = getBucket.isLoading
+  const isFetching = getBucket.isFetching
 
   const [selectedImages, setSelectedImages] = useState<string[]>([])
 
@@ -107,88 +109,90 @@ export default function ListingSelectImage({
             <DialogTitle className="mb-5">
               Select images from your bucket:
             </DialogTitle>
-            <DialogDescription>
+            <div>
               <ScrollArea>
                 <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">
-                  {bucket && bucketString.length > 10
-                    ? bucket[0].map((image: any, index: number) => (
-                        <div key={index} className="relative h-32 w-32">
-                          <Checkbox
-                            checked={selectedImages.includes(image)}
-                            onCheckedChange={() => toggleImageSelection(image)}
-                            className="absolute right-1 top-1 h-8 w-8 rounded-full"
-                          />
-                          <AlertDialog>
-                            <AlertDialogTrigger
-                              asChild
-                              className="absolute bottom-1 right-1 h-8 w-8 items-center justify-center rounded-full p-1 hover:bg-muted"
-                            >
-                              <Trash2 className=" text-rose-500 hover:cursor-pointer" />
-                            </AlertDialogTrigger>
-                            <AlertDialogContent>
-                              <AlertDialogHeader>
-                                <AlertDialogTitle>
-                                  Are you sure you want to delete this image?
-                                </AlertDialogTitle>
-                                <AlertDialogDescription>
-                                  This action cannot be undone. This will
-                                  permanently delete your image: {image}
-                                </AlertDialogDescription>
-                              </AlertDialogHeader>
-                              <AlertDialogFooter>
-                                <div className="flex w-full justify-between">
-                                  <div className="flex items-center justify-start space-x-2">
-                                    <Checkbox
-                                      id="disable"
-                                      checked={!disabled}
-                                      onCheckedChange={() =>
-                                        setDisabled(!disabled)
-                                      }
-                                    />
-                                    <label
-                                      htmlFor="disable"
-                                      className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                                    >
-                                      Confirm image deletion.
-                                    </label>
-                                  </div>
-                                  <div>
-                                    <AlertDialogCancel>
-                                      Cancel
-                                    </AlertDialogCancel>
-                                    <AlertDialogTrigger asChild>
-                                      <Button
-                                        onClick={() => deleteImage(image)}
-                                        disabled={disabled}
-                                        variant="destructive"
-                                        className="ml-5"
-                                      >
-                                        Delete
-                                      </Button>
-                                    </AlertDialogTrigger>
-                                  </div>
-                                </div>
-                              </AlertDialogFooter>
-                            </AlertDialogContent>
-                          </AlertDialog>
-                          <img
-                            src={image}
-                            alt={`Image ${index}`}
-                            className="h-32 w-32 rounded-md object-cover text-muted"
-                          />
-                        </div>
-                      ))
-                    : images.map((file: any, index: number) => (
+                  {isLoading ||
+                    (isFetching === true &&
+                      images.map((file: any, index: number) => (
                         <div key={index}>
                           <Image
                             alt={`Image ${index}`}
                             className="h-32 w-32 animate-pulse rounded-md object-contain text-muted"
                           />
                         </div>
-                      ))}
+                      )))}
+                  {bucket &&
+                    // bucketString.length > 10 &&
+                    bucket[0].map((image: any, index: number) => (
+                      <div key={index} className="relative h-32 w-32">
+                        <Checkbox
+                          checked={selectedImages.includes(image)}
+                          onCheckedChange={() => toggleImageSelection(image)}
+                          className="absolute right-1 top-1 h-8 w-8 rounded-full"
+                        />
+                        <AlertDialog>
+                          <AlertDialogTrigger
+                            asChild
+                            className="absolute bottom-1 right-1 h-8 w-8 items-center justify-center rounded-full p-1 hover:bg-muted"
+                          >
+                            <Trash2 className=" text-rose-500 hover:cursor-pointer" />
+                          </AlertDialogTrigger>
+                          <AlertDialogContent>
+                            <AlertDialogHeader>
+                              <AlertDialogTitle>
+                                Are you sure you want to delete this image?
+                              </AlertDialogTitle>
+                              <AlertDialogDescription>
+                                This action cannot be undone. This will
+                                permanently delete your image: {image}
+                              </AlertDialogDescription>
+                            </AlertDialogHeader>
+                            <AlertDialogFooter>
+                              <div className="flex w-full justify-between">
+                                <div className="flex items-center justify-start space-x-2">
+                                  <Checkbox
+                                    id="disable"
+                                    checked={!disabled}
+                                    onCheckedChange={() =>
+                                      setDisabled(!disabled)
+                                    }
+                                  />
+                                  <label
+                                    htmlFor="disable"
+                                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                                  >
+                                    Confirm image deletion.
+                                  </label>
+                                </div>
+                                <div>
+                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogTrigger asChild>
+                                    <Button
+                                      onClick={() => deleteImage(image)}
+                                      disabled={disabled}
+                                      variant="destructive"
+                                      className="ml-5"
+                                    >
+                                      Delete
+                                    </Button>
+                                  </AlertDialogTrigger>
+                                </div>
+                              </div>
+                            </AlertDialogFooter>
+                          </AlertDialogContent>
+                        </AlertDialog>
+
+                        <img
+                          src={image}
+                          alt={`Image ${index}`}
+                          className="h-32 w-32 rounded-md object-cover text-muted"
+                        />
+                      </div>
+                    ))}
                 </div>
               </ScrollArea>
-            </DialogDescription>
+            </div>
           </DialogHeader>
         </DialogContent>
       </Dialog>

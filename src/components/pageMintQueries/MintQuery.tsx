@@ -17,7 +17,7 @@ import {
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { QueryCreationRequest } from "@/src/lib/validators/validateQuery"
-import { useGetListing } from "@/src/server/services"
+import { useGetListing } from "@/src/components/components-global/services"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

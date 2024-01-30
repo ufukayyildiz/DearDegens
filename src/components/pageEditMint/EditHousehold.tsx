@@ -63,7 +63,7 @@ import { ScrollArea } from "../components-ui/ScrollArea"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Textarea } from "../components-ui/Textarea"
 import { QueryClient } from "@tanstack/react-query"
-import { useGetBucket } from "@/src/server/services"
+import { useGetBucket } from "@/src/components/components-global/services"
 
 type FormData = z.infer<typeof validateHousehold>
 
