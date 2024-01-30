@@ -5,7 +5,7 @@ import {
   TabsList,
   TabsTrigger,
 } from "@/src/components/components-ui/Tabs"
-import MintHouseholdTwo from "@/src/components/pageCreateMint/MintHouseholdTwo"
+import CreateHousehold from "@/src/components/pageCreateMint/CreateHousehold"
 import {
   dehydrate,
   HydrationBoundary,
@@ -47,7 +47,7 @@ export default async function MintCreatePage() {
             </TabsTrigger>
           </TabsList>
           <TabsContent value="items">
-            <MintHouseholdTwo />
+            <CreateHousehold />
           </TabsContent>
           <TabsContent value="property">
             <h1>Property</h1>

@@ -39,11 +39,11 @@ export async function PATCH(request: any) {
 
 
     try {
-      await utapi.deleteFiles(deleteImage)
       const post = await db
         .update(users)
         .set({ imageBucket: updatedBucketString})
         .where(eq(users.id, userId))
+      await utapi.deleteFiles(deleteImage)
       return new Response(JSON.stringify(post), { status: 200 })
     } catch (error) {
       console.error(`Could not delete image ${body}:`, error)

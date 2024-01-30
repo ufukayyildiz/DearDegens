@@ -1,10 +1,9 @@
 "use client"
 
-import React, { useCallback, useState } from "react"
+import React, { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
-import { useUploadThing } from "@/src/hooks/useUploadThing"
 import { categoryHousehold } from "@/src/lib/categories/mintHousehold"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import {
@@ -13,12 +12,8 @@ import {
 } from "@/src/lib/validators/validateHousehold"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
-import { useDropzone } from "@uploadthing/react/hooks"
 import axios from "axios"
-import { ImagePlus, Loader } from "lucide-react"
-import { FileWithPath } from "react-dropzone"
 import { useForm } from "react-hook-form"
-import { generateClientDropzoneAccept } from "uploadthing/client"
 import { z } from "zod"
 
 import { Button } from "../components-ui/Button"
@@ -39,58 +34,21 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components-ui/Select"
+
 import { Textarea } from "../components-ui/Textarea"
+import ListingSelectImage from "./ListingSelectImage"
+import ListingUploadImage from "./ListingUploadImage"
 
 type FormData = z.infer<typeof validateHousehold>
 
-export default function MintHousehold() {
+export default function CreateHousehold() {
   const router = useRouter()
 
-  // UPLOADTHING
-  const [files, setFiles] = useState<File[]>([])
-  const [isLoading, setIsLoading] = useState<boolean>(false)
-  const [uploadData, setuploadData] = useState([])
-  const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-    setFiles(acceptedFiles)
-  }, [])
-  const fileUrls = uploadData.map((file: any) => file.fileUrl)
-  const urlJson = JSON.stringify(fileUrls)
-
-  const { startUpload, permittedFileInfo } = useUploadThing("imageUploader", {
-    onClientUploadComplete: (res: any) => {
-      const data = res
-      setuploadData(data)
-      setIsLoading(false)
-      return toast({
-        title: "Success!.",
-        description: "Your files have been uploaded successfully.",
-      })
-    },
-    onUploadError: () => {
-      setIsLoading(true)
-      return toast({
-        title: "Something went wrong.",
-        description: "An error occured while uploading. Please try again.",
-        variant: "destructive",
-      })
-    },
-    onUploadBegin: () => {
-      setIsLoading(true)
-      return toast({
-        title: "Please wait..",
-        description: "Your upload has started.",
-      })
-    },
-  })
-
-  const fileTypes = permittedFileInfo?.config
-    ? Object.keys(permittedFileInfo?.config)
-    : []
-
-  const { getRootProps, getInputProps } = useDropzone({
-    onDrop,
-    accept: fileTypes ? generateClientDropzoneAccept(fileTypes) : undefined,
-  })
+  // USER BUCKET
+  const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const callSelectedImages = (data: string[]) => {
+    setSelectedImages(data)
+  }
 
   // REACT-HOOK-FORM
   const form = useForm<FormData>({
@@ -102,12 +60,13 @@ export default function MintHousehold() {
       brand: "",
       model: "",
       description: "",
-      images: JSON.stringify(fileUrls),
+      images: "",
       location: "",
       meetup: "",
     },
   })
 
+  // MUTATION LISTING
   const { mutate: createPost } = useMutation({
     // PAYLOAD
     mutationFn: async ({
@@ -164,7 +123,7 @@ export default function MintHousehold() {
       brand: data.brand,
       model: data.model,
       description: data.description,
-      images: urlJson,
+      images: JSON.stringify(selectedImages),
       location: data.location,
       meetup: data.meetup,
     }
@@ -173,51 +132,15 @@ export default function MintHousehold() {
 
   return (
     <div className="mx-auto mb-32 mt-10 w-full rounded-lg bg-background p-2">
-      {/* IMAGES */}
-      <p className="mb-3 text-sm">Image Upload</p>
-      <div className="border-l-1 relative mb-3 flex h-auto min-h-[100px] justify-center rounded-lg border border-dashed border-zinc-300 text-center shadow-lg">
-        {isLoading === true && (
-          <div className="absolute inset-0 z-50 flex h-full w-full justify-center rounded-lg bg-slate-300/30 backdrop-blur-sm">
-            <Loader className="my-auto h-16 w-16 animate-spin text-slate-500" />
-          </div>
-        )}
-        {fileUrls.length > 0 ? (
-          <div className="flex h-full w-full flex-wrap gap-2 p-2">
-            {fileUrls.map((file: any, index: number) => (
-              <div key={index}>
-                <img
-                  src={file}
-                  alt={`Image ${index}`}
-                  className="h-20 w-20 rounded-md object-contain shadow-md"
-                />
-              </div>
-            ))}
-          </div>
-        ) : (
-          <div className="my-auto flex h-auto">
-            {files.length > 0 ? (
-              <Button onClick={() => startUpload(files)} variant="outline">
-                Upload {files.length} files
-              </Button>
-            ) : (
-              <div
-                {...getRootProps()}
-                className="my-auto h-auto italic text-zinc-400"
-              >
-                <input {...getInputProps()} />
-                <ImagePlus className="h-10 w-10 animate-pulse" />
-              </div>
-            )}
-          </div>
-        )}
-      </div>
-      <p className="mb-10 text-xs text-muted-foreground">
-        (Max Images: 10 | Max file size: 1mb)
-      </p>
+      {/* UPLOAD IMAGES */}
+      <ListingUploadImage />
+
+      {/* LISTING IMAGES */}
+      <ListingSelectImage onSelectedImages={callSelectedImages} />
 
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <div className="flex flex-row gap-10">
+          <div className="flex flex-col gap-10 md:flex-row">
             {/* CATEGORY */}
             <FormField
               control={form.control}
