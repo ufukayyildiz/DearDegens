@@ -20,7 +20,8 @@ import {
   validateOffer,
 } from "@/src/lib/validators/validateOffer"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
+import { queryClient } from "@/src/server/services"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -53,7 +54,6 @@ export default function MintOffer({
   title,
   adId,
 }: MintProps) {
-  const queryClient = useQueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
 
   const form = useForm<FormData>({

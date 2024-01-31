@@ -24,8 +24,9 @@ import { Checkbox } from "../components-ui/Checkbox"
 import { Button } from "../components-ui/Button"
 import { Image, Trash2 } from "lucide-react"
 import { toast } from "@/src/hooks/use-toast"
-import { QueryClient, useMutation, useQuery } from "@tanstack/react-query"
-import { useGetBucket } from "@/src/components/components-global/services"
+import { useMutation } from "@tanstack/react-query"
+import { queryClient } from "@/src/server/services"
+import { useGetBucket } from "@/src/server/services"
 import axios from "axios"
 
 interface ListingSelectImageProps {
@@ -35,16 +36,18 @@ interface ListingSelectImageProps {
 export default function ListingSelectImage({
   onSelectedImages,
 }: ListingSelectImageProps) {
-  const queryClient = new QueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
   const images = ["1", "2", "3"]
 
   // USER BUCKET
   const getBucket = useGetBucket()
 
-  const bucket: any = getBucket.data || ""
+  const bucket: any = getBucket.data
+  const bucketString = bucket && JSON.stringify(bucket[0][0].length)
   const isLoading = getBucket.isLoading
   const isFetching = getBucket.isFetching
+
+  console.log('fetching', isFetching, 'loading:', isLoading)
 
   const [selectedImages, setSelectedImages] = useState<string[]>([])
 
@@ -91,7 +94,8 @@ export default function ListingSelectImage({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["getBucket"] })
+        await queryClient.invalidateQueries({ queryKey: ["getBucket"], refetchType: 'all', })
+        await queryClient.refetchQueries({ queryKey: ['getBucket'], type: 'active' })
       }
     },
   })
@@ -112,18 +116,19 @@ export default function ListingSelectImage({
             <div>
               <ScrollArea>
                 <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">
-                  {isLoading ||
-                    (isFetching === true &&
-                      images.map((file: any, index: number) => (
-                        <div key={index}>
-                          <Image
-                            alt={`Image ${index}`}
-                            className="h-32 w-32 animate-pulse rounded-md object-contain text-muted"
-                          />
-                        </div>
-                      )))}
+                  {isLoading === true &&
+                    isFetching === true &&
+                    bucket && bucketString.length < 10 &&
+                    images.map((file: any, index: number) => (
+                      <div key={index}>
+                        <Image
+                          alt={`Image ${index}`}
+                          className="h-32 w-32 animate-pulse rounded-md object-contain text-muted"
+                        />
+                      </div>
+                    ))}
                   {bucket &&
-                    // bucketString.length > 10 &&
+                    bucket.length !== 0 &&
                     bucket[0].map((image: any, index: number) => (
                       <div key={index} className="relative h-32 w-32">
                         <Checkbox

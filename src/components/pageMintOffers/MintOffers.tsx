@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useParams } from "next/navigation"
-import { useGetOffers } from "@/src/components/components-global/services"
+import { useGetOffers } from "@/src/server/services"
 import { offerType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 

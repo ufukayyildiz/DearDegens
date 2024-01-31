@@ -17,7 +17,7 @@ import {
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { QueryCreationRequest } from "@/src/lib/validators/validateQuery"
-import { useGetListing } from "@/src/components/components-global/services"
+import { useGetListing } from "@/src/server/services"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
@@ -25,7 +25,7 @@ import { zodValidator } from "@tanstack/zod-form-adapter"
 import axios from "axios"
 import { HelpCircle } from "lucide-react"
 import { z } from "zod"
-
+import { queryClient } from "@/src/server/services"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
@@ -43,7 +43,6 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 }
 
 export default function MintQuery() {
-  const queryClient = useQueryClient()
   const [disabled, setDisabled] = useState<boolean>(true)
   const [submitted, setSubmitted] = useState<boolean>(false)
 

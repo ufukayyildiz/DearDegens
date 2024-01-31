@@ -1,14 +1,17 @@
 "use client"
 import { useQuery } from "@tanstack/react-query"
+import { QueryClient } from "@tanstack/react-query"
 
-import { listingsType, offerType, queryType } from "../../types/db"
+export const queryClient = new QueryClient()
+
+import { listingsType, offerType, queryType } from "../types/db"
 import {
   getAdOffers,
   getAdQueries,
   getListings,
   getNotifications,
   getBucket,
-} from "../../server/actions"
+} from "./actions"
 
 export function useGetQueries(mintId: any) {
   return useQuery<queryType[]>({
@@ -21,6 +24,7 @@ export function useGetBucket() {
   return useQuery({
     queryKey: ["getBucket"],
     queryFn: getBucket,
+    staleTime: 5000,
   })
 }
 

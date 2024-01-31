@@ -1,6 +1,6 @@
 import React from "react"
 import { useParams } from "next/navigation"
-import { useGetQueries } from "@/src/components/components-global/services"
+import { useGetQueries } from "@/src/server/services"
 import { queryType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 

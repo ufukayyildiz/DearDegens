@@ -13,13 +13,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/components-ui/AlertDialog"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
+import { queryClient } from "@/src/server/services"
 import axios from "axios"
 import { Bell, Loader, MoreVertical } from "lucide-react"
 
 import { toast } from "../hooks/use-toast"
 import { formatTimeToNow } from "../lib/utils"
-import { useGetNotifications } from "./components-global/services"
+import { useGetNotifications } from "../server/services"
 import { notificationsType } from "../types/db"
 import { Button } from "./components-ui/Button"
 import { Checkbox } from "./components-ui/Checkbox"
@@ -54,7 +55,6 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
     useState<notificationsType>()
 
   // QUERIES
-  const queryClient = useQueryClient()
   const notifications = useGetNotifications().data
   const isFetching = useGetNotifications().isFetching
 
