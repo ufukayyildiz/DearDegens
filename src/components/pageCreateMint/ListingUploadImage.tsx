@@ -3,14 +3,14 @@ import { useUploadThing } from "@/src/hooks/useUploadThing"
 import { useDropzone } from "@uploadthing/react/hooks"
 import { FileWithPath } from "react-dropzone"
 import { generateClientDropzoneAccept } from "uploadthing/client"
-import { QueryClient, useMutation } from "@tanstack/react-query"
+import { useQueryClient, useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { Button } from "../components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { Loader } from "lucide-react"
 
 export default function ListingUploadImage() {
-  const queryClient = new QueryClient()
+  const queryClient = useQueryClient()
 
   const [files, setFiles] = useState<File[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)

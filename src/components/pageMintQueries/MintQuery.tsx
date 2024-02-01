@@ -20,12 +20,12 @@ import { QueryCreationRequest } from "@/src/lib/validators/validateQuery"
 import { useGetListing } from "@/src/server/services"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
-import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { zodValidator } from "@tanstack/zod-form-adapter"
 import axios from "axios"
 import { HelpCircle } from "lucide-react"
 import { z } from "zod"
-import { queryClient } from "@/src/server/services"
+import { useQueryClient } from "@tanstack/react-query"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
@@ -45,6 +45,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 export default function MintQuery() {
   const [disabled, setDisabled] = useState<boolean>(true)
   const [submitted, setSubmitted] = useState<boolean>(false)
+  const queryClient = useQueryClient()
 
   const { mintId }: any = useParams()
 

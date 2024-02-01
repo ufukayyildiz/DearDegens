@@ -26,8 +26,8 @@ import { Button } from "../components-ui/Button"
 import { Image, Trash2 } from "lucide-react"
 import { toast } from "@/src/hooks/use-toast"
 import { useMutation, useQuery } from "@tanstack/react-query"
-import { queryClient } from "@/src/server/services"
 import { useGetBucket } from "@/src/server/services"
+import { useQueryClient } from "@tanstack/react-query"
 import { getBucket } from "@/src/server/actions"
 import axios from "axios"
 
@@ -41,21 +41,13 @@ export default function ListingSelectImage({
   const images = ["1", "2", "3"]
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [disabled, setDisabled] = useState<boolean>(false)
-  const [isActive, setIsActive] = useState<boolean>(false)
+  const queryClient = useQueryClient()
 
   // USER BUCKET
-  const { data, isLoading, isFetching } = useQuery({
-    queryKey: ["getBucket"],
-    queryFn: getBucket,
-    enabled: isActive,
-    refetchInterval: 5000,
-    refetchIntervalInBackground: true,
-  })
-
-  const bucket: any = data
+  const bucket: any = useGetBucket().data
   const bucketString = bucket && JSON.stringify(bucket[0][0].length)
-
-  console.log("fetching", isFetching, "loading:", isLoading)
+  const isLoading = useGetBucket().isLoading
+  const isFetching = useGetBucket().isFetching
 
   const toggleImageSelection = (imageName: any) => {
     if (imageName) {
@@ -104,7 +96,7 @@ export default function ListingSelectImage({
           queryKey: ["getBucket"],
           refetchType: "all",
         })
-        await queryClient.refetchQueries({ queryKey: ['getBucket']})
+        await queryClient.refetchQueries({ queryKey: ["getBucket"] })
       }
     },
   })
@@ -114,10 +106,7 @@ export default function ListingSelectImage({
       {/* LISTING IMAGES */}
 
       <Dialog>
-        <DialogTrigger
-          onClick={() => setIsActive(true)}
-          className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-customAccent"
-        >
+        <DialogTrigger className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-customAccent">
           Select Images
         </DialogTrigger>
         <DialogContent>
@@ -125,7 +114,7 @@ export default function ListingSelectImage({
             <DialogTitle className="mb-5">
               Select images from your bucket:
             </DialogTitle>
-            <DialogClose onClick={() => setIsActive(false)} />
+            <DialogClose />
             <div>
               <ScrollArea>
                 <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">

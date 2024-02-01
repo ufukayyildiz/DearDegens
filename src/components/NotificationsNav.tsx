@@ -14,7 +14,7 @@ import {
   AlertDialogTrigger,
 } from "@/src/components/components-ui/AlertDialog"
 import { useMutation } from "@tanstack/react-query"
-import { queryClient } from "@/src/server/services"
+import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Bell, Loader, MoreVertical } from "lucide-react"
 
@@ -55,6 +55,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
     useState<notificationsType>()
 
   // QUERIES
+  const queryClient = useQueryClient()
   const notifications = useGetNotifications().data
   const isFetching = useGetNotifications().isFetching
 
