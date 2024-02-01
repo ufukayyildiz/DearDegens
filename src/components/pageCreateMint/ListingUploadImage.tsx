@@ -44,8 +44,7 @@ export default function ListingUploadImage() {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["getBucket"], refetchType: 'all', })
-        await queryClient.refetchQueries({ queryKey: ['getBucket'], type: 'active' })
+        await queryClient.invalidateQueries({ queryKey: ["getBucket"] })
       }
     },
   })

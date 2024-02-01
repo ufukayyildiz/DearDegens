@@ -2,7 +2,13 @@
 import { useQuery } from "@tanstack/react-query"
 import { QueryClient } from "@tanstack/react-query"
 
-export const queryClient = new QueryClient()
+export const queryClient = new QueryClient({
+  defaultOptions: {
+    queries: {
+      staleTime: 5000,
+    },
+  },
+})
 
 import { listingsType, offerType, queryType } from "../types/db"
 import {
@@ -15,7 +21,7 @@ import {
 
 export function useGetQueries(mintId: any) {
   return useQuery<queryType[]>({
-    queryKey: ["adQueries"],
+    queryKey: ["adQueries", mintId],
     queryFn: () => mintId && getAdQueries(mintId),
   })
 }
@@ -24,7 +30,6 @@ export function useGetBucket() {
   return useQuery({
     queryKey: ["getBucket"],
     queryFn: getBucket,
-    staleTime: 5000,
   })
 }
 
@@ -37,14 +42,14 @@ export function useGetNotifications() {
 
 export function useGetOffers(mintId: any) {
   return useQuery<offerType[]>({
-    queryKey: ["adOffers"],
+    queryKey: ["adOffers", mintId],
     queryFn: () => mintId && getAdOffers(mintId),
   })
 }
 
 export function useGetListing(mintId: any) {
   return useQuery<listingsType[]>({
-    queryKey: ["listing"],
+    queryKey: ["listing", mintId],
     queryFn: () => mintId && getListings(mintId),
   })
 }

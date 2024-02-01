@@ -7,6 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
+  DialogClose,
 } from "@/src/components/components-ui/Dialog"
 import {
   AlertDialog,
@@ -24,9 +25,10 @@ import { Checkbox } from "../components-ui/Checkbox"
 import { Button } from "../components-ui/Button"
 import { Image, Trash2 } from "lucide-react"
 import { toast } from "@/src/hooks/use-toast"
-import { useMutation } from "@tanstack/react-query"
+import { useMutation, useQuery } from "@tanstack/react-query"
 import { queryClient } from "@/src/server/services"
 import { useGetBucket } from "@/src/server/services"
+import { getBucket } from "@/src/server/actions"
 import axios from "axios"
 
 interface ListingSelectImageProps {
@@ -36,20 +38,24 @@ interface ListingSelectImageProps {
 export default function ListingSelectImage({
   onSelectedImages,
 }: ListingSelectImageProps) {
-  const [disabled, setDisabled] = useState<boolean>(true)
   const images = ["1", "2", "3"]
+  const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const [disabled, setDisabled] = useState<boolean>(false)
+  const [isActive, setIsActive] = useState<boolean>(false)
 
   // USER BUCKET
-  const getBucket = useGetBucket()
+  const { data, isLoading, isFetching } = useQuery({
+    queryKey: ["getBucket"],
+    queryFn: getBucket,
+    enabled: isActive,
+    refetchInterval: 5000,
+    refetchIntervalInBackground: true,
+  })
 
-  const bucket: any = getBucket.data
+  const bucket: any = data
   const bucketString = bucket && JSON.stringify(bucket[0][0].length)
-  const isLoading = getBucket.isLoading
-  const isFetching = getBucket.isFetching
 
-  console.log('fetching', isFetching, 'loading:', isLoading)
-
-  const [selectedImages, setSelectedImages] = useState<string[]>([])
+  console.log("fetching", isFetching, "loading:", isLoading)
 
   const toggleImageSelection = (imageName: any) => {
     if (imageName) {
@@ -94,8 +100,11 @@ export default function ListingSelectImage({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["getBucket"], refetchType: 'all', })
-        await queryClient.refetchQueries({ queryKey: ['getBucket'], type: 'active' })
+        await queryClient.invalidateQueries({
+          queryKey: ["getBucket"],
+          refetchType: "all",
+        })
+        await queryClient.refetchQueries({ queryKey: ['getBucket']})
       }
     },
   })
@@ -105,7 +114,10 @@ export default function ListingSelectImage({
       {/* LISTING IMAGES */}
 
       <Dialog>
-        <DialogTrigger className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-customAccent">
+        <DialogTrigger
+          onClick={() => setIsActive(true)}
+          className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-customAccent"
+        >
           Select Images
         </DialogTrigger>
         <DialogContent>
@@ -113,12 +125,14 @@ export default function ListingSelectImage({
             <DialogTitle className="mb-5">
               Select images from your bucket:
             </DialogTitle>
+            <DialogClose onClick={() => setIsActive(false)} />
             <div>
               <ScrollArea>
                 <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">
                   {isLoading === true &&
                     isFetching === true &&
-                    bucket && bucketString.length < 10 &&
+                    bucket &&
+                    bucketString.length < 10 &&
                     images.map((file: any, index: number) => (
                       <div key={index}>
                         <Image
