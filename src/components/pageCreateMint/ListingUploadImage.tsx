@@ -93,7 +93,7 @@ export default function ListingUploadImage() {
 
   return (
     <div className="mb-10 flex flex-col items-start justify-start space-y-2">
-      <div className="border-l-1 relative flex h-10 w-36 justify-center rounded-lg border border-muted text-center shadow-lg hover:border-customAccent">
+      <div className="border-l-1 relative flex h-10 w-36 justify-center rounded-lg border border-muted text-center shadow-lg hover:border-2 hover:border-customAccent">
         {isLoading === true && (
           <div className="absolute inset-0 z-50 flex h-full w-full justify-center rounded-lg bg-slate-300/30 backdrop-blur-sm">
             <Loader className="my-auto h-8 w-8 animate-spin text-slate-500" />
@@ -105,7 +105,10 @@ export default function ListingUploadImage() {
               Upload {files.length} files
             </Button>
           ) : (
-            <div {...getRootProps()} className="my-auto h-full text-primary">
+            <div
+              {...getRootProps()}
+              className="my-auto h-full cursor-pointer text-primary"
+            >
               <input {...getInputProps()} />
               <p className="text-sm">Upload to bucket</p>
             </div>

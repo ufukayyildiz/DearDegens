@@ -6,26 +6,20 @@ import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { categoryHousehold } from "@/src/lib/categories/mintHousehold"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
-import {
-  HouseholdCreationRequest,
-  validateHousehold,
-} from "@/src/lib/validators/validateHousehold"
-import { zodResolver } from "@hookform/resolvers/zod"
+import { HouseholdCreationRequest } from "@/src/lib/validators/validateHousehold"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
+import { useForm } from "@tanstack/react-form"
+import type { FieldApi } from "@tanstack/react-form"
+import { zodValidator } from "@tanstack/zod-form-adapter"
+import { Loader2 } from "lucide-react"
 
 import { Button } from "../components-ui/Button"
-import {
-  Form,
-  FormControl,
-  FormDescription,
-  FormField,
-  FormItem,
-  FormLabel,
-  FormMessage,
-} from "../components-ui/Form"
+import { Checkbox } from "../components-ui/Checkbox"
+import { Label } from "../components-ui/Label"
+import { FieldDescription } from "./FieldDescription"
+import { FieldLabel } from "./FieldLabel"
+
 import { Input } from "../components-ui/Input"
 import {
   Select,
@@ -35,14 +29,39 @@ import {
   SelectValue,
 } from "../components-ui/Select"
 
+import {
+  listingTitle,
+  listingBrand,
+  listingCategory,
+  listingDescription,
+  listingImages,
+  listingLocation,
+  listingMeetup,
+  listingModel,
+  listingPrice,
+  onChangeAsync,
+  onChangeAsyncDebounceMs,
+} from "@/src/lib/validators/validateListing"
+
 import { Textarea } from "../components-ui/Textarea"
 import ListingSelectImage from "./ListingSelectImage"
-import ListingUploadImage from "./ListingUploadImage"
 
-type FormData = z.infer<typeof validateHousehold>
+function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
+  console.log("field", field, field.state.meta.touchedErrors)
+  return (
+    <>
+      {field.state.meta.touchedErrors ? (
+        <em className="absolute -bottom-4 text-xs italic text-rose-400">
+          {field.state.meta.touchedErrors}
+        </em>
+      ) : null}
+    </>
+  )
+}
 
 export default function CreateHousehold() {
   const router = useRouter()
+  const [disabled, setDisabled] = useState<boolean>(true)
 
   // USER BUCKET
   const [selectedImages, setSelectedImages] = useState<string[]>([])
@@ -50,9 +69,9 @@ export default function CreateHousehold() {
     setSelectedImages(data)
   }
 
-  // REACT-HOOK-FORM
-  const form = useForm<FormData>({
-    resolver: zodResolver(validateHousehold),
+  // TANSTACK-HOOK-FORM
+  const form = useForm({
+    validatorAdapter: zodValidator,
     defaultValues: {
       category: "",
       price: 0,
@@ -63,6 +82,22 @@ export default function CreateHousehold() {
       images: "",
       location: "",
       meetup: "",
+    },
+    onSubmit: async ({ value }) => {
+      const payload: HouseholdCreationRequest = {
+        category: value.category,
+        price: value.price,
+        title: value.title,
+        brand: value.brand,
+        model: value.model,
+        description: value.description,
+        images: JSON.stringify(selectedImages),
+        location: value.location,
+        meetup: value.meetup,
+      }
+      createPost(payload)
+      setDisabled(true)
+      console.log("Submit Payload:", payload)
     },
   })
 
@@ -115,51 +150,39 @@ export default function CreateHousehold() {
     },
   })
 
-  async function onSubmit(data: FormData) {
-    const payload: HouseholdCreationRequest = {
-      category: data.category,
-      price: data.price,
-      title: data.title,
-      brand: data.brand,
-      model: data.model,
-      description: data.description,
-      images: JSON.stringify(selectedImages),
-      location: data.location,
-      meetup: data.meetup,
-    }
-    createPost(payload)
-  }
-
   return (
     <div className="mx-auto mb-32 mt-10 w-full rounded-lg bg-background p-2">
-      {/* UPLOAD IMAGES */}
-      <ListingUploadImage />
-
       {/* LISTING IMAGES */}
       <ListingSelectImage onSelectedImages={callSelectedImages} />
 
-      <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+      <form.Provider>
+        <form
+          onSubmit={(event) => {
+            event.preventDefault()
+            event.stopPropagation()
+            void form.handleSubmit()
+          }}
+          className="space-y-8"
+        >
           <div className="flex flex-col gap-10 md:flex-row">
             {/* CATEGORY */}
-            <FormField
-              control={form.control}
+            <form.Field
               name="category"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex h-5 w-full justify-between">
-                    <FormLabel className="py-1">Category </FormLabel>
-                    <FormLabel className="py-1 text-xs italic text-rose-400">
-                      (required)
-                    </FormLabel>
-                  </div>
-                  <FormControl>
+              children={(field) => {
+                return (
+                  <div className="relative w-full flex-col">
+                    <div className="flex w-full justify-between">
+                      <FieldLabel>Category</FieldLabel>
+                      <FieldLabel className="py-2 text-xs italic text-rose-400">
+                        (required)
+                      </FieldLabel>
+                    </div>
+
                     <Select
                       required
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      onValueChange={(event) => field.handleChange(event)}
                     >
-                      <SelectTrigger className="w-60">
+                      <SelectTrigger className="w-full">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
@@ -181,138 +204,198 @@ export default function CreateHousehold() {
                         ))}
                       </SelectContent>
                     </Select>
-                  </FormControl>
-                  <FormDescription>
-                    Select an appropriate category..
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
+                    <FieldDescription>
+                      Select an appropriate category..
+                    </FieldDescription>
+                  </div>
+                )
+              }}
             />
 
             {/* PRICE */}
-            <FormField
-              control={form.control}
+            <form.Field
               name="price"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex h-5 w-full justify-between">
-                    <FormLabel className="py-1">Price </FormLabel>
-                    <FormLabel className="py-1 text-xs italic text-rose-400">
+              validators={{
+                onChange: listingPrice,
+                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                onChangeAsync: onChangeAsync,
+              }}
+            >
+              {(field) => (
+                <div className="relative w-full flex-col">
+                  <div className="flex w-full justify-between">
+                    <FieldLabel>Price </FieldLabel>
+                    <FieldLabel className="py-2 text-xs italic text-rose-400">
                       (required)
-                    </FormLabel>
+                    </FieldLabel>
                   </div>
-                  <FormControl>
-                    <Input {...field} type="number" className="w-60" required />
-                  </FormControl>
-                  <FormDescription>Have a price in mind?</FormDescription>
-                  <FormMessage />
-                </FormItem>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(event) =>
+                      /* @ts-ignore */
+                      field.handleChange(event.target.value)
+                    }
+                  />
+
+                  <FieldDescription>Have a price in mind?</FieldDescription>
+                  <FieldInfo field={field} />
+                </div>
               )}
-            />
+            </form.Field>
           </div>
 
           {/* TITLE */}
-          <FormField
-            control={form.control}
+          <form.Field
             name="title"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex h-5 w-full justify-between">
-                  <FormLabel className="py-1">Title </FormLabel>
-                  <FormLabel className="py-1 text-xs italic text-rose-400">
+            validators={{
+              onChange: listingTitle,
+              onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+              onChangeAsync: onChangeAsync,
+            }}
+          >
+            {(field) => (
+              <div className="relative w-full flex-col">
+                <div className="flex w-full justify-between">
+                  <FieldLabel>Title</FieldLabel>
+                  <FieldLabel className="py-2 text-xs italic text-rose-400">
                     (required)
-                  </FormLabel>
+                  </FieldLabel>
                 </div>
-                <FormControl>
-                  <Input {...field} required />
-                </FormControl>
-                <FormDescription>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  className="w-full text-primary"
+                  required
+                />
+                <FieldDescription>
                   What are we listing for you today?
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
+                </FieldDescription>
+                <FieldInfo field={field} />
+              </div>
             )}
-          />
+          </form.Field>
 
           <div className="flex w-full flex-col justify-between gap-10 md:flex-row">
             {/* BRAND */}
-            <FormField
-              control={form.control}
+            <form.Field
               name="brand"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Brand</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>
+              validators={{
+                onChange: listingBrand,
+                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                onChangeAsync: onChangeAsync,
+              }}
+            >
+              {(field) => (
+                <div className="relative w-full flex-col">
+                  <div className="flex w-full justify-between">
+                    <FieldLabel>Brand</FieldLabel>
+                  </div>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    className="w-full text-primary"
+                    required
+                  />
+                  <FieldDescription>
                     It&apos;s all about the branding..
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
+                  </FieldDescription>
+                  <FieldInfo field={field} />
+                </div>
               )}
-            />
+            </form.Field>
 
             {/* MODEL */}
-            <FormField
-              control={form.control}
+            <form.Field
               name="model"
-              render={({ field }) => (
-                <FormItem className="w-full">
-                  <FormLabel>Model</FormLabel>
-                  <FormControl>
-                    <Input {...field} />
-                  </FormControl>
-                  <FormDescription>Model name/number..</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-          </div>
-          {/* DESCRIPTION */}
-          <FormField
-            control={form.control}
-            name="description"
-            render={({ field }) => (
-              <FormItem>
-                <div className="flex h-5 w-full justify-between">
-                  <FormLabel className="py-1">Description </FormLabel>
-                  <FormLabel className="py-1 text-xs italic text-rose-400">
-                    (required)
-                  </FormLabel>
+              validators={{
+                onChange: listingModel,
+                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                onChangeAsync: onChangeAsync,
+              }}
+            >
+              {(field) => (
+                <div className="relative w-full flex-col">
+                  <div className="flex w-full justify-between">
+                    <FieldLabel>Model</FieldLabel>
+                  </div>
+                  <Input
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(e) => field.handleChange(e.target.value)}
+                    className="w-full text-primary"
+                    required
+                  />
+                  <FieldDescription>Model name/number..</FieldDescription>
+                  <FieldInfo field={field} />
                 </div>
-                <FormControl>
-                  <Textarea {...field} required />
-                </FormControl>
-                <FormDescription>
+              )}
+            </form.Field>
+          </div>
+
+          {/* DESCRIPTION */}
+          <form.Field
+            name="description"
+            validators={{
+              onChange: listingDescription,
+              onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+              onChangeAsync: onChangeAsync,
+            }}
+          >
+            {(field) => (
+              <div className="relative w-full flex-col">
+                <div className="flex w-full justify-between">
+                  <FieldLabel>Type your message here:</FieldLabel>
+                  <FieldLabel className="py-2 text-xs italic text-rose-400">
+                    (required)
+                  </FieldLabel>
+                </div>
+                <Textarea
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(e) => field.handleChange(e.target.value)}
+                  className="h-32 w-full text-primary"
+                  required
+                />
+                <FieldDescription>
                   Good descriptions = Speedy sales!
-                </FormDescription>
-                <FormMessage />
-              </FormItem>
+                </FieldDescription>
+                <FieldInfo field={field} />
+              </div>
             )}
-          />
+          </form.Field>
 
           <div className="flex flex-col gap-10 md:flex-row">
             {/* LOCATION */}
-            <FormField
-              control={form.control}
+            <form.Field
               name="location"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex h-5 w-full justify-between">
-                    <FormLabel className="py-1">Location </FormLabel>
-                    <FormLabel className="py-1 text-xs italic text-rose-400">
-                      (required)
-                    </FormLabel>
-                  </div>
-                  <FormControl>
+              children={(field) => {
+                return (
+                  <div className="relative w-full flex-col">
+                    <div className="flex w-full justify-between">
+                      <FieldLabel>Location:</FieldLabel>
+                      <FieldLabel className="py-2 text-xs italic text-rose-400">
+                        (required)
+                      </FieldLabel>
+                    </div>
+
                     <Select
                       required
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      onValueChange={(event) => field.handleChange(event)}
                     >
-                      <SelectTrigger className="w-60">
+                      <SelectTrigger className="w-full">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
@@ -334,34 +417,33 @@ export default function CreateHousehold() {
                         ))}
                       </SelectContent>
                     </Select>
-                  </FormControl>
-                  <FormDescription>Where are you from?</FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
-            />
-            {/* MEET */}
-            <FormField
-              control={form.control}
-              name="meetup"
-              render={({ field }) => (
-                <FormItem>
-                  <div className="flex h-5 w-full justify-between">
-                    <FormLabel className="py-1">Meeting preferance </FormLabel>
-                    <FormLabel className="py-1 text-xs italic text-rose-400">
-                      (required)
-                    </FormLabel>
+                    <FieldDescription>Where are you from?</FieldDescription>
                   </div>
-                  <FormControl>
+                )
+              }}
+            />
+
+            {/* MEETUP */}
+            <form.Field
+              name="meetup"
+              children={(field) => {
+                return (
+                  <div className="relative w-full flex-col">
+                    <div className="flex w-full justify-between">
+                      <FieldLabel>Meeting preferance:</FieldLabel>
+                      <FieldLabel className="py-2 text-xs italic text-rose-400">
+                        (required)
+                      </FieldLabel>
+                    </div>
+
                     <Select
                       required
-                      onValueChange={field.onChange}
-                      defaultValue={field.value}
+                      onValueChange={(event) => field.handleChange(event)}
                     >
-                      <SelectTrigger className="w-60">
+                      <SelectTrigger className="w-full">
                         <SelectValue />
                       </SelectTrigger>
-                      <SelectContent className="max-h-60 overflow-auto p-2">
+                      <SelectContent className="max-h-96 overflow-auto p-2">
                         <SelectItem key="pub" value="public">
                           Meet in public
                         </SelectItem>
@@ -373,26 +455,55 @@ export default function CreateHousehold() {
                         </SelectItem>
                       </SelectContent>
                     </Select>
-                  </FormControl>
-                  <FormDescription>
-                    How is this deal going down?
-                  </FormDescription>
-                  <FormMessage />
-                </FormItem>
-              )}
+                    <FieldDescription>
+                      How is this deal going down?
+                    </FieldDescription>
+                  </div>
+                )
+              }}
             />
           </div>
 
+          <div className="mb-10 flex items-center justify-start space-x-2">
+            <Checkbox
+              id="disable"
+              checked={!disabled}
+              onCheckedChange={() => setDisabled(!disabled)}
+            />
+            <Label
+              htmlFor="disable"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              <Link href="/termsofservice" className="underline">
+                Agree to terms of service.
+              </Link>
+            </Label>
+          </div>
+
           <div className="flex gap-10">
-            <Button type="submit" variant="outline">
-              Send
-            </Button>
-            <Button>
+            <form.Subscribe
+              selector={(state) => [state.canSubmit, state.isSubmitting]}
+              children={([canSubmit, isSubmitting]) => (
+                <Button
+                  type="submit"
+                  variant="outline"
+                  disabled={disabled || !canSubmit}
+                  className="w-20 items-center justify-center"
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    "Send"
+                  )}
+                </Button>
+              )}
+            />
+            <Button className="w-20">
               <Link href={`/`}>Cancel</Link>
             </Button>
           </div>
         </form>
-      </Form>
+      </form.Provider>
     </div>
   )
 }

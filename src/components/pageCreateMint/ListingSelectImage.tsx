@@ -7,7 +7,6 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-  DialogClose,
 } from "@/src/components/components-ui/Dialog"
 import {
   AlertDialog,
@@ -23,12 +22,13 @@ import {
 import { ScrollArea } from "../components-ui/ScrollArea"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Button } from "../components-ui/Button"
+import ImageSkeleton from "./ImageSkeleton"
+import ListingUploadImage from "./ListingUploadImage"
 import { Image, Trash2 } from "lucide-react"
 import { toast } from "@/src/hooks/use-toast"
 import { useMutation, useQuery } from "@tanstack/react-query"
 import { useGetBucket } from "@/src/server/services"
 import { useQueryClient } from "@tanstack/react-query"
-import { getBucket } from "@/src/server/actions"
 import axios from "axios"
 
 interface ListingSelectImageProps {
@@ -40,12 +40,12 @@ export default function ListingSelectImage({
 }: ListingSelectImageProps) {
   const images = ["1", "2", "3"]
   const [selectedImages, setSelectedImages] = useState<string[]>([])
-  const [disabled, setDisabled] = useState<boolean>(false)
+  const [disabled, setDisabled] = useState<boolean>(true)
   const queryClient = useQueryClient()
 
   // USER BUCKET
   const bucket: any = useGetBucket().data
-  const bucketString = bucket && JSON.stringify(bucket[0][0].length)
+  const bucketString = bucket && JSON.stringify(bucket[0][0])
   const isLoading = useGetBucket().isLoading
   const isFetching = useGetBucket().isFetching
 
@@ -106,7 +106,7 @@ export default function ListingSelectImage({
       {/* LISTING IMAGES */}
 
       <Dialog>
-        <DialogTrigger className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-customAccent">
+        <DialogTrigger className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-2 hover:border-customAccent">
           Select Images
         </DialogTrigger>
         <DialogContent>
@@ -114,23 +114,18 @@ export default function ListingSelectImage({
             <DialogTitle className="mb-5">
               Select images from your bucket:
             </DialogTitle>
-            <DialogClose />
             <div>
+              {/* UPLOAD IMAGES */}
+              <ListingUploadImage />
+
               <ScrollArea>
                 <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">
-                  {isLoading === true &&
-                    isFetching === true &&
+                  {isFetching === true ||
+                  (bucket && bucket[0] === undefined) ||
+                  (bucketString && bucketString.length < 10) ? (
+                    <ImageSkeleton images={images} />
+                  ) : (
                     bucket &&
-                    bucketString.length < 10 &&
-                    images.map((file: any, index: number) => (
-                      <div key={index}>
-                        <Image
-                          alt={`Image ${index}`}
-                          className="h-32 w-32 animate-pulse rounded-md object-contain text-muted"
-                        />
-                      </div>
-                    ))}
-                  {bucket &&
                     bucket.length !== 0 &&
                     bucket[0].map((image: any, index: number) => (
                       <div key={index} className="relative h-32 w-32">
@@ -197,7 +192,8 @@ export default function ListingSelectImage({
                           className="h-32 w-32 rounded-md object-cover text-muted"
                         />
                       </div>
-                    ))}
+                    ))
+                  )}
                 </div>
               </ScrollArea>
             </div>
