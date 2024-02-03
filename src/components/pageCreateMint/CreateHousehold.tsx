@@ -47,7 +47,6 @@ import { Textarea } from "../components-ui/Textarea"
 import ListingSelectImage from "./ListingSelectImage"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
-  console.log("field", field, field.state.meta.touchedErrors)
   return (
     <>
       {field.state.meta.touchedErrors ? (
@@ -166,9 +165,7 @@ export default function CreateHousehold() {
         >
           <div className="flex flex-col gap-10 md:flex-row">
             {/* CATEGORY */}
-            <form.Field
-              name="category"
-            >
+            <form.Field name="category">
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
@@ -211,7 +208,7 @@ export default function CreateHousehold() {
                   </div>
                 )
               }}
-              </form.Field>
+            </form.Field>
 
             {/* PRICE */}
             <form.Field
@@ -380,9 +377,7 @@ export default function CreateHousehold() {
 
           <div className="flex flex-col gap-10 md:flex-row">
             {/* LOCATION */}
-            <form.Field
-              name="location"
-            >
+            <form.Field name="location">
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
@@ -423,12 +418,10 @@ export default function CreateHousehold() {
                   </div>
                 )
               }}
-              </form.Field>
+            </form.Field>
 
             {/* MEETUP */}
-            <form.Field
-              name="meetup"
-            >
+            <form.Field name="meetup">
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
@@ -486,7 +479,8 @@ export default function CreateHousehold() {
           <div className="flex gap-10">
             <form.Subscribe
               selector={(state) => [state.canSubmit, state.isSubmitting]}
-              children={([canSubmit, isSubmitting]) => (
+            >
+              {([canSubmit, isSubmitting]) => (
                 <Button
                   type="submit"
                   variant="outline"
@@ -500,7 +494,8 @@ export default function CreateHousehold() {
                   )}
                 </Button>
               )}
-            />
+            </form.Subscribe>
+
             <Button className="w-20">
               <Link href={`/`}>Cancel</Link>
             </Button>
