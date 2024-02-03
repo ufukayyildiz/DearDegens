@@ -1,63 +1,41 @@
-"use client"
-
-import React, { useEffect, useState } from "react"
-import useMediaQuery from "@/src/hooks/useMediaQuery"
-import { Splide, SplideSlide, SplideTrack } from "@splidejs/react-splide"
-import { ChevronLeftIcon, ChevronRightIcon } from "lucide-react"
+import React from "react"
+import {
+  Carousel,
+  CarouselContent,
+  CarouselItem,
+  CarouselNext,
+  CarouselPrevious,
+} from "../components-ui/Carousel"
 
 import MiniMintCardComponent from "./MiniMintCardComponent"
 
 import "@splidejs/react-splide/css/core"
 
 export default function SwipperComponent({ listings }: { listings: any[] }) {
-  const isBelowSmallScreens = useMediaQuery("(max-width:637px)")
-  const isBelowXSScreens = useMediaQuery("(max-width:768px)")
-  const isBelowLargeScreens = useMediaQuery("(max-width:1032px)")
-  const isBelowXLScreens = useMediaQuery("(max-width:1200px)")
-
-  const [slides, setSlides] = useState<number>(2)
-
-  useEffect(() => {
-    if (isBelowSmallScreens) {
-      setSlides(2)
-    } else if (isBelowLargeScreens) {
-      setSlides(3)
-    } else if (isBelowXLScreens) {
-      setSlides(4)
-    } else {
-      setSlides(5)
-    }
-  }, [isBelowSmallScreens, isBelowLargeScreens, isBelowXLScreens])
-
   return (
     <div>
-      <Splide
-        hasTrack={false}
-        aria-label="..."
-        className="relative"
-        options={{ perPage: slides, gap: "5rem", autoplay: true, type: "loop" }}
+      <Carousel
+        opts={{
+          align: "start",
+          loop: true,
+          dragFree: true,
+        }}
+        className="h-full w-full"
       >
-        <SplideTrack>
+        <CarouselContent className="ml-2 flex">
           {listings.map((listing: any, index: any) => (
-            <SplideSlide key={index} tabIndex={index} className="p-5">
+            <CarouselItem
+              key={index}
+              tabIndex={index}
+              className="basis-auto p-5"
+            >
               <MiniMintCardComponent listing={listing} />
-            </SplideSlide>
+            </CarouselItem>
           ))}
-        </SplideTrack>
-
-        <div className="splide__arrows">
-          <div className="absolute -left-6 top-[50%]">
-            <button className="splide__arrow splide__arrow--prev">
-              <ChevronLeftIcon />
-            </button>
-          </div>
-          <div className="absolute -right-6 top-[50%]">
-            <button className="splide__arrow splide__arrow--next">
-              <ChevronRightIcon />
-            </button>
-          </div>
-        </div>
-      </Splide>
+        </CarouselContent>
+        <CarouselPrevious variant="icon" />
+        <CarouselNext variant="icon" />
+      </Carousel>
     </div>
   )
 }
