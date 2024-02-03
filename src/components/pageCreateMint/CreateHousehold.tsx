@@ -478,8 +478,10 @@ export default function CreateHousehold() {
 
           <div className="flex gap-10">
             <form.Subscribe
+              /* @ts-ignore */
               selector={(state) => [state.canSubmit, state.isSubmitting]}
             >
+              {/* @ts-ignore */}
               {([canSubmit, isSubmitting]) => (
                 <Button
                   type="submit"

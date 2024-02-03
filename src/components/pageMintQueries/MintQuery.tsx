@@ -23,7 +23,7 @@ import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
-import { HelpCircle } from "lucide-react"
+import { HelpCircle, Loader2 } from "lucide-react"
 import { z } from "zod"
 import { useQueryClient } from "@tanstack/react-query"
 import { Checkbox } from "../components-ui/Checkbox"
@@ -239,7 +239,7 @@ export default function MintQuery() {
                             className="w-28"
                           >
                             {isSubmitting ? (
-                              <p className="italic">whoosh!!</p>
+                              <Loader2 className="h-5 w-5 animate-spin" />
                             ) : (
                               "Send"
                             )}
