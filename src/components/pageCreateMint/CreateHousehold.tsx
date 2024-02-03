@@ -168,7 +168,8 @@ export default function CreateHousehold() {
             {/* CATEGORY */}
             <form.Field
               name="category"
-              children={(field) => {
+            >
+              {(field) => {
                 return (
                   <div className="relative w-full flex-col">
                     <div className="flex w-full justify-between">
@@ -210,7 +211,7 @@ export default function CreateHousehold() {
                   </div>
                 )
               }}
-            />
+              </form.Field>
 
             {/* PRICE */}
             <form.Field
@@ -381,7 +382,8 @@ export default function CreateHousehold() {
             {/* LOCATION */}
             <form.Field
               name="location"
-              children={(field) => {
+            >
+              {(field) => {
                 return (
                   <div className="relative w-full flex-col">
                     <div className="flex w-full justify-between">
@@ -421,12 +423,13 @@ export default function CreateHousehold() {
                   </div>
                 )
               }}
-            />
+              </form.Field>
 
             {/* MEETUP */}
             <form.Field
               name="meetup"
-              children={(field) => {
+            >
+              {(field) => {
                 return (
                   <div className="relative w-full flex-col">
                     <div className="flex w-full justify-between">
@@ -461,7 +464,7 @@ export default function CreateHousehold() {
                   </div>
                 )
               }}
-            />
+            </form.Field>
           </div>
 
           <div className="mb-10 flex items-center justify-start space-x-2">
