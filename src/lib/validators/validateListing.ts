@@ -14,6 +14,7 @@ export const onChangeAsync = z.string().refine(
 )
 
 export const listingCategory = z.string()
+export const listingSubCategory = z.string()
 export const listingPrice = z.coerce.number()
 export const listingTitle = z
   .string()

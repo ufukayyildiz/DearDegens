@@ -22,7 +22,7 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
         }}
         className="h-full w-full"
       >
-        <CarouselContent className="ml-2 flex">
+        <CarouselContent className="ml-0 flex">
           {listings.map((listing: any, index: any) => (
             <CarouselItem
               key={index}
@@ -33,8 +33,8 @@ export default function SwipperComponent({ listings }: { listings: any[] }) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious variant="icon" />
-        <CarouselNext variant="icon" />
+        <CarouselPrevious variant="icon" className="-left-8" />
+        <CarouselNext variant="icon" className="-right-8" />
       </Carousel>
     </div>
   )

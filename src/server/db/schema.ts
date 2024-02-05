@@ -153,6 +153,7 @@ export const listings = mysqlTable(
     expirationDate: datetime("expirationDate"),
     purgeDate: datetime("purgeDate"),
     category: varchar("category", { length: 191 }),
+    subCategory: varchar("subCategory", { length: 191 }),
     price: int("price"),
     brand: varchar("brand", { length: 191 }),
     model: varchar("model", { length: 191 }),

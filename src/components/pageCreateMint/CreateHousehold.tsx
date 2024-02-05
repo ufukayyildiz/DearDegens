@@ -61,6 +61,14 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 export default function CreateHousehold() {
   const router = useRouter()
   const [disabled, setDisabled] = useState<boolean>(true)
+  const [category, setCategory] = useState<string>("")
+  const [subCategory, setSubCategory] = useState<string>("")
+
+  const subcategories = categoryHousehold.filter((item) => {
+    if (item.name === category) {
+      return item.subCategories.map((subs) => subs)
+    }
+  })
 
   // USER BUCKET
   const [selectedImages, setSelectedImages] = useState<string[]>([])
@@ -73,6 +81,7 @@ export default function CreateHousehold() {
     validatorAdapter: zodValidator,
     defaultValues: {
       category: "",
+      subCategory: "",
       price: 0,
       title: "",
       brand: "",
@@ -84,7 +93,8 @@ export default function CreateHousehold() {
     },
     onSubmit: async ({ value }) => {
       const payload: HouseholdCreationRequest = {
-        category: value.category,
+        category: category,
+        subCategory: subCategory,
         price: value.price,
         title: value.title,
         brand: value.brand,
@@ -105,6 +115,7 @@ export default function CreateHousehold() {
     // PAYLOAD
     mutationFn: async ({
       category,
+      subCategory,
       price,
       title,
       brand,
@@ -116,6 +127,7 @@ export default function CreateHousehold() {
     }: HouseholdCreationRequest) => {
       const payload: HouseholdCreationRequest = {
         category,
+        subCategory,
         price,
         title,
         brand,
@@ -178,26 +190,21 @@ export default function CreateHousehold() {
 
                     <Select
                       required
-                      onValueChange={(event) => field.handleChange(event)}
+                      onValueChange={(event) => setCategory(event)}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
-                        {categoryHousehold.map((category, index) => (
+                        {categoryHousehold.map((item, index) => (
                           <div key={index}>
-                            <hr className="mb-10"></hr>
-                            <p
-                              className="text-lg font-bold text-primary"
-                              key={category.name}
+                            <SelectItem
+                              className="text-primary"
+                              value={item.name}
+                              key={item.name}
                             >
-                              {category.name}
-                            </p>
-                            {category.subCategories.map((subs) => (
-                              <SelectItem key={subs} value={subs}>
-                                {subs}
-                              </SelectItem>
-                            ))}
+                              {item.name}
+                            </SelectItem>
                           </div>
                         ))}
                       </SelectContent>
@@ -210,40 +217,87 @@ export default function CreateHousehold() {
               }}
             </form.Field>
 
-            {/* PRICE */}
-            <form.Field
-              name="price"
-              validators={{
-                onChange: listingPrice,
-                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
-                onChangeAsync: onChangeAsync,
-              }}
-            >
-              {(field) => (
-                <div className="relative w-full flex-col">
-                  <div className="flex w-full justify-between">
-                    <FieldLabel>Price </FieldLabel>
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
-                  </div>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(event) =>
-                      /* @ts-ignore */
-                      field.handleChange(event.target.value)
-                    }
-                  />
+            {/* SUB-CATEGORY */}
+            <form.Field name="subCategory">
+              {(field) => {
+                return (
+                  <div className="relative w-full flex-col">
+                    <div className="flex w-full justify-between">
+                      <FieldLabel>Sub-category</FieldLabel>
+                      <FieldLabel className="py-2 text-xs italic text-rose-400">
+                        (required)
+                      </FieldLabel>
+                    </div>
 
-                  <FieldDescription>Have a price in mind?</FieldDescription>
-                  <FieldInfo field={field} />
-                </div>
-              )}
+                    <Select
+                      required
+                      onValueChange={(event) => setSubCategory(event)}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {subcategories &&
+                          subcategories.map((item, index) => (
+                            <div key={index}>
+                              <p
+                                className="text-lg font-bold text-primary"
+                                key={item.name}
+                              >
+                                {item.name}
+                              </p>
+                              <hr className="mb-5 mt-2 border border-muted"></hr>
+                              {item.subCategories.map((subs) => (
+                                <SelectItem key={subs} value={subs}>
+                                  {subs}
+                                </SelectItem>
+                              ))}
+                            </div>
+                          ))}
+                      </SelectContent>
+                    </Select>
+                    <FieldDescription>
+                      Select an appropriate category..
+                    </FieldDescription>
+                  </div>
+                )
+              }}
             </form.Field>
           </div>
+
+          {/* PRICE */}
+          <form.Field
+            name="price"
+            validators={{
+              onChange: listingPrice,
+              onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+              onChangeAsync: onChangeAsync,
+            }}
+          >
+            {(field) => (
+              <div className="relative w-full flex-col md:w-1/2  md:pr-5">
+                <div className="flex w-full  justify-between">
+                  <FieldLabel>Price </FieldLabel>
+                  <FieldLabel className="py-2 text-xs italic text-rose-400">
+                    (required)
+                  </FieldLabel>
+                </div>
+                <Input
+                  id={field.name}
+                  name={field.name}
+                  value={field.state.value}
+                  onBlur={field.handleBlur}
+                  onChange={(event) =>
+                    /* @ts-ignore */
+                    field.handleChange(event.target.value)
+                  }
+                />
+
+                <FieldDescription>Have a price in mind?</FieldDescription>
+                <FieldInfo field={field} />
+              </div>
+            )}
+          </form.Field>
 
           {/* TITLE */}
           <form.Field
@@ -424,7 +478,7 @@ export default function CreateHousehold() {
             <form.Field name="meetup">
               {(field) => {
                 return (
-                  <div className="relative w-full flex-col">
+                  <div className="relative mb-20 w-full flex-col md:mb-10">
                     <div className="flex w-full justify-between">
                       <FieldLabel>Meeting preferance:</FieldLabel>
                       <FieldLabel className="py-2 text-xs italic text-rose-400">

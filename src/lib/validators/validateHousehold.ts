@@ -9,10 +9,12 @@ import {
   listingMeetup,
   listingModel,
   listingPrice,
+  listingSubCategory
 } from "./validateListing"
 
 export const validateHousehold = z.object({
   category: listingCategory,
+  subCategory: listingSubCategory,
   price: listingPrice,
   title: listingTitle,
   brand: listingBrand,

@@ -37,6 +37,7 @@ export async function POST(req: Request) {
 
     const {
       category,
+      subCategory,
       price,
       title,
       brand,
@@ -49,6 +50,7 @@ export async function POST(req: Request) {
     console.log(
       "data:",
       category,
+      subCategory,
       price,
       title,
       brand,
@@ -67,6 +69,7 @@ export async function POST(req: Request) {
       expirationDate: expirationDate,
       purgeDate: purgeDate,
       category: category,
+      subCategory: subCategory,
       price: price,
       title: title,
       brand: brand,
