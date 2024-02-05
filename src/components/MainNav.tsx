@@ -13,7 +13,7 @@ export function MainNav({ items }: MainNavProps) {
   return (
     <div className="flex gap-6 md:gap-10">
       <Link href="/" className="flex items-center space-x-2">
-        <div className="h-16 w-auto rounded-xl bg-zinc-100 p-1">
+        <div className="h-14 w-20 rounded-xl bg-zinc-100 p-1">
           <Image
             className="h-full w-full object-contain"
             src={Logo}
@@ -21,25 +21,6 @@ export function MainNav({ items }: MainNavProps) {
           />
         </div>
       </Link>
-      {items?.length ? (
-        <div className="flex gap-6">
-          {items?.map(
-            (item, index) =>
-              item.href && (
-                <Link
-                  key={index}
-                  href={item.href}
-                  className={cn(
-                    "flex items-center text-sm font-medium text-muted-foreground",
-                    item.disabled && "cursor-not-allowed opacity-80"
-                  )}
-                >
-                  {item.title}
-                </Link>
-              )
-          )}
-        </div>
-      ) : null}
     </div>
   )
 }
