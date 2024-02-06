@@ -248,22 +248,27 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
     // PAYLOAD
     mutationFn: async ({
       category,
+      subCategory,
       price,
       title,
       brand,
       model,
       description,
+      items,
       images,
       location,
       meetup,
     }: HouseholdCreationRequest) => {
+      
       const payload: HouseholdCreationRequest = {
         category,
+        subCategory,
         price,
         title,
         brand,
         model,
         description,
+        items,
         images,
         location,
         meetup,
@@ -298,11 +303,13 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
   async function onSubmit(data: FormData) {
     const payload: HouseholdCreationRequest = {
       category: data.category,
+      subCategory: data.subCategory,
       price: data.price,
       title: data.title,
       brand: data.brand,
       model: data.model,
       description: data.description,
+      items: data.items,
       images: listing[0].images || "",
       location: data.location,
       meetup: data.meetup,
