@@ -9,7 +9,8 @@ import {
   listingMeetup,
   listingModel,
   listingPrice,
-  listingSubCategory
+  listingSubCategory,
+  listingItems,
 } from "./validateListing"
 
 export const validateHousehold = z.object({
@@ -20,6 +21,7 @@ export const validateHousehold = z.object({
   brand: listingBrand,
   model: listingModel,
   description: listingDescription,
+  items: listingItems,
   images: listingImages,
   location: listingLocation,
   meetup: listingMeetup,

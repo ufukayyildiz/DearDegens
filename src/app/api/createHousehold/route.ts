@@ -43,6 +43,7 @@ export async function POST(req: Request) {
       brand,
       model,
       description,
+      items,
       images,
       location,
       meetup,
@@ -56,6 +57,7 @@ export async function POST(req: Request) {
       brand,
       model,
       description,
+      items,
       images,
       location,
       meetup
@@ -75,6 +77,7 @@ export async function POST(req: Request) {
       brand: brand,
       model: model,
       description: description,
+      items: JSON.stringify(items),
       images: images,
       location: location,
       meetup: meetup,

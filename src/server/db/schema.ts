@@ -159,6 +159,7 @@ export const listings = mysqlTable(
     model: varchar("model", { length: 191 }),
     title: varchar("title", { length: 191 }),
     description: text("description"),
+    items: text("items"),
     images: text("images"),
     location: varchar("location", { length: 191 }),
     meetup: varchar("meetup", { length: 191 }),

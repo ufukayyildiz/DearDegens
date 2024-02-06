@@ -24,7 +24,7 @@ export default async function MintCreatePage() {
 
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <div className="p-10">
+      <div className="px-5 py-10">
         <Tabs
           defaultValue="none"
           className="mx-auto flex w-11/12 flex-col md:w-8/12"

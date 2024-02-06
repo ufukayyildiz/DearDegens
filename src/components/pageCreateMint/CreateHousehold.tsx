@@ -12,8 +12,8 @@ import axios from "axios"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
-import { Loader2 } from "lucide-react"
-
+import { Loader2, X, PlusCircle } from "lucide-react"
+import { nanoid } from "nanoid"
 import { Button } from "../components-ui/Button"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
@@ -32,11 +32,7 @@ import {
 import {
   listingTitle,
   listingBrand,
-  listingCategory,
   listingDescription,
-  listingImages,
-  listingLocation,
-  listingMeetup,
   listingModel,
   listingPrice,
   onChangeAsync,
@@ -61,6 +57,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 export default function CreateHousehold() {
   const router = useRouter()
   const [disabled, setDisabled] = useState<boolean>(true)
+  const [isList, setIsList] = useState<boolean>(false)
   const [category, setCategory] = useState<string>("")
   const [subCategory, setSubCategory] = useState<string>("")
 
@@ -87,6 +84,13 @@ export default function CreateHousehold() {
       brand: "",
       model: "",
       description: "",
+      items: [
+        {
+          id: nanoid(),
+          name: "",
+          price: 0,
+        },
+      ],
       images: "",
       location: "",
       meetup: "",
@@ -100,6 +104,7 @@ export default function CreateHousehold() {
         brand: value.brand,
         model: value.model,
         description: value.description,
+        items: value.items,
         images: JSON.stringify(selectedImages),
         location: value.location,
         meetup: value.meetup,
@@ -121,6 +126,7 @@ export default function CreateHousehold() {
       brand,
       model,
       description,
+      items,
       images,
       location,
       meetup,
@@ -133,6 +139,7 @@ export default function CreateHousehold() {
         brand,
         model,
         description,
+        items,
         images,
         location,
         meetup,
@@ -428,6 +435,134 @@ export default function CreateHousehold() {
               </div>
             )}
           </form.Field>
+
+          {/* ITEMS */}
+          <hr className="border border-muted" />
+          <div className="mb-10 flex items-center justify-start space-x-2">
+            <Checkbox
+              id="disable"
+              checked={isList}
+              onCheckedChange={() => setIsList(!isList)}
+            />
+            <Label
+              htmlFor="disable"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Would you like to list multiple items?
+            </Label>
+          </div>
+          {isList === true ? (
+            <form.Field name="items" mode="array">
+              {(itemsField) => (
+                <div className="w-full">
+                  <FieldLabel>Listed Items:</FieldLabel>
+                  <div className="mr-16 flex flex-row">
+                    <FieldDescription className="w-full">
+                      Name:
+                    </FieldDescription>
+                    <FieldDescription className="w-full pl-3">
+                      Price:
+                    </FieldDescription>
+                  </div>
+                  <div>
+                    {!itemsField.state.value.length ? (
+                      <FieldDescription className="mb-5">
+                        "No items found."
+                      </FieldDescription>
+                    ) : (
+                      itemsField.state.value.map(
+                        (items: any, index: number) => (
+                          <div
+                            id={items.id}
+                            key={index}
+                            className="relative mb-5 flex w-full flex-row space-x-5 pr-16"
+                          >
+                            <itemsField.Field
+                              /* @ts-ignore */
+                              index={index}
+                              /* @ts-ignore */
+                              name="name"
+                            >
+                              {(field) => {
+                                return (
+                                  <div className="w-full">
+                                    <Input
+                                      id={field.name}
+                                      name={field.name}
+                                      /* @ts-ignore */
+                                      value={field.state.value}
+                                      onBlur={field.handleBlur}
+                                      onChange={(e) =>
+                                        field.handleChange(e.target.value)
+                                      }
+                                      className="w-full text-primary"
+                                    />
+                                    <FieldInfo field={field} />
+                                  </div>
+                                )
+                              }}
+                            </itemsField.Field>
+
+                            <itemsField.Field
+                              /* @ts-ignore */
+                              index={index}
+                              /* @ts-ignore */
+                              name="price"
+                            >
+                              {(field) => {
+                                return (
+                                  <div className="w-full">
+                                    <Input
+                                      id={field.name}
+                                      name={field.name}
+                                      /* @ts-ignore */
+                                      value={field.state.value}
+                                      onBlur={field.handleBlur}
+                                      onChange={(e) =>
+                                        /* @ts-ignore */
+                                        field.handleChange(e.target.value)
+                                      }
+                                      className="w-full text-primary"
+                                    />
+                                    <FieldInfo field={field} />
+                                  </div>
+                                )
+                              }}
+                            </itemsField.Field>
+                            <Button
+                              variant="icon"
+                              onClick={(event) => {
+                                event.preventDefault()
+                                itemsField.removeValue(index)
+                              }}
+                              className="absolute bottom-1 right-0 items-center justify-center hover:text-customAccent"
+                            >
+                              <X className="w-10" />
+                            </Button>
+                          </div>
+                        )
+                      )
+                    )}
+                  </div>
+                  <Button
+                    variant="icon"
+                    onClick={(event) => {
+                      event.preventDefault()
+                      itemsField.pushValue({
+                        id: nanoid(),
+                        name: "",
+                        price: 0,
+                      })
+                    }}
+                    className="hover:text-customAccent"
+                  >
+                    <PlusCircle />
+                  </Button>
+                </div>
+              )}
+            </form.Field>
+          ) : null}
+          <hr className="border border-muted" />
 
           <div className="flex flex-col gap-10 md:flex-row">
             {/* LOCATION */}

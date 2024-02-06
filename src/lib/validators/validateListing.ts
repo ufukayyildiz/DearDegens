@@ -64,6 +64,11 @@ export const listingDescription = z
     message:
       "Phone number detected. You will be able to communicate with buyers once an offer is agreed upon.",
   })
+export const listingItems = z.array(z.object({
+  id: z.string(),
+  name: z.string(),
+  price: z.coerce.number()
+}))
 export const listingImages = z.string()
 export const listingLocation = z.string()
 export const listingMeetup = z.string()
