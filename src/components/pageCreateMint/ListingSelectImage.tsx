@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react"
+import React, { useState, useEffect, use } from "react"
 import Link from "next/link"
 import {
   Dialog,
@@ -33,9 +33,11 @@ import axios from "axios"
 
 interface ListingSelectImageProps {
   onSelectedImages: (selectedImages: string[]) => void
+  defaultImages: string[]
 }
 
 export default function ListingSelectImage({
+  defaultImages,
   onSelectedImages,
 }: ListingSelectImageProps) {
   const images = ["1", "2", "3"]
@@ -62,6 +64,12 @@ export default function ListingSelectImage({
   useEffect(() => {
     onSelectedImages(selectedImages)
   }, [selectedImages])
+
+  useEffect(() => {
+    if (defaultImages) {
+      setSelectedImages(defaultImages)
+    }
+  }, [])
 
   // MUTATION DELETE IMAGE
   const { mutate: deleteImage } = useMutation({

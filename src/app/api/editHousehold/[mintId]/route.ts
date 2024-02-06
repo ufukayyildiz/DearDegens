@@ -31,11 +31,13 @@ export async function PATCH(req: Request, context: any) {
 
     const {
       category,
+      subCategory,
       price,
       title,
       brand,
       model,
       description,
+      items,
       images,
       location,
       meetup,
@@ -43,11 +45,13 @@ export async function PATCH(req: Request, context: any) {
     console.log(
       "data:",
       category,
+      subCategory,
       price,
       title,
       brand,
       model,
       description,
+      items,
       images,
       location,
       meetup
@@ -60,11 +64,13 @@ export async function PATCH(req: Request, context: any) {
       .set({
         updatedAt: currentDate,
         category: category,
+        subCategory: subCategory,
         price: price,
         title: title,
         brand: brand,
         model: model,
         description: description,
+        items: JSON.stringify(items),
         images: images,
         location: location,
         meetup: meetup,

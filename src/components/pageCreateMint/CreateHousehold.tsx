@@ -56,6 +56,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 
 export default function CreateHousehold() {
   const router = useRouter()
+  const defaultImages = [""]
   const [disabled, setDisabled] = useState<boolean>(true)
   const [isList, setIsList] = useState<boolean>(false)
   const [category, setCategory] = useState<string>("")
@@ -171,7 +172,10 @@ export default function CreateHousehold() {
   return (
     <div className="mx-auto mb-32 mt-10 w-full rounded-lg bg-background p-2">
       {/* LISTING IMAGES */}
-      <ListingSelectImage onSelectedImages={callSelectedImages} />
+      <ListingSelectImage
+        defaultImages={defaultImages}
+        onSelectedImages={callSelectedImages}
+      />
 
       <form.Provider>
         <form
@@ -561,7 +565,9 @@ export default function CreateHousehold() {
                 </div>
               )}
             </form.Field>
-          ) : null}
+          ) : (
+            <></>
+          )}
           <hr className="border border-muted" />
 
           <div className="flex flex-col gap-10 md:flex-row">
