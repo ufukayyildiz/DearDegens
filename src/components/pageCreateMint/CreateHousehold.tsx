@@ -467,7 +467,7 @@ export default function CreateHousehold() {
                   <div>
                     {!itemsField.state.value.length ? (
                       <FieldDescription className="mb-5">
-                        "No items found."
+                        Click the &quot;Plus&quot; icon to start adding items..
                       </FieldDescription>
                     ) : (
                       itemsField.state.value.map(
