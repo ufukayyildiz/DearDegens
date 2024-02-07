@@ -251,11 +251,11 @@ export const offersList = mysqlTable("offersList", {
   adId: varchar("adId", { length: 191 })
     .notNull()
     .references(() => listings.id),
-  itemId: varchar("adId", { length: 191 })
+  itemId: varchar("itemId", { length: 191 })
     .notNull()
     .references(() => listings.id),
   sellerId: varchar("sellerId", { length: 191 }),
-  name: varchar("adTitle", { length: 191 }),
+  name: varchar("name", { length: 191 }),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
