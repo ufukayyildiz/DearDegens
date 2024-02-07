@@ -105,7 +105,7 @@ export default function CreateHousehold() {
         brand: value.brand,
         model: value.model,
         description: value.description,
-        items: value.items,
+        items: value.items || [""],
         images: JSON.stringify(selectedImages),
         location: value.location,
         meetup: value.meetup,

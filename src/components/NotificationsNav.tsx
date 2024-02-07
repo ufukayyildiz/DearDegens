@@ -40,6 +40,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "./components-ui/DropdownMenu"
+import { ScrollArea } from "./components-ui/ScrollArea"
 
 interface NotificationsNavProps {
   userId: any
@@ -199,180 +200,184 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
           </DropdownMenuTrigger>
 
           <DropdownMenuContent
-            className="relative max-h-[350px] w-[312px] overflow-y-auto"
+            className="relative max-h-[350px] w-[320px]"
             align="end"
           >
-            <h1 className="text-2xl font-bold">Notifications</h1>
+            
+              <h1 className="text-2xl font-bold">Notifications</h1>
 
-            <div className="flex w-full justify-between py-2">
-              <Button
-                onClick={() => handleReadAllNotifications(userId)}
-                variant="outline"
-                className="bg-muted"
-              >
-                Mark all as read
-              </Button>
+              <div className="flex w-full justify-between py-2">
+                <Button
+                  onClick={() => handleReadAllNotifications(userId)}
+                  variant="outline"
+                  className="bg-muted"
+                >
+                  Mark all as read
+                </Button>
 
-              <AlertDialog>
-                <AlertDialogTrigger asChild>
-                  <Button variant="passivedestructive" className="bg-muted">
-                    Delete all
-                  </Button>
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you sure you want to delete all notifications?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      all notifications from your account.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <div className="flex w-full justify-between">
-                      <div className="flex items-center justify-start space-x-2">
-                        <Checkbox
-                          id="disable"
-                          checked={!disabled}
-                          onCheckedChange={() => setDisabled(!disabled)}
-                        />
-                        <label
-                          htmlFor="disable"
-                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                        >
-                          Confirm deletion of all notifications.
-                        </label>
-                      </div>
-                      <div>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
-                        <AlertDialogTrigger asChild>
-                          <Button
-                            onClick={() => handleDeleteAllNotifications(userId)}
-                            disabled={disabled}
-                            variant="destructive"
-                            className="ml-5"
+                <AlertDialog>
+                  <AlertDialogTrigger asChild>
+                    <Button variant="passivedestructive" className="bg-muted">
+                      Delete all
+                    </Button>
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you sure you want to delete all notifications?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete all notifications from your account.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <div className="flex w-full justify-between">
+                        <div className="flex items-center justify-start space-x-2">
+                          <Checkbox
+                            id="disable"
+                            checked={!disabled}
+                            onCheckedChange={() => setDisabled(!disabled)}
+                          />
+                          <label
+                            htmlFor="disable"
+                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                           >
-                            Delete
-                          </Button>
-                        </AlertDialogTrigger>
-                      </div>
-                    </div>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </div>
-
-            {notifications &&
-              notifications.map((notify: any, index: number) => (
-                <div key={index} className="relative">
-                  <DropdownMenuSeparator />
-
-                  {notify.isRead === false ? (
-                    <DropdownMenuItem asChild className="text-start">
-                      <div className="grid w-72 grid-cols-1 content-start bg-orange-500/20">
-                        <DialogTrigger
-                          onClick={() => handleReadNotification(notify)}
-                        >
-                          <h1 className="w-10/12 truncate text-start font-semibold">
-                            {notify.title}
-                          </h1>
-                          <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
-                            <span>Created</span>
-                            {formatTimeToNow(new Date(notify.createdAt))}
-                          </div>
-                        </DialogTrigger>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger>
+                            Confirm deletion of all notifications.
+                          </label>
+                        </div>
+                        <div>
+                          <AlertDialogCancel>Cancel</AlertDialogCancel>
+                          <AlertDialogTrigger asChild>
                             <Button
-                              onClick={() => {
-                                setSelectedNotificationId(notify.id)
-                              }}
-                              className="group absolute right-1 top-1  h-10 w-10 rounded-full border border-transparent bg-transparent shadow-none hover:bg-transparent"
-                            >
-                              <MoreVertical className="absolute top-2 mx-auto h-6 w-6 rounded-full text-transparent hover:text-customAccent" />
-                            </Button>
-                          </DropdownMenuTrigger>
-
-                          <DropdownMenuContent
-                            className="flex flex-col gap-1 overflow-y-auto"
-                            align="end"
-                          >
-                            <Button
-                              onClick={() => {
-                                setSelectedNotificationId(notify.id)
-                                handleDeleteNotification(notify)
-                              }}
-                              variant="outline"
-                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
+                              onClick={() =>
+                                handleDeleteAllNotifications(userId)
+                              }
+                              disabled={disabled}
+                              variant="destructive"
+                              className="ml-5"
                             >
                               Delete
                             </Button>
-                            <Button
-                              onClick={() => handleReadNotification(notify)}
-                              variant="outline"
-                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
-                            >
-                              Mark as read
-                            </Button>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
+                          </AlertDialogTrigger>
+                        </div>
                       </div>
-                    </DropdownMenuItem>
-                  ) : (
-                    <DropdownMenuItem asChild className="group text-start">
-                      <div className="relative grid w-72 grid-cols-1 content-start">
-                        <DialogTrigger
-                          onClick={() => handleReadNotification(notify)}
-                        >
-                          <h1 className="w-10/12 truncate text-start font-semibold">
-                            {notify.title}
-                          </h1>
-                          <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
-                            <span>Created</span>
-                            {formatTimeToNow(new Date(notify.createdAt))}
-                          </div>
-                        </DialogTrigger>
-                        <DropdownMenu>
-                          <DropdownMenuTrigger>
-                            <Button
-                              onClick={() => {
-                                setSelectedNotificationId(notify.id)
-                              }}
-                              className="group absolute right-1 top-1 h-10 w-10 rounded-full border border-transparent bg-transparent shadow-none hover:bg-transparent"
-                            >
-                              <MoreVertical className="absolute top-2 mx-auto h-6 w-6 rounded-full text-transparent hover:text-customAccent" />
-                            </Button>
-                          </DropdownMenuTrigger>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+              <ScrollArea className="h-[240px] w-full pr-5">
+              {notifications &&
+                notifications.map((notify: any, index: number) => (
+                  <div key={index} className="relative">
+                    <DropdownMenuSeparator />
 
-                          <DropdownMenuContent
-                            className="flex flex-col gap-1 overflow-y-auto"
-                            align="end"
+                    {notify.isRead === false ? (
+                      <DropdownMenuItem asChild className="text-start">
+                        <div className="grid w-full grid-cols-1 content-start bg-orange-500/20">
+                          <DialogTrigger
+                            onClick={() => handleReadNotification(notify)}
                           >
-                            <Button
-                              onClick={() => {
-                                setSelectedNotificationId(notify.id)
-                                handleDeleteNotification(notify)
-                              }}
-                              variant="outline"
-                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
+                            <h1 className="w-10/12 truncate text-start font-semibold">
+                              {notify.title}
+                            </h1>
+                            <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
+                              <span>Created</span>
+                              {formatTimeToNow(new Date(notify.createdAt))}
+                            </div>
+                          </DialogTrigger>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <Button
+                                onClick={() => {
+                                  setSelectedNotificationId(notify.id)
+                                }}
+                                className="group absolute right-1 top-1  h-10 w-10 rounded-full border border-transparent bg-transparent shadow-none hover:bg-transparent"
+                              >
+                                <MoreVertical className="absolute top-2 mx-auto h-6 w-6 rounded-full text-transparent hover:text-customAccent" />
+                              </Button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent
+                              className="flex flex-col gap-1 overflow-y-auto"
+                              align="end"
                             >
-                              Delete
-                            </Button>
-                            <Button
-                              onClick={() => handleReadNotification(notify)}
-                              variant="outline"
-                              className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
+                              <Button
+                                onClick={() => {
+                                  setSelectedNotificationId(notify.id)
+                                  handleDeleteNotification(notify)
+                                }}
+                                variant="outline"
+                                className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
+                              >
+                                Delete
+                              </Button>
+                              <Button
+                                onClick={() => handleReadNotification(notify)}
+                                variant="outline"
+                                className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
+                              >
+                                Mark as read
+                              </Button>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </DropdownMenuItem>
+                    ) : (
+                      <DropdownMenuItem asChild className="group text-start">
+                        <div className="relative grid w-full grid-cols-1 content-start">
+                          <DialogTrigger
+                            onClick={() => handleReadNotification(notify)}
+                          >
+                            <h1 className="w-10/12 truncate text-start font-semibold">
+                              {notify.title}
+                            </h1>
+                            <div className="flex max-h-40 gap-1 text-xs italic text-secondary">
+                              <span>Created</span>
+                              {formatTimeToNow(new Date(notify.createdAt))}
+                            </div>
+                          </DialogTrigger>
+                          <DropdownMenu>
+                            <DropdownMenuTrigger>
+                              <Button
+                                onClick={() => {
+                                  setSelectedNotificationId(notify.id)
+                                }}
+                                className="group absolute right-1 top-1 h-10 w-10 rounded-full border border-transparent bg-transparent shadow-none hover:bg-transparent"
+                              >
+                                <MoreVertical className="absolute top-2 mx-auto h-6 w-6 rounded-full text-transparent hover:text-customAccent" />
+                              </Button>
+                            </DropdownMenuTrigger>
+
+                            <DropdownMenuContent
+                              className="flex flex-col gap-1 overflow-y-auto"
+                              align="end"
                             >
-                              Mark as read
-                            </Button>
-                          </DropdownMenuContent>
-                        </DropdownMenu>
-                      </div>
-                    </DropdownMenuItem>
-                  )}
-                </div>
-              ))}
+                              <Button
+                                onClick={() => {
+                                  setSelectedNotificationId(notify.id)
+                                  handleDeleteNotification(notify)
+                                }}
+                                variant="outline"
+                                className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
+                              >
+                                Delete
+                              </Button>
+                              <Button
+                                onClick={() => handleReadNotification(notify)}
+                                variant="outline"
+                                className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
+                              >
+                                Mark as read
+                              </Button>
+                            </DropdownMenuContent>
+                          </DropdownMenu>
+                        </div>
+                      </DropdownMenuItem>
+                    )}
+                  </div>
+                ))}
+            </ScrollArea>
           </DropdownMenuContent>
         </DropdownMenu>
 

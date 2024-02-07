@@ -62,6 +62,7 @@ interface EditHouseholdProps {
 export default function EditHousehold({ listing }: EditHouseholdProps) {
   const router = useRouter()
   const items = listing[0].items && JSON.parse(listing[0].items)
+  const itemsString = JSON.stringify(items)
   const defaultImages = listing[0].images && JSON.parse(listing[0].images)
   const mintId = listing[0].id
   const [disabled, setDisabled] = useState<boolean>(true)
@@ -76,7 +77,7 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
   })
 
   useEffect(() => {
-    if (items.length > 0) {
+    if (itemsString.length > 60) {
       setIsList(true)
     }
   }, [])

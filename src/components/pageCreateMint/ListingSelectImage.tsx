@@ -45,6 +45,9 @@ export default function ListingSelectImage({
   const [disabled, setDisabled] = useState<boolean>(true)
   const queryClient = useQueryClient()
 
+  const selectedImagesString = JSON.stringify(selectedImages)
+  const defaultImagesString = JSON.stringify(defaultImages)
+
   // USER BUCKET
   const bucket: any = useGetBucket().data
   const bucketString = bucket && JSON.stringify(bucket[0][0])
@@ -66,7 +69,7 @@ export default function ListingSelectImage({
   }, [selectedImages])
 
   useEffect(() => {
-    if (defaultImages) {
+    if (defaultImagesString.length > 10) {
       setSelectedImages(defaultImages)
     }
   }, [])
@@ -210,7 +213,7 @@ export default function ListingSelectImage({
       </Dialog>
       <div className="border-l-1 relative mb-10 flex h-auto min-h-[100px] justify-center rounded-lg border border-dashed border-zinc-300 text-center shadow-lg">
         <div className="flex h-full w-full flex-wrap gap-2 p-2">
-          {selectedImages && selectedImages.length! > 0
+          {selectedImages && selectedImagesString.length! > 10
             ? selectedImages.map((image: any, index: number) => (
                 <div key={index}>
                   <Link href={image} target="_blank">
