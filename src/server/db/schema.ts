@@ -241,6 +241,43 @@ export const offersRelations = relations(offers, ({ one }) => ({
 }))
 
 // __________________________________________________________________________________________________________________
+// OFFERSLIST
+export const offersList = mysqlTable("offersList", {
+  id: varchar("id", { length: 191 }).primaryKey().notNull(),
+  userId: varchar("userId", { length: 191 })
+    .notNull()
+    .references(() => users.id),
+  userName: varchar("userName", { length: 191 }),
+  adId: varchar("adId", { length: 191 })
+    .notNull()
+    .references(() => listings.id),
+  itemId: varchar("adId", { length: 191 })
+    .notNull()
+    .references(() => listings.id),
+  sellerId: varchar("sellerId", { length: 191 }),
+  name: varchar("adTitle", { length: 191 }),
+  createdAt: timestamp("createdAt")
+    .default(sql`CURRENT_TIMESTAMP`)
+    .notNull(),
+  expirationDate: datetime("expirationDate"),
+  purgeDate: datetime("purgeDate"),
+  askPrice: int("askPrice"),
+  offerPrice: int("offerPrice"),
+  counterPrice: int("counterPrice"),
+  isCountered: boolean("isCountered").default(false),
+  isDeclined: boolean("isDeclined").default(false),
+  isAccepted: boolean("isAccepted").default(false),
+  isConfirmed: boolean("isConfirmed").default(false),
+})
+
+export const offersListRelations = relations(offersList, ({ one }) => ({
+  userId: one(users, {
+    fields: [offersList.userId],
+    references: [users.id],
+  }),
+}))
+
+// __________________________________________________________________________________________________________________
 // QUERIES
 export const queries = mysqlTable("queries", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),

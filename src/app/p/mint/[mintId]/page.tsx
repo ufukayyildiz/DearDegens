@@ -108,7 +108,11 @@ export default async function MintPage({ params }: MintPageProps) {
                     <MintPageUsersActions listingId={item.id} />
                   )}
                 </div>
-                <MintList items={item.items} />
+                <MintList
+                  items={item.items}
+                  adId={item.id}
+                  sellerId={item.authorId}
+                />
                 <hr className="my-2 border border-t-muted-foreground" />
                 <h1 className="mt-5 text-lg font-bold">Description:</h1>
                 <p className="my-5 whitespace-pre-line pl-2">
