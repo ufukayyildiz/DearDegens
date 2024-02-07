@@ -108,6 +108,7 @@ export default async function MintPage({ params }: MintPageProps) {
                     <MintPageUsersActions listingId={item.id} />
                   )}
                 </div>
+                {/* @ts-expect-error Server Component */}
                 <MintList
                   items={item.items}
                   adId={item.id}
