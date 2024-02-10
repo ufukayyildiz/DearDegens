@@ -171,7 +171,7 @@ export default function TermsOfService() {
       <Subheading>Your submissions and contributions</Subheading>
       <Paragraph>
         Please review this section and the{" "}
-        <span className="font-semibold">'PROHIBITED ACTIVITIES'</span> section
+        <span className="font-semibold">&quot;PROHIBITED ACTIVITIES&quot;</span> section
         carefully prior to using our Services to understand the (a) rights you
         give us and (b) obligations you have when you post or upload any content
         through the Services. Submissions: By directly sending us any question,
@@ -907,7 +907,7 @@ export default function TermsOfService() {
         IN CONNECTION WITH THE SERVICES AND YOUR USE THEREOF, INCLUDING, WITHOUT
         LIMITATION, THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A
         PARTICULAR PURPOSE, AND NON-INFRINGEMENT. WE MAKE NO WARRANTIES OR
-        REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE SERVICES'
+        REPRESENTATIONS ABOUT THE ACCURACY OR COMPLETENESS OF THE SERVICES&apos;
         CONTENT OR THE CONTENT OF ANY WEBSITES OR MOBILE APPLICATIONS LINKED TO
         THE SERVICES AND WE WILL ASSUME NO LIABILITY OR RESPONSIBILITY FOR ANY
         (1) ERRORS, MISTAKES, OR INACCURACIES OF CONTENT AND MATERIALS, (2)

@@ -11,8 +11,8 @@ export default function Disclaimer() {
       <Subheading className="pl-0 text-muted-foreground">Last updated February 09, 2024</Subheading>
       <Heading>WEBSITE DISCLAIMER</Heading>
       <Paragraph>
-        The information provided by DearDegens (Pty) Ltd ("we," "us," or "our")
-        on www.deardegens.com (the "Site") and our mobile application is for
+        The information provided by DearDegens (Pty) Ltd (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;)
+        on www.deardegens.com (the &quot;Site&quot;) and our mobile application is for
         general informational purposes only. All information on the Site and our
         mobile application is provided in good faith, however we make no
         representation or warranty of any kind, express or implied, regarding
