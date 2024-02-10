@@ -18,7 +18,7 @@ export default function Footer() {
             DearDegens (Pty) Ltd
           </Link>
         </div>
-        <div className="flex h-full w-full flex-col items-end justify-end gap-5">
+        <div className="flex h-full w-full flex-col items-end justify-end gap-2">
           <Link
             href="/termsofservice"
             className="flex w-full justify-center text-center"
@@ -30,6 +30,12 @@ export default function Footer() {
             className="flex w-full justify-center text-center"
           >
             Privacy Policy
+          </Link>
+          <Link
+            href="/disclaimer"
+            className="flex w-full justify-center text-center"
+          >
+            Disclaimer
           </Link>
         </div>
       </div>
