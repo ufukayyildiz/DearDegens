@@ -19,6 +19,7 @@
   },
   "dependencies": {
     "@auth/drizzle-adapter": "^0.3.2",
+    "@ctrl/react-adsense": "^1.7.0",
     "@hookform/resolvers": "^3.3.1",
     "@paralleldrive/cuid2": "^2.2.2",
     "@planetscale/database": "^1.11.0",
