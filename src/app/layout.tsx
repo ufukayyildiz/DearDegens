@@ -53,6 +53,9 @@ export default async function RootLayout({ children }: RootLayoutProps) {
         <Script
           data-ad-client="ca-pub-8040318911928921"
           async={true}
+          id="adsbygoogle-init"
+          strategy="afterInteractive"
+          crossOrigin="anonymous"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8040318911928921"
         />
         <body
