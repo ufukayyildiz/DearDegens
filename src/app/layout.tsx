@@ -2,6 +2,7 @@ import "@/src/styles/globals.css"
 
 import { Metadata } from "next"
 import Head from "next/head"
+import Script from "next/script"
 import { TailwindIndicator } from "@/src/components/components-global/tailwind-indicator"
 import { ThemeProvider } from "@/src/components/components-global/theme-provider"
 import { siteConfig } from "@/src/config/site"
@@ -47,6 +48,11 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <link
             href="https://fonts.googleapis.com/css2?family=Bangers&family=Bungee+Inline&family=Chivo+Mono:wght@300&family=Cinzel&family=Cinzel+Decorative&family=Fauna+One&family=Galada&family=Indie+Flower&family=Open+Sans&family=Press+Start+2P&family=Prompt:wght@400;600&family=Rampart+One&family=Sigmar+One&family=Sonsie+One&family=Urbanist:ital,wght@0,400;1,600&display=swap"
             rel="stylesheet"
+          />
+          <Script
+            data-ad-client="ca-pub-8040318911928921"
+            async={true}
+            src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8040318911928921"
           />
         </Head>
         <body
