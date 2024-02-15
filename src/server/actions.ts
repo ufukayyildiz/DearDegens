@@ -102,3 +102,23 @@ export async function getAdQueries(mintId: string) {
     console.error("Server error: Failed to fetch ad queries - ", error)
   }
 }
+
+// Get Listing Wishlist
+export async function getWishlist() {
+  try {
+    const session = await getServerSession(authOptions)
+
+    if (!session) {
+      return new Response("Unauthorized", { status: 401 })
+    }
+
+    const userId = session.user.id
+
+    const user = await db.select().from(users).where(eq(users.id, userId))
+    const wishlist = user[0].wishlist
+    console.log("Wishlist query successful")
+    return wishlist
+  } catch (error) {
+    console.error("Server error: Failed to fetch wishlist - ", error)
+  }
+}

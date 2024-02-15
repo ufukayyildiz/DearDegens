@@ -8,12 +8,20 @@ import {
   getListings,
   getNotifications,
   getBucket,
+  getWishlist,
 } from "./actions"
 
 export function useGetQueries(mintId: any) {
   return useQuery<queryType[]>({
     queryKey: ["adQueries"],
     queryFn: () => mintId && getAdQueries(mintId),
+  })
+}
+
+export function useGetWishlist() {
+  return useQuery({
+    queryKey: ["wishlist"],
+    queryFn: () => getWishlist(),
   })
 }
 

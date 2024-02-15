@@ -33,9 +33,6 @@ export default async function MintCreatePage() {
             <TabsTrigger value="items" className="w-full">
               Home & Garden
             </TabsTrigger>
-            <TabsTrigger value="property" className="w-full">
-              Property
-            </TabsTrigger>
             <TabsTrigger value="vehicles" className="w-full">
               Vehicles
             </TabsTrigger>
@@ -48,9 +45,6 @@ export default async function MintCreatePage() {
           </TabsList>
           <TabsContent value="items">
             <CreateHousehold />
-          </TabsContent>
-          <TabsContent value="property">
-            <h1>Property</h1>
           </TabsContent>
           <TabsContent value="vehicles">
             <h1>Vehicles</h1>

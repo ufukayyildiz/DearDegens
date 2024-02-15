@@ -94,7 +94,8 @@ export const users = mysqlTable(
     email: varchar("email", { length: 255 }).notNull(),
     emailVerified: timestamp("emailVerified"),
     image: varchar("image", { length: 255 }),
-    imageBucket: text("imageBucket"),
+    imageBucket: text("imageBucket").default(""),
+    wishlist: text("wishlist").default(""),
     createdAt: timestamp("createdAt")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
