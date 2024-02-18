@@ -95,7 +95,10 @@ export const users = mysqlTable(
     emailVerified: timestamp("emailVerified"),
     image: varchar("image", { length: 255 }),
     imageBucket: text("imageBucket").default(""),
-    wishlist: text("wishlist").default(""),
+    wishlist: varchar("wishlist", { length: 191 }).references(
+      () => wishlist.id
+    ),
+    // wishlist: text("wishlist").default(""),
     createdAt: timestamp("createdAt")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
@@ -136,6 +139,43 @@ export const verificationTokens = mysqlTable(
       verificationToken.token
     ),
   })
+)
+
+// __________________________________________________________________________________________________________________
+// WISHLIST
+export const wishlist: any = mysqlTable(
+  "wishlist",
+  {
+    id: varchar("id", { length: 191 }).primaryKey().notNull(),
+    userId: varchar("userId", { length: 191 }).notNull(),
+    wishlistItem: varchar("wishlistItem", { length: 191 }).references(
+      () => wishlistItem.id
+    ),
+  },
+  (wishlists) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(wishlists.id),
+    }
+  }
+)
+
+// __________________________________________________________________________________________________________________
+// WISHLIST ITEM
+export const wishlistItem = mysqlTable(
+  "wishlistItem",
+  {
+    id: varchar("id", { length: 191 }).primaryKey().notNull(),
+    adId: varchar("adId", { length: 191 }).notNull(),
+    wishlistId: varchar("wishlistId", { length: 191 }),
+    createdAt: timestamp("createdAt")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (wishlistItems) => {
+    return {
+      idIdx: uniqueIndex("id_idx").on(wishlistItems.id),
+    }
+  }
 )
 
 // __________________________________________________________________________________________________________________

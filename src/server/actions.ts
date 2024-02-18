@@ -5,7 +5,15 @@ import { getServerSession } from "next-auth"
 
 import { authOptions } from "../lib/auth/auth-options"
 import { db } from "./db"
-import { listings, notifications, offers, queries, users } from "./db/schema"
+import {
+  listings,
+  notifications,
+  offers,
+  queries,
+  users,
+  wishlist,
+  wishlistItem,
+} from "./db/schema"
 
 // Get user image bucket by userId
 export async function getBucket() {
@@ -104,20 +112,50 @@ export async function getAdQueries(mintId: string) {
 }
 
 // Get Listing Wishlist
+// export async function getWishlist() {
+//   try {
+//     const session = await getServerSession(authOptions)
+
+//     if (!session) {
+//       return new Response("Unauthorized", { status: 401 })
+//     }
+
+//     const userId = session.user.id
+
+//     const user = await db.select().from(users).where(eq(users.id, userId))
+//     const wishlist = user[0].wishlist
+//     console.log("Wishlist query successful")
+//     return wishlist
+//   } catch (error) {
+//     console.error("Server error: Failed to fetch wishlist - ", error)
+//   }
+// }
+
 export async function getWishlist() {
   try {
     const session = await getServerSession(authOptions)
 
     if (!session) {
-      return new Response("Unauthorized", { status: 401 })
+      return new Response("Unauthorised", { status: 401 })
     }
 
     const userId = session.user.id
 
-    const user = await db.select().from(users).where(eq(users.id, userId))
-    const wishlist = user[0].wishlist
+    const userWishlist = await db
+      .select({
+        wishlistId: wishlist.id,
+        userId: wishlist.userId,
+        itemId: wishlistItem.id,
+        adId: wishlistItem.adId,
+        createdAt: wishlistItem.createdAt,
+      })
+      .from(wishlist)
+      .leftJoin(wishlistItem, eq(wishlist.id, wishlistItem.wishlistId))
+      .where(eq(wishlist.userId, userId))
+
     console.log("Wishlist query successful")
-    return wishlist
+
+    return userWishlist
   } catch (error) {
     console.error("Server error: Failed to fetch wishlist - ", error)
   }

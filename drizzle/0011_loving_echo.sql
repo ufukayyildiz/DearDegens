@@ -1,1 +1,0 @@
-ALTER TABLE `listingGeneral` DROP COLUMN `isSold`;
