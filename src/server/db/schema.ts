@@ -348,3 +348,32 @@ export const queriesRelations = relations(queries, ({ one }) => ({
     references: [listings.id],
   }),
 }))
+
+// __________________________________________________________________________________________________________________
+// REPORTS
+export const listingReports = mysqlTable(
+  "listingReports",
+  {
+    id: varchar("id", { length: 191 }).primaryKey().notNull(),
+    userId: varchar("userId", { length: 191 })
+      .references(() => users.id)
+      .notNull(),
+    adId: varchar("adId", { length: 191 })
+      .references(() => listings.id)
+      .notNull(),
+    sellerId: varchar("sellerId", { length: 191 })
+      .references(() => users.id)
+      .notNull(),
+    createdAt: timestamp("createdAt")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    infraction: varchar("infraction", { length: 191 }).notNull(),
+    description: text("description"),
+    adFlagged: boolean("adFlagged").default(false),
+  },
+  (listingReport) => {
+    return {
+      idIdx: uniqueIndex("listingReports_id_idx").on(listingReport.id),
+    }
+  }
+)

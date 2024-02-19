@@ -2,12 +2,11 @@
 
 import React from "react"
 
-import { AlertTriangle, Heart } from "lucide-react"
-
 import ChatSheet from "../components-chat/ChatSheet"
 import MintQuery from "../pageMintQueries/MintQuery"
 import MintManager from "./MintManager"
-import MintAddToWishlist from "./MintAddToWishlist"
+import MintAddToWishlist from "../pageMintWishlist/MintAddToWishlist"
+import MintReport from "../pageMintReport/MintReport"
 
 export default function MintPageUsersActions(listingId: any) {
   return (
@@ -17,9 +16,7 @@ export default function MintPageUsersActions(listingId: any) {
         <ChatSheet />
         <MintManager />
         <MintQuery />
-        <div className="group flex h-10 w-10 items-center justify-center hover:text-amber-500">
-          <AlertTriangle />
-        </div>
+        <MintReport />
       </div>
     </div>
   )
