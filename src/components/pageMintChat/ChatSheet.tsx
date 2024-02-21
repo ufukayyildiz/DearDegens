@@ -17,6 +17,20 @@ import { io, Socket } from "socket.io-client"
 const socket: Socket = io("http://localhost:4000")
 
 export default function ChatSheet(ListingId: any) {
+
+  /* 
+  TO DO: Fetch Room and Messages schema
+  - New Rooms are created when an offer is at final confirmation
+  - Create a join between Room and Messages
+  - Fetch Room where adId = listingId
+  - Fetch Messages where roomId - Room.id
+  - Pass room id to <SelectRoom/>
+  - Pass messages to <MessagesBoard/>
+  - Create A message board for seller (Display all rooms)
+  - Create message board for user (display only the users room)
+  - Change Room component to a dropdown and not a sheet
+  */
+
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-blue-500">
