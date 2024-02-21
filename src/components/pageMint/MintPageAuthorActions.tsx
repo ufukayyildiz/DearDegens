@@ -4,7 +4,7 @@ import React from "react"
 import Link from "next/link"
 import { FileEdit } from "lucide-react"
 
-import ChatSheet from "../components-chat/ChatSheet"
+import ChatSheet from "../pageMintChat/ChatSheet"
 import MintDelete from "./MintDelete"
 import MintManager from "./MintManager"
 

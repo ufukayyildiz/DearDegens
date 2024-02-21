@@ -1,6 +1,8 @@
 import React from "react"
 import { MessageCircle, ChevronsUpDown } from "lucide-react"
 import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+import MessageBoard from "./MessageBoard"
+import SelectRoom from "./SelectRoom"
 
 import {
   Sheet,
@@ -11,21 +13,24 @@ import {
   SheetTrigger,
 } from "../components-ui/Sheet"
 
+import { io, Socket } from "socket.io-client"
+const socket: Socket = io("http://localhost:4000")
+
 export default function ChatSheet(ListingId: any) {
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-blue-500">
         <MessageCircle />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="w-[100vw] md:w-[60vw]">
         <SheetHeader className="h-full">
           <SheetTitle>Chat Section</SheetTitle>
           <SheetDescription className="h-full">
             <PanelGroup direction="vertical">
               <Panel className="relative" defaultSize={50}>
-                <div className="text-primary">Chat list will go here</div>
+                <SelectRoom socket={socket}/>
               </Panel>
-              <PanelResizeHandle className="flex h-0 w-full  items-center justify-center border border-customAccent">
+              <PanelResizeHandle className="flex h-0 w-full  items-center justify-center border border-customAccent z-50">
                 <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full border border-customAccent bg-background">
                   <ChevronsUpDown
                     size={20}
@@ -34,7 +39,7 @@ export default function ChatSheet(ListingId: any) {
                 </div>
               </PanelResizeHandle>
               <Panel className="relative">
-                <div className="mt-5 text-primary">Messages will go here</div>
+                <MessageBoard socket={socket}/>
               </Panel>
             </PanelGroup>
           </SheetDescription>
