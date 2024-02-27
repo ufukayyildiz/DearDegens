@@ -11,7 +11,7 @@ interface QueryCardProps {
 
 export default function MintQueriesCard({ query, userId }: QueryCardProps) {
   return (
-    <div className="relative mb-3 flex h-auto min-h-[250px] max-w-[310px] flex-col overflow-hidden rounded-lg border border-muted p-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent">
+    <div className="relative mb-3 flex h-auto min-h-[250px] w-full flex-col overflow-hidden rounded-lg border border-muted p-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent">
       <div className="mb-5 flex items-center space-x-2">
         <p className="font-semibold italic">Name:</p>
         <p>{query.userName}</p>

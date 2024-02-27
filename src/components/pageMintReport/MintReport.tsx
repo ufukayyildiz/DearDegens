@@ -130,7 +130,7 @@ export default function MintReport() {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger className="group flex h-10 w-7 items-center justify-center hover:text-orange-500">
+        <AlertDialogTrigger className="group flex h-10 w-10 items-center justify-center hover:text-orange-500">
           <AlertTriangle />
         </AlertDialogTrigger>
         <AlertDialogContent>

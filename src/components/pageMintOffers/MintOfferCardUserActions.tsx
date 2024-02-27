@@ -1,4 +1,5 @@
 import React from "react"
+import { useParams } from "next/navigation"
 import {
   Tooltip,
   TooltipContent,
@@ -12,6 +13,7 @@ import axios from "axios"
 import { Check, X } from "lucide-react"
 
 import { Button } from "../components-ui/Button"
+import { useGetListing } from "@/src/server/services"
 
 interface MintOfferCardProps {
   adOffer: offerType
@@ -23,11 +25,18 @@ export default function MintOfferCardUserActions({
   const offerId = JSON.stringify(adOffer.id)
   const queryClient = useQueryClient()
 
+  
   // ________________________________________________________________________
   // MUTATION CONFIRMATION
   const { mutate: offerConfirmation } = useMutation({
     mutationFn: async () => {
-      await axios.put("/api/offerBuyerConfirmation", offerId)
+      const payload = {
+        offerId: adOffer && adOffer.id,
+        adId: adOffer && adOffer.adId,
+        sellerId: adOffer && adOffer.sellerId,
+        userId: adOffer && adOffer.userId
+      }
+      await axios.put("/api/offerBuyerConfirmation", payload)
     },
     onError: () => {
       return toast({

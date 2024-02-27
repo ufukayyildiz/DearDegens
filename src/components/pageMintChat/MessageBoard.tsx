@@ -4,39 +4,14 @@ import { Input } from "../components-ui/Input"
 import { Button } from "../components-ui/Button"
 import { ScrollArea } from "../components-ui/ScrollArea"
 
-export default function MessageBoard({ socket }: any) {
+export default function MessageBoard() {
   const bottomRef = useRef<HTMLDivElement>(null)
 
-  const room = "jbdejhbew76kjas"
-  const username: string = "Shane"
 
   const [message, setMessage] = useState<string>()
   const [messagesRecieved, setMessagesReceived] = useState<any[]>([])
 
-  // SEND MESSAGES
-  const sendMessage = () => {
-    if (message !== "") {
-      const __createdtime__ = Date.now()
-      socket.emit("send_message", { username, room, message, __createdtime__ })
-      setMessage("")
-    }
-  }
-
-  // RECIEVE MESSAGES
-  useEffect(() => {
-    socket.on("receive_message", (data: any) => {
-      setMessagesReceived((state) => [
-        ...state,
-        {
-          message: data.message,
-          username: data.username,
-          __createdtime__: data.__createdtime__,
-        },
-      ])
-    })
-
-    return () => socket.off("receive_message")
-  }, [socket])
+  
 
 
   // FORMAT TIMESTAMP
@@ -97,7 +72,6 @@ export default function MessageBoard({ socket }: any) {
         <Button
           variant="outline"
           className="ml-3 text-primary"
-          onClick={sendMessage}
         >
           Send
         </Button>

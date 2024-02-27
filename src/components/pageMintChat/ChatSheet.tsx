@@ -1,9 +1,6 @@
-import React from "react"
-import { MessageCircle, ChevronsUpDown } from "lucide-react"
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
-import MessageBoard from "./MessageBoard"
-import SelectRoom from "./SelectRoom"
-
+"use client"
+import React, { useState, useEffect } from "react"
+import { MessageCircle } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -12,51 +9,91 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../components-ui/Sheet"
+import { messagesType, roomType } from "@/src/types/db"
+import { useSession } from "next-auth/react"
+import { useGetChatrooms, useGetMessages } from "@/src/server/services"
+import ChatRoom from "./ChatRoom"
+import ChatRoomSkeleton from "./ChatRoomSkeleton"
+import { useQueryClient } from "@tanstack/react-query"
 
-import { io, Socket } from "socket.io-client"
-const socket: Socket = io("https://dear-degens-server.vercel.app")
+interface ChatSheetProps {
+  listingId: any
+}
 
-export default function ChatSheet(ListingId: any) {
+export default function ChatSheet({ listingId }: ChatSheetProps) {
+  const queryClient = useQueryClient()
+  const { data, isFetching } = useGetChatrooms(listingId)
+  const { data: session } = useSession()
+  const userId = session?.user.id
 
-  /* 
-  TO DO: Fetch Room and Messages schema
-  - New Rooms are created when an offer is at final confirmation
-  - Create a join between Room and Messages
-  - Fetch Room where adId = listingId
-  - Fetch Messages where roomId - Room.id
-  - Pass room id to <SelectRoom/>
-  - Pass messages to <MessagesBoard/>
-  - Create A message board for seller (Display all rooms)
-  - Create message board for user (display only the users room)
-  - Change Room component to a dropdown and not a sheet
-  */
+  const chatRoomData: roomType[] = []
+  const filteredRoom =
+    data &&
+    data.map((data) => {
+      if (data.sellerId === userId || data.buyerId === userId) {
+        chatRoomData.push(data)
+      }
+    })
+
+  // SELECTED ROOM
+  const [selectedRoom, setSelectedRoom] = useState<string>("")
+  console.log("room:", selectedRoom)
+
+  // MESSAGES QUERY
+  // const [messages, setMessages] = useState<messagesType[]>()
+  const messages = useGetMessages(selectedRoom).data
+  console.log("messages:", messages)
+
+  // useEffect(() => {
+  //   setMessages(messageData)
+  // }, [messageData]);
+
+  // MANAGE ROOM SELECT
+  const handleRoomChange = async (data: roomType) => {
+    // setMessages([])
+    setSelectedRoom(data.roomId)
+    await queryClient.fetchQuery({ queryKey: ["messages"] })
+  }
 
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-blue-500">
         <MessageCircle />
       </SheetTrigger>
-      <SheetContent className="w-[100vw] md:w-[60vw]">
+      <SheetContent>
         <SheetHeader className="h-full">
-          <SheetTitle>Chat Section</SheetTitle>
-          <SheetDescription className="h-full">
-            <PanelGroup direction="vertical">
-              <Panel className="relative" defaultSize={50}>
-                <SelectRoom socket={socket}/>
-              </Panel>
-              <PanelResizeHandle className="flex h-0 w-full  items-center justify-center border border-customAccent z-50">
-                <div className="z-10 flex h-6 w-6 items-center justify-center rounded-full border border-customAccent bg-background">
-                  <ChevronsUpDown
-                    size={20}
-                    className="text-customAccent"
-                  />
+          <SheetTitle className="text-customAccent">Chat Rooms</SheetTitle>
+          {isFetching === true ? (
+            <div>
+              <ChatRoomSkeleton />
+            </div>
+          ) : (
+            <div className="h-full">
+              {chatRoomData && chatRoomData.length > 0 ? (
+                <div className="flex flex-col space-y-1">
+                  {chatRoomData.map((data) => {
+                    return (
+                      <div onClick={() => handleRoomChange(data)}>
+                        <ChatRoom
+                          roomData={data}
+                          messages={messages!}
+                          key={data.roomId}
+                        />
+                      </div>
+                    )
+                  })}
                 </div>
-              </PanelResizeHandle>
-              <Panel className="relative">
-                <MessageBoard socket={socket}/>
-              </Panel>
-            </PanelGroup>
-          </SheetDescription>
+              ) : (
+                <div className="text-left text-primary">
+                  <h1 className="mb-2 text-lg font-bold">No Rooms Available</h1>
+                  <p>
+                    You must have a confirmed offer to use the chat
+                    functionality
+                  </p>
+                </div>
+              )}
+            </div>
+          )}
         </SheetHeader>
       </SheetContent>
     </Sheet>

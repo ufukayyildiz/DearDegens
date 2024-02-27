@@ -66,3 +66,16 @@ export function formatTimeToNow(date: Date): string {
     },
   })
 }
+
+export function formatDateFromTimestamp(timestamp: Date) {
+  const date = new Date(timestamp)
+
+  const day = date.getDate()
+  const month = date.toLocaleString("default", { month: "short" })
+  const hour = date.getHours()
+  const minute = date.getMinutes()
+
+  const formattedDate = `${day} ${month} ${hour.toString().padStart(2, "0")}:${minute.toString().padStart(2, "0")}`
+
+  return formattedDate
+}

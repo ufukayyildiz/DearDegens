@@ -1,5 +1,3 @@
-"use client"
-
 import React from "react"
 import Link from "next/link"
 import { FileEdit } from "lucide-react"
@@ -15,10 +13,11 @@ interface AuthorActionsProps {
 export default function MintPageAuthorActions({
   listingId,
 }: AuthorActionsProps) {
+  console.log("Author Ad Id:", listingId)
+
   return (
     <div className="flex w-full justify-end pr-5">
       <div className="flex w-4/12 justify-end space-x-5">
-        <ChatSheet />
         <MintManager />
         <Link
           href={`/p/mint/edit/${listingId}`}

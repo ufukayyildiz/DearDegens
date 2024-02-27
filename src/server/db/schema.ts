@@ -154,7 +154,7 @@ export const wishlist: any = mysqlTable(
   },
   (wishlists) => {
     return {
-      idIdx: uniqueIndex("id_idx").on(wishlists.id),
+      idIdx: uniqueIndex("idx_wishlist_id").on(wishlists.id),
     }
   }
 )
@@ -173,7 +173,7 @@ export const wishlistItem = mysqlTable(
   },
   (wishlistItems) => {
     return {
-      idIdx: uniqueIndex("id_idx").on(wishlistItems.id),
+      idIdx: uniqueIndex("idx_wishlistItem_id").on(wishlistItems.id),
     }
   }
 )
@@ -374,6 +374,59 @@ export const listingReports = mysqlTable(
   (listingReport) => {
     return {
       idIdx: uniqueIndex("listingReports_id_idx").on(listingReport.id),
+    }
+  }
+)
+
+// __________________________________________________________________________________________________________________
+// CHAT ROOM:
+export const chatRoom = mysqlTable(
+  "chatRoom",
+  {
+    id: varchar("id", { length: 191 }).primaryKey().notNull(),
+    adId: varchar("adId", { length: 191 })
+      .references(() => listings.id)
+      .notNull(),
+    userId: varchar("userId", { length: 191 })
+      .references(() => users.id)
+      .notNull(),
+    sellerId: varchar("sellerId", { length: 191 })
+      .references(() => users.id)
+      .notNull(),
+    createdAt: timestamp("createdAt")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (chatRooms) => {
+    return {
+      idIdx: uniqueIndex("idx_chatRoom_id").on(chatRooms.id),
+    }
+  }
+)
+
+// __________________________________________________________________________________________________________________
+// CHAT MESSAGE:
+export const messages = mysqlTable(
+  "messages",
+  {
+    id: varchar("id", { length: 191 }).primaryKey().notNull(),
+    roomId: varchar("roomId", { length: 191 })
+      .references(() => chatRoom.id)
+      .notNull(),
+    userId: varchar("userId", { length: 191 })
+      .references(() => users.id)
+      .notNull(),
+    userName: varchar("userName", { length: 191 })
+      .references(() => users.name)
+      .notNull(),
+    message: text("message"),
+    createdAt: timestamp("createdAt")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+  },
+  (message) => {
+    return {
+      idIdx: uniqueIndex("idx_messages_id").on(message.id),
     }
   }
 )

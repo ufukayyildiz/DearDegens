@@ -1,7 +1,14 @@
 "use client"
 import { useQuery } from "@tanstack/react-query"
 
-import { listingsType, offerType, queryType } from "../types/db"
+import {
+  roomType,
+  listingsType,
+  messagesType,
+  offerType,
+  queryType,
+  userType,
+} from "../types/db"
 import {
   getAdOffers,
   getAdQueries,
@@ -9,6 +16,8 @@ import {
   getNotifications,
   getBucket,
   getWishlist,
+  getChatrooms,
+  getMessages,
 } from "./actions"
 
 export function useGetQueries(mintId: any) {
@@ -50,5 +59,20 @@ export function useGetListing(mintId: any) {
   return useQuery<listingsType[]>({
     queryKey: ["listing"],
     queryFn: () => mintId && getListings(mintId),
+  })
+}
+
+export function useGetChatrooms(mintId: any) {
+  return useQuery<roomType[]>({
+    queryKey: ["chatroom"],
+    queryFn: () => mintId && getChatrooms(mintId),
+  })
+}
+
+export function useGetMessages(roomId: any) {
+  return useQuery<messagesType[]>({
+    queryKey: ["messages"],
+    queryFn: () => roomId && getMessages(roomId),
+    refetchInterval: 1000,
   })
 }

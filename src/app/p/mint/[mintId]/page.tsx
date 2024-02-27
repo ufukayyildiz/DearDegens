@@ -2,6 +2,7 @@ import React from "react"
 import MintCarouselTwo from "@/src/components/pageMint/MintCarouselTwo"
 import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
+import ChatSheet from "@/src/components/pageMintChat/ChatSheet"
 import MintQA from "@/src/components/pageMint/MintQA"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
 import MintList from "@/src/components/pageMint/MintList"
@@ -101,12 +102,13 @@ export default async function MintPage({ params }: MintPageProps) {
                   </div>
                 </div>
                 <hr className="my-2 border border-t-muted-foreground" />
-                <div className="flex min-h-[40px] ">
+                <div className="flex min-h-[40px] items-end">
                   {session?.user.id === item.authorId ? (
                     <MintPageAuthorActions listingId={item.id} />
                   ) : (
                     <MintPageUsersActions listingId={item.id} />
                   )}
+                  <ChatSheet listingId={item.id} />
                 </div>
                 {/* @ts-expect-error Server Component */}
                 <MintList
