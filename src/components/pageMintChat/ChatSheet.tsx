@@ -40,17 +40,11 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
   console.log("room:", selectedRoom)
 
   // MESSAGES QUERY
-  // const [messages, setMessages] = useState<messagesType[]>()
   const messages = useGetMessages(selectedRoom).data
   console.log("messages:", messages)
 
-  // useEffect(() => {
-  //   setMessages(messageData)
-  // }, [messageData]);
-
   // MANAGE ROOM SELECT
   const handleRoomChange = async (data: roomType) => {
-    // setMessages([])
     setSelectedRoom(data.roomId)
     await queryClient.fetchQuery({ queryKey: ["messages"] })
   }

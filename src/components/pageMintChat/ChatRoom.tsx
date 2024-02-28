@@ -53,6 +53,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
   const [disabled, setDisabled] = useState<boolean>(false)
+  const [bottom, setBottom] = useState<boolean>(false)
 
   // SET TRIGGER USER DETAILS
   const userName = () => {
@@ -93,6 +94,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       }
       sendChatMessage(payload)
       setDisabled(true)
+      setBottom(true)
     },
   })
 
@@ -125,6 +127,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
     },
     onSettled: async (_, error) => {
       setDisabled(false)
+      setBottom(false)
       if (error) {
         console.log("onSettled error:", error)
       } else {
@@ -140,7 +143,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
     if (bottomRef.current) {
       bottomRef.current.scrollIntoView({ behavior: "smooth" })
     }
-  }, [messages])
+  }, [bottom])
 
   return (
     <Sheet>
@@ -148,7 +151,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
         <div className="h-full w-full">{userName()}</div>
       </SheetTrigger>
       <SheetContent>
-        <SheetHeader className="absolute top-0 z-50 mb-5 mr-14 h-16 w-[325px] bg-background pt-5 text-lg font-bold text-customAccent">
+        <SheetHeader className="absolute top-0 z-40 mb-5 mr-10 h-16 w-[315px] bg-background pt-5 text-lg font-bold text-customAccent">
           <h1>Messages</h1>
         </SheetHeader>
 
@@ -156,20 +159,26 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
           <div className="flex h-full w-full rounded-md pb-10">
             <ScrollArea className="max-h-[65vh] w-full  pr-5">
               {messages &&
-                messages.map((msg: any, i: any) => (
-                  <div
-                    className="mt-3 flex flex-col justify-center rounded-md border border-muted bg-background p-2"
-                    key={i}
-                    ref={i === messages.length - 1 ? bottomRef : null}
-                  >
-                    <span className="flex font-bold text-customAccent">
-                      {msg.userName}
-                    </span>
-                    <p className="p-1 text-left text-primary">{msg.message}</p>
-                    <span className="flex w-full justify-end text-xs italic text-muted-foreground">
-                      {formatDateFromTimestamp(msg.createdAt!)}
-                    </span>
-                  </div>
+                messages.map((msg: messagesType, i: any) => (
+                  <>
+                    {msg.roomId === roomData.roomId && (
+                      <div
+                        className="mt-3 flex flex-col justify-center rounded-md border border-muted bg-background p-2"
+                        key={i}
+                        ref={i === messages.length - 1 ? bottomRef : null}
+                      >
+                        <span className="flex font-bold text-customAccent">
+                          {msg.userName}
+                        </span>
+                        <p className="p-1 text-left text-primary">
+                          {msg.message}
+                        </p>
+                        <span className="flex w-full justify-end text-xs italic text-muted-foreground">
+                          {formatDateFromTimestamp(msg.createdAt!)}
+                        </span>
+                      </div>
+                    )}
+                  </>
                 ))}
               {isPending && (
                 <div
