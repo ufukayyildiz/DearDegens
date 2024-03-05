@@ -22,13 +22,18 @@ import { getServerSession } from "next-auth"
 
 interface MintPageProps {
   params: {
-    mintId: string
+    title: string
+    brand: string
+    model: string
+    subcategory: string
+    location: string
+    listingId: string
   }
 }
 
 export default async function MintPage({ params }: MintPageProps) {
   const param = params
-  const decodedParam = decodeURIComponent(param.mintId)
+  const decodedParam = decodeURIComponent(param.listingId)
   const session = await getServerSession(authOptions)
 
   // LISTING QUERY

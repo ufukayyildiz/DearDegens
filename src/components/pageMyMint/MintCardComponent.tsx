@@ -31,9 +31,15 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
 
   const formattedPrice = formatter.format(price!)
 
+  const title = listing.title?.replace(/ /g, "-")
+  const brand = listing.brand?.replace(/ /g, "-")
+  const model = listing.model?.replace(/ /g, "-")
+  const subCategory = listing.subCategory?.replace(/ /g, "-")
+  const location = listing.location?.replace(/ /g, "-")
+
   return (
     <div className="mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-500 hover:scale-[0.99]">
-      <Link href={`/p/mint/${listing.id}`}>
+      <Link href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}>
         <div className="relative flex h-52 justify-between ">
           {/* INFO */}
           <div className="relative w-8/12 p-3">

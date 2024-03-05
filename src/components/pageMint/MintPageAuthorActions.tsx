@@ -20,7 +20,7 @@ export default function MintPageAuthorActions({
       <div className="flex w-4/12 justify-end space-x-5">
         <MintManager />
         <Link
-          href={`/p/mint/edit/${listingId}`}
+          href={`/ad/edit/${listingId}`}
           className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"
         >
           <FileEdit />

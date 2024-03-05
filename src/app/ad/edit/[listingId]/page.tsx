@@ -13,13 +13,13 @@ import { eq } from "drizzle-orm"
 
 interface MintPageProps {
   params: {
-    mintId: string
+    listingId: string
   }
 }
 
 export default async function MintEditPage({ params }: MintPageProps) {
   const param = params
-  const decodedParam = decodeURIComponent(param.mintId)
+  const decodedParam = decodeURIComponent(param.listingId)
 
   const listing: listingsType[] = await db
     .select()
