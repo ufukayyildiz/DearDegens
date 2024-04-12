@@ -11,7 +11,7 @@ const SignIn = () => {
           <Image
             alt="logo"
             src={Logo}
-            className="mb-10 rounded-3xl bg-white p-10"
+            className="mb-10 w-32 rounded-3xl bg-white p-2"
           />
         </div>
         <h1 className="text-2xl font-semibold tracking-tight">Welcome!</h1>

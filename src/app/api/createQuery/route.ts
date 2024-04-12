@@ -1,12 +1,29 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { notifications, queries } from "@/src/server/db/schema"
+import { notifications, queries, listings } from "@/src/server/db/schema"
+import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
+import { Ratelimit } from "@upstash/ratelimit" 
+import { redis } from "@/src/server/upstash"
+import { headers } from "next/headers"
+
+const rateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(3, "30 s"),
+  analytics: true,
+})
 
 export async function POST(req: Request) {
   try {
     const session = await getAuthSession()
+    const ip = headers().get("x-forwarded-for")
+    const {
+      remaining,
+      limit,
+      success: limitReached,
+    } = await rateLimit.limit(ip!)
+    console.log("Rate Limit Stats:", remaining, limit, limitReached)
 
     if (!session?.user) {
       return new Response("Unauthorized", { status: 401 })
@@ -30,34 +47,47 @@ export async function POST(req: Request) {
 
     const { sellerId, adId, adTitle, query } = body
 
-    console.log("body:", body)
+    if (!limitReached) {
+      return new Response("API request limit reached", { status: 429 })
+    } else {
+      const post = await db.insert(queries).values({
+        id: queryId,
+        userId: userId,
+        userName: userName,
+        sellerId: sellerId,
+        adId: adId,
+        adTitle: adTitle,
+        createdAt: currentDate,
+        expirationDate: expirationDate,
+        purgeDate: purgeDate,
+        query: query,
+        reply: "",
+      })
 
-    const post = await db.insert(queries).values({
-      id: queryId,
-      userId: userId,
-      userName: userName,
-      sellerId: sellerId,
-      adId: adId,
-      adTitle: adTitle,
-      createdAt: currentDate,
-      expirationDate: expirationDate,
-      purgeDate: purgeDate,
-      query: query,
-      reply: "",
-    })
+      /* @ts-ignore */
+      const listing: listingsType = await db.select({
+        id: listings.id,
+        title: listings.title,
+        brand: listings.brand,
+        model: listings.model,
+        subCategory: listings.subCategory,
+        location: listings.location,
+      }).from(listings).where(eq(listings.id, adId))
 
-    const notification = await db.insert(notifications).values({
-      id: notificationId,
-      userId: sellerId,
-      adId: adId,
-      createdAt: currentDate,
-      title: `Query recieved!`,
-      description: `Your listing ${adTitle} has recieved a query`,
-      body: `A potential buyer has sent you a query regarding your listing, head over to your listings page to send them a reply. You can also make the query public after replying to assist other users who may have the same question.`,
-      isRead: false,
-    })
+      const notification = await db.insert(notifications).values({
+        id: notificationId,
+        userId: sellerId,
+        adId: adId,
+        adUrl: `/${listing.title}/${listing.brand}/${listing.model}/${listing.subCategory}/${listing.location}/${listing.id}`,
+        createdAt: currentDate,
+        title: `Query recieved!`,
+        description: `Your listing ${adTitle} has recieved a query`,
+        body: `A potential buyer has sent you a query regarding your listing, head over to your listings page to send them a reply. You can also make the query public after replying to assist other users who may have the same question.`,
+        isRead: false,
+      })
 
-    return new Response(JSON.stringify(post), { status: 200 })
+      return new Response(JSON.stringify(post), { status: 200 })
+    }
   } catch (error) {
     console.error("error:", error)
     if (error instanceof z.ZodError) {

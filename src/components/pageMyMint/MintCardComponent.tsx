@@ -38,13 +38,15 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
   const location = listing.location?.replace(/ /g, "-")
 
   return (
-    <div className="mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-500 hover:scale-[0.99]">
-      <Link href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}>
+    <div className="group mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+      <Link
+        href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}
+      >
         <div className="relative flex h-52 justify-between ">
           {/* INFO */}
           <div className="relative w-8/12 p-3">
             <div>
-              <h1 className="mb-2 font-bold text-primary hover:text-customColorTwo md:text-xl">
+              <h1 className="mb-2 font-bold text-primary group-hover:text-customAccent md:text-xl">
                 {listing.title}
               </h1>
             </div>
@@ -54,9 +56,12 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
             </div>
 
             <div className="absolute bottom-6">
-              <h1 className="text-lg font-semibold text-primary">
+              <h1 className="text-lg font-semibold text-customAccent">
                 R {formattedPrice}
               </h1>
+              <p className="text-xs italic text-secondary">
+                Category: {listing.category} / {listing.subCategory}
+              </p>
             </div>
 
             <div className="absolute bottom-2 left-3 flex max-h-40 gap-1 text-xs italic text-secondary">

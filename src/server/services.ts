@@ -56,7 +56,7 @@ export function useGetOffers(mintId: any) {
 }
 
 export function useGetListing(mintId: any) {
-  return useQuery<listingsType[]>({
+  return useQuery<listingsType>({
     queryKey: ["listing"],
     queryFn: () => mintId && getListings(mintId),
   })

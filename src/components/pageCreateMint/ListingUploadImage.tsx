@@ -8,10 +8,16 @@ import axios from "axios"
 import { Button } from "../components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { Loader } from "lucide-react"
+import { cn } from "@/src/lib/utils"
 
-export default function ListingUploadImage() {
+interface UploadProps {
+  bucketLength: number
+}
+
+export default function ListingUploadImage({ bucketLength }: UploadProps) {
   const queryClient = useQueryClient()
 
+  const [disabled, setDisabled] = useState<boolean>(false)
   const [files, setFiles] = useState<File[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isUploading, setIsUploading] = useState<boolean>(false)
@@ -19,6 +25,10 @@ export default function ListingUploadImage() {
     setFiles(acceptedFiles)
     setIsUploading(true)
   }, [])
+
+  if (bucketLength >= 50) {
+    setDisabled(true)
+  }
 
   // MUTATION CREATE IMAGE BUCKET
   const { mutate: createImageBucket } = useMutation({
@@ -93,7 +103,12 @@ export default function ListingUploadImage() {
 
   return (
     <div className="mb-10 flex flex-col items-start justify-start space-y-2">
-      <div className="border-l-1 relative flex h-10 w-36 justify-center rounded-lg border border-muted text-center shadow-lg hover:border-2 hover:border-customAccent">
+      <div
+        className={cn(
+          "border-l-1 relative flex h-10 w-36 cursor-pointer justify-center rounded-lg border border-muted text-center shadow-lg hover:border-2 hover:border-customAccent",
+          disabled && "bg-muted hover:border-muted-foreground"
+        )}
+      >
         {isLoading === true && (
           <div className="absolute inset-0 z-50 flex h-full w-full justify-center rounded-lg bg-slate-300/30 backdrop-blur-sm">
             <Loader className="my-auto h-8 w-8 animate-spin text-slate-500" />
@@ -105,18 +120,17 @@ export default function ListingUploadImage() {
               Upload {files.length} files
             </Button>
           ) : (
-            <div
-              {...getRootProps()}
-              className="my-auto h-full cursor-pointer text-primary"
-            >
-              <input {...getInputProps()} />
-              <p className="text-sm">Upload to bucket</p>
+            <div {...getRootProps()} className="my-auto h-full text-primary">
+              <input {...getInputProps()} disabled={disabled} />
+              <p className="text-sm">
+                {!disabled ? `Upload to bucket` : `Bucket Maxed`}
+              </p>
             </div>
           )}
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        (Max Images: 10 | Max file size: 1mb)
+        {`(Max uploads: 10 | Max file size: 1mb)`}
       </p>
     </div>
   )

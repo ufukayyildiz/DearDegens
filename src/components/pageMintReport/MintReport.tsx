@@ -41,7 +41,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
-import { activities } from "@/src/lib/categories/mintReport"
+import { activities } from "@/src/lib/categories/Report"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (

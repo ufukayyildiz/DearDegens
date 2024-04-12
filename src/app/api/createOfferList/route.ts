@@ -1,12 +1,29 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { notifications, offersList } from "@/src/server/db/schema"
+import { notifications, offersList, listings } from "@/src/server/db/schema"
+import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
+import { Ratelimit } from "@upstash/ratelimit" 
+import { redis } from "@/src/server/upstash"
+import { headers } from "next/headers"
+
+const rateLimit = new Ratelimit({
+  redis,
+  limiter: Ratelimit.slidingWindow(3, "30 s"),
+  analytics: true,
+})
 
 export async function POST(req: Request) {
   try {
     const session = await getAuthSession()
+    const ip = headers().get("x-forwarded-for")
+    const {
+      remaining,
+      limit,
+      success: limitReached,
+    } = await rateLimit.limit(ip!)
+    console.log("Rate Limit Stats:", remaining, limit, limitReached)
 
     if (!session?.user) {
       return new Response("Unauthorized", { status: 401 })
@@ -30,35 +47,48 @@ export async function POST(req: Request) {
 
     const { sellerId, adId, itemId, offerPrice, askPrice, name } = body
 
-    console.log("body:", body)
+    if (!limitReached) {
+      return new Response("API request limit reached", { status: 429 })
+    } else {
+      const post = await db.insert(offersList).values({
+        id: offerId,
+        userId: userId,
+        userName: userName,
+        sellerId: sellerId,
+        adId: adId,
+        itemId: itemId,
+        name: name,
+        createdAt: currentDate,
+        expirationDate: expirationDate,
+        purgeDate: purgeDate,
+        offerPrice: offerPrice,
+        askPrice: askPrice,
+      })
 
-    const post = await db.insert(offersList).values({
-      id: offerId,
-      userId: userId,
-      userName: userName,
-      sellerId: sellerId,
-      adId: adId,
-      itemId: itemId,
-      name: name,
-      createdAt: currentDate,
-      expirationDate: expirationDate,
-      purgeDate: purgeDate,
-      offerPrice: offerPrice,
-      askPrice: askPrice,
-    })
+      /* @ts-ignore */
+      const listing: listingsType = await db.select({
+        id: listings.id,
+        title: listings.title,
+        brand: listings.brand,
+        model: listings.model,
+        subCategory: listings.subCategory,
+        location: listings.location,
+      }).from(listings).where(eq(listings.id, adId))
 
-    const notification = await db.insert(notifications).values({
-      id: notificationId,
-      userId: sellerId,
-      adId: adId,
-      createdAt: currentDate,
-      title: `Offer recieved!`,
-      description: `Your item ${name} has recieved an offer!`,
-      body: `An offer of R ${offerPrice} has been placed on your listing. Head over to your listings page to either accept or make a counter offer.`,
-      isRead: false,
-    })
+      const notification = await db.insert(notifications).values({
+        id: notificationId,
+        userId: sellerId,
+        adId: adId,
+        adUrl: `/${listing.title}/${listing.brand}/${listing.model}/${listing.subCategory}/${listing.location}/${listing.id}`,
+        createdAt: currentDate,
+        title: `Offer recieved!`,
+        description: `Your item ${name} has recieved an offer!`,
+        body: `An offer of R ${offerPrice} has been placed on your listing. Head over to your listings page to either accept or make a counter offer.`,
+        isRead: false,
+      })
 
-    return new Response(JSON.stringify(post), { status: 200 })
+      return new Response(JSON.stringify(post), { status: 200 })
+    }
   } catch (error) {
     console.error("error:", error)
     if (error instanceof z.ZodError) {

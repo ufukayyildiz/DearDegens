@@ -55,6 +55,9 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
   const [displayedNotification, setDisplayedNotification] =
     useState<notificationsType>()
 
+  const adUrl =
+    displayedNotification && displayedNotification?.adUrl?.replace(/ /g, "-")
+
   // QUERIES
   const queryClient = useQueryClient()
   const notifications = useGetNotifications().data
@@ -203,70 +206,67 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
             className="relative max-h-[350px] w-[320px]"
             align="end"
           >
-            
-              <h1 className="text-2xl font-bold">Notifications</h1>
+            <h1 className="text-2xl font-bold">Notifications</h1>
 
-              <div className="flex w-full justify-between py-2">
-                <Button
-                  onClick={() => handleReadAllNotifications(userId)}
-                  variant="outline"
-                  className="bg-muted"
-                >
-                  Mark all as read
-                </Button>
+            <div className="flex w-full justify-between py-2">
+              <Button
+                onClick={() => handleReadAllNotifications(userId)}
+                variant="outline"
+                className="bg-muted"
+              >
+                Mark all as read
+              </Button>
 
-                <AlertDialog>
-                  <AlertDialogTrigger asChild>
-                    <Button variant="passivedestructive" className="bg-muted">
-                      Delete all
-                    </Button>
-                  </AlertDialogTrigger>
-                  <AlertDialogContent>
-                    <AlertDialogHeader>
-                      <AlertDialogTitle>
-                        Are you sure you want to delete all notifications?
-                      </AlertDialogTitle>
-                      <AlertDialogDescription>
-                        This action cannot be undone. This will permanently
-                        delete all notifications from your account.
-                      </AlertDialogDescription>
-                    </AlertDialogHeader>
-                    <AlertDialogFooter>
-                      <div className="flex w-full justify-between">
-                        <div className="flex items-center justify-start space-x-2">
-                          <Checkbox
-                            id="disable"
-                            checked={!disabled}
-                            onCheckedChange={() => setDisabled(!disabled)}
-                          />
-                          <label
-                            htmlFor="disable"
-                            className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                          >
-                            Confirm deletion of all notifications.
-                          </label>
-                        </div>
-                        <div>
-                          <AlertDialogCancel>Cancel</AlertDialogCancel>
-                          <AlertDialogTrigger asChild>
-                            <Button
-                              onClick={() =>
-                                handleDeleteAllNotifications(userId)
-                              }
-                              disabled={disabled}
-                              variant="destructive"
-                              className="ml-5"
-                            >
-                              Delete
-                            </Button>
-                          </AlertDialogTrigger>
-                        </div>
+              <AlertDialog>
+                <AlertDialogTrigger asChild>
+                  <Button variant="passivedestructive" className="bg-muted">
+                    Delete all
+                  </Button>
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you sure you want to delete all notifications?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      all notifications from your account.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <div className="flex w-full justify-between">
+                      <div className="flex items-center justify-start space-x-2">
+                        <Checkbox
+                          id="disable"
+                          checked={!disabled}
+                          onCheckedChange={() => setDisabled(!disabled)}
+                        />
+                        <label
+                          htmlFor="disable"
+                          className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                        >
+                          Confirm deletion of all notifications.
+                        </label>
                       </div>
-                    </AlertDialogFooter>
-                  </AlertDialogContent>
-                </AlertDialog>
-              </div>
-              <ScrollArea className="h-[240px] w-full pr-5">
+                      <div>
+                        <AlertDialogCancel>Cancel</AlertDialogCancel>
+                        <AlertDialogTrigger asChild>
+                          <Button
+                            onClick={() => handleDeleteAllNotifications(userId)}
+                            disabled={disabled}
+                            variant="destructive"
+                            className="ml-5"
+                          >
+                            Delete
+                          </Button>
+                        </AlertDialogTrigger>
+                      </div>
+                    </div>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </div>
+            <ScrollArea className="h-[240px] w-full pr-5">
               {notifications &&
                 notifications.map((notify: any, index: number) => (
                   <div key={index} className="relative">
@@ -389,7 +389,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
               </DialogTitle>
               <DialogDescription className="text-primary">
                 <p className="mb-5">{displayedNotification.body}</p>
-                <Link href={`/p/mint/${displayedNotification.adId}`}>
+                <Link href={`${adUrl}`}>
                   <p className="italic">Follow this link to the ad</p>
                 </Link>
               </DialogDescription>

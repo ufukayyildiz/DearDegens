@@ -2,6 +2,7 @@ import { z } from "zod"
 import {
   listingTitle,
   listingBrand,
+  listingTab,
   listingCategory,
   listingDescription,
   listingImages,
@@ -9,14 +10,17 @@ import {
   listingMeetup,
   listingModel,
   listingPrice,
+  listingCondition,
   listingSubCategory,
   listingItems,
 } from "./validateListing"
 
-export const validateHousehold = z.object({
+export const validateGeneralListing = z.object({
+  tab: listingTab,
   category: listingCategory,
   subCategory: listingSubCategory,
   price: listingPrice,
+  condition: listingCondition,
   title: listingTitle,
   brand: listingBrand,
   model: listingModel,
@@ -27,4 +31,4 @@ export const validateHousehold = z.object({
   meetup: listingMeetup,
 })
 
-export type HouseholdCreationRequest = z.infer<typeof validateHousehold>
+export type GeneralListingCreationRequest = z.infer<typeof validateGeneralListing>

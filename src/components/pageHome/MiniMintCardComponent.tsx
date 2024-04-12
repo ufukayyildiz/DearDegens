@@ -38,7 +38,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
   const location = listing.location?.replace(/ /g, "-")
 
   return (
-    <div className="h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:border-customAccent hover:shadow-lg hover:shadow-customAccentTwo">
+    <div className="h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:border-customAccent hover:shadow hover:shadow-customAccentTwo">
       <Link href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}>
         <div className="relative flex h-full w-full flex-col">
           <div className="w-full">

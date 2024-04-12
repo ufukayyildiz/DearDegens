@@ -1,4 +1,4 @@
-import React, { useState, useEffect, use } from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import {
   Dialog,
@@ -26,7 +26,7 @@ import ImageSkeleton from "./ImageSkeleton"
 import ListingUploadImage from "./ListingUploadImage"
 import { Image, Trash2 } from "lucide-react"
 import { toast } from "@/src/hooks/use-toast"
-import { useMutation, useQuery } from "@tanstack/react-query"
+import { useMutation } from "@tanstack/react-query"
 import { useGetBucket } from "@/src/server/services"
 import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
@@ -42,6 +42,8 @@ export default function ListingSelectImage({
 }: ListingSelectImageProps) {
   const images = ["1", "2", "3"]
   const [selectedImages, setSelectedImages] = useState<string[]>([])
+  const [bucketString, setBucketString] = useState<string>("")
+  const [bucketLength, setBucketLength] = useState<number>(0)
   const [disabled, setDisabled] = useState<boolean>(true)
   const queryClient = useQueryClient()
 
@@ -50,9 +52,15 @@ export default function ListingSelectImage({
 
   // USER BUCKET
   const bucket: any = useGetBucket().data
-  const bucketString = bucket && JSON.stringify(bucket[0][0])
   const isLoading = useGetBucket().isLoading
   const isFetching = useGetBucket().isFetching
+
+  useEffect(() => {
+    if (bucket && bucket[0]) {
+      setBucketString(JSON.stringify(bucket[0][0]))
+      setBucketLength(bucket[0].length)
+    }
+  }, [bucket])
 
   const toggleImageSelection = (imageName: any) => {
     if (imageName) {
@@ -126,8 +134,15 @@ export default function ListingSelectImage({
               Select images from your bucket:
             </DialogTitle>
             <div>
+              {/* BUCKET SIZE */}
+
               {/* UPLOAD IMAGES */}
-              <ListingUploadImage />
+              <div className="flex flex-row justify-between">
+                <ListingUploadImage bucketLength={bucketLength} />
+                <p className="flex h-10 items-center justify-center text-sm text-customAccent">
+                  Bucket Size: {`${bucketLength} / 50`}
+                </p>
+              </div>
 
               <ScrollArea>
                 <div className="flex max-h-[60vh] w-full flex-wrap justify-center gap-5 p-2">

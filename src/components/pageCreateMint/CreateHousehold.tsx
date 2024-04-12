@@ -4,9 +4,10 @@ import React, { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
-import { categoryHousehold } from "@/src/lib/categories/mintHousehold"
+import { categoryHousehold } from "@/src/lib/categories/Household"
+import { condition } from "@/src/lib/categories/Condition"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
-import { HouseholdCreationRequest } from "@/src/lib/validators/validateHousehold"
+import { GeneralListingCreationRequest } from "@/src/lib/validators/validateListingGeneral"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useForm } from "@tanstack/react-form"
@@ -46,7 +47,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
     <>
       {field.state.meta.touchedErrors ? (
-        <em className="absolute -bottom-4 text-xs italic text-rose-400">
+        <em className="absolute top-[105px] text-xs italic text-rose-400">
           {field.state.meta.touchedErrors}
         </em>
       ) : null}
@@ -81,6 +82,7 @@ export default function CreateHousehold() {
       category: "",
       subCategory: "",
       price: 0,
+      condition: "",
       title: "",
       brand: "",
       model: "",
@@ -97,10 +99,12 @@ export default function CreateHousehold() {
       meetup: "",
     },
     onSubmit: async ({ value }) => {
-      const payload: HouseholdCreationRequest = {
+      const payload: GeneralListingCreationRequest = {
+        tab: "Home & Garden",
         category: category,
         subCategory: subCategory,
         price: value.price,
+        condition: value.condition,
         title: value.title,
         brand: value.brand,
         model: value.model,
@@ -120,9 +124,11 @@ export default function CreateHousehold() {
   const { mutate: createPost } = useMutation({
     // PAYLOAD
     mutationFn: async ({
+      tab,
       category,
       subCategory,
       price,
+      condition,
       title,
       brand,
       model,
@@ -131,11 +137,13 @@ export default function CreateHousehold() {
       images,
       location,
       meetup,
-    }: HouseholdCreationRequest) => {
-      const payload: HouseholdCreationRequest = {
+    }: GeneralListingCreationRequest) => {
+      const payload: GeneralListingCreationRequest = {
+        tab,
         category,
         subCategory,
         price,
+        condition,
         title,
         brand,
         model,
@@ -145,7 +153,7 @@ export default function CreateHousehold() {
         location,
         meetup,
       }
-      const { data } = await axios.post("/api/createHousehold", payload)
+      const { data } = await axios.post("/api/createListingGeneral", payload)
 
       return data
     },
@@ -161,7 +169,7 @@ export default function CreateHousehold() {
 
     // SUCCESS
     onSuccess: () => {
-      router.push("/p/mymints")
+      router.push("/ad/myads")
       router.refresh()
       return toast({
         description: "Your post has been published.",
@@ -276,39 +284,75 @@ export default function CreateHousehold() {
             </form.Field>
           </div>
 
-          {/* PRICE */}
-          <form.Field
-            name="price"
-            validators={{
-              onChange: listingPrice,
-              onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
-              onChangeAsync: onChangeAsync,
-            }}
-          >
-            {(field) => (
-              <div className="relative w-full flex-col md:w-1/2  md:pr-5">
-                <div className="flex w-full  justify-between">
-                  <FieldLabel>Price </FieldLabel>
-                  <FieldLabel className="py-2 text-xs italic text-rose-400">
-                    (required)
-                  </FieldLabel>
-                </div>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(event) =>
-                    /* @ts-ignore */
-                    field.handleChange(event.target.value)
-                  }
-                />
+          <div className="flex flex-col gap-10 md:flex-row">
+            {/* PRICE */}
+            <form.Field
+              name="price"
+              validators={{
+                onChange: listingPrice,
+                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                onChangeAsync: onChangeAsync,
+              }}
+            >
+              {(field) => (
+                <div className="relative w-full flex-col">
+                  <div className="flex w-full  justify-between">
+                    <FieldLabel>Price</FieldLabel>
+                    <FieldLabel className="py-2 text-xs italic text-rose-400">
+                      (required)
+                    </FieldLabel>
+                  </div>
+                  <Input
+                    type="number"
+                    id={field.name}
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(event) =>
+                      /* @ts-ignore */
+                      field.handleChange(event.target.value)
+                    }
+                  />
 
-                <FieldDescription>Have a price in mind?</FieldDescription>
-                <FieldInfo field={field} />
-              </div>
-            )}
-          </form.Field>
+                  <FieldDescription>Have a price in mind?</FieldDescription>
+                  <FieldInfo field={field} />
+                </div>
+              )}
+            </form.Field>
+
+            {/* CONDITION */}
+            <form.Field name="condition">
+              {(field) => {
+                return (
+                  <div className="relative w-full flex-col">
+                    <div className="flex w-full justify-between">
+                      <FieldLabel>Condition:</FieldLabel>
+                      <FieldLabel className="py-2 text-xs italic text-rose-400">
+                        (required)
+                      </FieldLabel>
+                    </div>
+
+                    <Select
+                      required
+                      onValueChange={(event) => field.handleChange(event)}
+                    >
+                      <SelectTrigger className="w-full">
+                        <SelectValue />
+                      </SelectTrigger>
+                      <SelectContent className="max-h-96 overflow-auto p-2">
+                        {condition.map((item) => (
+                          <SelectItem key={item} value={item}>
+                            {item}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                    <FieldDescription>Be honest now ;)</FieldDescription>
+                  </div>
+                )
+              }}
+            </form.Field>
+          </div>
 
           {/* TITLE */}
           <form.Field
@@ -462,7 +506,7 @@ export default function CreateHousehold() {
                   <FieldLabel>Listed Items:</FieldLabel>
                   <div className="mr-16 flex flex-row">
                     <FieldDescription className="w-full">
-                      Name:
+                      Name (Max 64 Char.):
                     </FieldDescription>
                     <FieldDescription className="w-full pl-3">
                       Price:
@@ -541,7 +585,7 @@ export default function CreateHousehold() {
                               }}
                               className="absolute bottom-1 right-0 items-center justify-center hover:text-customAccent"
                             >
-                              <X className="w-10" />
+                              <X className="w-10 text-muted-foreground" />
                             </Button>
                           </div>
                         )
@@ -558,7 +602,7 @@ export default function CreateHousehold() {
                         price: 0,
                       })
                     }}
-                    className="hover:text-customAccent"
+                    className="text-muted-foreground hover:text-customAccent"
                   >
                     <PlusCircle />
                   </Button>

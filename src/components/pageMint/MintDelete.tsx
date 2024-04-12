@@ -26,7 +26,7 @@ export default function MintDelete(listingId: any) {
     try {
       console.log("listingId:", listingId.listingId)
       await axios.put("/api/deleteListing/", id)
-      router.push("/p/mymints")
+      router.push("/ad/myads")
       router.refresh()
       return "Listing has been successfully deleted."
     } catch (error) {

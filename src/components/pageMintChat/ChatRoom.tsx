@@ -4,16 +4,13 @@ import { roomType, messagesType } from "@/src/types/db"
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
-  SheetTitle,
   SheetTrigger,
 } from "../components-ui/Sheet"
 import { Loader2 } from "lucide-react"
 import { Button } from "../components-ui/Button"
 import { ScrollArea } from "../components-ui/ScrollArea"
 import { Textarea } from "../components-ui/Textarea"
-import { useGetMessages } from "@/src/server/services"
 import { useSession } from "next-auth/react"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
@@ -118,22 +115,25 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       }
       await axios.post("/api/createChatMessage", payload)
     },
-    onError: () => {
+    onError: (error) => {
+      console.log("error:", error)
       return toast({
         title: "Something went wrong.",
         description: "Error sending message. Please try again.",
         variant: "destructive",
       })
     },
+    onSuccess: () => {
+      setBottom(false)
+      form.reset()
+    },
     onSettled: async (_, error) => {
       setDisabled(false)
-      setBottom(false)
       if (error) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({ queryKey: ["messages"] })
       }
-      form.reset()
     },
   })
 

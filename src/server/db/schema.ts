@@ -1,19 +1,20 @@
 import { relations, sql } from "drizzle-orm"
+
 import {
-  boolean,
-  datetime,
-  index,
-  int,
-  mysqlTable,
-  text,
-  timestamp,
+  integer,
+  pgTable,
   uniqueIndex,
   varchar,
-} from "drizzle-orm/mysql-core"
+  index,
+  text,
+  timestamp,
+  boolean,
+  PgTableWithColumns,
+} from "drizzle-orm/pg-core"
 
 // __________________________________________________________________________________________________________________
 // ACCOUNTS
-export const accounts = mysqlTable(
+export const accounts = pgTable(
   "accounts",
   {
     id: varchar("id", { length: 255 }).primaryKey().notNull(),
@@ -22,10 +23,10 @@ export const accounts = mysqlTable(
     provider: varchar("provider", { length: 255 }).notNull(),
     providerAccountId: varchar("providerAccountId", { length: 255 }).notNull(),
     access_token: text("access_token"),
-    expires_in: int("expires_in"),
+    expires_in: integer("expires_in"),
     id_token: text("id_token"),
     refresh_token: text("refresh_token"),
-    refresh_token_expires_in: int("refresh_token_expires_in"),
+    refresh_token_expires_in: integer("refresh_token_expires_in"),
     scope: varchar("scope", { length: 255 }),
     token_type: varchar("token_type", { length: 255 }),
     createdAt: timestamp("createdAt")
@@ -33,7 +34,6 @@ export const accounts = mysqlTable(
       .notNull(),
     updatedAt: timestamp("updatedAt")
       .default(sql`CURRENT_TIMESTAMP`)
-      .onUpdateNow()
       .notNull(),
   },
   (account) => ({
@@ -53,19 +53,18 @@ export const accountsRelations = relations(accounts, ({ one }) => ({
 
 // __________________________________________________________________________________________________________________
 // SESSIONS
-export const sessions = mysqlTable(
+export const sessions = pgTable(
   "sessions",
   {
     id: varchar("id", { length: 255 }).primaryKey().notNull(),
     sessionToken: varchar("sessionToken", { length: 255 }).notNull(),
     userId: varchar("userId", { length: 255 }).notNull(),
-    expires: datetime("expires").notNull(),
+    expires: timestamp("expires").notNull(),
     createdAt: timestamp("createdAt")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt")
       .default(sql`CURRENT_TIMESTAMP`)
-      .onUpdateNow()
       .notNull(),
   },
   (session) => ({
@@ -85,7 +84,7 @@ export const sessionsRelations = relations(sessions, ({ one }) => ({
 
 // __________________________________________________________________________________________________________________
 // USERS
-export const users = mysqlTable(
+export const users = pgTable(
   "users",
   {
     id: varchar("id", { length: 255 }).primaryKey().notNull(),
@@ -98,13 +97,11 @@ export const users = mysqlTable(
     wishlist: varchar("wishlist", { length: 191 }).references(
       () => wishlist.id
     ),
-    // wishlist: text("wishlist").default(""),
     createdAt: timestamp("createdAt")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt")
       .default(sql`CURRENT_TIMESTAMP`)
-      .onUpdateNow()
       .notNull(),
     coolingDown: boolean("coolingDown").default(false).notNull(),
   },
@@ -123,16 +120,14 @@ export const usersRelations = relations(users, ({ one, many }) => ({
 
 // __________________________________________________________________________________________________________________
 // TOKEN
-export const verificationTokens = mysqlTable(
+export const verificationTokens = pgTable(
   "verification_tokens",
   {
     identifier: varchar("identifier", { length: 255 }).primaryKey().notNull(),
     token: varchar("token", { length: 255 }).notNull(),
-    expires: datetime("expires").notNull(),
+    expires: timestamp("expires").notNull(),
     createdAt: timestamp("createdAt").default(sql`CURRENT_TIMESTAMP`),
-    updatedAt: timestamp("updatedAt")
-      .default(sql`CURRENT_TIMESTAMP`)
-      .onUpdateNow(),
+    updatedAt: timestamp("updatedAt").default(sql`CURRENT_TIMESTAMP`),
   },
   (verificationToken) => ({
     tokenIndex: uniqueIndex("verification_tokens__token__idx").on(
@@ -143,7 +138,7 @@ export const verificationTokens = mysqlTable(
 
 // __________________________________________________________________________________________________________________
 // WISHLIST
-export const wishlist: any = mysqlTable(
+export const wishlist: any = pgTable(
   "wishlist",
   {
     id: varchar("id", { length: 191 }).primaryKey().notNull(),
@@ -161,7 +156,7 @@ export const wishlist: any = mysqlTable(
 
 // __________________________________________________________________________________________________________________
 // WISHLIST ITEM
-export const wishlistItem = mysqlTable(
+export const wishlistItem = pgTable(
   "wishlistItem",
   {
     id: varchar("id", { length: 191 }).primaryKey().notNull(),
@@ -180,9 +175,10 @@ export const wishlistItem = mysqlTable(
 
 // __________________________________________________________________________________________________________________
 // LISTING
-export const listings = mysqlTable(
+export const listings = pgTable(
   "listings",
   {
+    // GENERAL PROPERTIES:
     id: varchar("id", { length: 191 }).primaryKey().notNull(),
     authorId: varchar("authorId", { length: 191 })
       .notNull()
@@ -191,19 +187,34 @@ export const listings = mysqlTable(
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
     updatedAt: timestamp("updatedAt").default(sql`CURRENT_TIMESTAMP`),
-    expirationDate: datetime("expirationDate"),
-    purgeDate: datetime("purgeDate"),
+    expirationDate: timestamp("expirationDate"),
+    purgeDate: timestamp("purgeDate"),
+
+    // CATEGORY PROPERTIES
+    tab: varchar("tab", { length: 191 }),
     category: varchar("category", { length: 191 }),
     subCategory: varchar("subCategory", { length: 191 }),
-    price: int("price"),
+
+    // SHARED DESCRIPTIONS
+    price: integer("price"),
+    title: varchar("title", { length: 191 }),
     brand: varchar("brand", { length: 191 }),
     model: varchar("model", { length: 191 }),
-    title: varchar("title", { length: 191 }),
     description: text("description"),
     items: text("items"),
+
+    // VEHICLE DESCIPTIONS
+    mileage: integer("mileage"),
+    year: integer("year"),
+    transmission: varchar("transmission", { length: 191 }),
+
+    // ATTRIBUTES
     images: text("images"),
+    condition: varchar("condition", { length: 191 }),
     location: varchar("location", { length: 191 }),
     meetup: varchar("meetup", { length: 191 }),
+
+    // STATUS
     isNew: boolean("isNew").default(true),
     isUrgent: boolean("isUrgent").default(false),
     isPending: boolean("isPending").default(false),
@@ -215,22 +226,15 @@ export const listings = mysqlTable(
   })
 )
 
-export const listingsRelations = relations(listings, ({ one, many }) => ({
-  authorId: one(users, {
-    fields: [listings.authorId],
-    references: [users.id],
-  }),
-  queries: many(queries),
-}))
-
 // __________________________________________________________________________________________________________________
 // NOTIFICATIONS
-export const notifications = mysqlTable("notifications", {
+export const notifications = pgTable("notifications", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 })
     .notNull()
     .references(() => users.id),
   adId: text("adId"),
+  adUrl: text("adUrl"),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -249,7 +253,7 @@ export const notificationsRelations = relations(notifications, ({ one }) => ({
 
 // __________________________________________________________________________________________________________________
 // OFFERS
-export const offers = mysqlTable("offers", {
+export const offers = pgTable("offers", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 })
     .notNull()
@@ -263,11 +267,11 @@ export const offers = mysqlTable("offers", {
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  expirationDate: datetime("expirationDate"),
-  purgeDate: datetime("purgeDate"),
-  askPrice: int("askPrice"),
-  offerPrice: int("offerPrice"),
-  counterPrice: int("counterPrice"),
+  expirationDate: timestamp("expirationDate"),
+  purgeDate: timestamp("purgeDate"),
+  askPrice: integer("askPrice"),
+  offerPrice: integer("offerPrice"),
+  counterPrice: integer("counterPrice"),
   isCountered: boolean("isCountered").default(false),
   isDeclined: boolean("isDeclined").default(false),
   isAccepted: boolean("isAccepted").default(false),
@@ -283,7 +287,7 @@ export const offersRelations = relations(offers, ({ one }) => ({
 
 // __________________________________________________________________________________________________________________
 // OFFERSLIST
-export const offersList = mysqlTable("offersList", {
+export const offersList = pgTable("offersList", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 })
     .notNull()
@@ -300,11 +304,11 @@ export const offersList = mysqlTable("offersList", {
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  expirationDate: datetime("expirationDate"),
-  purgeDate: datetime("purgeDate"),
-  askPrice: int("askPrice"),
-  offerPrice: int("offerPrice"),
-  counterPrice: int("counterPrice"),
+  expirationDate: timestamp("expirationDate"),
+  purgeDate: timestamp("purgeDate"),
+  askPrice: integer("askPrice"),
+  offerPrice: integer("offerPrice"),
+  counterPrice: integer("counterPrice"),
   isCountered: boolean("isCountered").default(false),
   isDeclined: boolean("isDeclined").default(false),
   isAccepted: boolean("isAccepted").default(false),
@@ -320,7 +324,7 @@ export const offersListRelations = relations(offersList, ({ one }) => ({
 
 // __________________________________________________________________________________________________________________
 // QUERIES
-export const queries = mysqlTable("queries", {
+export const queries = pgTable("queries", {
   id: varchar("id", { length: 191 }).primaryKey().notNull(),
   userId: varchar("userId", { length: 191 })
     .notNull()
@@ -334,8 +338,8 @@ export const queries = mysqlTable("queries", {
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
-  expirationDate: datetime("expirationDate"),
-  purgeDate: datetime("purgeDate"),
+  expirationDate: timestamp("expirationDate"),
+  purgeDate: timestamp("purgeDate"),
   query: varchar("query", { length: 191 }),
   reply: varchar("reply", { length: 191 }),
   isAnswered: boolean("isAnswered").default(false),
@@ -351,7 +355,7 @@ export const queriesRelations = relations(queries, ({ one }) => ({
 
 // __________________________________________________________________________________________________________________
 // REPORTS
-export const listingReports = mysqlTable(
+export const listingReports = pgTable(
   "listingReports",
   {
     id: varchar("id", { length: 191 }).primaryKey().notNull(),
@@ -380,7 +384,7 @@ export const listingReports = mysqlTable(
 
 // __________________________________________________________________________________________________________________
 // CHAT ROOM:
-export const chatRoom = mysqlTable(
+export const chatRoom = pgTable(
   "chatRoom",
   {
     id: varchar("id", { length: 191 }).primaryKey().notNull(),
@@ -406,7 +410,7 @@ export const chatRoom = mysqlTable(
 
 // __________________________________________________________________________________________________________________
 // CHAT MESSAGE:
-export const messages = mysqlTable(
+export const messages = pgTable(
   "messages",
   {
     id: varchar("id", { length: 191 }).primaryKey().notNull(),
@@ -416,9 +420,7 @@ export const messages = mysqlTable(
     userId: varchar("userId", { length: 191 })
       .references(() => users.id)
       .notNull(),
-    userName: varchar("userName", { length: 191 })
-      .references(() => users.name)
-      .notNull(),
+    userName: varchar("userName", { length: 191 }).notNull(),
     message: text("message"),
     createdAt: timestamp("createdAt")
       .default(sql`CURRENT_TIMESTAMP`)

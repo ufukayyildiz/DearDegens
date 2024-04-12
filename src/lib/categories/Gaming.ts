@@ -1,0 +1,72 @@
+export const categoryGaming = [
+  {
+    name: "Consoles",
+    subCategories: [
+      "PlayStation 1",
+      "PlayStation 2",
+      "PlayStation 3",
+      "PlayStation 4",
+      "PlayStation 5",
+      "PSP / PS Vita",
+      "XBox",
+      "XBox 360",
+      "XBox One",
+      "XBox Series X/S",
+      "Nintendo 3DS",
+      "Nintendo DS",
+      "Nintendo GameCube",
+      "Nintendo Game Boy",
+      "Nintendo Switch",
+      "Nintendo Wii",
+      "Nintendo Wii U",
+      "Other"
+    ],
+  },
+  {
+    name: "Games",
+    subCategories: [
+      "PC",
+      "PlayStation 1",
+      "PlayStation 2",
+      "PlayStation 3",
+      "PlayStation 4",
+      "PlayStation 5",
+      "PSP / PS Vita",
+      "XBox",
+      "XBox 360",
+      "XBox One",
+      "XBox Series X/S",
+      "Nintendo 3DS",
+      "Nintendo DS",
+      "Nintendo GameCube",
+      "Nintendo Game Boy",
+      "Nintendo Switch",
+      "Nintendo Wii",
+      "Nintendo Wii U",
+      "Sega",
+      "Atari",
+      "Other",
+    ],
+  },
+  {
+    name: "Accessories",
+    subCategories: [
+      "Adapters and Cables",
+      "Batteries and Charging",
+      "Cases, Bags and Pouches",
+      "Controllers",
+      "Headsets and VR",
+      "Racing Wheels and Seats",
+      "Other Accessories"
+    ],
+  },
+  {
+    name: "Merchandise",
+    subCategories: [
+      "Clothing",
+      "Collectables",
+      "Miscellanious",
+    ],
+  },
+]
+

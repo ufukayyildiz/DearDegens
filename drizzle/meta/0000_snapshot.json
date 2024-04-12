@@ -1,102 +1,90 @@
 {
   "version": "5",
-  "dialect": "mysql",
-  "id": "04f2a2eb-31f8-4029-a0bc-da565328e342",
-  "prevId": "eb7b005d-ecfb-4c3e-ba71-9e6ffe9d871c",
+  "dialect": "pg",
+  "id": "66bd8974-5515-4af0-b118-7f2b3bdc9af7",
+  "prevId": "00000000-0000-0000-0000-000000000000",
   "tables": {
     "accounts": {
       "name": "accounts",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "type": {
           "name": "type",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "provider": {
           "name": "provider",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "providerAccountId": {
           "name": "providerAccountId",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "access_token": {
           "name": "access_token",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "expires_in": {
           "name": "expires_in",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "id_token": {
           "name": "id_token",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "refresh_token": {
           "name": "refresh_token",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "refresh_token_expires_in": {
           "name": "refresh_token_expires_in",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "scope": {
           "name": "scope",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "token_type": {
           "name": "token_type",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "updatedAt": {
@@ -104,8 +92,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
           "default": "CURRENT_TIMESTAMP"
         }
       },
@@ -127,39 +113,227 @@
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "accounts_id": {
-          "name": "accounts_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "listings": {
-      "name": "listings",
+    "chatRoom": {
+      "name": "chatRoom",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
-        "authorId": {
-          "name": "authorId",
+        "adId": {
+          "name": "adId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sellerId": {
+          "name": "sellerId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {
+        "idx_chatRoom_id": {
+          "name": "idx_chatRoom_id",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "chatRoom_adId_listings_id_fk": {
+          "name": "chatRoom_adId_listings_id_fk",
+          "tableFrom": "chatRoom",
+          "tableTo": "listings",
+          "columnsFrom": [
+            "adId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "chatRoom_userId_users_id_fk": {
+          "name": "chatRoom_userId_users_id_fk",
+          "tableFrom": "chatRoom",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "chatRoom_sellerId_users_id_fk": {
+          "name": "chatRoom_sellerId_users_id_fk",
+          "tableFrom": "chatRoom",
+          "tableTo": "users",
+          "columnsFrom": [
+            "sellerId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "listingReports": {
+      "name": "listingReports",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "adId": {
+          "name": "adId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "sellerId": {
+          "name": "sellerId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
+          "default": "CURRENT_TIMESTAMP"
+        },
+        "infraction": {
+          "name": "infraction",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "description": {
+          "name": "description",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "adFlagged": {
+          "name": "adFlagged",
+          "type": "boolean",
+          "primaryKey": false,
+          "notNull": false,
+          "default": false
+        }
+      },
+      "indexes": {
+        "listingReports_id_idx": {
+          "name": "listingReports_id_idx",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "listingReports_userId_users_id_fk": {
+          "name": "listingReports_userId_users_id_fk",
+          "tableFrom": "listingReports",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "listingReports_adId_listings_id_fk": {
+          "name": "listingReports_adId_listings_id_fk",
+          "tableFrom": "listingReports",
+          "tableTo": "listings",
+          "columnsFrom": [
+            "adId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "listingReports_sellerId_users_id_fk": {
+          "name": "listingReports_sellerId_users_id_fk",
+          "tableFrom": "listingReports",
+          "tableTo": "users",
+          "columnsFrom": [
+            "sellerId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "listings": {
+      "name": "listings",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "authorId": {
+          "name": "authorId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
           "default": "CURRENT_TIMESTAMP"
         },
         "updatedAt": {
@@ -167,106 +341,121 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "expirationDate": {
           "name": "expirationDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "purgeDate": {
           "name": "purgeDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
+        },
+        "tab": {
+          "name": "tab",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
         },
         "category": {
           "name": "category",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "subCategory": {
           "name": "subCategory",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "price": {
           "name": "price",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "brand": {
-          "name": "brand",
-          "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
-        },
-        "model": {
-          "name": "model",
-          "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "title": {
           "name": "title",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
+        },
+        "brand": {
+          "name": "brand",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "model": {
+          "name": "model",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
         },
         "description": {
           "name": "description",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "items": {
           "name": "items",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
+        },
+        "mileage": {
+          "name": "mileage",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "year": {
+          "name": "year",
+          "type": "integer",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "transmission": {
+          "name": "transmission",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
         },
         "images": {
           "name": "images",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
+        },
+        "condition": {
+          "name": "condition",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
         },
         "location": {
           "name": "location",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "meetup": {
           "name": "meetup",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "isNew": {
           "name": "isNew",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": true
         },
         "isUrgent": {
@@ -274,7 +463,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isPending": {
@@ -282,7 +470,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isHot": {
@@ -290,7 +477,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isSold": {
@@ -298,7 +484,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         }
       },
@@ -326,75 +511,149 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "listings_id": {
-          "name": "listings_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
-    "notifications": {
-      "name": "notifications",
+    "messages": {
+      "name": "messages",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "roomId": {
+          "name": "roomId",
+          "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "adId": {
-          "name": "adId",
+        "userName": {
+          "name": "userName",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "message": {
+          "name": "message",
           "type": "text",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
+          "default": "CURRENT_TIMESTAMP"
+        }
+      },
+      "indexes": {
+        "idx_messages_id": {
+          "name": "idx_messages_id",
+          "columns": [
+            "id"
+          ],
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "messages_roomId_chatRoom_id_fk": {
+          "name": "messages_roomId_chatRoom_id_fk",
+          "tableFrom": "messages",
+          "tableTo": "chatRoom",
+          "columnsFrom": [
+            "roomId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        },
+        "messages_userId_users_id_fk": {
+          "name": "messages_userId_users_id_fk",
+          "tableFrom": "messages",
+          "tableTo": "users",
+          "columnsFrom": [
+            "userId"
+          ],
+          "columnsTo": [
+            "id"
+          ],
+          "onDelete": "no action",
+          "onUpdate": "no action"
+        }
+      },
+      "compositePrimaryKeys": {},
+      "uniqueConstraints": {}
+    },
+    "notifications": {
+      "name": "notifications",
+      "schema": "",
+      "columns": {
+        "id": {
+          "name": "id",
+          "type": "varchar(191)",
+          "primaryKey": true,
+          "notNull": true
+        },
+        "userId": {
+          "name": "userId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": true
+        },
+        "adId": {
+          "name": "adId",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "adUrl": {
+          "name": "adUrl",
+          "type": "text",
+          "primaryKey": false,
+          "notNull": false
+        },
+        "createdAt": {
+          "name": "createdAt",
+          "type": "timestamp",
+          "primaryKey": false,
+          "notNull": true,
           "default": "CURRENT_TIMESTAMP"
         },
         "title": {
           "name": "title",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "description": {
           "name": "description",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "body": {
           "name": "body",
           "type": "text",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "isRead": {
           "name": "isRead",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         }
       },
@@ -414,110 +673,91 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "notifications_id": {
-          "name": "notifications_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "offers": {
       "name": "offers",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "userName": {
           "name": "userName",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "adId": {
           "name": "adId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "sellerId": {
           "name": "sellerId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "adTitle": {
           "name": "adTitle",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "expirationDate": {
           "name": "expirationDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "purgeDate": {
           "name": "purgeDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "askPrice": {
           "name": "askPrice",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "offerPrice": {
           "name": "offerPrice",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "counterPrice": {
           "name": "counterPrice",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "isCountered": {
           "name": "isCountered",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isDeclined": {
@@ -525,7 +765,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isAccepted": {
@@ -533,7 +772,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isConfirmed": {
@@ -541,7 +779,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         }
       },
@@ -574,117 +811,97 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "offers_id": {
-          "name": "offers_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "offersList": {
       "name": "offersList",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "userName": {
           "name": "userName",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "adId": {
           "name": "adId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "itemId": {
           "name": "itemId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "sellerId": {
           "name": "sellerId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "name": {
           "name": "name",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "expirationDate": {
           "name": "expirationDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "purgeDate": {
           "name": "purgeDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "askPrice": {
           "name": "askPrice",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "offerPrice": {
           "name": "offerPrice",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "counterPrice": {
           "name": "counterPrice",
-          "type": "int",
+          "type": "integer",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "isCountered": {
           "name": "isCountered",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isDeclined": {
@@ -692,7 +909,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isAccepted": {
@@ -700,7 +916,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isConfirmed": {
@@ -708,7 +923,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         }
       },
@@ -754,103 +968,85 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "offersList_id": {
-          "name": "offersList_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "queries": {
       "name": "queries",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "userName": {
           "name": "userName",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "adId": {
           "name": "adId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "sellerId": {
           "name": "sellerId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "adTitle": {
           "name": "adTitle",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "expirationDate": {
           "name": "expirationDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "purgeDate": {
           "name": "purgeDate",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "query": {
           "name": "query",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "reply": {
           "name": "reply",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "isAnswered": {
           "name": "isAnswered",
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         },
         "isPublic": {
@@ -858,7 +1054,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": false
         }
       },
@@ -891,53 +1086,42 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "queries_id": {
-          "name": "queries_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "sessions": {
       "name": "sessions",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "sessionToken": {
           "name": "sessionToken",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "expires": {
           "name": "expires",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "updatedAt": {
@@ -945,8 +1129,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
           "default": "CURRENT_TIMESTAMP"
         }
       },
@@ -967,83 +1149,68 @@
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "sessions_id": {
-          "name": "sessions_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "users": {
       "name": "users",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "admin": {
           "name": "admin",
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         },
         "name": {
           "name": "name",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "email": {
           "name": "email",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "emailVerified": {
           "name": "emailVerified",
           "type": "timestamp",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "image": {
           "name": "image",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "imageBucket": {
           "name": "imageBucket",
           "type": "text",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "default": "('')"
+          "default": "''"
         },
         "wishlist": {
           "name": "wishlist",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "updatedAt": {
@@ -1051,8 +1218,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
-          "onUpdate": true,
           "default": "CURRENT_TIMESTAMP"
         },
         "coolingDown": {
@@ -1060,7 +1225,6 @@
           "type": "boolean",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": false
         }
       },
@@ -1088,46 +1252,36 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "users_id": {
-          "name": "users_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "verification_tokens": {
       "name": "verification_tokens",
+      "schema": "",
       "columns": {
         "identifier": {
           "name": "identifier",
           "type": "varchar(255)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "token": {
           "name": "token",
           "type": "varchar(255)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "expires": {
           "name": "expires",
-          "type": "datetime",
+          "type": "timestamp",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         },
         "updatedAt": {
@@ -1135,8 +1289,6 @@
           "type": "timestamp",
           "primaryKey": false,
           "notNull": false,
-          "autoincrement": false,
-          "onUpdate": true,
           "default": "CURRENT_TIMESTAMP"
         }
       },
@@ -1150,62 +1302,48 @@
         }
       },
       "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "verification_tokens_identifier": {
-          "name": "verification_tokens_identifier",
-          "columns": [
-            "identifier"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "wishlist": {
       "name": "wishlist",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "userId": {
           "name": "userId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
         },
-        "wishlistItemId": {
-          "name": "wishlistItemId",
+        "wishlistItem": {
+          "name": "wishlistItem",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": false,
-          "autoincrement": false
+          "notNull": false
         }
       },
-      "indexes": {},
-      "foreignKeys": {
-        "wishlist_userId_users_id_fk": {
-          "name": "wishlist_userId_users_id_fk",
-          "tableFrom": "wishlist",
-          "tableTo": "users",
-          "columnsFrom": [
-            "userId"
-          ],
-          "columnsTo": [
+      "indexes": {
+        "idx_wishlist_id": {
+          "name": "idx_wishlist_id",
+          "columns": [
             "id"
           ],
-          "onDelete": "no action",
-          "onUpdate": "no action"
-        },
-        "wishlist_wishlistItemId_wishlistItem_id_fk": {
-          "name": "wishlist_wishlistItemId_wishlistItem_id_fk",
+          "isUnique": true
+        }
+      },
+      "foreignKeys": {
+        "wishlist_wishlistItem_wishlistItem_id_fk": {
+          "name": "wishlist_wishlistItem_wishlistItem_id_fk",
           "tableFrom": "wishlist",
           "tableTo": "wishlistItem",
           "columnsFrom": [
-            "wishlistItemId"
+            "wishlistItem"
           ],
           "columnsTo": [
             "id"
@@ -1214,55 +1352,54 @@
           "onUpdate": "no action"
         }
       },
-      "compositePrimaryKeys": {
-        "wishlist_id": {
-          "name": "wishlist_id",
-          "columns": [
-            "id"
-          ]
-        }
-      },
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     },
     "wishlistItem": {
       "name": "wishlistItem",
+      "schema": "",
       "columns": {
         "id": {
           "name": "id",
           "type": "varchar(191)",
-          "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "primaryKey": true,
+          "notNull": true
         },
         "adId": {
           "name": "adId",
           "type": "varchar(191)",
           "primaryKey": false,
-          "notNull": true,
-          "autoincrement": false
+          "notNull": true
+        },
+        "wishlistId": {
+          "name": "wishlistId",
+          "type": "varchar(191)",
+          "primaryKey": false,
+          "notNull": false
         },
         "createdAt": {
           "name": "createdAt",
           "type": "timestamp",
           "primaryKey": false,
           "notNull": true,
-          "autoincrement": false,
           "default": "CURRENT_TIMESTAMP"
         }
       },
-      "indexes": {},
-      "foreignKeys": {},
-      "compositePrimaryKeys": {
-        "wishlistItem_id": {
-          "name": "wishlistItem_id",
+      "indexes": {
+        "idx_wishlistItem_id": {
+          "name": "idx_wishlistItem_id",
           "columns": [
             "id"
-          ]
+          ],
+          "isUnique": true
         }
       },
+      "foreignKeys": {},
+      "compositePrimaryKeys": {},
       "uniqueConstraints": {}
     }
   },
+  "enums": {},
   "schemas": {},
   "_meta": {
     "schemas": {},

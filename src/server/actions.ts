@@ -17,7 +17,7 @@ import {
   wishlistItem,
 } from "./db/schema"
 import { chatRoomType } from "../types/db"
-import { alias } from "drizzle-orm/mysql-core"
+import { alias } from "drizzle-orm/pg-core"
 
 // Get user image bucket by userId
 export async function getBucket() {
@@ -148,11 +148,6 @@ export async function getWishlist() {
 // Get listing Chatrooms
 export async function getChatrooms(mintId: string) {
   try {
-    // const roomQueries = await db
-    //   .select()
-    //   .from(chatRoom)
-    //   .where(eq(chatRoom.adId, mintId))
-
     const buyer = alias(users, "buyer")
     const seller = alias(users, "seller")
 
@@ -186,18 +181,15 @@ export async function getChatrooms(mintId: string) {
 // Get Chatroom Messages
 export async function getMessages(roomId: string) {
   try {
-    console.log("roomId", roomId)
     const roomMessages = await db
       .select()
       .from(messages)
       .where(eq(messages.roomId, roomId))
 
-    console.log("messages:", roomMessages)
-
     roomMessages &&
       roomMessages.sort((a: any, b: any) => a.createdAt - b.createdAt)
 
-    console.log("Chatroom messages query successful")
+    // console.log("Chatroom messages query successful")
     return roomMessages
   } catch (error) {
     console.error("Server error: Failed to fetch chatroom messages - ", error)
