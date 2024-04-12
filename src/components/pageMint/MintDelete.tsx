@@ -20,7 +20,7 @@ import { Checkbox } from "../components-ui/Checkbox"
 
 export default function MintDelete(listingId: any) {
   const [disabled, setDisabled] = useState<boolean>(true)
-  const id = JSON.stringify(listingId.listingId) 
+  const id = JSON.stringify(listingId.listingId)
   const router = useRouter()
   const handleDeleteListing = async () => {
     try {

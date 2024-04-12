@@ -25,7 +25,6 @@ export default function MintOfferCardUserActions({
   const offerId = JSON.stringify(adOffer.id)
   const queryClient = useQueryClient()
 
-  
   // ________________________________________________________________________
   // MUTATION CONFIRMATION
   const { mutate: offerConfirmation } = useMutation({
@@ -34,7 +33,7 @@ export default function MintOfferCardUserActions({
         offerId: adOffer && adOffer.id,
         adId: adOffer && adOffer.adId,
         sellerId: adOffer && adOffer.sellerId,
-        userId: adOffer && adOffer.userId
+        userId: adOffer && adOffer.userId,
       }
       await axios.put("/api/offerBuyerConfirmation", payload)
     },

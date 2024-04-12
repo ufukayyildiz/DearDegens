@@ -6,7 +6,7 @@ import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
 import { categoryHousehold } from "@/src/lib/categories/Household"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
-import { HouseholdCreationRequest } from "@/src/lib/validators/validateListingGeneral"
+import { GeneralListingCreationRequest } from "@/src/lib/validators/validateListingGeneral"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useForm } from "@tanstack/react-form"
@@ -109,7 +109,8 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       meetup: listing[0].meetup || "",
     },
     onSubmit: async ({ value }) => {
-      const payload: HouseholdCreationRequest = {
+      // @ts-ignore
+      const payload: GeneralListingCreationRequest = {
         category: category,
         subCategory: subCategory,
         price: value.price,
@@ -143,8 +144,9 @@ export default function EditHousehold({ listing }: EditHouseholdProps) {
       images,
       location,
       meetup,
-    }: HouseholdCreationRequest) => {
-      const payload: HouseholdCreationRequest = {
+    }: GeneralListingCreationRequest) => {
+      // @ts-ignore
+      const payload: GeneralListingCreationRequest = {
         category,
         subCategory,
         price,

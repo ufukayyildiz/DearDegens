@@ -64,6 +64,7 @@ export default function MintReport() {
   const { mintId }: any = useParams()
 
   const getListing = useGetListing(mintId).data
+  // @ts-ignore
   const listing = getListing && getListing[0]
 
   const form = useForm({

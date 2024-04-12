@@ -50,6 +50,7 @@ export default function MintQuery() {
   const { mintId }: any = useParams()
 
   const getListing = useGetListing(mintId).data
+  // @ts-ignore
   const listing = getListing && getListing[0]
 
   const form = useForm({

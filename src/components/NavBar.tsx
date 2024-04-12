@@ -25,7 +25,7 @@ export default async function NavBar() {
 
   return (
     <header className="sticky top-0 z-50 w-full bg-muted/60 backdrop-blur-xl">
-      <div className="container flex h-20 w-full items-center space-x-4 justify-between sm:space-x-0">
+      <div className="container flex h-20 w-full items-center justify-between space-x-4 sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
         {/* SIGN IN */}
         {session?.user ? (

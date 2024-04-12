@@ -7,14 +7,11 @@ import {
   CarouselPrevious,
 } from "../components-ui/Carousel"
 
-
 import MiniMintCardComponent from "./MiniMintCardComponent"
 
 import "@splidejs/react-splide/css/core"
 
 export default async function HomeCarousel({ listings }: { listings: any[] }) {
-
-
   return (
     <div>
       <Carousel
