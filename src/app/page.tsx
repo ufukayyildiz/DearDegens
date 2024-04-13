@@ -18,6 +18,7 @@ export default async function HomePage() {
           Home & Garden Ads
         </h1>
         <hr className="my-2 border border-t-muted-foreground" />
+        {/* @ts-expect-error Server Component */}
         <HomeCarousel listings={adListings} />
       </div>
       {/* <Ads/> */}
