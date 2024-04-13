@@ -1,6 +1,6 @@
 import { createId } from "@paralleldrive/cuid2"
 import { and, eq } from "drizzle-orm"
-import type { PlanetScaleDatabase } from "drizzle-orm/planetscale-serverless"
+import type { NeonHttpDatabase } from "drizzle-orm/neon-http"
 import type { Adapter } from "next-auth/adapters"
 
 import {
@@ -10,7 +10,7 @@ import {
   verificationTokens,
 } from "../../server/db/schema"
 
-export function DrizzleAdapter(db: PlanetScaleDatabase): Adapter {
+export function DrizzleAdapter(db: NeonHttpDatabase): Adapter {
   return {
     async createUser(userData) {
       await db.insert(users).values({
