@@ -6,6 +6,7 @@ import IsNew from "./IsNew"
 import IsPending from "./IsPending"
 import IsSold from "./IsSold"
 import IsUrgent from "./IsUrgent"
+import IsExpired from "./IsExpired"
 
 interface MyMintsProps {
   listing: listingsType
@@ -19,6 +20,7 @@ export default function AdTags({ listing }: MyMintsProps) {
       {listing.isHot === true && <IsHot />}
       {listing.isPending === true && <IsPending />}
       {listing.isSold === true && <IsSold />}
+      {listing.isExpired === true && <IsExpired />}
     </div>
   )
 }

@@ -26,6 +26,7 @@ export async function GET(req: Request) {
         `
           SELECT * FROM listings 
           WHERE tsvector_title @@ to_tsquery('${searchString}')
+          AND "isExpired" = 'f'
           ORDER BY "createdAt" DESC
           OFFSET ${offset}
           LIMIT ${parseInt(limit)}; 

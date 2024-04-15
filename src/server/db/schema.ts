@@ -220,6 +220,7 @@ export const listings = pgTable(
     isPending: boolean("isPending").default(false),
     isHot: boolean("isHot").default(false),
     isSold: boolean("isSold").default(false),
+    isExpired: boolean("isExpired").default(false),
   },
   (listing) => ({
     idIndex: uniqueIndex("listings__id__idx").on(listing.id),

@@ -6,6 +6,7 @@ import ChatSheet from "@/src/components/pageMintChat/ChatSheet"
 import MintQA from "@/src/components/pageMint/MintQA"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
 import MintList from "@/src/components/pageMint/MintList"
+import MintRenew from "@/src/components/pageMint/MintRenew"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { getAdOffers, getAdQueries, getListings } from "@/src/server/actions"
@@ -99,6 +100,7 @@ export default async function MintPage({ params }: MintPageProps) {
                             askPrice={item.price}
                           />
                         )}
+                      <MintRenew listing={item} />
                     </div>
                     <h1 className="mb-2 text-2xl font-bold">{item.title}</h1>
                     <p className="text-xs italic text-secondary">
@@ -109,7 +111,7 @@ export default async function MintPage({ params }: MintPageProps) {
                 <hr className="my-2 border border-t-muted-foreground" />
                 <div className="flex min-h-[40px] items-end">
                   {session?.user.id === item.authorId ? (
-                    <MintPageAuthorActions listingId={item.id} />
+                    <MintPageAuthorActions listing={item} />
                   ) : (
                     <MintPageUsersActions listingId={item.id} />
                   )}
