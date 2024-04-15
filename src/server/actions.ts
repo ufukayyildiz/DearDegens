@@ -16,8 +16,8 @@ import {
   wishlist,
   wishlistItem,
 } from "./db/schema"
-import { chatRoomType } from "../types/db"
 import { alias } from "drizzle-orm/pg-core"
+
 
 // Get user image bucket by userId
 export async function getBucket() {

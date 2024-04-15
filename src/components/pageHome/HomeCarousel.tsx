@@ -7,7 +7,7 @@ import {
   CarouselPrevious,
 } from "../components-ui/Carousel"
 
-import MiniMintCardComponent from "./MiniMintCardComponent"
+import MiniMintCardComponent from "../componentsCards/MiniMintCardComponent"
 
 import "@splidejs/react-splide/css/core"
 

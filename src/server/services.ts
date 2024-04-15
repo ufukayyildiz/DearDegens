@@ -27,6 +27,7 @@ export function useGetQueries(mintId: any) {
   })
 }
 
+
 export function useGetWishlist() {
   return useQuery({
     queryKey: ["wishlist"],

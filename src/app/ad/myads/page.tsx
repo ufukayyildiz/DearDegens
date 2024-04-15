@@ -1,5 +1,5 @@
 import React from "react"
-import MintCardComponent from "@/src/components/pageMyMint/MintCardComponent"
+import MintCardComponent from "@/src/components/componentsCards/MintCardComponent"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
