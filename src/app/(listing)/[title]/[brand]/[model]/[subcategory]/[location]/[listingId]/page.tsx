@@ -91,17 +91,16 @@ export default async function MintPage({ params }: MintPageProps) {
                         R {formatPrice(item.price)}
                       </p>
                       {session &&
-                        item.price &&
-                        item.title &&
-                        item.authorId !== session.user.id && (
-                          <MintOffer
-                            title={item.title}
-                            sellerId={item.authorId}
-                            adId={item.id}
-                            askPrice={item.price}
-                          />
-                        )}
-                      {item.isExpired ? (
+                      item.price &&
+                      item.title &&
+                      item.authorId !== session.user.id ? (
+                        <MintOffer
+                          title={item.title}
+                          sellerId={item.authorId}
+                          adId={item.id}
+                          askPrice={item.price}
+                        />
+                      ) : item.isExpired ? (
                         <MintRenew listing={item} />
                       ) : (
                         <MintSold listing={item} />
