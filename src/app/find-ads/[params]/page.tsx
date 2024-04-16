@@ -4,6 +4,7 @@ import { useParams } from "next/navigation"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
 import MintCardComponent from "@/src/components/componentsCards/MintCardComponent"
+import CardsFeed from "@/src/components/componentsCards/CardsFeed"
 import { Loader2 } from "lucide-react"
 
 export default function FindAds() {
@@ -37,7 +38,7 @@ export default function FindAds() {
       },
     })
 
-  const listings = data?.pages.flatMap((page) => page.rows)
+  const listings = data?.pages.flatMap((page) => page.rows) || [""]
 
   return (
     <div className="mx-auto w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
@@ -51,10 +52,7 @@ export default function FindAds() {
           <Loader2 className="h-10 w-10 animate-spin text-zinc-500" />
         </div>
       ) : (
-        <div className="flex flex-col gap-5 px-5 pb-5">
-          {listings &&
-            listings.map((listing) => <MintCardComponent listing={listing} />)}
-        </div>
+        <CardsFeed listings={listings}/>
       )}
       {isFetchingNextPage && (
         <div className="flex justify-center py-10">
