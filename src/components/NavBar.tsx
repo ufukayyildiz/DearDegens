@@ -30,6 +30,7 @@ export default async function NavBar() {
       <div className="container flex h-20 w-full items-center justify-between space-x-4 sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
         <div className="w-full px-8">
+          {/* @ts-expect-error Server Component */}
           <SearchbarTop />
         </div>
         {/* SIGN IN */}
@@ -47,6 +48,7 @@ export default async function NavBar() {
         )}
       </div>
       <div className="w-full px-8 pb-5 md:pb-0">
+        {/* @ts-expect-error Server Component */}
         <SearchbarBottom />
       </div>
     </header>
