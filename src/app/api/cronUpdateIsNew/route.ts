@@ -1,7 +1,7 @@
 import { db } from "@/src/server/db"
 import { sql } from "drizzle-orm"
 
-export async function PATCH() {
+export async function GET() {
   try {
     await db.execute(
       sql.raw(
