@@ -2,7 +2,7 @@ import React from "react"
 
 import ChatSheet from "../pageMintChat/ChatSheet"
 import MintQuery from "../pageMintQueries/MintQuery"
-import MintManager from "./MintManager"
+import MintManager from "./MintManagerQueries"
 import MintAddToWishlist from "../pageMintWishlist/MintAddToWishlist"
 import MintReport from "../pageMintReport/MintReport"
 

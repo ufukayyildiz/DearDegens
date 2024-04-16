@@ -3,6 +3,8 @@ import React, { useEffect, useState } from "react"
 export default function useMediaQuery(query: string) {
   const [matches, setMatches] = useState(false)
 
+  // Usage: const isAboveMediumScreens = useMediaQuery("(min-width: 768px)")
+
   useEffect(() => {
     const media = window.matchMedia(query)
     if (media.matches !== matches) {

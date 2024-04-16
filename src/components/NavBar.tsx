@@ -13,7 +13,8 @@ import { getNotifications } from "../server/actions"
 import { AccountNav } from "./AccountNav"
 import { Button } from "./components-ui/Button"
 import { MainNav } from "./MainNav"
-import Searchbar from "./Searchbar"
+import SearchbarBottom from "./SearchbarBottom"
+import SearchbarTop from "./SearchbarTop"
 
 export default async function NavBar() {
   const session = await getServerSession(authOptions)
@@ -28,6 +29,9 @@ export default async function NavBar() {
     <header className="sticky top-0 z-50 flex w-full flex-col bg-muted/60 backdrop-blur-xl">
       <div className="container flex h-20 w-full items-center justify-between space-x-4 sm:space-x-0">
         <MainNav items={siteConfig.mainNav} />
+        <div className="w-full px-8">
+          <SearchbarTop />
+        </div>
         {/* SIGN IN */}
         {session?.user ? (
           <div>
@@ -42,8 +46,8 @@ export default async function NavBar() {
           </Button>
         )}
       </div>
-      <div className="w-full px-8 pb-5">
-        <Searchbar />
+      <div className="w-full px-8 pb-5 md:pb-0">
+        <SearchbarBottom />
       </div>
     </header>
   )

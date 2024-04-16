@@ -2,7 +2,8 @@ import React from "react"
 import Link from "next/link"
 import { FileEdit } from "lucide-react"
 import MintDelete from "./MintDelete"
-import MintManager from "./MintManager"
+import MintManageOffers from "./MintManageOffers"
+import MintManageQueries from "./MintManagerQueries"
 import MintRenew from "./MintRenew"
 import { listingsType } from "@/src/types/db"
 
@@ -16,7 +17,8 @@ export default function MintPageAuthorActions({ listing }: AuthorActionsProps) {
   return (
     <div className="flex w-full justify-end pr-5">
       <div className="flex w-4/12 justify-end space-x-5">
-        <MintManager />
+        <MintManageOffers />
+        <MintManageQueries />
         <Link
           href={`/ad/edit/${listing.id}`}
           className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"

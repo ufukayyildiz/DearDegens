@@ -1,12 +1,14 @@
 import React from "react"
-import MintCarouselTwo from "@/src/components/pageMint/MintCarouselTwo"
+import MintCarousel from "@/src/components/pageMint/MintCarousel"
 import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
 import ChatSheet from "@/src/components/pageMintChat/ChatSheet"
 import MintQA from "@/src/components/pageMint/MintQA"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
 import MintList from "@/src/components/pageMint/MintList"
+import MintInfo from "@/src/components/pageMint/MintInfo"
 import MintRenew from "@/src/components/pageMint/MintRenew"
+import MintSold from "@/src/components/pageMint/MintSold"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { getAdOffers, getAdQueries, getListings } from "@/src/server/actions"
@@ -81,14 +83,13 @@ export default async function MintPage({ params }: MintPageProps) {
           {listing &&
             listing.map((item, index) => (
               <div key={index} className="mb-60">
-                {/* @ts-expect-error Server Component */}
-                <MintCarouselTwo listing={item.images} />
+                {/* TOP SECTION */}
                 <div className="mt-10 flex w-full flex-row justify-between">
                   <div className="my-auto w-full">
                     <div className="flex w-full justify-between">
-                      <h1 className="mb-5 text-3xl font-bold text-customAccent">
+                      <p className="mb-5 text-3xl font-bold text-customAccent">
                         R {formatPrice(item.price)}
-                      </h1>
+                      </p>
                       {session &&
                         item.price &&
                         item.title &&
@@ -100,7 +101,11 @@ export default async function MintPage({ params }: MintPageProps) {
                             askPrice={item.price}
                           />
                         )}
-                      <MintRenew listing={item} />
+                      {item.isExpired ? (
+                        <MintRenew listing={item} />
+                      ) : (
+                        <MintSold listing={item} />
+                      )}
                     </div>
                     <h1 className="mb-2 text-2xl font-bold">{item.title}</h1>
                     <p className="text-xs italic text-secondary">
@@ -108,6 +113,13 @@ export default async function MintPage({ params }: MintPageProps) {
                     </p>
                   </div>
                 </div>
+                <div className="flex flex-col py-5 md:flex-row">
+                  {/* @ts-expect-error Server Component */}
+                  <MintCarousel listing={item.images} />
+                  <MintInfo listing={item} />
+                </div>
+
+                {/* MANAGER SECTION */}
                 <hr className="my-2 border border-t-muted-foreground" />
                 <div className="flex min-h-[40px] items-end">
                   {session?.user.id === item.authorId ? (
@@ -123,13 +135,19 @@ export default async function MintPage({ params }: MintPageProps) {
                   adId={item.id}
                   sellerId={item.authorId}
                 />
+
+                {/* DESCRIPTION SECTION */}
                 <hr className="my-2 border border-t-muted-foreground" />
                 <h1 className="mt-5 text-lg font-bold">Description:</h1>
-                <p className="my-5 whitespace-pre-line pl-2">
+                <p className="my-5 whitespace-pre-line pl-2 text-sm md:text-base">
                   {item.description}
                 </p>
                 <hr className="my-2 border border-t-muted-foreground" />
-                <h1 className="mt-5 text-lg font-bold">Queries:</h1>
+
+                {/* QUERIES SECTION */}
+                <h1 className="mt-5 text-lg font-bold">
+                  Users Wanted To Know:
+                </h1>
                 <MintQA />
               </div>
             ))}
