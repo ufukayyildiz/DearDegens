@@ -14,6 +14,7 @@ export default function NotFoundPage() {
       <p className="mb-2 text-lg font-semibold">
         It seems you&apos;ve wondered a little off course..
       </p>
+      <Link href="/" className="italic">Come back before it&apos; too late!</Link>
     </main>
   )
 }
