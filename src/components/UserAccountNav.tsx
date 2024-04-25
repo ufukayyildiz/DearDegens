@@ -29,7 +29,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
       <DropdownMenuTrigger>
         <UserAvatar
           user={{ name: userName, image: userImage }}
-          className="h-8 w-8"
+          className="h-8 w-8 shadow-lg"
         />
       </DropdownMenuTrigger>
 
@@ -51,6 +51,10 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
 
         <DropdownMenuItem asChild>
           <Link href="/ad/myads">My Ads</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link href="/ad/mywishlist">Wishlist</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>

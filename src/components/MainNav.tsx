@@ -2,7 +2,6 @@ import * as React from "react"
 import Image from "next/image"
 import Link from "next/link"
 import Logo from "@/src/assets/deardegens2.png"
-import { cn } from "@/src/lib/utils"
 import { NavItem } from "@/src/types/nav"
 
 interface MainNavProps {
@@ -17,7 +16,7 @@ export function MainNav({ items }: MainNavProps) {
           <Image
             className="h-full w-full object-contain"
             src={Logo}
-            alt="pepperMintLogo"
+            alt="DearDegensLogo"
           />
         </div>
       </Link>

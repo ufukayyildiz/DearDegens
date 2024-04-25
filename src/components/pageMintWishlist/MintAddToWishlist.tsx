@@ -9,6 +9,8 @@ import { FaRegHeart, FaHeart } from "react-icons/fa6"
 import { cn } from "@/src/lib/utils"
 import { wishlistType } from "@/src/types/db"
 import { useParams } from "next/navigation"
+import { getServerSession } from "next-auth"
+import { useSession } from "next-auth/react"
 
 interface WishListProps {
   listingId: { listingId: string }
@@ -23,6 +25,7 @@ interface WishlistType {
 }
 
 export default function MintAddToWishlist({ listingId }: WishListProps) {
+  const { data: session } = useSession()
   const params = useParams()
   // VARIABLES
   const id = { listingId }
@@ -32,9 +35,10 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
 
   // TOGGLE ISWISHLIST:
   useEffect(() => {
-    wishlist &&
+    session &&
+      wishlist &&
       (wishlist as wishlistType).map((item: wishlistType) => {
-        if (params && item.adId === params.mintId) {
+        if (params && item.adId === params.listingId) {
           setIsInWishlist(true)
         }
       })
@@ -43,7 +47,6 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
   // MUTATION: ADD TO WISHLIST
   const { mutate: addToWishlist } = useMutation({
     mutationFn: async (listingId: any) => {
-      console.log("listingId:", listingId)
       await axios.post("/api/createWishlistItem", listingId)
     },
     onError: () => {

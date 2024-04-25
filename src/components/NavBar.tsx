@@ -7,13 +7,12 @@ import {
   QueryClient,
 } from "@tanstack/react-query"
 import { getServerSession } from "next-auth"
-
+import { User } from "lucide-react"
 import { authOptions } from "../lib/auth/auth-options"
 import { getNotifications } from "../server/actions"
 import { AccountNav } from "./AccountNav"
 import { Button } from "./components-ui/Button"
 import { MainNav } from "./MainNav"
-import SearchbarBottom from "./SearchbarBottom"
 import SearchbarTop from "./SearchbarTop"
 
 export default async function NavBar() {
@@ -26,13 +25,14 @@ export default async function NavBar() {
   })
 
   return (
-    <header className="sticky top-0 z-50 flex w-full flex-col bg-muted/60 backdrop-blur-xl">
-      <div className="container flex h-20 w-full items-center justify-between space-x-4 sm:space-x-0">
-        <MainNav items={siteConfig.mainNav} />
-        <div className="w-full px-8">
+    <header className="sticky top-0 z-50 flex w-full flex-col items-center justify-center bg-muted/60 px-5 backdrop-blur-xl">
+      <div className="relative flex  h-[135px] w-full max-w-[1000px] items-center justify-between space-x-4 sm:h-20 sm:space-x-0">
+        <div className="absolute top-5 flex w-full flex-col gap-1 sm:flex-row sm:gap-5 sm:pr-28">
+          <MainNav items={siteConfig.mainNav} />
           {/* @ts-expect-error Server Component */}
           <SearchbarTop />
         </div>
+
         {/* SIGN IN */}
         {session?.user ? (
           <div>
@@ -42,14 +42,15 @@ export default async function NavBar() {
             </HydrationBoundary>
           </div>
         ) : (
-          <Button variant="outlinebold" className="rounded-full bg-transparent">
-            <Link href="/signin">Sign In</Link>
+          <Button
+            variant="icon"
+            className="absolute right-0 top-7 h-10 w-10 rounded-full border-2 border-transparent bg-background text-primary shadow-lg hover:text-customAccent"
+          >
+            <Link href="/signin" className="w-auto">
+              <User className="h-6 w-6" />
+            </Link>
           </Button>
         )}
-      </div>
-      <div className="w-full px-8 pb-5 md:pb-0">
-        {/* @ts-expect-error Server Component */}
-        <SearchbarBottom />
       </div>
     </header>
   )

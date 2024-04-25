@@ -37,11 +37,9 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
 
   // SELECTED ROOM
   const [selectedRoom, setSelectedRoom] = useState<string>("")
-  console.log("room:", selectedRoom)
 
   // MESSAGES QUERY
   const messages = useGetMessages(selectedRoom).data
-  console.log("messages:", messages)
 
   // MANAGE ROOM SELECT
   const handleRoomChange = async (data: roomType) => {

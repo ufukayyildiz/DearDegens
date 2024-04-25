@@ -91,20 +91,20 @@ export default async function MintPage({ params }: MintPageProps) {
                         R {formatPrice(item.price)}
                       </p>
                       {session &&
-                      item.price &&
-                      item.title &&
-                      item.authorId !== session.user.id ? (
-                        <MintOffer
-                          title={item.title}
-                          sellerId={item.authorId}
-                          adId={item.id}
-                          askPrice={item.price}
-                        />
-                      ) : item.isExpired ? (
-                        <MintRenew listing={item} />
-                      ) : (
-                        <MintSold listing={item} />
-                      )}
+                        (item.price &&
+                        item.title &&
+                        item.authorId !== session.user.id ? (
+                          <MintOffer
+                            title={item.title}
+                            sellerId={item.authorId}
+                            adId={item.id}
+                            askPrice={item.price}
+                          />
+                        ) : item.isExpired ? (
+                          <MintRenew listing={item} />
+                        ) : (
+                          <MintSold listing={item} />
+                        ))}
                     </div>
                     <h1 className="mb-2 text-2xl font-bold">{item.title}</h1>
                     <p className="text-xs italic text-secondary">
@@ -118,22 +118,26 @@ export default async function MintPage({ params }: MintPageProps) {
                   <MintInfo listing={item} />
                 </div>
 
-                {/* MANAGER SECTION */}
-                <hr className="my-2 border border-t-muted-foreground" />
-                <div className="flex min-h-[40px] items-end">
-                  {session?.user.id === item.authorId ? (
-                    <MintPageAuthorActions listing={item} />
-                  ) : (
-                    <MintPageUsersActions listingId={item.id} />
-                  )}
-                  <ChatSheet listingId={item.id} />
-                </div>
-                {/* @ts-expect-error Server Component */}
-                <MintList
-                  items={item.items}
-                  adId={item.id}
-                  sellerId={item.authorId}
-                />
+                {session && (
+                  <>
+                    {/* MANAGER SECTION */}
+                    <hr className="my-2 border border-t-muted-foreground" />
+                    <div className="flex min-h-[40px] items-end">
+                      {session?.user.id === item.authorId ? (
+                        <MintPageAuthorActions listing={item} />
+                      ) : (
+                        <MintPageUsersActions listingId={item.id} />
+                      )}
+                      <ChatSheet listingId={item.id} />
+                    </div>
+                    {/* @ts-expect-error Server Component */}
+                    <MintList
+                      items={item.items}
+                      adId={item.id}
+                      sellerId={item.authorId}
+                    />
+                  </>
+                )}
 
                 {/* DESCRIPTION SECTION */}
                 <hr className="my-2 border border-t-muted-foreground" />

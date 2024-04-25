@@ -22,11 +22,11 @@ export async function AccountNav() {
     .where(eq(users.id, session.user.id))
 
   return (
-    <div className="flex flex-1 items-center justify-end space-x-4">
+    <div className="absolute right-0 top-8 flex flex-1 items-center justify-end space-x-4">
       <div className="flex items-center space-x-5">
         {/* SIGN IN */}
-        {session?.user && user ? (
-          <div className="flex items-center space-x-8">
+        {session?.user && user && (
+          <div className="flex items-center space-x-6">
             <NotificationsNav userId={session?.user.id} />
             <UserAccountNav
               user={{
@@ -36,10 +36,6 @@ export async function AccountNav() {
               }}
             />
           </div>
-        ) : (
-          <Button>
-            <Link href="/signin">Sign In</Link>
-          </Button>
         )}
       </div>
     </div>
