@@ -11,6 +11,7 @@ import { wishlistType } from "@/src/types/db"
 import { useParams } from "next/navigation"
 import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
+import { Loader2 } from "lucide-react"
 
 interface WishListProps {
   listingId: { listingId: string }
@@ -32,6 +33,7 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
   const queryClient = useQueryClient()
   const wishlist = useGetWishlist().data
   const [isInWishlist, setIsInWishlist] = useState<boolean>(false)
+  const [isLoading, setIsLoading] = useState<boolean>(false)
 
   // TOGGLE ISWISHLIST:
   useEffect(() => {
@@ -50,6 +52,8 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
       await axios.post("/api/createWishlistItem", listingId)
     },
     onError: () => {
+      setIsInWishlist(false)
+      setIsLoading(false)
       return toast({
         description: "Error adding listing in wishlist. Please try again.",
         variant: "destructive",
@@ -62,6 +66,7 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
     },
     onSettled: async (_, error) => {
       setIsInWishlist(true)
+      setIsLoading(false)
       if (error) {
         console.log("onSettled error:", error)
       } else {
@@ -72,6 +77,8 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
 
   const handleSubmitAdd = () => {
     addToWishlist(id.listingId)
+    setIsInWishlist(true)
+    setIsLoading(true)
   }
 
   // MUTATION: REMOVE FROM WISHLIST
@@ -80,6 +87,8 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
       await axios.put("/api/deleteWishlistItem", listingId)
     },
     onError: () => {
+      setIsInWishlist(true)
+      setIsLoading(false)
       return toast({
         description: "Error removing from wishlist. Please try again.",
         variant: "destructive",
@@ -92,6 +101,7 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
     },
     onSettled: async (_, error) => {
       setIsInWishlist(false)
+      setIsLoading(false)
       if (error) {
         console.log("onSettled error:", error)
       } else {
@@ -102,28 +112,42 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
 
   const handleSubmitRemove = () => {
     removeFromWishlist(id.listingId)
+    setIsInWishlist(false)
+    setIsLoading(true)
   }
 
   // UI
   return isInWishlist === true ? (
-    <Button
-      onClick={handleSubmitRemove}
-      variant="icon"
-      className={cn(
-        "relative flex h-10 w-10 items-center justify-center text-rose-500 transition duration-75 hover:scale-110"
+    <div className="relative flex items-center justify-center">
+      <Button
+        onClick={handleSubmitRemove}
+        variant="icon"
+        disabled={isLoading}
+        className={cn(
+          "relative flex h-10 w-10 items-center justify-center text-rose-500 transition duration-75 hover:scale-110"
+        )}
+      >
+        <FaHeart className="absolute z-40 h-6 w-6" />
+      </Button>
+      {isLoading && (
+        <Loader2 className="absolute z-50 flex h-3 w-3 animate-spin text-primary" />
       )}
-    >
-      <FaHeart className="absolute h-6 w-6" />
-    </Button>
+    </div>
   ) : (
-    <Button
-      onClick={handleSubmitAdd}
-      variant="icon"
-      className={cn(
-        "relative flex h-10 w-10 items-center justify-center font-semibold hover:scale-110 hover:text-rose-500"
+    <div className="relative flex items-center justify-center">
+      <Button
+        onClick={handleSubmitAdd}
+        variant="icon"
+        disabled={isLoading}
+        className={cn(
+          "relative flex h-10 w-10 items-center justify-center font-semibold hover:scale-110 hover:text-rose-500"
+        )}
+      >
+        <FaRegHeart className="absolute z-40 h-6 w-6" />
+      </Button>
+      {isLoading && (
+        <Loader2 className="absolute z-50 flex h-3 w-3 animate-spin text-primary" />
       )}
-    >
-      <FaRegHeart className="absolute h-6 w-6" />
-    </Button>
+    </div>
   )
 }
