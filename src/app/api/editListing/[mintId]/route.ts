@@ -1,5 +1,5 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
-import { validateGeneralListing } from "@/src/lib/validators/validateListingGeneral"
+import { validateListing } from "@/src/lib/validators/validateListingGeneral"
 import { db } from "@/src/server/db"
 import {
   listings,
@@ -41,7 +41,7 @@ export async function PATCH(req: Request, context: any) {
       images,
       location,
       meetup,
-    } = validateGeneralListing.parse(body)
+    } = validateListing.parse(body)
     console.log(
       "data:",
       category,

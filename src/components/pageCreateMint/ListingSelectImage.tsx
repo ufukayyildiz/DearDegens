@@ -125,7 +125,7 @@ export default function ListingSelectImage({
       {/* LISTING IMAGES */}
 
       <Dialog>
-        <DialogTrigger className="mb-3 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-2 hover:border-customAccent">
+        <DialogTrigger className="mb-5 h-10 w-36 rounded-lg border border-muted text-sm shadow-lg hover:border-2 hover:border-customAccent">
           Select Images
         </DialogTrigger>
         <DialogContent>

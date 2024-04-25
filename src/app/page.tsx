@@ -3,7 +3,7 @@ import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
 import { Ads } from "../components/components-global/Ads"
 import { eq } from "drizzle-orm"
-import { categoryHousehold } from "@/src/lib/categories/Household"
+import { categoryHousehold } from "@/src/lib/categories/CategoryHousehold"
 
 import HomeCarousel from "../components/pageHome/HomeCarousel"
 

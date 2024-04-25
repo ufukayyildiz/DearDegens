@@ -4,10 +4,11 @@ import React, { useState } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
-import { categorySportsOutdoors } from "@/src/lib/categories/Sports&Outdoors"
+import { listingCategories } from "@/src/lib/categories/AdCategories"
 import { condition } from "@/src/lib/categories/Condition"
+import { transmission } from "@/src/lib/categories/Transmission"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
-import { GeneralListingCreationRequest } from "@/src/lib/validators/validateListingGeneral"
+import { ListingCreationRequest } from "@/src/lib/validators/validateListingGeneral"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { useForm } from "@tanstack/react-form"
@@ -18,8 +19,8 @@ import { nanoid } from "nanoid"
 import { Button } from "../components-ui/Button"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
-import { FieldDescription } from "./FieldDescription"
-import { FieldLabel } from "./FieldLabel"
+import { FieldDescription } from "../pageCreateMint/FieldDescription"
+import { FieldLabel } from "../pageCreateMint/FieldLabel"
 
 import { Input } from "../components-ui/Input"
 import {
@@ -36,12 +37,14 @@ import {
   listingDescription,
   listingModel,
   listingPrice,
+  listingMileage,
+  listingYear,
   onChangeAsync,
   onChangeAsyncDebounceMs,
 } from "@/src/lib/validators/validateListing"
-
+import { listingsType } from "@/src/types/db"
 import { Textarea } from "../components-ui/Textarea"
-import ListingSelectImage from "./ListingSelectImage"
+import ListingSelectImage from "../pageCreateMint/ListingSelectImage"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -55,19 +58,40 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   )
 }
 
-export default function CreateSportsOutdoors() {
+interface EditListingProps {
+  listing: listingsType[]
+}
+
+
+export default function EditListing({ listing }: EditListingProps) {
   const router = useRouter()
-  const defaultImages = [""]
+
+  const items = listing[0].items && JSON.parse(listing[0].items)
+  const itemsString = JSON.stringify(items)
+  const defaultImages = listing[0].images && JSON.parse(listing[0].images)
+  const mintId = listing[0].id
+
   const [disabled, setDisabled] = useState<boolean>(true)
   const [isList, setIsList] = useState<boolean>(false)
+  const [type, setType] = useState<string>("")
   const [category, setCategory] = useState<string>("")
   const [subCategory, setSubCategory] = useState<string>("")
 
-  const subcategories = categorySportsOutdoors.filter((item) => {
-    if (item.name === category) {
-      return item.subCategories.map((subs) => subs)
+  const mainCategories = listingCategories.filter((item, index) => {
+    if (item.type === type) {
+      return item.categories.map((sub) => sub)
     }
   })
+
+  const { categories } = mainCategories[0] || [""]
+
+  const subcategories =
+    categories &&
+    categories.filter((item) => {
+      if (item.name === category) {
+        return item.subCategories.map((subs) => subs)
+      }
+    })
 
   // USER BUCKET
   const [selectedImages, setSelectedImages] = useState<string[]>([])
@@ -79,29 +103,30 @@ export default function CreateSportsOutdoors() {
   const form = useForm({
     validatorAdapter: zodValidator,
     defaultValues: {
-      tab: "",
-      category: "",
-      subCategory: "",
-      price: 0,
-      condition: "",
-      title: "",
-      brand: "",
-      model: "",
-      description: "",
-      items: [
-        {
-          id: nanoid(),
-          name: "",
-          price: 0,
-        },
-      ],
-      images: "",
-      location: "",
-      meetup: "",
+      tab: listing[0].tab || "",
+      category: listing[0].category || "",
+      subCategory: listing[0].subCategory || "",
+      price: listing[0].price || 0,
+      condition: listing[0].condition || "",
+      title: listing[0].title || "",
+      brand: listing[0].brand || "",
+      model: listing[0].model || "",
+      mileage: listing[0].mileage || 0,
+      year: listing[0].year || 2000,
+      transmission: listing[0].transmission || "",
+      description: listing[0].description || "",
+      items: items.map((item: any) => ({
+        id: item.id || nanoid(),
+        name: item.name || "",
+        price: item.price || 0,
+      })),
+      images: listing[0].images || "",
+      location: listing[0].location || "",
+      meetup: listing[0].meetup || "",
     },
     onSubmit: async ({ value }) => {
-      const payload: GeneralListingCreationRequest = {
-        tab: "Sports & Outdoors",
+      const payload: ListingCreationRequest = {
+        tab: type,
         category: category,
         subCategory: subCategory,
         price: value.price,
@@ -109,6 +134,9 @@ export default function CreateSportsOutdoors() {
         title: value.title,
         brand: value.brand,
         model: value.model,
+        mileage: value.mileage,
+        year: value.year,
+        transmission: value.transmission,
         description: value.description,
         items: value.items || [""],
         images: JSON.stringify(selectedImages),
@@ -133,13 +161,16 @@ export default function CreateSportsOutdoors() {
       title,
       brand,
       model,
+      mileage,
+      year,
+      transmission,
       description,
       items,
       images,
       location,
       meetup,
-    }: GeneralListingCreationRequest) => {
-      const payload: GeneralListingCreationRequest = {
+    }: ListingCreationRequest) => {
+      const payload: ListingCreationRequest = {
         tab,
         category,
         subCategory,
@@ -148,13 +179,16 @@ export default function CreateSportsOutdoors() {
         title,
         brand,
         model,
+        mileage,
+        year,
+        transmission,
         description,
         items,
         images,
         location,
         meetup,
       }
-      const { data } = await axios.post("/api/createListingGeneral", payload)
+      const { data } = await axios.patch(`/api/editListing/${mintId}`, payload)
 
       return data
     },
@@ -163,7 +197,7 @@ export default function CreateSportsOutdoors() {
     onError: () => {
       return toast({
         title: "Something went wrong.",
-        description: "Your post was not published. Please try again.",
+        description: "Your post was not updated. Please try again.",
         variant: "destructive",
       })
     },
@@ -173,13 +207,13 @@ export default function CreateSportsOutdoors() {
       router.push("/ad/myads")
       router.refresh()
       return toast({
-        description: "Your post has been published.",
+        description: "Your post has been updated.",
       })
     },
   })
 
   return (
-    <div className="mx-auto mb-32 mt-10 w-full rounded-lg bg-background p-2">
+    <div className="mx-auto mb-32 flex w-11/12 flex-col py-10 md:w-8/12">
       {/* LISTING IMAGES */}
       <ListingSelectImage
         defaultImages={defaultImages}
@@ -195,6 +229,45 @@ export default function CreateSportsOutdoors() {
           }}
           className="space-y-8"
         >
+          {/* TYPE */}
+          <form.Field name="category">
+            {(field) => {
+              return (
+                <div className="relative w-full flex-col md:w-1/2 md:pr-5">
+                  <div className="flex w-full justify-between">
+                    <FieldLabel>Ad Type</FieldLabel>
+                    <FieldLabel className="py-2 text-xs italic text-rose-400">
+                      (required)
+                    </FieldLabel>
+                  </div>
+
+                  <Select required onValueChange={(event) => setType(event)}>
+                    <SelectTrigger className="w-full">
+                      <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent className="max-h-96 overflow-auto p-2">
+                      {listingCategories.map((item, index) => (
+                        <div key={index}>
+                          <SelectItem
+                            className="text-primary"
+                            value={item.type}
+                            defaultValue={listing[0].tab || ""}
+                            key={item.type}
+                          >
+                            {item.type}
+                          </SelectItem>
+                        </div>
+                      ))}
+                    </SelectContent>
+                  </Select>
+                  <FieldDescription>
+                    Select the type of listing..
+                  </FieldDescription>
+                </div>
+              )
+            }}
+          </form.Field>
+
           <div className="flex flex-col gap-10 md:flex-row">
             {/* CATEGORY */}
             <form.Field name="category">
@@ -202,7 +275,11 @@ export default function CreateSportsOutdoors() {
                 return (
                   <div className="relative w-full flex-col">
                     <div className="flex w-full justify-between">
-                      <FieldLabel>Category:</FieldLabel>
+                      {type === "Vehicles" ? (
+                        <FieldLabel>Vehicle Type:</FieldLabel>
+                      ) : (
+                        <FieldLabel>Category:</FieldLabel>
+                      )}
                       <FieldLabel className="py-2 text-xs italic text-rose-400">
                         (required)
                       </FieldLabel>
@@ -216,21 +293,22 @@ export default function CreateSportsOutdoors() {
                         <SelectValue />
                       </SelectTrigger>
                       <SelectContent className="max-h-96 overflow-auto p-2">
-                        {categorySportsOutdoors.map((item, index) => (
-                          <div key={index}>
-                            <SelectItem
-                              className="text-primary"
-                              value={item.name}
-                              key={item.name}
-                            >
-                              {item.name}
-                            </SelectItem>
-                          </div>
-                        ))}
+                        {categories &&
+                          categories.map((item, index) => (
+                            <div key={index}>
+                              <SelectItem
+                                className="text-primary"
+                                value={item.name}
+                                key={item.name}
+                              >
+                                {item.name}
+                              </SelectItem>
+                            </div>
+                          ))}
                       </SelectContent>
                     </Select>
                     <FieldDescription>
-                      Select an appropriate category..
+                      Select an appropriate type..
                     </FieldDescription>
                   </div>
                 )
@@ -243,7 +321,11 @@ export default function CreateSportsOutdoors() {
                 return (
                   <div className="relative w-full flex-col">
                     <div className="flex w-full justify-between">
-                      <FieldLabel>Sub-category:</FieldLabel>
+                      {type === "Vehicles" ? (
+                        <FieldLabel>Body Type:</FieldLabel>
+                      ) : (
+                        <FieldLabel>Sub-category:</FieldLabel>
+                      )}
                       <FieldLabel className="py-2 text-xs italic text-rose-400">
                         (required)
                       </FieldLabel>
@@ -277,7 +359,7 @@ export default function CreateSportsOutdoors() {
                       </SelectContent>
                     </Select>
                     <FieldDescription>
-                      Select an appropriate category..
+                      Select an appropriate body type..
                     </FieldDescription>
                   </div>
                 )
@@ -402,7 +484,11 @@ export default function CreateSportsOutdoors() {
               {(field) => (
                 <div className="relative w-full flex-col">
                   <div className="flex w-full justify-between">
-                    <FieldLabel>Brand:</FieldLabel>
+                    {type === "Vehicles" ? (
+                      <FieldLabel>Manufacturer:</FieldLabel>
+                    ) : (
+                      <FieldLabel>Brand:</FieldLabel>
+                    )}
                   </div>
                   <Input
                     id={field.name}
@@ -444,12 +530,124 @@ export default function CreateSportsOutdoors() {
                     className="w-full text-primary"
                     required
                   />
-                  <FieldDescription>Model name/number..</FieldDescription>
+                  <FieldDescription>
+                    Include vehicle full model name..
+                  </FieldDescription>
                   <FieldInfo field={field} />
                 </div>
               )}
             </form.Field>
           </div>
+          {type === "Vehicles" && (
+            <>
+              <div className="flex flex-col gap-10 md:flex-row">
+                {/* MILEAGE */}
+                <form.Field
+                  name="mileage"
+                  validators={{
+                    onChange: listingMileage,
+                    onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                    onChangeAsync: onChangeAsync,
+                  }}
+                >
+                  {(field) => (
+                    <div className="relative w-full flex-col">
+                      <div className="flex w-full  justify-between">
+                        <FieldLabel>Mileage:</FieldLabel>
+                        <FieldLabel className="py-2 text-xs italic text-rose-400">
+                          (required)
+                        </FieldLabel>
+                      </div>
+                      <Input
+                        type="number"
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(event) =>
+                          /* @ts-ignore */
+                          field.handleChange(event.target.value)
+                        }
+                      />
+
+                      <FieldDescription>
+                        Its about quality, not quantity!
+                      </FieldDescription>
+                      <FieldInfo field={field} />
+                    </div>
+                  )}
+                </form.Field>
+
+                {/* YEAR */}
+                <form.Field
+                  name="year"
+                  validators={{
+                    onChange: listingYear,
+                    onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                    onChangeAsync: onChangeAsync,
+                  }}
+                >
+                  {(field) => (
+                    <div className="relative w-full flex-col">
+                      <div className="flex w-full  justify-between">
+                        <FieldLabel>Model Year:</FieldLabel>
+                        <FieldLabel className="py-2 text-xs italic text-rose-400">
+                          (required)
+                        </FieldLabel>
+                      </div>
+                      <Input
+                        type="number"
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(event) =>
+                          /* @ts-ignore */
+                          field.handleChange(event.target.value)
+                        }
+                      />
+
+                      <FieldDescription>Manufactured year..</FieldDescription>
+                      <FieldInfo field={field} />
+                    </div>
+                  )}
+                </form.Field>
+              </div>
+
+              {/* TRANSMISSION */}
+              <form.Field name="transmission">
+                {(field) => {
+                  return (
+                    <div className="relative w-1/2 flex-col">
+                      <div className="flex w-full justify-between">
+                        <FieldLabel>Transmission:</FieldLabel>
+                        <FieldLabel className="py-2 text-xs italic text-rose-400">
+                          (required)
+                        </FieldLabel>
+                      </div>
+
+                      <Select
+                        required
+                        onValueChange={(event) => field.handleChange(event)}
+                      >
+                        <SelectTrigger className="w-full">
+                          <SelectValue />
+                        </SelectTrigger>
+                        <SelectContent className="max-h-96 overflow-auto p-2">
+                          {transmission.map((item) => (
+                            <SelectItem key={item} value={item}>
+                              {item}
+                            </SelectItem>
+                          ))}
+                        </SelectContent>
+                      </Select>
+                      <FieldDescription>One foot or two?</FieldDescription>
+                    </div>
+                  )
+                }}
+              </form.Field>
+            </>
+          )}
 
           {/* DESCRIPTION */}
           <form.Field
@@ -493,12 +691,21 @@ export default function CreateSportsOutdoors() {
               checked={isList}
               onCheckedChange={() => setIsList(!isList)}
             />
-            <Label
-              htmlFor="disable"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Would you like to list multiple items?
-            </Label>
+            {type === "Vehicles" ? (
+              <Label
+                htmlFor="disable"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Any spares sold seperately?
+              </Label>
+            ) : (
+              <Label
+                htmlFor="disable"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Would you like to list multiple items?
+              </Label>
+            )}
           </div>
           {isList === true ? (
             <form.Field name="items" mode="array">
@@ -710,8 +917,17 @@ export default function CreateSportsOutdoors() {
               htmlFor="disable"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              <Link href="/termsofservice" className="underline">
-                Agree to terms of service.
+              Agree to{" "}
+              <Link href="/disclaimer" target="_blank" className="underline">
+                disclaimer
+              </Link>{" "}
+              and{" "}
+              <Link
+                href="/termsofservice"
+                target="_blank"
+                className="underline"
+              >
+                terms of service.
               </Link>
             </Label>
           </div>

@@ -1,5 +1,5 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
-import { validateVehicleListing } from "@/src/lib/validators/validateListingVehicle"
+import { validateVehicleListing } from "@/src/lib/validators/validateListingGeneral"
 import { db } from "@/src/server/db"
 import {
   listings,
