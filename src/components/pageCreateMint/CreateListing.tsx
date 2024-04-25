@@ -180,7 +180,7 @@ export default function CreateListing() {
         location,
         meetup,
       }
-      const { data } = await axios.post("/api/createListingVehicle", payload)
+      const { data } = await axios.post("/api/createListing", payload)
 
       return data
     },
