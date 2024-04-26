@@ -62,7 +62,6 @@ interface EditListingProps {
   listing: listingsType[]
 }
 
-
 export default function EditListing({ listing }: EditListingProps) {
   const router = useRouter()
 

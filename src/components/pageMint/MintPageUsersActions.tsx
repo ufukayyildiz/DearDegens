@@ -10,7 +10,6 @@ interface UserActionsParams {
 }
 
 export default function MintPageUsersActions(listingId: UserActionsParams) {
-  
   return (
     <div className="flex w-full justify-end pr-5">
       <div className=" flex w-4/12 justify-end space-x-5">

@@ -60,18 +60,18 @@ export default function ShareButtons(domain: ShareButtonProps) {
               <FaWhatsapp className="h-7 w-7 hover:text-lime-500" />
             </WhatsappShareButton>
           </DropdownMenuItem>
-            <Button
-              onClick={() => {
-                navigator.clipboard.writeText(url)
-                return toast({
-                  description: "Copied to clipboard",
-                })
-              }}
-              className="flex relative w-[42px] h-[42px]"
-              variant="icon"
-            >
-              <ExternalLink className="flex absolute w-6 h-6 hover:text-customAccent"/>
-            </Button>
+          <Button
+            onClick={() => {
+              navigator.clipboard.writeText(url)
+              return toast({
+                description: "Copied to clipboard",
+              })
+            }}
+            className="relative flex h-[42px] w-[42px]"
+            variant="icon"
+          >
+            <ExternalLink className="absolute flex h-6 w-6 hover:text-customAccent" />
+          </Button>
         </DropdownMenuContent>
       </DropdownMenu>
     </div>

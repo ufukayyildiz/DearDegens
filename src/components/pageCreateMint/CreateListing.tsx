@@ -58,7 +58,6 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   )
 }
 
-
 export default function CreateListing() {
   const router = useRouter()
   const defaultImages = [""]

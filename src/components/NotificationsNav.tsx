@@ -184,7 +184,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
     <div>
       <Dialog>
         <DropdownMenu>
-          <DropdownMenuTrigger className="relative flex h-8 w-8 items-center justify-center rounded-full bg-background dark:bg-transparent shadow-lg hover:text-customAccent">
+          <DropdownMenuTrigger className="relative flex h-8 w-8 items-center justify-center rounded-full bg-background shadow-lg hover:text-customAccent dark:bg-transparent">
             <div className="relative">
               <Bell className="h-6 w-6" />
               <div className="absolute -right-3 -top-3 flex h-6 w-6 content-center rounded-full bg-red-500 shadow-md">
