@@ -12,7 +12,7 @@ interface CardFeedProps {
 export default function CardsFeed({ listings }: CardFeedProps) {
   const isAboveMediumScreens = useMediaQuery("(min-width: 768px)")
   return isAboveMediumScreens ? (
-    <div className="mb-32 flex flex-col justify-center gap-5 px-5 py-5">
+    <div className="flex flex-col justify-center gap-5 px-5 py-5">
       {listings &&
         listings.map((listing) => <MintCardComponent listing={listing} />)}
     </div>

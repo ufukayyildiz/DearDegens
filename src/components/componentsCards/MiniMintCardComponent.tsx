@@ -38,7 +38,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
   const location = listing.location?.replace(/ /g, "-")
 
   return (
-    <div className="h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+    <div className="group h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
       <Link
         href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}
       >
@@ -71,7 +71,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
           {/* INFO */}
           <div className="h-full w-full p-1">
             <div>
-              <h1 className="mb-2 truncate text-sm font-bold text-primary">
+              <h1 className="mb-2 truncate text-sm font-bold text-primary group-hover:text-customAccent">
                 {listing.title}
               </h1>
             </div>

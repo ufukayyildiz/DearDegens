@@ -4,6 +4,7 @@ import { useParams } from "next/navigation"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
 import MintCardComponent from "@/src/components/componentsCards/MintCardComponent"
+import { Button } from "@/src/components/components-ui/Button"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
 import { Loader2 } from "lucide-react"
 
@@ -54,10 +55,12 @@ export default function FindAds() {
       ) : (
         <CardsFeed listings={listings} />
       )}
-      {isFetchingNextPage && (
+      {isFetchingNextPage ? (
         <div className="flex justify-center py-10">
-          <Loader2 className="h-10 w-10 animate-spin text-zinc-500" />
+          {/* <Loader2 className="h-10 w-10 animate-spin text-zinc-500" /> */}
         </div>
+      ) : (
+        <Button onClick={() => fetchNextPage()}>Load more</Button>
       )}
     </div>
   )

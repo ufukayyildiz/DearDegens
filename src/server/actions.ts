@@ -1,6 +1,6 @@
 "use server"
 
-import { eq } from "drizzle-orm"
+import { eq, sql } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 
 import { authOptions } from "../lib/auth/auth-options"
@@ -17,7 +17,6 @@ import {
   wishlistItem,
 } from "./db/schema"
 import { alias } from "drizzle-orm/pg-core"
-
 
 // Get user image bucket by userId
 export async function getBucket() {
