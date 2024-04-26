@@ -853,34 +853,15 @@ export default function CreateListing() {
                       <SelectContent className="max-h-96 overflow-auto p-2">
                         {southAfrica.map((category, index) => (
                           <div key={index}>
-                            <Accordion
-                              type="single"
-                              collapsible
-                              className="z-40"
+                            <hr className="mb-10"></hr>
+                            <p
+                              className="text-lg font-bold text-primary"
+                              key={category.name}
                             >
-                              <AccordionItem value="item-1">
-                                <AccordionTrigger
-                                  key={category.name}
-                                  className="h-10 hover:text-customAccent hover:no-underline"
-                                >
-                                  {category.name}
-                                </AccordionTrigger>
-                                <AccordionContent>
-                                  {category.subCategories.map((subs) => (
-                                    <SelectItem key={subs} value={subs}>
-                                      {subs}
-                                    </SelectItem>
-                                  ))}
-                                </AccordionContent>
-                              </AccordionItem>
-                            </Accordion>
-                            {category.subCategories.map((subs, index) => (
-                              <SelectItem
-                                key={index}
-                                value={subs}
-                                disabled={true}
-                                className="absolute bottom-0 z-10 flex border-transparent text-transparent"
-                              >
+                              {category.name}
+                            </p>
+                            {category.subCategories.map((subs) => (
+                              <SelectItem key={subs} value={subs}>
                                 {subs}
                               </SelectItem>
                             ))}
