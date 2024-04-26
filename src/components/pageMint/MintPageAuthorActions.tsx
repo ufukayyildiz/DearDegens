@@ -4,7 +4,7 @@ import { FileEdit } from "lucide-react"
 import MintDelete from "./MintDelete"
 import MintManageOffers from "./MintManageOffers"
 import MintManageQueries from "./MintManagerQueries"
-import MintRenew from "./MintRenew"
+import ShareButtons from "./ShareButtons"
 import { listingsType } from "@/src/types/db"
 
 interface AuthorActionsProps {

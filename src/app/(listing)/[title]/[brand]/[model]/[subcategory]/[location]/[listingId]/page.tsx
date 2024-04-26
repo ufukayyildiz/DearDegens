@@ -9,6 +9,7 @@ import MintList from "@/src/components/pageMint/MintList"
 import MintInfo from "@/src/components/pageMint/MintInfo"
 import MintRenew from "@/src/components/pageMint/MintRenew"
 import MintSold from "@/src/components/pageMint/MintSold"
+
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { getAdOffers, getAdQueries, getListings } from "@/src/server/actions"
@@ -22,6 +23,7 @@ import {
 } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
+import ShareButtons from "@/src/components/pageMint/ShareButtons"
 
 interface MintPageProps {
   params: {
@@ -38,6 +40,7 @@ export default async function MintPage({ params }: MintPageProps) {
   const param = params
   const decodedParam = decodeURIComponent(param.listingId)
   const session = await getServerSession(authOptions)
+  const domain = process.env.URL!
 
   // LISTING QUERY
   const queryClient = new QueryClient()
@@ -75,6 +78,8 @@ export default async function MintPage({ params }: MintPageProps) {
 
     return formatter.format(price)
   }
+
+
 
   return (
     <div className="flex h-auto w-full">
@@ -123,6 +128,7 @@ export default async function MintPage({ params }: MintPageProps) {
                     {/* MANAGER SECTION */}
                     <hr className="my-2 border border-t-muted-foreground" />
                     <div className="flex min-h-[40px] items-end">
+                      <ShareButtons domain={domain}/>
                       {session?.user.id === item.authorId ? (
                         <MintPageAuthorActions listing={item} />
                       ) : (

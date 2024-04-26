@@ -3,21 +3,16 @@ import Link from "next/link"
 
 export default function Footer() {
   return (
-    <footer className="absolute bottom-0 z-50 h-32 w-full bg-gradient-to-br from-grOne via-grTwo to-grThr p-5">
-      <div className="flex h-full w-full flex-col justify-between md:flex-row">
-        <div className="flex h-full w-full items-end justify-center">
+    <footer className="absolute bottom-0 z-50 h-auto w-full bg-gradient-to-br from-grOne via-grTwo to-grThr p-5">
+      
+      <div className="flex h-full w-full flex-col justify-between md:flex-row gap-2 mb-2">
+        
+        <div className="flex h-full w-full items-end">
           <p className="flex w-full justify-center text-center">
             support@deardegens.com
           </p>
         </div>
-        <div className="flex h-full w-full items-end justify-center">
-          <Link
-            href="/"
-            className="flex w-full justify-center text-center font-bold"
-          >
-            DearDegens (Pty) Ltd
-          </Link>
-        </div>
+        
         <div className="flex h-full w-full flex-col items-end justify-end gap-2">
           <Link
             href="/termsofservice"
@@ -38,7 +33,13 @@ export default function Footer() {
             Disclaimer
           </Link>
         </div>
+      
       </div>
+      
+      <p className="my-auto h-auto w-full justify-center text-center text-xs">
+        Copyright © 2024 - Developed by <a href="https://www.buidl.co.za" target="_blank">Buidl.co.za</a> | All rights
+        reserved
+      </p>
     </footer>
   )
 }

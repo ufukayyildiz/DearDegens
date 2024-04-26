@@ -1,13 +1,16 @@
 import React from "react"
-
-import ChatSheet from "../pageMintChat/ChatSheet"
+import ShareButtons from "./ShareButtons"
 import MintQuery from "../pageMintQueries/MintQuery"
 import MintManager from "./MintManagerQueries"
 import MintAddToWishlist from "../pageMintWishlist/MintAddToWishlist"
 import MintReport from "../pageMintReport/MintReport"
 
-export default function MintPageUsersActions(listingId: any) {
-  console.log("User Ad Id:", listingId)
+interface UserActionsParams {
+  listingId: string
+}
+
+export default function MintPageUsersActions(listingId: UserActionsParams) {
+  
   return (
     <div className="flex w-full justify-end pr-5">
       <div className=" flex w-4/12 justify-end space-x-5">
