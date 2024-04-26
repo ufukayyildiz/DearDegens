@@ -488,6 +488,9 @@ export default function EditListing({ listing }: EditListingProps) {
                     ) : (
                       <FieldLabel>Brand:</FieldLabel>
                     )}
+                    <FieldLabel className="py-2 text-xs italic text-rose-400">
+                      (required)
+                    </FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -519,6 +522,9 @@ export default function EditListing({ listing }: EditListingProps) {
                 <div className="relative w-full flex-col">
                   <div className="flex w-full justify-between">
                     <FieldLabel>Model:</FieldLabel>
+                    <FieldLabel className="py-2 text-xs italic text-rose-400">
+                      (required)
+                    </FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -529,9 +535,15 @@ export default function EditListing({ listing }: EditListingProps) {
                     className="w-full text-primary"
                     required
                   />
-                  <FieldDescription>
-                    Include vehicle full model name..
-                  </FieldDescription>
+                  {type === "Vehicles" ? (
+                    <FieldDescription>
+                      Include vehicle full model name..
+                    </FieldDescription>
+                  ) : (
+                    <FieldDescription>
+                      Include products full model name..
+                    </FieldDescription>
+                  )}
                   <FieldInfo field={field} />
                 </div>
               )}

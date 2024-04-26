@@ -26,7 +26,7 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
 
   return (
     <DropdownMenu>
-      <DropdownMenuTrigger>
+      <DropdownMenuTrigger className="outline-none">
         <UserAvatar
           user={{ name: userName, image: userImage }}
           className="h-8 w-8 shadow-lg"

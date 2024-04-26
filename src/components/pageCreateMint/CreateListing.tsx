@@ -21,6 +21,12 @@ import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { FieldDescription } from "./FieldDescription"
 import { FieldLabel } from "./FieldLabel"
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from "@/src/components/components-ui/Accordion"
 
 import { Input } from "../components-ui/Input"
 import {
@@ -479,6 +485,9 @@ export default function CreateListing() {
                     ) : (
                       <FieldLabel>Brand:</FieldLabel>
                     )}
+                    <FieldLabel className="py-2 text-xs italic text-rose-400">
+                      (required)
+                    </FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -510,6 +519,9 @@ export default function CreateListing() {
                 <div className="relative w-full flex-col">
                   <div className="flex w-full justify-between">
                     <FieldLabel>Model:</FieldLabel>
+                    <FieldLabel className="py-2 text-xs italic text-rose-400">
+                      (required)
+                    </FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -520,9 +532,15 @@ export default function CreateListing() {
                     className="w-full text-primary"
                     required
                   />
-                  <FieldDescription>
-                    Include vehicle full model name..
-                  </FieldDescription>
+                  {type === "Vehicles" ? (
+                    <FieldDescription>
+                      Include vehicle full model name..
+                    </FieldDescription>
+                  ) : (
+                    <FieldDescription>
+                      Include products full model name..
+                    </FieldDescription>
+                  )}
                   <FieldInfo field={field} />
                 </div>
               )}
@@ -835,15 +853,34 @@ export default function CreateListing() {
                       <SelectContent className="max-h-96 overflow-auto p-2">
                         {southAfrica.map((category, index) => (
                           <div key={index}>
-                            <hr className="mb-10"></hr>
-                            <p
-                              className="text-lg font-bold text-primary"
-                              key={category.name}
+                            <Accordion
+                              type="single"
+                              collapsible
+                              className="z-40"
                             >
-                              {category.name}
-                            </p>
-                            {category.subCategories.map((subs) => (
-                              <SelectItem key={subs} value={subs}>
+                              <AccordionItem value="item-1">
+                                <AccordionTrigger
+                                  key={category.name}
+                                  className="h-10 hover:text-customAccent hover:no-underline"
+                                >
+                                  {category.name}
+                                </AccordionTrigger>
+                                <AccordionContent>
+                                  {category.subCategories.map((subs) => (
+                                    <SelectItem key={subs} value={subs}>
+                                      {subs}
+                                    </SelectItem>
+                                  ))}
+                                </AccordionContent>
+                              </AccordionItem>
+                            </Accordion>
+                            {category.subCategories.map((subs, index) => (
+                              <SelectItem
+                                key={index}
+                                value={subs}
+                                disabled={true}
+                                className="absolute bottom-0 z-10 flex border-transparent text-transparent"
+                              >
                                 {subs}
                               </SelectItem>
                             ))}
