@@ -47,7 +47,7 @@ export default function FindAds() {
         Showing results for:{" "}
         <span className="italic text-customAccent">{searchParams}</span>
       </h1>
-      <hr className="mb-10 mt-2 h-[2px] w-full bg-muted-foreground" />
+      <hr className="mt-2 h-[2px] w-full bg-muted-foreground" />
       {isFetching ? (
         <div className="flex justify-center py-10">
           <Loader2 className="h-10 w-10 animate-spin text-zinc-500" />

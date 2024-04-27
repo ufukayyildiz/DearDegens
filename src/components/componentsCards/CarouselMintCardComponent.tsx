@@ -12,7 +12,7 @@ interface MyMintsProps {
   listing: listingsType
 }
 
-export default function MidiMintCardComponent({ listing }: MyMintsProps) {
+export default function CarouselMintCardComponent({ listing }: MyMintsProps) {
   const [adImage, setAdImage] = useState([])
   const jsonImage = listing.images
 
@@ -38,7 +38,7 @@ export default function MidiMintCardComponent({ listing }: MyMintsProps) {
   const location = listing.location?.replace(/ /g, "-")
 
   return (
-    <div className="h-60 w-full max-w-[180px] rounded-lg border border-background bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:shadow">
+    <div className="group h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
       <Link
         href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}
       >
@@ -69,19 +69,21 @@ export default function MidiMintCardComponent({ listing }: MyMintsProps) {
           </div>
 
           {/* INFO */}
-          <div className="h-full w-full p-2">
+          <div className="h-full w-full p-1">
             <div>
-              <h1 className="mb-2 h-12 overflow-hidden text-sm font-bold text-primary">
+              <h1 className="mb-2 truncate text-sm font-bold text-primary">
                 {listing.title}
               </h1>
             </div>
 
-            <h1 className="absolute bottom-10 left-2 text-lg font-bold text-customAccent">
-              R {formattedPrice}
-            </h1>
+            <div className="">
+              <h1 className="text-lg font-bold text-customAccent">
+                R {formattedPrice}
+              </h1>
+            </div>
 
-            <div className="absolute bottom-6 left-2 flex gap-1 text-xs italic text-secondary">
-              <MapPin className="h-4 w-4 justify-center text-primary" />
+            <div className="absolute bottom-6 left-1 flex gap-1 text-xs italic text-secondary">
+              <MapPin className="h-4 w-4 justify-center" />
               <span className="text-xs font-bold text-primary">
                 {listing.location}
               </span>

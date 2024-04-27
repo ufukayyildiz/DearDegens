@@ -27,15 +27,13 @@ export default async function MyMints() {
 
   adListings.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
-  console.log('adListing:', adListings.length)
+  console.log("adListing:", adListings.length)
 
   return (
-    <div className="z-20 mx-auto w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
+    <div className="z-20 mx-auto mb-44 w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
       <h1 className="mt-10 text-xl font-bold text-primary">Wishlist</h1>
       <hr className="my-2 border border-t-muted-foreground" />
-      {adListings[0] !== null && (
-        <CardsFeed listings={adListings} />
-      )}
+      {adListings[0] !== null && <CardsFeed listings={adListings} />}
     </div>
   )
 }

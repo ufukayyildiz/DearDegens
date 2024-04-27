@@ -46,12 +46,12 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
           {/* INFO */}
           <div className="relative w-8/12 p-3">
             <div>
-              <h1 className="mb-2 font-bold text-primary group-hover:text-customAccent md:text-xl">
+              <h1 className="mb-2 text-xl font-bold text-primary">
                 {listing.title}
               </h1>
             </div>
 
-            <div className="relative mb-5 max-h-16 w-full overflow-hidden text-clip whitespace-pre-line text-xs text-secondary lg:max-h-20">
+            <div className="relative mb-5 h-16 w-full overflow-hidden text-clip whitespace-pre-line text-xs text-secondary lg:max-h-20">
               <p>{listing.description}</p>
             </div>
 
@@ -60,7 +60,8 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
                 R {formattedPrice}
               </h1>
               <p className="text-xs italic text-secondary">
-                Category: {listing.category} / {listing.subCategory}
+                <span className="font-bold text-primary">Category:</span>{" "}
+                {listing.category} / {listing.subCategory}
               </p>
             </div>
 

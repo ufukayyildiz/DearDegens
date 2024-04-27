@@ -9,7 +9,8 @@ import {
 } from "../components-ui/Carousel"
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
-import MiniMintCardComponent from "../componentsCards/MiniMintCardComponent"
+import CarouselMintCardComponent from "../componentsCards/CarouselMintCardComponent"
+import MidiMintCardComponent from "../componentsCards/MidiMintCardComponent"
 import { Plus } from "lucide-react"
 import "@splidejs/react-splide/css/core"
 import { Button } from "../components-ui/Button"
@@ -58,7 +59,7 @@ export default async function HomeCarousel() {
                 tabIndex={index}
                 className="basis-auto p-5"
               >
-                <MiniMintCardComponent listing={listing} />
+                <CarouselMintCardComponent listing={listing} />
               </CarouselItem>
             ))}
           <CarouselItem className="basis-auto p-5">
@@ -66,7 +67,7 @@ export default async function HomeCarousel() {
               onClick={() => fetchNextPage()}
               className="h-60 w-40  rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:bg-background"
             >
-              <Plus className="h-20 w-20 text-muted animate-pulse" />
+              <Plus className="h-20 w-20 animate-pulse text-muted" />
             </Button>
           </CarouselItem>
         </CarouselContent>
