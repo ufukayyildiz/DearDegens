@@ -3,21 +3,23 @@
 import React from "react"
 import { useParams } from "next/navigation"
 import { useGetOffers } from "@/src/server/services"
-import { offerType } from "@/src/types/db"
+import { listingsType, offerType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 
 import { ScrollArea } from "../components-ui/ScrollArea"
 import MintOfferCard from "./MintOfferCard"
 import MintOfferCardSkeleton from "./MintOfferCardSkeleton"
 
-export default function MintOffers() {
+interface MintOffersProps {
+  listing: listingsType
+}
+
+export default function MintOffers({ listing }: MintOffersProps) {
   const { data: session } = useSession()
   const userId = session?.user.id
 
-  const { mintId }: any = useParams()
-
-  const adOffers = useGetOffers(mintId).data
-  const isLoading = useGetOffers(mintId).isLoading
+  const adOffers = useGetOffers(listing.id).data
+  const isLoading = useGetOffers(listing.id).isLoading
   adOffers?.sort((a: any, b: any) => b.offerPrice - a.offerPrice)
 
   let offers: offerType[] = []

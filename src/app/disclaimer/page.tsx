@@ -1,8 +1,8 @@
 import React from "react"
-import { PageHeading } from "@/src/components/pageLegal/PageHeading"
-import { Heading } from "@/src/components/pageLegal/Heading"
-import { Subheading } from "@/src/components/pageLegal/Subheading"
-import { Paragraph } from "@/src/components/pageLegal/Paragraph"
+import { PageHeading } from "@/src/components/components-typography/PageHeading"
+import { Heading } from "@/src/components/components-typography/Heading"
+import { Subheading } from "@/src/components/components-typography/Subheading"
+import { Paragraph } from "@/src/components/components-typography/Paragraph"
 
 export default function Disclaimer() {
   return (

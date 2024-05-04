@@ -21,7 +21,6 @@ import {
   SelectTrigger,
   SelectValue,
 } from "../components-ui/Select"
-import { FieldDescription } from "../pageCreateMint/FieldDescription"
 import { FieldLabel } from "../pageCreateMint/FieldLabel"
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
@@ -59,7 +58,6 @@ export default function MintReport() {
   const [disabled, setDisabled] = useState<boolean>(true)
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [infraction, setInfraction] = useState<string>("")
-  const queryClient = useQueryClient()
 
   const { mintId }: any = useParams()
 

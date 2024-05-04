@@ -1,8 +1,6 @@
 "use client"
 import React from "react"
-import { Gavel, ChevronsUpDown } from "lucide-react"
-
-import { Panel, PanelGroup, PanelResizeHandle } from "react-resizable-panels"
+import { Gavel } from "lucide-react"
 
 import {
   Sheet,
@@ -13,8 +11,13 @@ import {
   SheetTrigger,
 } from "../components-ui/Sheet"
 import MintOffers from "../pageMintOffers/MintOffers"
+import { listingsType } from "@/src/types/db"
 
-export default function MintManageOffers() {
+interface MintManageOffersProps {
+  listing: listingsType
+}
+
+export default function MintManageOffers({ listing }: MintManageOffersProps) {
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
@@ -22,10 +25,8 @@ export default function MintManageOffers() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="h-full">
-          <SheetDescription className="h-full">
-            <SheetTitle className="text-customAccent">Offers:</SheetTitle>
-            <MintOffers />
-          </SheetDescription>
+          <SheetTitle className="text-customAccent">Offers:</SheetTitle>
+          <MintOffers listing={listing} />
         </SheetHeader>
       </SheetContent>
     </Sheet>

@@ -17,17 +17,17 @@ export default function MintQueriesCard({ query, userId }: QueryCardProps) {
         <p>{query.userName}</p>
       </div>
       <div>
-        <hr className="mx-auto mb-1 flex h-[2px] w-full bg-muted" />
+        <div className="mx-auto mb-1 flex h-[2px] w-full bg-muted" />
         <p className="mb-1 font-semibold italic">Question:</p>
         <p className="">{query.query}</p>
       </div>
       <div className="mb-10">
-        <hr className="mx-auto mb-1 mt-5 flex h-[2px] w-full bg-muted" />
+        <div className="mx-auto mb-1 mt-5 flex h-[2px] w-full bg-muted" />
         <p className="mb-1 font-semibold italic">Response:</p>
         {query.reply ? (
-          <p>{query.reply}</p>
+          <span>{query.reply}</span>
         ) : (
-          <p className="italic text-rose-500">pending</p>
+          <span className="italic text-rose-500">pending</span>
         )}
       </div>
       <div className="absolute bottom-0 w-full ">

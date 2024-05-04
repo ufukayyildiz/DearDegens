@@ -7,14 +7,13 @@ import axios from "axios"
 import { toast } from "@/src/hooks/use-toast"
 import { FaRegHeart, FaHeart } from "react-icons/fa6"
 import { cn } from "@/src/lib/utils"
-import { wishlistType } from "@/src/types/db"
+import { listingsType, wishlistType } from "@/src/types/db"
 import { useParams } from "next/navigation"
-import { getServerSession } from "next-auth"
 import { useSession } from "next-auth/react"
 import { Loader2 } from "lucide-react"
 
 interface WishListProps {
-  listingId: { listingId: string }
+  listing: listingsType
 }
 
 interface WishlistType {
@@ -25,11 +24,10 @@ interface WishlistType {
   createdAt: Date
 }
 
-export default function MintAddToWishlist({ listingId }: WishListProps) {
+export default function MintAddToWishlist({ listing }: WishListProps) {
   const { data: session } = useSession()
   const params = useParams()
   // VARIABLES
-  const id = { listingId }
   const queryClient = useQueryClient()
   const wishlist = useGetWishlist().data
   const [isInWishlist, setIsInWishlist] = useState<boolean>(false)
@@ -76,7 +74,7 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
   })
 
   const handleSubmitAdd = () => {
-    addToWishlist(id.listingId)
+    addToWishlist(listing.id)
     setIsInWishlist(true)
     setIsLoading(true)
   }
@@ -111,7 +109,7 @@ export default function MintAddToWishlist({ listingId }: WishListProps) {
   })
 
   const handleSubmitRemove = () => {
-    removeFromWishlist(id.listingId)
+    removeFromWishlist(listing.id)
     setIsInWishlist(false)
     setIsLoading(true)
   }

@@ -1,6 +1,6 @@
 "use server"
 
-import { eq, sql } from "drizzle-orm"
+import { eq, sql, and } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 
 import { authOptions } from "../lib/auth/auth-options"
@@ -111,6 +111,23 @@ export async function getAdQueries(mintId: string) {
     return adQueries
   } catch (error) {
     console.error("Server error: Failed to fetch ad queries - ", error)
+  }
+}
+
+// Get User Queries
+export async function getUserQueries(mintId: string, userId: string) {
+  try {
+    const adQueries = await db
+      .select()
+      .from(queries)
+      .where(and(eq(queries.adId, mintId), eq(queries.userId, userId)))
+
+    adQueries && adQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
+
+    console.log("User ad queries query successful")
+    return adQueries
+  } catch (error) {
+    console.error("Server error: Failed to fetch user ad queries - ", error)
   }
 }
 

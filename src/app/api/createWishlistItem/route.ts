@@ -32,7 +32,6 @@ export async function POST(request: any) {
     const userId = session.user.id
     const body = await request.json()
     const { listingId } = body
-    console.log("listingId", listingId)
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
@@ -72,7 +71,6 @@ export async function POST(request: any) {
           wishlistId: userWishlist[0].id,
           adId: listingId,
         })
-        console.log("Wishlist item:", post)
         return new Response(JSON.stringify(post), { status: 200 })
       }
     }

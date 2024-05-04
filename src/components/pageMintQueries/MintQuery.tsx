@@ -29,6 +29,7 @@ import { useQueryClient } from "@tanstack/react-query"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
+import { listingsType } from "@/src/types/db"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -42,16 +43,14 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   )
 }
 
-export default function MintQuery() {
+interface MintQueryProps {
+  listing: listingsType
+}
+
+export default function MintQuery({ listing }: MintQueryProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const [submitted, setSubmitted] = useState<boolean>(false)
   const queryClient = useQueryClient()
-
-  const { mintId }: any = useParams()
-
-  const getListing = useGetListing(mintId).data
-  // @ts-ignore
-  const listing = getListing && getListing[0]
 
   const form = useForm({
     validatorAdapter: zodValidator,
@@ -60,6 +59,10 @@ export default function MintQuery() {
       adId: listing?.id,
       sellerId: listing?.authorId,
       adTitle: listing?.title || "",
+      adBrand: listing?.brand || "",
+      adModel: listing?.model || "",
+      adSubCategory: listing?.subCategory || "",
+      adLocation: listing?.location || "",
     },
     onSubmit: async ({ value }) => {
       const payload: QueryCreationRequest = {
@@ -67,6 +70,10 @@ export default function MintQuery() {
         adId: listing?.id || "",
         sellerId: listing?.authorId || "",
         adTitle: listing?.title || "",
+        adBrand: listing?.brand || "",
+        adModel: listing?.model || "",
+        adSubCategory: listing?.subCategory || "",
+        adLocation: listing?.location || "",
       }
       createQuery(payload)
       setDisabled(true)
@@ -81,12 +88,20 @@ export default function MintQuery() {
       adId,
       sellerId,
       adTitle,
+      adBrand,
+      adModel,
+      adSubCategory,
+      adLocation,
     }: QueryCreationRequest) => {
       const payload: QueryCreationRequest = {
         query,
         adId,
         sellerId,
         adTitle,
+        adBrand,
+        adModel,
+        adSubCategory,
+        adLocation,
       }
 
       const { data } = await axios.post("/api/createQuery", payload)
@@ -110,7 +125,9 @@ export default function MintQuery() {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["notify"] })
+        await queryClient.invalidateQueries({
+          queryKey: ["userQueries"],
+        })
       }
     },
   })

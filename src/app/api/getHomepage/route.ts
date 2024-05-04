@@ -23,6 +23,7 @@ export async function GET(req: Request) {
         `
           SELECT * FROM listings 
           WHERE "isExpired" = 'f'
+          AND "isSold" = 'f'
           ORDER BY "createdAt" DESC
           OFFSET ${offset}
           LIMIT ${parseInt(limit)}; 

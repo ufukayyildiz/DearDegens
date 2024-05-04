@@ -61,6 +61,10 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
           <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
 
+        <DropdownMenuItem asChild>
+          <Link href="/user-guide">User Guide</Link>
+        </DropdownMenuItem>
+
         <DropdownMenuItem
           asChild
           onClick={() => setTheme(theme === "light" ? "dark" : "light")}

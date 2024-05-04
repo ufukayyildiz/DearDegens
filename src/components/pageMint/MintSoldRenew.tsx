@@ -12,7 +12,7 @@ interface MintRenewProps {
   listing: listingsType
 }
 
-export default function MintSold({ listing }: MintRenewProps) {
+export default function MintSoldRenew({ listing }: MintRenewProps) {
   const queryClient = useQueryClient()
 
   const [expired, setExpired] = useState<boolean>(listing.isExpired!)
@@ -21,7 +21,7 @@ export default function MintSold({ listing }: MintRenewProps) {
   const { mutate: updateIsExpired } = useMutation({
     mutationFn: async (listingId: any) => {
       setIsLoading(true)
-      await axios.patch("/api/editIsSold", listingId)
+      await axios.patch("/api/editIsSoldRenew", listingId)
     },
     onError: () => {
       setIsLoading(false)
@@ -36,7 +36,7 @@ export default function MintSold({ listing }: MintRenewProps) {
       setIsLoading(false)
       return toast({
         title: "Success!",
-        description: "Successfully marked your listing as sold.",
+        description: "Successfully marked your listing as not yet sold.",
       })
     },
     onSettled: async (_, error) => {
@@ -53,13 +53,13 @@ export default function MintSold({ listing }: MintRenewProps) {
     <div>
       <Button
         variant="outlineTwo"
-        className="w-32"
+        className="w-[160px]"
         onClick={() => updateIsExpired(JSON.stringify(listing.id))}
       >
         {isLoading ? (
           <Loader2 className="h-5 w-5 animate-spin" />
         ) : (
-          <span>Mark As Sold</span>
+          <span>Mark As Available</span>
         )}
       </Button>
     </div>

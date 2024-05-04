@@ -10,18 +10,16 @@ import {
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
 import CarouselMintCardComponent from "../componentsCards/CarouselMintCardComponent"
-import MidiMintCardComponent from "../componentsCards/MidiMintCardComponent"
 import { Plus } from "lucide-react"
 import "@splidejs/react-splide/css/core"
 import { Button } from "../components-ui/Button"
 
-export default async function HomeCarousel() {
+export default function HomeCarousel() {
   const fetchListings = async ({ pageParam }: any) => {
     try {
       const response = await axios.get(
         `/api/getHomepage?page=${pageParam}&limit=${4}`
       )
-      console.log("response:", response)
       return response.data
     } catch (error) {
       console.error("fetch error:", error)
@@ -39,7 +37,6 @@ export default async function HomeCarousel() {
     })
 
   const listings = data?.pages.flatMap((page) => page.rows) || [""]
-  console.log("listings", listings.length)
 
   return (
     <div>

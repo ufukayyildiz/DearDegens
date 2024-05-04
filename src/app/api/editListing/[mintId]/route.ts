@@ -1,11 +1,10 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateListing } from "@/src/lib/validators/validateListingGeneral"
 import { db } from "@/src/server/db"
+import { sql } from "drizzle-orm"
 import {
   listings,
   notifications,
-  users,
-  usersRelations,
 } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
@@ -14,7 +13,6 @@ import { z } from "zod"
 export async function PATCH(req: Request, context: any) {
   try {
     const listingId = context.params.mintId
-    console.log("listingId:", listingId)
     const session = await getAuthSession()
 
     if (!session?.user) {
@@ -57,7 +55,6 @@ export async function PATCH(req: Request, context: any) {
       meetup
     )
 
-    console.log("listingGeneral:", listings)
 
     const post = await db
       .update(listings)
@@ -76,6 +73,14 @@ export async function PATCH(req: Request, context: any) {
         meetup: meetup,
       })
       .where(eq(listings.id, listingId))
+
+      await db.execute(sql.raw(
+        `
+        UPDATE listings 
+        SET tsvector_title = to_tsvector(title)
+        WHERE id = '${listingId}';
+        `
+      ))
 
     const notification = await db.insert(notifications).values({
       id: notificationId,

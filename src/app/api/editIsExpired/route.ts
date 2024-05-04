@@ -5,7 +5,6 @@ import { listings } from "@/src/server/db/schema"
 export async function PATCH(req: Request) {
   try {
     const listingId = await req.json()
-    console.log("listingId", listingId)
 
     const currentDate: Date = new Date()
     const expirationDate: Date = new Date(

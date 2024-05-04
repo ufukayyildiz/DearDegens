@@ -17,8 +17,8 @@ export default function MintPageAuthorActions({ listing }: AuthorActionsProps) {
   return (
     <div className="flex w-full justify-end pr-5">
       <div className="flex w-4/12 justify-end space-x-5">
-        <MintManageOffers />
-        <MintManageQueries />
+        <MintManageOffers listing={listing} />
+        <MintManageQueries listing={listing} />
         <Link
           href={`/ad/edit/${listing.id}`}
           className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"

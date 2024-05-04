@@ -33,7 +33,6 @@ export async function POST(req: Request, res: NextApiResponse) {
       return new Response("API request limit reached", { status: 429 })
     } else {
       const body = await req.json()
-      console.log("body:", body)
       const { message, roomId, userId, userName } = body
 
       const messageId = nanoid()

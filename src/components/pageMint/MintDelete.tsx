@@ -1,6 +1,8 @@
 "use client"
 import React, { useState } from "react"
 import { useRouter } from "next/navigation"
+import { useMutation, useQueryClient } from "@tanstack/react-query"
+import { toast } from "@/src/hooks/use-toast"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -14,7 +16,7 @@ import {
 } from "@/src/components/components-ui/AlertDialog"
 import { Button } from "@/src/components/components-ui/Button"
 import axios from "axios"
-import { Trash2 } from "lucide-react"
+import { Trash2, Loader2 } from "lucide-react"
 
 import { Checkbox } from "../components-ui/Checkbox"
 
@@ -22,17 +24,32 @@ export default function MintDelete(listingId: any) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const id = JSON.stringify(listingId.listingId)
   const router = useRouter()
-  const handleDeleteListing = async () => {
-    try {
-      console.log("listingId:", listingId.listingId)
+
+  const { mutate: handleDeleteListing, isPending } = useMutation({
+    mutationFn: async (id: any) => {
       await axios.put("/api/deleteListing/", id)
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description: "Could not delete listing. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSuccess: () => {
       router.push("/ad/myads")
       router.refresh()
-      return "Listing has been successfully deleted."
-    } catch (error) {
-      console.error("Could not delete this listing, status:", error)
-    }
-  }
+      return toast({
+        title: "Success!",
+        description: "Listing deleted successfully.",
+      })
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log("onSettled error:", error)
+      }
+    },
+  })
 
   return (
     <div>
@@ -65,15 +82,19 @@ export default function MintDelete(listingId: any) {
                   Confirm deletion of listing.
                 </label>
               </div>
-              <div>
+              <div className="flex flex-row">
                 <AlertDialogCancel>Cancel</AlertDialogCancel>
                 <Button
-                  onClick={() => handleDeleteListing()}
+                  onClick={() => handleDeleteListing(id)}
                   disabled={disabled}
                   variant="destructive"
-                  className="ml-5"
+                  className="relative ml-5 flex w-20 text-zinc-100"
                 >
-                  Delete
+                  {!isPending ? (
+                    <p>Delete</p>
+                  ) : (
+                    <Loader2 className="absolute flex h-5 w-5 animate-spin" />
+                  )}
                 </Button>
               </div>
             </div>

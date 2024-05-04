@@ -9,10 +9,11 @@ import MintList from "@/src/components/pageMint/MintList"
 import MintInfo from "@/src/components/pageMint/MintInfo"
 import MintRenew from "@/src/components/pageMint/MintRenew"
 import MintSold from "@/src/components/pageMint/MintSold"
+import MintSoldRenew from "@/src/components/pageMint/MintSoldRenew"
 
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
-import { getAdOffers, getAdQueries, getListings } from "@/src/server/actions"
+import { getAdOffers, getAdQueries, getListings, getUserQueries } from "@/src/server/actions"
 import { db } from "@/src/server/db"
 import { listings, queries } from "@/src/server/db/schema"
 import { listingsType, queryType } from "@/src/types/db"
@@ -69,6 +70,12 @@ export default async function MintPage({ params }: MintPageProps) {
     queryFn: () => listing && getAdQueries(listing[0].id),
   })
 
+  // USER QUERIES QUERY
+  await queryClient.prefetchQuery({
+    queryKey: ["userQueries"],
+    queryFn: () => listing && getUserQueries(listing[0].id, session?.user.id!),
+  })
+
   // PRICE TEXT FORMATTER
   const formatPrice = (price: any) => {
     const formatter = new Intl.NumberFormat("en-US", {
@@ -78,8 +85,6 @@ export default async function MintPage({ params }: MintPageProps) {
 
     return formatter.format(price)
   }
-
-
 
   return (
     <div className="flex h-auto w-full">
@@ -107,6 +112,8 @@ export default async function MintPage({ params }: MintPageProps) {
                           />
                         ) : item.isExpired ? (
                           <MintRenew listing={item} />
+                        ) : item.isSold ? (
+                          <MintSoldRenew listing={item} />
                         ) : (
                           <MintSold listing={item} />
                         ))}
@@ -128,11 +135,11 @@ export default async function MintPage({ params }: MintPageProps) {
                     {/* MANAGER SECTION */}
                     <hr className="my-2 border border-t-muted-foreground" />
                     <div className="flex min-h-[40px] items-end">
-                      <ShareButtons domain={domain}/>
+                      <ShareButtons domain={domain} />
                       {session?.user.id === item.authorId ? (
                         <MintPageAuthorActions listing={item} />
                       ) : (
-                        <MintPageUsersActions listingId={item.id} />
+                        <MintPageUsersActions listing={item} />
                       )}
                       <ChatSheet listingId={item.id} />
                     </div>

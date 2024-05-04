@@ -12,6 +12,7 @@ import {
 import {
   getAdOffers,
   getAdQueries,
+  getUserQueries,
   getListings,
   getNotifications,
   getBucket,
@@ -24,6 +25,13 @@ export function useGetQueries(mintId: any) {
   return useQuery<queryType[]>({
     queryKey: ["adQueries"],
     queryFn: () => mintId && getAdQueries(mintId),
+  })
+}
+
+export function useGetUserQueries(mintId: any, userId:any) {
+  return useQuery<queryType[]>({
+    queryKey: ["userQueries"],
+    queryFn: () => mintId && getUserQueries(mintId, userId),
   })
 }
 

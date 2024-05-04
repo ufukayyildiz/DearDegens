@@ -29,9 +29,7 @@ export async function PATCH(req: Request) {
     }
 
     const body = await req.json()
-    console.log("body:", body)
 
-    const currentDate: Date = new Date()
     const { id, reply, isPublic } = body
 
     if (!limitReached) {

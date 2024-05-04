@@ -7,7 +7,7 @@ import {
 } from "@/src/server/db/schema"
 import { nanoid } from "nanoid"
 import { z } from "zod"
-
+import { sql } from "drizzle-orm"
 import { Ratelimit } from "@upstash/ratelimit" 
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
@@ -112,6 +112,14 @@ export async function POST(req: Request) {
         location: location,
         meetup: meetup,
       })
+
+      await db.execute(sql.raw(
+        `
+        UPDATE listings 
+        SET tsvector_title = to_tsvector(title)
+        WHERE id = '${listingId}';
+        `
+      ))
 
       const notification = await db.insert(notifications).values({
         id: notificationId,

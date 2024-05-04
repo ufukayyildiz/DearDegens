@@ -9,7 +9,7 @@ const Subheading = React.forwardRef<
     <p
       ref={ref}
       className={cn(
-        "mb-2 mt-10 pl-3 text-xl font-semibold italic text-primary",
+        "mb-2 mt-10 pl-3 text-lg font-semibold text-primary",
         className
       )}
       {...props}

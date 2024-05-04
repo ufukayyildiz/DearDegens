@@ -6,6 +6,10 @@ export const validateQuery = z.object({
   adId: z.string(),
   sellerId: z.string(),
   adTitle: z.string(),
+  adBrand: z.string(),
+          adModel: z.string(),
+          adSubCategory: z.string(),
+          adLocation: z.string(),
   query: z
     .string()
     .min(3, {

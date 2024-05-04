@@ -1,13 +1,13 @@
 "use client"
 import React from "react"
-import { PageHeading } from "@/src/components/pageLegal/PageHeading"
-import { Heading } from "@/src/components/pageLegal/Heading"
-import { Subheading } from "@/src/components/pageLegal/Subheading"
-import { Paragraph } from "@/src/components/pageLegal/Paragraph"
-import { Index } from "@/src/components/pageLegal/Index"
+import { PageHeading } from "@/src/components/components-typography/PageHeading"
+import { Heading } from "@/src/components/components-typography/Heading"
+import { Subheading } from "@/src/components/components-typography/Subheading"
+import { Paragraph } from "@/src/components/components-typography/Paragraph"
+import { Index } from "@/src/components/components-typography/Index"
 import { ChevronUp } from "lucide-react"
-import { BulletBody } from "@/src/components/pageLegal/BulletBody"
-import { BulletPoint } from "@/src/components/pageLegal/BulletPoint"
+import { BulletBody } from "@/src/components/components-typography/BulletBody"
+import { BulletPoint } from "@/src/components/components-typography/BulletPoint"
 
 export default function PrivacyPolicy() {
   return (

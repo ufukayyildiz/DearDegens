@@ -15,7 +15,6 @@ export default async function MintList({
   sellerId,
 }: MintListProps) {
   const list = JSON.parse(items)
-  const listString = JSON.stringify(list)
   const session = await getServerSession(authOptions)
 
   // PRICE TEXT FORMATTER
@@ -28,7 +27,7 @@ export default async function MintList({
     return formatter.format(price)
   }
 
-  if (listString && listString.length > 65) {
+  if (list[0].name !== "") {
     return (
       <div className="my-5 w-full">
         <hr className="my-2 border border-t-muted-foreground" />

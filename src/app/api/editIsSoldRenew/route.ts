@@ -9,7 +9,7 @@ export async function PATCH(req: Request) {
     await db
       .update(listings)
       .set({
-        isSold: true,
+        isSold: false,
       })
       .where(eq(listings.id, listingId))
 

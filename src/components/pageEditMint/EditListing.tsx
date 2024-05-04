@@ -72,9 +72,11 @@ export default function EditListing({ listing }: EditListingProps) {
 
   const [disabled, setDisabled] = useState<boolean>(true)
   const [isList, setIsList] = useState<boolean>(false)
-  const [type, setType] = useState<string>("")
-  const [category, setCategory] = useState<string>("")
-  const [subCategory, setSubCategory] = useState<string>("")
+  const [type, setType] = useState<string>(listing[0].tab!)
+  const [category, setCategory] = useState<string>(listing[0].category!)
+  const [subCategory, setSubCategory] = useState<string>(
+    listing[0].subCategory!
+  )
 
   const mainCategories = listingCategories.filter((item, index) => {
     if (item.type === type) {
@@ -240,7 +242,11 @@ export default function EditListing({ listing }: EditListingProps) {
                     </FieldLabel>
                   </div>
 
-                  <Select required onValueChange={(event) => setType(event)}>
+                  <Select
+                    required
+                    onValueChange={(event) => setType(event)}
+                    defaultValue={listing[0].tab!}
+                  >
                     <SelectTrigger className="w-full">
                       <SelectValue />
                     </SelectTrigger>
@@ -287,6 +293,7 @@ export default function EditListing({ listing }: EditListingProps) {
                     <Select
                       required
                       onValueChange={(event) => setCategory(event)}
+                      defaultValue={listing[0].category!}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue />
@@ -333,6 +340,7 @@ export default function EditListing({ listing }: EditListingProps) {
                     <Select
                       required
                       onValueChange={(event) => setSubCategory(event)}
+                      defaultValue={listing[0].subCategory!}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue />
@@ -417,6 +425,7 @@ export default function EditListing({ listing }: EditListingProps) {
                     <Select
                       required
                       onValueChange={(event) => field.handleChange(event)}
+                      defaultValue={listing[0].condition!}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue />
@@ -640,6 +649,7 @@ export default function EditListing({ listing }: EditListingProps) {
                       <Select
                         required
                         onValueChange={(event) => field.handleChange(event)}
+                        defaultValue={listing[0].transmission!}
                       >
                         <SelectTrigger className="w-full">
                           <SelectValue />
@@ -849,6 +859,7 @@ export default function EditListing({ listing }: EditListingProps) {
                     <Select
                       required
                       onValueChange={(event) => field.handleChange(event)}
+                      defaultValue={listing[0].location!}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue />
@@ -893,6 +904,7 @@ export default function EditListing({ listing }: EditListingProps) {
                     <Select
                       required
                       onValueChange={(event) => field.handleChange(event)}
+                      defaultValue={listing[0].meetup!}
                     >
                       <SelectTrigger className="w-full">
                         <SelectValue />

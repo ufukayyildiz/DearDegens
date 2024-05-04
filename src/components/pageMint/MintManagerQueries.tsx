@@ -10,8 +10,13 @@ import {
   SheetTrigger,
 } from "../components-ui/Sheet"
 import MintQueries from "../pageMintQueries/MintQueries"
+import { listingsType } from "@/src/types/db"
 
-export default function MintManageQueries() {
+interface MintManageQueriesProps {
+  listing: listingsType
+}
+
+export default function MintManageQueries({ listing }: MintManageQueriesProps) {
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
@@ -19,10 +24,8 @@ export default function MintManageQueries() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="h-full">
-          <SheetDescription className="h-full">
-            <SheetTitle className="mt-5 text-customAccent">Queries:</SheetTitle>
-            <MintQueries />
-          </SheetDescription>
+          <SheetTitle className="mt-5 text-customAccent">Queries:</SheetTitle>
+          <MintQueries listing={listing} />
         </SheetHeader>
       </SheetContent>
     </Sheet>

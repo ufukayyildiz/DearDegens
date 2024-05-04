@@ -15,17 +15,11 @@ import {
 } from "@/src/components/components-ui/AlertDialog"
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
-import {
-  CounterOfferCreationRequest,
-  validateCounterOffer,
-} from "@/src/lib/validators/validateCounterOffer"
+import { CounterOfferCreationRequest } from "@/src/lib/validators/validateCounterOffer"
 import { offerType } from "@/src/types/db"
-import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { RotateCcw } from "lucide-react"
-import { useForm } from "react-hook-form"
-import { z } from "zod"
 
 import { Checkbox } from "../components-ui/Checkbox"
 import { Input } from "../components-ui/Input"
@@ -34,8 +28,6 @@ import { Label } from "../components-ui/Label"
 interface CounterProps {
   adOffer: offerType
 }
-
-type FormData = z.infer<typeof validateCounterOffer>
 
 export default function MintCounterTwo({ adOffer }: CounterProps) {
   const queryClient = useQueryClient()

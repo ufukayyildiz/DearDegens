@@ -16,9 +16,7 @@ export async function PATCH(req: any) {
 
     const fetchUser = await db.select().from(users).where(eq(users.id, userId))
     const userBucket = fetchUser[0].imageBucket || ""
-    console.log('userBucket:', userBucket)
     const newBucket: any = []
-    console.log('newBucket:', newBucket)
     if (userBucket.includes(",")) {
       const currentBucket = userBucket.split(",")
       const formattedBucket = currentBucket.map((item) => {
@@ -37,7 +35,6 @@ export async function PATCH(req: any) {
     const filteredBucket = updatedBucket.filter((item: any) =>
       urlRegex.test(item)
     )
-    console.log("filteredBucket:", filteredBucket)
     const filteredBucketString = JSON.stringify(filteredBucket)
 
     const post = await db

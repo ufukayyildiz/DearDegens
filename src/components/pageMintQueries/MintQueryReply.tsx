@@ -15,10 +15,7 @@ import {
 } from "@/src/components/components-ui/AlertDialog"
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
-import {
-  QueryReplyCreationRequest,
-  validateQueryReply,
-} from "@/src/lib/validators/validateQueryReply"
+import { QueryReplyCreationRequest } from "@/src/lib/validators/validateQueryReply"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"

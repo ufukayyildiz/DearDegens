@@ -11,7 +11,7 @@ export async function GET(req: Request) {
     const offset = (parseInt(page) - 1) * parseInt(limit)
 
     const formatSearch = (searchParams: string | undefined) => {
-      const splitString = searchParams?.split(" ")
+      const splitString = searchParams?.split(" ").filter(str => str.trim() !== "")
       if (splitString?.length === 1) {
         return searchParams
       } else {
@@ -27,6 +27,7 @@ export async function GET(req: Request) {
           SELECT * FROM listings 
           WHERE tsvector_title @@ to_tsquery('${searchString}')
           AND "isExpired" = 'f'
+          AND "isSold" = 'f'
           ORDER BY "createdAt" DESC
           OFFSET ${offset}
           LIMIT ${parseInt(limit)}; 
