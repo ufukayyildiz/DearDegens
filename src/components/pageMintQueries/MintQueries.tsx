@@ -14,15 +14,16 @@ interface MintQueriesProps {
 export default function MintQueries({ listing }: MintQueriesProps) {
   const { data: session } = useSession()
   const userId = session?.user.id
+  const adQueries = useGetQueries(listing.id).data
 
   let queries: queryType[] = []
 
-  if (listing.authorId === userId) {
-    const adQueries = useGetQueries(listing.id).data
-    adQueries?.map((item) => queries.push(item))
-  } else {
-    const userQueries = useGetUserQueries(listing.id, userId).data
-    userQueries?.map((item) => queries.push(item))
+  if (adQueries) {
+    for (let i = 0; i < adQueries.length; i++) {
+      if (adQueries[i].userId === userId || adQueries[i].sellerId === userId) {
+        queries.push(adQueries[i])
+      }
+    }
   }
 
   return (
