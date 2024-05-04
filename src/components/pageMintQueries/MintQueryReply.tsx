@@ -21,7 +21,7 @@ import type { FieldApi } from "@tanstack/react-form"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { zodValidator } from "@tanstack/zod-form-adapter"
 import axios from "axios"
-import { MessageCircle, X } from "lucide-react"
+import { Loader2, MessageCircle, X } from "lucide-react"
 import { z } from "zod"
 
 import { Checkbox } from "../components-ui/Checkbox"
@@ -260,8 +260,8 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                             variant="outline"
                             className="w-28"
                           >
-                            {isSubmitting ? (
-                              <p className="italic">whoosh!!</p>
+                            {!isSubmitting ? (
+                              <Loader2 className="h-5 w-5 animate-spin" />
                             ) : (
                               "Send"
                             )}

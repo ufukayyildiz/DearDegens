@@ -9,7 +9,16 @@ interface LayoutProps {
 }
 
 const Providers: FC<LayoutProps> = ({ children }) => {
-  const [queryClient] = useState(() => new QueryClient())
+  const [queryClient] = useState(
+    () =>
+      new QueryClient({
+        defaultOptions: {
+          queries: {
+            staleTime: 60 * 1000,
+          },
+        },
+      })
+  )
 
   return (
     <QueryClientProvider client={queryClient}>

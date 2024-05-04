@@ -164,7 +164,7 @@ export default async function MintPage({ params }: MintPageProps) {
                 <h1 className="mt-5 text-lg font-bold">
                   Users Wanted To Know:
                 </h1>
-                <MintQA />
+                <MintQA listing={item}/>
               </div>
             ))}
         </div>

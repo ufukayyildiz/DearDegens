@@ -17,9 +17,10 @@ interface MintOffersProps {
 export default function MintOffers({ listing }: MintOffersProps) {
   const { data: session } = useSession()
   const userId = session?.user.id
+  const id: string = listing.id
 
-  const adOffers = useGetOffers(listing.id).data
-  const isLoading = useGetOffers(listing.id).isLoading
+  const adOffers = useGetOffers(id).data
+  const isLoading = useGetOffers(id).isLoading
   adOffers?.sort((a: any, b: any) => b.offerPrice - a.offerPrice)
 
   let offers: offerType[] = []

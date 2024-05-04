@@ -1,18 +1,23 @@
 "use client"
 import React from "react"
-import { useParams } from "next/navigation"
 import { useGetQueries } from "../../server/services"
+import { listingsType } from "@/src/types/db"
 
-export default function MintQA() {
-  const { mintId }: any = useParams()
+interface MintQAParams {
+  listing: listingsType
+}
 
-  const queries = useGetQueries(mintId)
+export default function MintQA({ listing }: MintQAParams) {
+  const id = listing.id
+
+  const queries = useGetQueries(id).data
+  const isReFetching = useGetQueries(id).isRefetching
 
   return (
     <div className="mt-5">
-      {!queries.isRefetching ? (
-        queries.data &&
-        queries.data.map((qa, index) => {
+      {!isReFetching ? (
+        queries &&
+        queries.map((qa, index) => {
           if (qa.isPublic === true) {
             return (
               <div className="flex w-full flex-col" key={index}>

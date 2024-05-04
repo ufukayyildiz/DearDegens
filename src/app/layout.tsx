@@ -15,6 +15,8 @@ import { Toaster } from "../components/components-ui/Toaster"
 import Footer from "../components/Footer"
 import NavBar from "../components/NavBar"
 
+// export const dynamic = 'force-dynamic';
+
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -48,6 +50,10 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           <link
             href="https://fonts.googleapis.com/css2?family=Bangers&family=Bungee+Inline&family=Chivo+Mono:wght@300&family=Cinzel&family=Cinzel+Decorative&family=Fauna+One&family=Galada&family=Indie+Flower&family=Open+Sans&family=Press+Start+2P&family=Prompt:wght@400;600&family=Rampart+One&family=Sigmar+One&family=Sonsie+One&family=Urbanist:ital,wght@0,400;1,600&display=swap"
             rel="stylesheet"
+          />
+          <meta
+            name="viewport"
+            content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1"
           />
         </Head>
         <Script

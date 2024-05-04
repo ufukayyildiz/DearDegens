@@ -7,7 +7,6 @@ import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
-import { validateQuery } from "@/src/lib/validators/validateQuery"
 
 const rateLimit = new Ratelimit({
   redis,
@@ -55,7 +54,7 @@ export async function POST(req: Request) {
       adModel,
       adSubCategory,
       adLocation,
-    } = body.parse(validateQuery)
+    } = body
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
