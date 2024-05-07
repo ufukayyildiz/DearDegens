@@ -14,7 +14,7 @@ const Providers: FC<LayoutProps> = ({ children }) => {
       new QueryClient({
         defaultOptions: {
           queries: {
-            staleTime: 1000,
+            staleTime: 60 * 1000,
           },
         },
       })
