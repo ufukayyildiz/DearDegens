@@ -42,7 +42,7 @@ export default function FindAds() {
   const listings = data?.pages.flatMap((page) => page.rows) || [""]
 
   return (
-    <div className="mx-auto mb-28 min-h-screen w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
+    <div className="mx-auto mb-52 h-auto w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
       <h1 className="mt-10 text-xl font-bold">
         Showing results for:{" "}
         <span className="italic text-customAccent">{searchParams}</span>

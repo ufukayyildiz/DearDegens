@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { useGetQueries, useGetUserQueries } from "@/src/server/services"
+import { useGetQueries } from "@/src/server/services"
 import { listingsType, queryType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 
@@ -25,6 +25,8 @@ export default function MintQueries({ listing }: MintQueriesProps) {
       }
     }
   }
+
+  console.log("adQueries:", adQueries)
 
   return (
     <ScrollArea className="mt-5 flex h-full flex-col pb-16 pr-5">

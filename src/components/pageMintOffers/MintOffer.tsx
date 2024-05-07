@@ -1,6 +1,7 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
+import { useSession } from "next-auth/react"
 import Link from "next/link"
 import {
   AlertDialog,
@@ -13,6 +14,12 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/components-ui/AlertDialog"
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@radix-ui/react-tooltip"
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import {
@@ -37,33 +44,52 @@ import {
 } from "../components-ui/Form"
 import { Input } from "../components-ui/Input"
 import { Label } from "../components-ui/Label"
+import { listingsType } from "@/src/types/db"
+import { useGetUserOffers } from "@/src/server/services"
+import { cn } from "@/src/lib/utils"
 
 interface MintProps {
-  askPrice: number
-  adId: string
-  sellerId: string
-  title: string | null
+  listing: listingsType
 }
 
 type FormData = z.infer<typeof validateOffer>
 
-export default function MintOffer({
-  askPrice,
-  sellerId,
-  title,
-  adId,
-}: MintProps) {
+export default function MintOffer({ listing }: MintProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
+  const [offerLimit, setOfferLimit] = useState<boolean>(false)
+  const [hover, setHover] = useState<boolean>(false)
   const queryClient = useQueryClient()
+  const { data: session } = useSession()
+
+  const offers = useGetUserOffers(session?.user.id, listing.id).data
+
+  useEffect(() => {
+    if (offers && offers.length >= 2) {
+      setOfferLimit(true)
+    }
+  }, [offers])
+
+  useEffect(() => {
+    const element: Element | null = document.querySelector("#button")
+    if (!offerLimit && element) {
+      element.addEventListener("mouseover", (event) => {
+        setHover(true)
+      })
+
+      element.addEventListener("mouseout", (event) => {
+        setHover(false)
+      })
+    }
+  }, [])
 
   const form = useForm<FormData>({
     resolver: zodResolver(validateOffer),
     defaultValues: {
       offerPrice: 0,
-      askPrice: askPrice,
-      adId: adId,
-      sellerId: sellerId,
-      title: title,
+      askPrice: listing.price || 0,
+      adId: listing.id,
+      sellerId: listing.authorId,
+      title: listing.title,
     },
   })
 
@@ -104,7 +130,7 @@ export default function MintOffer({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["notify"] })
+        await queryClient.invalidateQueries({ queryKey: ["adOffers"] })
       }
     },
   })
@@ -112,10 +138,10 @@ export default function MintOffer({
   async function onSubmit(data: FormData) {
     const payload: OfferCreationRequest = {
       offerPrice: data.offerPrice,
-      askPrice: askPrice,
-      adId: adId,
-      sellerId: sellerId,
-      title: title,
+      askPrice: listing.price || 0,
+      adId: listing.id,
+      sellerId: listing.authorId,
+      title: listing.title || "",
     }
     setDisabled(true)
     console.log("Submit Payload:", payload)
@@ -123,11 +149,35 @@ export default function MintOffer({
   }
 
   return (
-    <div className="">
+    <div>
       <AlertDialog>
-        <AlertDialogTrigger asChild>
-          <Button variant="outlinebold">SEND OFFER</Button>
-        </AlertDialogTrigger>
+        {!listing.isSold && (
+          <AlertDialogTrigger
+            disabled={offerLimit}
+            className={cn(
+              "relative h-10 w-32 rounded-lg border-2 border-customAccent font-bold shadow-lg",
+              offerLimit && "border-customAccentTwo text-muted-foreground"
+            )}
+          >
+            <div
+              id="button"
+              className="absolute left-0 top-0 flex h-full w-full"
+            />
+            {offerLimit && (
+              <div
+                className={cn(
+                  "absolute -left-3 top-12 flex h-10 w-40 rounded-lg border border-muted bg-background p-1 text-center text-xs font-normal text-primary opacity-0 shadow-md",
+                  hover && " opacity-1 transition duration-75"
+                )}
+              >
+                You have reached your offer limit for this ad.
+              </div>
+            )}
+            <>
+              <p>SEND OFFER</p>
+            </>
+          </AlertDialogTrigger>
+        )}
         <AlertDialogContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
@@ -135,7 +185,7 @@ export default function MintOffer({
                 <AlertDialogTitle className="mb-5 font-bold">
                   Your one step closer to the deal of a lifetime!
                 </AlertDialogTitle>
-                <AlertDialogDescription>
+                <div>
                   <div className="mb-5 grid grid-cols-1 gap-2">
                     {/* PRICE */}
                     <FormField
@@ -143,7 +193,7 @@ export default function MintOffer({
                       name="offerPrice"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex h-5 w-60 justify-between">
+                          <div className="flex h-5 w-full justify-between">
                             <FormLabel className="py-1 text-primary">
                               Offer amount:
                             </FormLabel>
@@ -155,7 +205,7 @@ export default function MintOffer({
                             <Input
                               {...field}
                               type="number"
-                              className="w-60 text-primary"
+                              className="w-full text-primary"
                               required
                             />
                           </FormControl>
@@ -173,10 +223,10 @@ export default function MintOffer({
                       completing the transaction.)
                     </p>
                   </div>
-                </AlertDialogDescription>
+                </div>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <div className="flex w-full justify-between">
+                <div className="flex w-full flex-col justify-between gap-5 md:flex-row">
                   <div className="flex items-center justify-start space-x-2">
                     <Checkbox
                       id="disable"
@@ -192,13 +242,17 @@ export default function MintOffer({
                       </Link>
                     </Label>
                   </div>
-                  <div className="flex gap-5">
+                  <div className="space-x-5">
+                    <AlertDialogAction
+                      type="submit"
+                      disabled={disabled}
+                      className="w-20"
+                    >
+                      Send
+                    </AlertDialogAction>
                     <AlertDialogCancel onClick={() => setDisabled(true)}>
                       Cancel
                     </AlertDialogCancel>
-                    <AlertDialogAction type="submit" disabled={disabled}>
-                      Send
-                    </AlertDialogAction>
                   </div>
                 </div>
               </AlertDialogFooter>

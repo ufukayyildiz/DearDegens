@@ -26,7 +26,7 @@ interface WishlistType {
 
 export default function MintAddToWishlist({ listing }: WishListProps) {
   const { data: session } = useSession()
-  const params = useParams()
+  const listingId = JSON.stringify(listing.id)
   // VARIABLES
   const queryClient = useQueryClient()
   const wishlist = useGetWishlist().data
@@ -38,7 +38,7 @@ export default function MintAddToWishlist({ listing }: WishListProps) {
     session &&
       wishlist &&
       (wishlist as wishlistType).map((item: wishlistType) => {
-        if (params && item.adId === params.listingId) {
+        if (item.adId === listing.id) {
           setIsInWishlist(true)
         }
       })
@@ -46,16 +46,24 @@ export default function MintAddToWishlist({ listing }: WishListProps) {
 
   // MUTATION: ADD TO WISHLIST
   const { mutate: addToWishlist } = useMutation({
-    mutationFn: async (listingId: any) => {
+    mutationFn: async () => {
       await axios.post("/api/createWishlistItem", listingId)
     },
-    onError: () => {
+    onError: (error) => {
+      console.log("onError:", error)
       setIsInWishlist(false)
       setIsLoading(false)
-      return toast({
-        description: "Error adding listing in wishlist. Please try again.",
-        variant: "destructive",
-      })
+      if (error.message === "Request failed with status code 429") {
+        return toast({
+          description: "Too many network requests, please wait 30 seconds.",
+          variant: "warning",
+        })
+      } else {
+        return toast({
+          description: "Error adding listing in wishlist. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: () => {
       return toast({
@@ -74,23 +82,31 @@ export default function MintAddToWishlist({ listing }: WishListProps) {
   })
 
   const handleSubmitAdd = () => {
-    addToWishlist(listing.id)
+    addToWishlist()
     setIsInWishlist(true)
     setIsLoading(true)
   }
 
   // MUTATION: REMOVE FROM WISHLIST
   const { mutate: removeFromWishlist } = useMutation({
-    mutationFn: async (listingId: any) => {
+    mutationFn: async () => {
       await axios.put("/api/deleteWishlistItem", listingId)
     },
-    onError: () => {
+    onError: (error) => {
+      console.log("onError:", error)
       setIsInWishlist(true)
       setIsLoading(false)
-      return toast({
-        description: "Error removing from wishlist. Please try again.",
-        variant: "destructive",
-      })
+      if (error.message === "Request failed with status code 429") {
+        return toast({
+          description: "Too many network requests, please wait 30 seconds.",
+          variant: "warning",
+        })
+      } else {
+        return toast({
+          description: "Error removing from wishlist. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: () => {
       return toast({
@@ -109,7 +125,7 @@ export default function MintAddToWishlist({ listing }: WishListProps) {
   })
 
   const handleSubmitRemove = () => {
-    removeFromWishlist(listing.id)
+    removeFromWishlist()
     setIsInWishlist(false)
     setIsLoading(true)
   }

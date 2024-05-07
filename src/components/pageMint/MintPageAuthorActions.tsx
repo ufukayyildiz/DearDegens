@@ -4,6 +4,7 @@ import { FileEdit } from "lucide-react"
 import MintDelete from "./MintDelete"
 import MintManageOffers from "./MintManageOffers"
 import MintManageQueries from "./MintManagerQueries"
+import ChatSheet from "../pageMintChat/ChatSheet"
 import ShareButtons from "./ShareButtons"
 import { listingsType } from "@/src/types/db"
 
@@ -15,8 +16,8 @@ export default function MintPageAuthorActions({ listing }: AuthorActionsProps) {
   console.log("Author Ad Id:", listing)
 
   return (
-    <div className="flex w-full justify-end pr-5">
-      <div className="flex w-4/12 justify-end space-x-5">
+    <div className="flex w-full justify-end">
+      <div className="flex w-full justify-end space-x-2">
         <MintManageOffers listing={listing} />
         <MintManageQueries listing={listing} />
         <Link
@@ -26,6 +27,7 @@ export default function MintPageAuthorActions({ listing }: AuthorActionsProps) {
           <FileEdit />
         </Link>
         <MintDelete listingId={listing.id} />
+        <ChatSheet listingId={listing.id} />
       </div>
     </div>
   )

@@ -32,8 +32,8 @@ export default function ShareButtons(domain: ShareButtonProps) {
   return (
     <div className="items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger className="focus:outline-none">
-          <Share2 />
+        <DropdownMenuTrigger className="flex h-10 w-10 items-center justify-center focus:outline-none">
+          <Share2 className="h-6 w-6" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="flex flex-row gap-3">
           <DropdownMenuItem asChild>

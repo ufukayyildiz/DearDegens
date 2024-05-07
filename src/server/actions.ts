@@ -99,6 +99,23 @@ export async function getAdOffers(mintId: string) {
   }
 }
 
+// Get user offers
+export async function getUserOffers(userId: string, listingId: string) {
+  try {
+    const adOffers = await db
+      .select()
+      .from(offers)
+      .where(and(eq(offers.userId, userId), eq(offers.adId, listingId)))
+
+    adOffers && adOffers.sort((a: any, b: any) => b.createdAt - a.createdAt)
+
+    console.log("Ad offers query successful")
+    return adOffers
+  } catch (error) {
+    console.error("Server error: Failed to fetch ad offers - ", error)
+  }
+}
+
 // Get listing Queries
 export async function getAdQueries(mintId: string) {
   try {
@@ -117,12 +134,12 @@ export async function getAdQueries(mintId: string) {
 }
 
 // Get User Queries
-export async function getUserQueries(mintId: string, userId: string) {
+export async function getUserQueries(userId: string, listingId: string) {
   try {
     const adQueries = await db
       .select()
       .from(queries)
-      .where(and(eq(queries.adId, mintId), eq(queries.userId, userId)))
+      .where(and(eq(queries.adId, listingId), eq(queries.userId, userId)))
 
     adQueries && adQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
 

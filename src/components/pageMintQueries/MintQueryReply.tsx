@@ -129,7 +129,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
               <AlertDialogHeader>
                 <AlertDialogTitle className="mb-5 font-bold">
                   <p className="italic">
-                    &apos;Answsers pave the way to enlightenment&apos;
+                    &apos;Answers pave the way to enlightenment&apos;
                   </p>
                   <p className="text-xs">- Somebody</p>
                 </AlertDialogTitle>
@@ -260,7 +260,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                             variant="outline"
                             className="w-28"
                           >
-                            {!isSubmitting ? (
+                            {isSubmitting ? (
                               <Loader2 className="h-5 w-5 animate-spin" />
                             ) : (
                               "Send"

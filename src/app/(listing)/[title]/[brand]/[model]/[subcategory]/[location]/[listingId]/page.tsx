@@ -2,7 +2,6 @@ import React from "react"
 import MintCarousel from "@/src/components/pageMint/MintCarousel"
 import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
 import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
-import ChatSheet from "@/src/components/pageMintChat/ChatSheet"
 import MintQA from "@/src/components/pageMint/MintQA"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
 import MintList from "@/src/components/pageMint/MintList"
@@ -13,7 +12,13 @@ import MintSoldRenew from "@/src/components/pageMint/MintSoldRenew"
 
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
-import { getAdOffers, getAdQueries, getListings, getUserQueries } from "@/src/server/actions"
+import {
+  getAdOffers,
+  getAdQueries,
+  getListings,
+  getUserOffers,
+  getUserQueries,
+} from "@/src/server/actions"
 import { db } from "@/src/server/db"
 import { listings, queries } from "@/src/server/db/schema"
 import { listingsType, queryType } from "@/src/types/db"
@@ -64,6 +69,12 @@ export default async function MintPage({ params }: MintPageProps) {
     queryFn: () => listing && getAdOffers(listing[0].id),
   })
 
+  // USER QUERIES QUERY
+  await queryClient.prefetchQuery({
+    queryKey: ["userOffers"],
+    queryFn: () => listing && getUserOffers(session?.user.id!, listing[0].id),
+  })
+
   // QUERIES QUERY
   await queryClient.prefetchQuery({
     queryKey: ["adQueries"],
@@ -73,7 +84,7 @@ export default async function MintPage({ params }: MintPageProps) {
   // USER QUERIES QUERY
   await queryClient.prefetchQuery({
     queryKey: ["userQueries"],
-    queryFn: () => listing && getUserQueries(listing[0].id, session?.user.id!),
+    queryFn: () => listing && getUserQueries(session?.user.id!, listing[0].id),
   })
 
   // PRICE TEXT FORMATTER
@@ -104,12 +115,7 @@ export default async function MintPage({ params }: MintPageProps) {
                         (item.price &&
                         item.title &&
                         item.authorId !== session.user.id ? (
-                          <MintOffer
-                            title={item.title}
-                            sellerId={item.authorId}
-                            adId={item.id}
-                            askPrice={item.price}
-                          />
+                          <MintOffer listing={item} />
                         ) : item.isExpired ? (
                           <MintRenew listing={item} />
                         ) : item.isSold ? (
@@ -141,7 +147,6 @@ export default async function MintPage({ params }: MintPageProps) {
                       ) : (
                         <MintPageUsersActions listing={item} />
                       )}
-                      <ChatSheet listingId={item.id} />
                     </div>
                     {/* @ts-expect-error Server Component */}
                     <MintList
@@ -161,10 +166,8 @@ export default async function MintPage({ params }: MintPageProps) {
                 <hr className="my-2 border border-t-muted-foreground" />
 
                 {/* QUERIES SECTION */}
-                <h1 className="mt-5 text-lg font-bold">
-                  Users Wanted To Know:
-                </h1>
-                <MintQA listing={item}/>
+                <h1 className="mt-5 text-lg font-bold">Questions & Answers:</h1>
+                <MintQA listing={item} />
               </div>
             ))}
         </div>

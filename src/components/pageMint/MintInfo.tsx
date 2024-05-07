@@ -7,7 +7,7 @@ interface InfoGeneralProps {
 
 export default function MintInfo({ listing }: InfoGeneralProps) {
   return (
-    <div className="flex w-full min-w-[250px] flex-col gap-2 pt-5 text-sm md:pl-10 md:pt-0 md:text-base">
+    <div className="flex w-full min-w-[270px] flex-col gap-2 pt-5 text-sm md:pl-10 md:pt-0 md:text-base">
       <div className="flex w-full">
         <p className="w-32 font-bold">Brand:</p>
         <h3>{listing.brand}</h3>

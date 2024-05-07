@@ -67,38 +67,37 @@ export default function MintDelete(listingId: any) {
               listing.
             </AlertDialogDescription>
           </AlertDialogHeader>
-          <AlertDialogFooter>
-            <div className="flex w-full justify-between">
-              <div className="flex items-center justify-start space-x-2">
-                <Checkbox
-                  id="disable"
-                  checked={!disabled}
-                  onCheckedChange={() => setDisabled(!disabled)}
-                />
-                <label
-                  htmlFor="disable"
-                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                >
-                  Confirm deletion of listing.
-                </label>
-              </div>
-              <div className="flex flex-row">
-                <AlertDialogCancel>Cancel</AlertDialogCancel>
-                <Button
-                  onClick={() => handleDeleteListing(id)}
-                  disabled={disabled}
-                  variant="destructive"
-                  className="relative ml-5 flex w-20 text-zinc-100"
-                >
-                  {!isPending ? (
-                    <p>Delete</p>
-                  ) : (
-                    <Loader2 className="absolute flex h-5 w-5 animate-spin" />
-                  )}
-                </Button>
-              </div>
+
+          <div className="flex w-full flex-col justify-between gap-3 md:flex-row">
+            <div className="flex items-center justify-start space-x-2">
+              <Checkbox
+                id="disable"
+                checked={!disabled}
+                onCheckedChange={() => setDisabled(!disabled)}
+              />
+              <label
+                htmlFor="disable"
+                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+              >
+                Confirm deletion of listing.
+              </label>
             </div>
-          </AlertDialogFooter>
+            <div className="flex flex-row gap-5">
+              <Button
+                onClick={() => handleDeleteListing(id)}
+                disabled={disabled}
+                variant="destructive"
+                className="flex w-20 text-zinc-100"
+              >
+                {!isPending ? (
+                  <p>Delete</p>
+                ) : (
+                  <Loader2 className="absolute flex h-5 w-5 animate-spin" />
+                )}
+              </Button>
+              <AlertDialogCancel>Cancel</AlertDialogCancel>
+            </div>
+          </div>
         </AlertDialogContent>
       </AlertDialog>
     </div>

@@ -260,7 +260,7 @@ export default function MintReport() {
                   {/* @ts-ignore */}
                   {([canSubmit, isSubmitting]) =>
                     !submitted ? (
-                      <div className="flex w-full justify-between">
+                      <div className="flex w-full flex-col justify-between gap-5 md:flex-row">
                         <div className="flex items-center justify-start space-x-2">
                           <Checkbox
                             id="disable"
@@ -276,15 +276,12 @@ export default function MintReport() {
                             </Link>
                           </Label>
                         </div>
-                        <div className="flex gap-5">
-                          <AlertDialogCancel onClick={() => setDisabled(true)}>
-                            Cancel
-                          </AlertDialogCancel>
+                        <div className="space-x-5">
                           <Button
                             type="submit"
                             disabled={disabled || !canSubmit}
                             variant="outline"
-                            className="w-28"
+                            className="w-20"
                           >
                             {isSubmitting ? (
                               <Loader2 className="h-5 w-5 animate-spin" />
@@ -292,6 +289,9 @@ export default function MintReport() {
                               "Send"
                             )}
                           </Button>
+                          <AlertDialogCancel onClick={() => setDisabled(true)}>
+                            Cancel
+                          </AlertDialogCancel>
                         </div>
                       </div>
                     ) : (

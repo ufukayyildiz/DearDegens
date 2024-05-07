@@ -19,6 +19,7 @@ import {
   getWishlist,
   getChatrooms,
   getMessages,
+  getUserOffers
 } from "./actions"
 
 export function useGetQueries(mintId: any) {
@@ -28,10 +29,10 @@ export function useGetQueries(mintId: any) {
   })
 }
 
-export function useGetUserQueries(mintId: any, userId:any) {
+export function useGetUserQueries(userId: any, listingId: any) {
   return useQuery<queryType[]>({
     queryKey: ["userQueries"],
-    queryFn: () => mintId && getUserQueries(mintId, userId),
+    queryFn: () => listingId && getUserQueries(userId, listingId),
   })
 }
 
@@ -60,6 +61,13 @@ export function useGetOffers(mintId: any) {
   return useQuery<offerType[]>({
     queryKey: ["adOffers"],
     queryFn: () => mintId && getAdOffers(mintId),
+  })
+}
+
+export function useGetUserOffers(userId: any, listingId: any) {
+  return useQuery<offerType[]>({
+    queryKey: ["userOffers"],
+    queryFn: () => userId && getUserOffers(userId, listingId),
   })
 }
 

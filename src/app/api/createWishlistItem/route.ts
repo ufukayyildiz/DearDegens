@@ -4,7 +4,7 @@ import { wishlist, wishlistItem } from "@/src/server/db/schema"
 import { wishlistType } from "@/src/types/db"
 import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
-import { Ratelimit } from "@upstash/ratelimit" 
+import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
 
@@ -14,7 +14,7 @@ const rateLimit = new Ratelimit({
   analytics: true,
 })
 
-export async function POST(request: any) {
+export async function POST(request: Request) {
   try {
     const session = await getAuthSession()
     const ip = headers().get("x-forwarded-for")
@@ -30,8 +30,7 @@ export async function POST(request: any) {
     }
 
     const userId = session.user.id
-    const body = await request.json()
-    const { listingId } = body
+    const listingId = await request.json()
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })

@@ -20,7 +20,7 @@ export default function MintManageQueries({ listing }: MintManageQueriesProps) {
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
-        <FileQuestion />
+        <FileQuestion className="h-6 w-10" />
       </SheetTrigger>
       <SheetContent>
         <SheetHeader className="h-full">

@@ -1,8 +1,8 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
+import { cn } from "@/src/lib/utils"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -17,7 +17,6 @@ import {
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { QueryCreationRequest } from "@/src/lib/validators/validateQuery"
-import { useGetListing } from "@/src/server/services"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
@@ -30,6 +29,8 @@ import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
 import { listingsType } from "@/src/types/db"
+import { useGetUserQueries } from "@/src/server/services"
+import { useSession } from "next-auth/react"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -49,8 +50,32 @@ interface MintQueryProps {
 
 export default function MintQuery({ listing }: MintQueryProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
+  const [isLimited, setIsLimited] = useState<boolean>(false)
+  const [hover, setHover] = useState<boolean>(false)
   const [submitted, setSubmitted] = useState<boolean>(false)
   const queryClient = useQueryClient()
+  const { data: session } = useSession()
+
+  const queries = useGetUserQueries(session?.user.id, listing.id).data || []
+
+  useEffect(() => {
+    if (queries.length >= 3) {
+      setIsLimited(true)
+    }
+  }, [queries])
+
+  useEffect(() => {
+    const element: Element | null = document.querySelector("#query")
+    if (element) {
+      element.addEventListener("mouseover", (event) => {
+        setHover(true)
+      })
+
+      element.addEventListener("mouseout", (event) => {
+        setHover(false)
+      })
+    }
+  }, [isLimited])
 
   const form = useForm({
     validatorAdapter: zodValidator,
@@ -126,7 +151,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({
-          queryKey: ["userQueries"],
+          queryKey: ["adQueries"],
         })
       }
     },
@@ -135,7 +160,27 @@ export default function MintQuery({ listing }: MintQueryProps) {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger className="group flex h-10 w-10 items-center justify-center hover:text-blue-500">
+        <AlertDialogTrigger
+          disabled={isLimited}
+          className={cn(
+            "group relative flex h-10 w-10 items-center justify-center hover:text-blue-500",
+            isLimited && "text-muted-foreground hover:text-muted-foreground"
+          )}
+        >
+          <div
+            id="query"
+            className="absolute left-0 top-0 z-50 flex h-full w-full"
+          />
+          {isLimited && (
+            <div
+              className={cn(
+                "absolute -top-12 flex h-10 w-40 rounded-lg border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+                hover && "opacity-1 transition duration-75"
+              )}
+            >
+              You have reached your query limit for this ad.
+            </div>
+          )}
           <HelpCircle />
         </AlertDialogTrigger>
         <AlertDialogContent>
@@ -230,7 +275,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
                   {/* @ts-ignore */}
                   {([canSubmit, isSubmitting]) =>
                     !submitted ? (
-                      <div className="flex w-full justify-between">
+                      <div className="flex w-full flex-col justify-between gap-5 md:flex-row">
                         <div className="flex items-center justify-start space-x-2">
                           <Checkbox
                             id="disable"
@@ -246,15 +291,12 @@ export default function MintQuery({ listing }: MintQueryProps) {
                             </Link>
                           </Label>
                         </div>
-                        <div className="flex gap-5">
-                          <AlertDialogCancel onClick={() => setDisabled(true)}>
-                            Cancel
-                          </AlertDialogCancel>
+                        <div className="space-x-5">
                           <Button
                             type="submit"
                             disabled={disabled || !canSubmit}
                             variant="outline"
-                            className="w-28"
+                            className="w-20"
                           >
                             {isSubmitting ? (
                               <Loader2 className="h-5 w-5 animate-spin" />
@@ -262,6 +304,9 @@ export default function MintQuery({ listing }: MintQueryProps) {
                               "Send"
                             )}
                           </Button>
+                          <AlertDialogCancel onClick={() => setDisabled(true)}>
+                            Cancel
+                          </AlertDialogCancel>
                         </div>
                       </div>
                     ) : (

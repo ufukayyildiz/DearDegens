@@ -2,7 +2,7 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { wishlist, wishlistItem } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
-import { Ratelimit } from "@upstash/ratelimit" 
+import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
 
@@ -12,7 +12,7 @@ const rateLimit = new Ratelimit({
   analytics: true,
 })
 
-export async function PUT(request: any) {
+export async function PUT(req: Request) {
   try {
     const session = await getAuthSession()
     const ip = headers().get("x-forwarded-for")
@@ -27,8 +27,7 @@ export async function PUT(request: any) {
       return new Response("Unauthrised request, please login.", { status: 401 })
     }
 
-    const body = await request.json()
-    const { listingId } = body
+    const listingId = await req.json()
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
