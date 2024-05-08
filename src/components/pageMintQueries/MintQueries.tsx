@@ -3,18 +3,19 @@ import React from "react"
 import { useGetQueries } from "@/src/server/services"
 import { listingsType, queryType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
-
+import { useParams } from "next/navigation"
 import { ScrollArea } from "../components-ui/ScrollArea"
 import MintQueriesCard from "./MintQueriesCard"
 
-interface MintQueriesProps {
-  listing: listingsType
-}
 
-export default function MintQueries({ listing }: MintQueriesProps) {
+export default function MintQueries() {
   const { data: session } = useSession()
   const userId = session?.user.id
-  const adQueries = useGetQueries(listing.id).data
+  const params = useParams()
+  const {listingId}: any = params
+  const id = listingId.toString()
+  
+  const adQueries = useGetQueries(id).data
 
   let queries: queryType[] = []
 
@@ -28,13 +29,15 @@ export default function MintQueries({ listing }: MintQueriesProps) {
 
   console.log("adQueries:", adQueries)
 
-  return (
-    <ScrollArea className="mt-5 flex h-full flex-col pb-16 pr-5">
-      {queries &&
-        userId &&
-        queries.map((item: any, index) => {
-          return <MintQueriesCard key={index} query={item} userId={userId} />
-        })}
-    </ScrollArea>
-  )
+    return (
+      <ScrollArea className="mt-5 flex h-full flex-col pb-16 pr-5">
+        {queries &&
+          userId &&
+          queries.map((item: any, index) => {
+            return <MintQueriesCard key={index} query={item} userId={userId} />
+          })}
+      </ScrollArea>
+    )
+  
+
 }

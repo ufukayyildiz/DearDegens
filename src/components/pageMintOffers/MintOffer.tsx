@@ -44,7 +44,7 @@ import {
 } from "../components-ui/Form"
 import { Input } from "../components-ui/Input"
 import { Label } from "../components-ui/Label"
-import { listingsType } from "@/src/types/db"
+import { listingsType, offerType } from "@/src/types/db"
 import { useGetUserOffers } from "@/src/server/services"
 import { cn } from "@/src/lib/utils"
 
@@ -58,29 +58,30 @@ export default function MintOffer({ listing }: MintProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const [offerLimit, setOfferLimit] = useState<boolean>(false)
   const [hover, setHover] = useState<boolean>(false)
+  const [newData, setNewData] = useState<OfferCreationRequest>()
   const queryClient = useQueryClient()
   const { data: session } = useSession()
 
-  const offers = useGetUserOffers(session?.user.id, listing.id).data
+  // const offers = useGetUserOffers(session?.user.id, listing.id).data
 
-  useEffect(() => {
-    if (offers && offers.length >= 2) {
-      setOfferLimit(true)
-    }
-  }, [offers])
+  // useEffect(() => {
+  //   if (offers && offers.length >= 2) {
+  //     setOfferLimit(true)
+  //   }
+  // }, [offers])
 
-  useEffect(() => {
-    const element: Element | null = document.querySelector("#button")
-    if (!offerLimit && element) {
-      element.addEventListener("mouseover", (event) => {
-        setHover(true)
-      })
+  // useEffect(() => {
+  //   const element: Element | null = document.querySelector("#button")
+  //   if (!offerLimit && element) {
+  //     element.addEventListener("mouseover", (event) => {
+  //       setHover(true)
+  //     })
 
-      element.addEventListener("mouseout", (event) => {
-        setHover(false)
-      })
-    }
-  }, [])
+  //     element.addEventListener("mouseout", (event) => {
+  //       setHover(false)
+  //     })
+  //   }
+  // }, [])
 
   const form = useForm<FormData>({
     resolver: zodResolver(validateOffer),
@@ -143,6 +144,7 @@ export default function MintOffer({ listing }: MintProps) {
       sellerId: listing.authorId,
       title: listing.title || "",
     }
+    setNewData(payload)
     setDisabled(true)
     console.log("Submit Payload:", payload)
     createOffer(payload)

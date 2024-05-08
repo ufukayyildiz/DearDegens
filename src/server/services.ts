@@ -22,10 +22,10 @@ import {
   getUserOffers
 } from "./actions"
 
-export function useGetQueries(mintId: any) {
+export function useGetQueries(listingId: any) {
   return useQuery<queryType[]>({
     queryKey: ["adQueries"],
-    queryFn: () => mintId && getAdQueries(mintId),
+    queryFn: () => listingId && getAdQueries(listingId),
   })
 }
 
@@ -33,6 +33,20 @@ export function useGetUserQueries(userId: any, listingId: any) {
   return useQuery<queryType[]>({
     queryKey: ["userQueries"],
     queryFn: () => listingId && getUserQueries(userId, listingId),
+  })
+}
+
+export function useGetOffers(listingId: any) {
+  return useQuery<offerType[]>({
+    queryKey: ["adOffers"],
+    queryFn: () => listingId && getAdOffers(listingId),
+  })
+}
+
+export function useGetUserOffers(userId: any, listingId: any) {
+  return useQuery<offerType[]>({
+    queryKey: ["userOffers"],
+    queryFn: () => userId && getUserOffers(userId, listingId),
   })
 }
 
@@ -57,26 +71,13 @@ export function useGetNotifications() {
   })
 }
 
-export function useGetOffers(mintId: any) {
-  return useQuery<offerType[]>({
-    queryKey: ["adOffers"],
-    queryFn: () => mintId && getAdOffers(mintId),
-  })
-}
 
-export function useGetUserOffers(userId: any, listingId: any) {
-  return useQuery<offerType[]>({
-    queryKey: ["userOffers"],
-    queryFn: () => userId && getUserOffers(userId, listingId),
-  })
-}
-
-export function useGetListing(mintId: any) {
-  return useQuery<listingsType>({
-    queryKey: ["listing"],
-    queryFn: () => mintId && getListings(mintId),
-  })
-}
+// export function useGetListing(mintId: any) {
+//   return useQuery<listingsType>({
+//     queryKey: ["listing"],
+//     queryFn: () => mintId && getListings(mintId),
+//   })
+// }
 
 export function useGetChatrooms(mintId: any) {
   return useQuery<roomType[]>({

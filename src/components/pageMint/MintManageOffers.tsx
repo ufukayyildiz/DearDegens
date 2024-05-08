@@ -13,11 +13,9 @@ import {
 import MintOffers from "../pageMintOffers/MintOffers"
 import { listingsType } from "@/src/types/db"
 
-interface MintManageOffersProps {
-  listing: listingsType
-}
 
-export default function MintManageOffers({ listing }: MintManageOffersProps) {
+
+export default function MintManageOffers() {
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
@@ -26,7 +24,7 @@ export default function MintManageOffers({ listing }: MintManageOffersProps) {
       <SheetContent>
         <SheetHeader className="h-full">
           <SheetTitle className="text-customAccent">Offers:</SheetTitle>
-          <MintOffers listing={listing} />
+          <MintOffers/>
         </SheetHeader>
       </SheetContent>
     </Sheet>

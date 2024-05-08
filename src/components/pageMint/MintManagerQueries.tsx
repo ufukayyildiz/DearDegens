@@ -12,11 +12,8 @@ import {
 import MintQueries from "../pageMintQueries/MintQueries"
 import { listingsType } from "@/src/types/db"
 
-interface MintManageQueriesProps {
-  listing: listingsType
-}
 
-export default function MintManageQueries({ listing }: MintManageQueriesProps) {
+export default function MintManageQueries() {
   return (
     <Sheet>
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
@@ -25,7 +22,7 @@ export default function MintManageQueries({ listing }: MintManageQueriesProps) {
       <SheetContent>
         <SheetHeader className="h-full">
           <SheetTitle className="mt-5 text-customAccent">Queries:</SheetTitle>
-          <MintQueries listing={listing} />
+          <MintQueries/>
         </SheetHeader>
       </SheetContent>
     </Sheet>

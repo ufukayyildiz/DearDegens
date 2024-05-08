@@ -15,7 +15,6 @@ import { Toaster } from "../components/components-ui/Toaster"
 import Footer from "../components/Footer"
 import NavBar from "../components/NavBar"
 
-// export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: {

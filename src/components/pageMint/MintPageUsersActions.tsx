@@ -16,10 +16,10 @@ export default function MintPageUsersActions({ listing }: UserActionsParams) {
     <div className="flex w-full justify-end">
       <div className=" flex w-full justify-end space-x-2">
         <MintAddToWishlist listing={listing} />
-        <MintManageOffers listing={listing} />
-        <MintManageQueries listing={listing} />
+        <MintManageOffers />
+        <MintManageQueries />
         <MintQuery listing={listing} />
-        <MintReport />
+        <MintReport listing ={listing}/>
         <ChatSheet listingId={listing.id} />
       </div>
     </div>

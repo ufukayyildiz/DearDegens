@@ -10,21 +10,23 @@ import { ScrollArea } from "../components-ui/ScrollArea"
 import MintOfferCard from "./MintOfferCard"
 import MintOfferCardSkeleton from "./MintOfferCardSkeleton"
 
-interface MintOffersProps {
-  listing: listingsType
-}
 
-export default function MintOffers({ listing }: MintOffersProps) {
+export default function MintOffers() {
   const { data: session } = useSession()
   const userId = session?.user.id
-  const id: string = listing.id
+  const params = useParams()
+  const {listingId}: any = params
+  const id = listingId.toString()
 
   const adOffers = useGetOffers(id).data
   const isLoading = useGetOffers(id).isLoading
   adOffers?.sort((a: any, b: any) => b.offerPrice - a.offerPrice)
 
+  console.log('adOffers', adOffers)
+
   let offers: offerType[] = []
 
+  console.log('offers:', offers)
   if (adOffers) {
     for (let i = 0; i < adOffers.length; i++) {
       if (adOffers[i].userId === userId || adOffers[i].sellerId === userId) {

@@ -26,6 +26,7 @@ import {
   dehydrate,
   HydrationBoundary,
   QueryClient,
+  QueryCache
 } from "@tanstack/react-query"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
@@ -50,10 +51,9 @@ export default async function MintPage({ params }: MintPageProps) {
 
   // LISTING QUERY
   const queryClient = new QueryClient()
-  await queryClient.prefetchQuery({
-    queryKey: ["prelisting"],
-    queryFn: () => getListings(decodedParam),
-  })
+
+
+  
 
   const listing: listingsType[] =
     (await db.select().from(listings).where(eq(listings.id, decodedParam))) ||

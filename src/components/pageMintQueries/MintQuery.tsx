@@ -56,26 +56,26 @@ export default function MintQuery({ listing }: MintQueryProps) {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
 
-  const queries = useGetUserQueries(session?.user.id, listing.id).data || []
+  // const queries = useGetUserQueries(session?.user.id, listing.id).data || []
 
-  useEffect(() => {
-    if (queries.length >= 3) {
-      setIsLimited(true)
-    }
-  }, [queries])
+  // useEffect(() => {
+  //   if (queries.length >= 3) {
+  //     setIsLimited(true)
+  //   }
+  // }, [queries])
 
-  useEffect(() => {
-    const element: Element | null = document.querySelector("#query")
-    if (element) {
-      element.addEventListener("mouseover", (event) => {
-        setHover(true)
-      })
+  // useEffect(() => {
+  //   const element: Element | null = document.querySelector("#query")
+  //   if (element) {
+  //     element.addEventListener("mouseover", (event) => {
+  //       setHover(true)
+  //     })
 
-      element.addEventListener("mouseout", (event) => {
-        setHover(false)
-      })
-    }
-  }, [isLimited])
+  //     element.addEventListener("mouseout", (event) => {
+  //       setHover(false)
+  //     })
+  //   }
+  // }, [isLimited])
 
   const form = useForm({
     validatorAdapter: zodValidator,
@@ -195,7 +195,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
             >
               <AlertDialogHeader>
                 <AlertDialogTitle className="mb-5 font-bold">
-                  <p className="italic">Have a question for the seller?</p>
+                  <span className="italic">Have a question for the seller?</span>
                 </AlertDialogTitle>
 
                 <AlertDialogDescription>

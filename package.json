@@ -43,7 +43,7 @@
     "@reduxjs/toolkit": "^1.9.7",
     "@splidejs/react-splide": "^0.7.12",
     "@tanstack/react-form": "^0.13.3",
-    "@tanstack/react-query": "^5.18.0",
+    "@tanstack/react-query": "^5.35.1",
     "@tanstack/zod-form-adapter": "^0.13.3",
     "@uploadthing/react": "^5.7.0",
     "@upstash/ratelimit": "^1.1.3",

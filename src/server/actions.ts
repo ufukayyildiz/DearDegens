@@ -85,6 +85,7 @@ export async function getListings(decodedParam: string) {
 // Get listing offers
 export async function getAdOffers(mintId: string) {
   try {
+    console.log('getAdOffers mintId:', mintId)
     const adOffers = await db
       .select()
       .from(offers)
@@ -102,6 +103,7 @@ export async function getAdOffers(mintId: string) {
 // Get user offers
 export async function getUserOffers(userId: string, listingId: string) {
   try {
+    console.log('getUserOffers params:', userId, listingId)
     const adOffers = await db
       .select()
       .from(offers)
@@ -117,12 +119,12 @@ export async function getUserOffers(userId: string, listingId: string) {
 }
 
 // Get listing Queries
-export async function getAdQueries(mintId: string) {
+export async function getAdQueries(listingId: string) {
   try {
     const adQueries = await db
       .select()
       .from(queries)
-      .where(eq(queries.adId, mintId))
+      .where(eq(queries.adId, listingId))
 
     adQueries && adQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
 

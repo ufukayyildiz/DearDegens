@@ -28,7 +28,6 @@ import {
   ReportCreationRequest,
   reportDescription,
 } from "@/src/lib/validators/validateReport"
-import { useGetListing } from "@/src/server/services"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
@@ -41,6 +40,7 @@ import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
 import { activities } from "@/src/lib/categories/Report"
+import { listingsType } from "@/src/types/db"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -54,16 +54,14 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   )
 }
 
-export default function MintReport() {
+interface MintReportProps {
+  listing: listingsType
+}
+
+export default function MintReport({ listing }: MintReportProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [infraction, setInfraction] = useState<string>("")
-
-  const { mintId }: any = useParams()
-
-  const getListing = useGetListing(mintId).data
-  // @ts-ignore
-  const listing = getListing && getListing[0]
 
   const form = useForm({
     validatorAdapter: zodValidator,
