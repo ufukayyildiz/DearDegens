@@ -33,7 +33,7 @@ export async function getBucket() {
       const bucket = []
       if (getBucket) {
         const currentBucket = getBucket.split(",")
-        const formattedBucket = currentBucket.map((item) => {
+        const formattedBucket = currentBucket.map((item: any) => {
           const matchResult = item.match(/"([^"]*)"/)
           return matchResult ? matchResult[1] : null
         })
@@ -82,73 +82,92 @@ export async function getListings(decodedParam: string) {
   }
 }
 
-// Get listing offers
-export async function getAdOffers(mintId: string) {
+// Get Author Offers
+export async function getOffersAuthor(listingId: any) {
   try {
-    console.log('getAdOffers mintId:', mintId)
-    const adOffers = await db
-      .select()
-      .from(offers)
-      .where(eq(offers.adId, mintId))
-
-    adOffers && adOffers.sort((a: any, b: any) => b.createdAt - a.createdAt)
-
-    console.log("Ad offers query successful")
-    return adOffers
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const adOffers = await db.execute(sql.raw(
+      `
+        SELECT * FROM offers 
+        WHERE "sellerId" = '${userId}'; 
+      `
+    ))
+    const offers = adOffers.rows.filter(item => item.adId === listingId)
+    console.log("User offers query successful")
+    return offers
   } catch (error) {
-    console.error("Server error: Failed to fetch ad offers - ", error)
+    console.error("Server error: Failed to fetch user offers - ", error)
   }
 }
 
-// Get user offers
-export async function getUserOffers(userId: string, listingId: string) {
+// Get User Offers
+export async function getOffersUser(listingId: any) {
   try {
-    console.log('getUserOffers params:', userId, listingId)
-    const adOffers = await db
-      .select()
-      .from(offers)
-      .where(and(eq(offers.userId, userId), eq(offers.adId, listingId)))
-
-    adOffers && adOffers.sort((a: any, b: any) => b.createdAt - a.createdAt)
-
-    console.log("Ad offers query successful")
-    return adOffers
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const adOffers = await db.execute(sql.raw(
+      `
+        SELECT * FROM offers 
+        WHERE "userId" = '${userId}'; 
+      `
+    ))
+    const offers = adOffers.rows.filter(item => item.adId === listingId)
+    console.log("User offers query successful")
+    return offers
   } catch (error) {
-    console.error("Server error: Failed to fetch ad offers - ", error)
+    console.error("Server error: Failed to fetch user offers - ", error)
   }
 }
 
-// Get listing Queries
-export async function getAdQueries(listingId: string) {
+
+// Get Author Queries
+export async function getQueriesAuthor(listingId: string) {
   try {
-    const adQueries = await db
-      .select()
-      .from(queries)
-      .where(eq(queries.adId, listingId))
-
-    adQueries && adQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
-
-    console.log("Ad queries query successful")
-    return adQueries
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const adQueries = await db.execute(sql.raw(
+      `
+        SELECT * FROM queries 
+        WHERE "adId" = '${listingId}'; 
+      `
+    ))
+    const offers = adQueries.rows.filter(item => item.adId === listingId)
+    console.log("Author queries query successful")
+    return offers
   } catch (error) {
-    console.error("Server error: Failed to fetch ad queries - ", error)
+    console.error("Server error: Failed to fetch author queries - ", error)
   }
 }
 
 // Get User Queries
-export async function getUserQueries(userId: string, listingId: string) {
+export async function getQueriesUser(listingId: string) {
   try {
-    const adQueries = await db
-      .select()
-      .from(queries)
-      .where(and(eq(queries.adId, listingId), eq(queries.userId, userId)))
-
-    adQueries && adQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
-
-    console.log("User ad queries query successful")
-    return adQueries
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const adQueries = await db.execute(sql.raw(
+      `
+        SELECT * FROM queries 
+        WHERE "userId" = '${userId}'; 
+      `
+    ))
+    const offers = adQueries.rows.filter(item => item.adId === listingId)
+    console.log("User queries query successful")
+    return offers
   } catch (error) {
-    console.error("Server error: Failed to fetch user ad queries - ", error)
+    console.error("Server error: Failed to fetch user queries - ", error)
   }
 }
 

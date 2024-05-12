@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { useGetQueries } from "../../server/services"
+import { useGetQueriesAuthor } from "../../server/services"
 import { listingsType } from "@/src/types/db"
 
 interface MintQAParams {
@@ -8,10 +8,13 @@ interface MintQAParams {
 }
 
 export default function MintQA({ listing }: MintQAParams) {
-  const id = listing.id
+  const listingId = listing.id
 
-  const queries = useGetQueries(id).data
-  const isReFetching = useGetQueries(id).isRefetching
+  const queries = useGetQueriesAuthor(listingId).data || []
+  const isReFetching = useGetQueriesAuthor(listingId).isRefetching
+  queries && queries.sort((a: any, b: any) => b.createdAt! - a.createdAt!)
+
+  console.log('Q&A Queries', queries)
 
   return (
     <div className="mt-5">

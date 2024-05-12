@@ -1,6 +1,6 @@
 "use client"
 import { useQuery } from "@tanstack/react-query"
-
+import axios from "axios"
 import {
   roomType,
   listingsType,
@@ -10,46 +10,53 @@ import {
   userType,
 } from "../types/db"
 import {
-  getAdOffers,
-  getAdQueries,
-  getUserQueries,
+  getQueriesAuthor,
+  getQueriesUser,
   getListings,
   getNotifications,
   getBucket,
   getWishlist,
   getChatrooms,
   getMessages,
-  getUserOffers
+  getOffersAuthor,
+  getOffersUser,
 } from "./actions"
 
-export function useGetQueries(listingId: any) {
+// GET AUTHOR QUERIES
+export function useGetQueriesAuthor(listingId: any) {
   return useQuery<queryType[]>({
-    queryKey: ["adQueries"],
-    queryFn: () => listingId && getAdQueries(listingId),
+    queryKey: ["authorQueries", listingId],
+    queryFn: () => listingId && getQueriesAuthor(listingId),
   })
 }
 
-export function useGetUserQueries(userId: any, listingId: any) {
+// GET USER QUERIES
+export function useGetQueriesUser(listingId: any) {
   return useQuery<queryType[]>({
-    queryKey: ["userQueries"],
-    queryFn: () => listingId && getUserQueries(userId, listingId),
+    queryKey: ["userQueries", listingId],
+    queryFn: () => listingId && getQueriesUser(listingId),
   })
 }
 
-export function useGetOffers(listingId: any) {
+// GET AUTHOR OFFERS
+export function useGetOffersAuthor(listingId: any) {
   return useQuery<offerType[]>({
-    queryKey: ["adOffers"],
-    queryFn: () => listingId && getAdOffers(listingId),
+    queryKey: ["authorOffers", listingId],
+    queryFn: () => listingId && getOffersAuthor(listingId),
+    refetchOnMount: true,
   })
 }
 
-export function useGetUserOffers(userId: any, listingId: any) {
+// GET USER OFFERS
+export function useGetOffersUser(listingId: any) {
   return useQuery<offerType[]>({
-    queryKey: ["userOffers"],
-    queryFn: () => userId && getUserOffers(userId, listingId),
+    queryKey: ["userOffers", listingId],
+    queryFn: () => listingId && getOffersUser(listingId),
+    refetchOnMount: true,
   })
 }
 
+// GET WISHLIST
 export function useGetWishlist() {
   return useQuery({
     queryKey: ["wishlist"],
@@ -57,6 +64,7 @@ export function useGetWishlist() {
   })
 }
 
+// GET BUCKET
 export function useGetBucket() {
   return useQuery({
     queryKey: ["getBucket"],
@@ -64,13 +72,13 @@ export function useGetBucket() {
   })
 }
 
+// GET NOTIFICATIONS
 export function useGetNotifications() {
   return useQuery({
     queryKey: ["notify"],
     queryFn: getNotifications,
   })
 }
-
 
 // export function useGetListing(mintId: any) {
 //   return useQuery<listingsType>({
@@ -79,6 +87,7 @@ export function useGetNotifications() {
 //   })
 // }
 
+// GET CHATROOM
 export function useGetChatrooms(mintId: any) {
   return useQuery<roomType[]>({
     queryKey: ["chatroom"],
@@ -86,6 +95,7 @@ export function useGetChatrooms(mintId: any) {
   })
 }
 
+// GET MESSAGES
 export function useGetMessages(roomId: any) {
   return useQuery<messagesType[]>({
     queryKey: ["messages"],

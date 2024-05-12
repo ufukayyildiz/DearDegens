@@ -25,11 +25,11 @@ import axios from "axios"
 import { HelpCircle, Loader2 } from "lucide-react"
 import { z } from "zod"
 import { useQueryClient } from "@tanstack/react-query"
+import { useGetQueriesUser } from "@/src/server/services"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
 import { listingsType } from "@/src/types/db"
-import { useGetUserQueries } from "@/src/server/services"
 import { useSession } from "next-auth/react"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
@@ -56,26 +56,26 @@ export default function MintQuery({ listing }: MintQueryProps) {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
 
-  // const queries = useGetUserQueries(session?.user.id, listing.id).data || []
+  const queries = useGetQueriesUser(listing.id).data || []
 
-  // useEffect(() => {
-  //   if (queries.length >= 3) {
-  //     setIsLimited(true)
-  //   }
-  // }, [queries])
+  useEffect(() => {
+    if (queries.length >= 3) {
+      setIsLimited(true)
+    }
+  }, [queries])
 
-  // useEffect(() => {
-  //   const element: Element | null = document.querySelector("#query")
-  //   if (element) {
-  //     element.addEventListener("mouseover", (event) => {
-  //       setHover(true)
-  //     })
+  useEffect(() => {
+    const element: Element | null = document.querySelector("#query")
+    if (element) {
+      element.addEventListener("mouseover", (event) => {
+        setHover(true)
+      })
 
-  //     element.addEventListener("mouseout", (event) => {
-  //       setHover(false)
-  //     })
-  //   }
-  // }, [isLimited])
+      element.addEventListener("mouseout", (event) => {
+        setHover(false)
+      })
+    }
+  }, [isLimited])
 
   const form = useForm({
     validatorAdapter: zodValidator,
@@ -151,7 +151,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({
-          queryKey: ["adQueries"],
+          queryKey: ["queries", listing.id],
         })
       }
     },
@@ -174,7 +174,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
           {isLimited && (
             <div
               className={cn(
-                "absolute -top-12 flex h-10 w-40 rounded-lg border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+                "absolute -top-16 flex h-10 w-40 rounded-lg border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
                 hover && "opacity-1 transition duration-75"
               )}
             >

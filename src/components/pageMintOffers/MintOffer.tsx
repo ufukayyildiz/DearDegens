@@ -14,12 +14,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/src/components/components-ui/AlertDialog"
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@radix-ui/react-tooltip"
+
 import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import {
@@ -29,6 +24,7 @@ import {
 import { zodResolver } from "@hookform/resolvers/zod"
 import { useMutation } from "@tanstack/react-query"
 import { useQueryClient } from "@tanstack/react-query"
+import { useGetOffersUser } from "@/src/server/services"
 import axios from "axios"
 import { useForm } from "react-hook-form"
 import { z } from "zod"
@@ -45,7 +41,6 @@ import {
 import { Input } from "../components-ui/Input"
 import { Label } from "../components-ui/Label"
 import { listingsType, offerType } from "@/src/types/db"
-import { useGetUserOffers } from "@/src/server/services"
 import { cn } from "@/src/lib/utils"
 
 interface MintProps {
@@ -62,26 +57,26 @@ export default function MintOffer({ listing }: MintProps) {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
 
-  // const offers = useGetUserOffers(session?.user.id, listing.id).data
+  const offers = useGetOffersUser(listing.id).data || []
 
-  // useEffect(() => {
-  //   if (offers && offers.length >= 2) {
-  //     setOfferLimit(true)
-  //   }
-  // }, [offers])
+  useEffect(() => {
+    if (offers && offers.length >= 2) {
+      setOfferLimit(true)
+    }
+  }, [offers])
 
-  // useEffect(() => {
-  //   const element: Element | null = document.querySelector("#button")
-  //   if (!offerLimit && element) {
-  //     element.addEventListener("mouseover", (event) => {
-  //       setHover(true)
-  //     })
+  useEffect(() => {
+    const element: Element | null = document.querySelector("#button")
+    if (!offerLimit && element) {
+      element.addEventListener("mouseover", (event) => {
+        setHover(true)
+      })
 
-  //     element.addEventListener("mouseout", (event) => {
-  //       setHover(false)
-  //     })
-  //   }
-  // }, [])
+      element.addEventListener("mouseout", (event) => {
+        setHover(false)
+      })
+    }
+  }, [])
 
   const form = useForm<FormData>({
     resolver: zodResolver(validateOffer),
@@ -122,16 +117,23 @@ export default function MintOffer({ listing }: MintProps) {
         variant: "destructive",
       })
     },
-    onSuccess: () => {
+    onSuccess: (data) => {
       return toast({
         description: "Your offer is on the way to the seller.",
       })
     },
-    onSettled: async (_, error) => {
+    onSettled: async (_, error, data) => {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["adOffers"] })
+        // await queryClient.invalidateQueries({
+        //   queryKey: ["userOffers", listing.id]
+        // })
+        await queryClient.refetchQueries({
+          queryKey: ["userOffers", listing.id],
+          type: "all",
+          exact: true,
+        })
       }
     },
   })
