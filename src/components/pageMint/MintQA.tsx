@@ -14,8 +14,6 @@ export default function MintQA({ listing }: MintQAParams) {
   const isReFetching = useGetQueriesAuthor(listingId).isRefetching
   queries && queries.sort((a: any, b: any) => b.createdAt! - a.createdAt!)
 
-  console.log('Q&A Queries', queries)
-
   return (
     <div className="mt-5">
       {!isReFetching ? (

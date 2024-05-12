@@ -8,7 +8,7 @@ import {
   useGetOffersAuthor,
   useGetOffersUser,
   useGetQueriesAuthor,
-  useGetQueriesUser
+  useGetQueriesUser,
 } from "@/src/server/services"
 import { offerType } from "@/src/types/db"
 
@@ -26,14 +26,22 @@ export default function MintManager({ listing }: MintManagerProps) {
   const authorOffers = useGetOffersAuthor(listingId).data || []
   const authorLoading = useGetOffersAuthor(listingId).isLoading
 
-  userOffers && userOffers.sort((a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!)
-  authorOffers && authorOffers.sort((a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!)
+  userOffers &&
+    userOffers.sort(
+      (a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!
+    )
+  authorOffers &&
+    authorOffers.sort(
+      (a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!
+    )
 
   const userQueries = useGetQueriesUser(listingId).data || []
   const authorQueries = useGetQueriesAuthor(listingId).data || []
 
-  userQueries && userQueries.sort((a: any, b: any) => a.createdAt! - b.createdAt!)
-  authorQueries && authorQueries.sort((a: any, b: any) => a.createdAt! - b.createdAt!)
+  userQueries &&
+    userQueries.sort((a: any, b: any) => a.createdAt! - b.createdAt!)
+  authorQueries &&
+    authorQueries.sort((a: any, b: any) => a.createdAt! - b.createdAt!)
 
   return (
     <div>

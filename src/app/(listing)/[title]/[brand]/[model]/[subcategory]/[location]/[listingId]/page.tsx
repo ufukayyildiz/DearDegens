@@ -1,7 +1,5 @@
 import React from "react"
 import MintCarousel from "@/src/components/pageMint/MintCarousel"
-import MintPageAuthorActions from "@/src/components/pageMint/MintPageAuthorActions"
-import MintPageUsersActions from "@/src/components/pageMint/MintPageUsersActions"
 import MintQA from "@/src/components/pageMint/MintQA"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
 import MintList from "@/src/components/pageMint/MintList"
@@ -12,13 +10,7 @@ import MintSoldRenew from "@/src/components/pageMint/MintSoldRenew"
 import MintManager from "@/src/components/pageMint/MintManager"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
-import {
-  getAdOffers,
-  getAdQueries,
-  getListings,
-  getUserOffers,
-  getUserQueries,
-} from "@/src/server/actions"
+
 import { db } from "@/src/server/db"
 import { listings, queries, offers } from "@/src/server/db/schema"
 import { listingsType, queryType } from "@/src/types/db"

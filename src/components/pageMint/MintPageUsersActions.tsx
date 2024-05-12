@@ -17,11 +17,14 @@ interface UserActionsProps {
   isLoading: boolean
 }
 
-export default function MintPageUsersActions({ offers, queries, listing, isLoading }: UserActionsProps) {
+export default function MintPageUsersActions({
+  offers,
+  queries,
+  listing,
+  isLoading,
+}: UserActionsProps) {
   const { data: session } = useSession()
   const userId = session?.user.id!
-
-
 
   return (
     <div className="flex w-full justify-end">

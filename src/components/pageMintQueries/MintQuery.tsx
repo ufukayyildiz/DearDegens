@@ -195,7 +195,9 @@ export default function MintQuery({ listing }: MintQueryProps) {
             >
               <AlertDialogHeader>
                 <AlertDialogTitle className="mb-5 font-bold">
-                  <span className="italic">Have a question for the seller?</span>
+                  <span className="italic">
+                    Have a question for the seller?
+                  </span>
                 </AlertDialogTitle>
 
                 <AlertDialogDescription>
