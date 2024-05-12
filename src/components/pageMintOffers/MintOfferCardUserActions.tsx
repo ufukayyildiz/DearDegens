@@ -13,7 +13,6 @@ import axios from "axios"
 import { Check, X } from "lucide-react"
 
 import { Button } from "../components-ui/Button"
-import { useGetListing } from "@/src/server/services"
 
 interface MintOfferCardProps {
   adOffer: offerType

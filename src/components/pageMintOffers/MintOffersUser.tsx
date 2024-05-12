@@ -2,7 +2,7 @@
 
 import React from "react"
 import { useParams } from "next/navigation"
-import { useGetOffers, useGetUserOffers } from "@/src/server/services"
+import { useGetOffersUser } from "@/src/server/services"
 import { listingsType, offerType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 
@@ -18,8 +18,8 @@ export default function MintOffersUser({ listing }: MintOffersProps) {
   const { data: session } = useSession()
   const userId = session?.user.id
 
-  const offers = useGetUserOffers(userId, listing.id).data
-  const isLoading = useGetUserOffers(userId, listing.id).isLoading
+  const offers = useGetOffersUser(userId).data
+  const isLoading = useGetOffersUser(userId).isLoading
 
   return (
     <ScrollArea className="mt-5 flex h-full flex-col pb-12 pr-5">
