@@ -7,21 +7,21 @@ import { useMutation } from "@tanstack/react-query"
 import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
+import { useGetListingById } from "@/src/server/services"
 
 interface MintRenewProps {
   listing: listingsType
 }
 
-export default function MintSoldRenew({ listing }: MintRenewProps) {
+export default function MintMarkSold({ listing }: MintRenewProps) {
   const queryClient = useQueryClient()
-
-  const [expired, setExpired] = useState<boolean>(listing.isExpired!)
+  const isFetching = useGetListingById(listing.id)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { mutate: updateIsExpired } = useMutation({
     mutationFn: async (listingId: any) => {
       setIsLoading(true)
-      await axios.patch("/api/editIsSoldRenew", listingId)
+      await axios.patch("/api/editIsSold", listingId)
     },
     onError: () => {
       setIsLoading(false)
@@ -36,11 +36,10 @@ export default function MintSoldRenew({ listing }: MintRenewProps) {
       setIsLoading(false)
       return toast({
         title: "Success!",
-        description: "Successfully marked your listing as not yet sold.",
+        description: "Successfully marked your listing as sold.",
       })
     },
     onSettled: async (_, error) => {
-      setExpired(false)
       if (error) {
         console.log("onSettled error:", error)
       } else {
@@ -53,13 +52,15 @@ export default function MintSoldRenew({ listing }: MintRenewProps) {
     <div>
       <Button
         variant="outlineTwo"
-        className="w-[160px]"
+        className="w-32"
         onClick={() => updateIsExpired(JSON.stringify(listing.id))}
       >
         {isLoading ? (
           <Loader2 className="h-5 w-5 animate-spin" />
+        ) : isFetching ? (
+          <span>Mark As Sold</span>
         ) : (
-          <span>Mark As Available</span>
+          <span className="text-muted-foreground">Mark As Sold</span>
         )}
       </Button>
     </div>

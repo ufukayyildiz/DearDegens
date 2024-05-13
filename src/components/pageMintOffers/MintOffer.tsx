@@ -15,7 +15,6 @@ import {
   AlertDialogTrigger,
 } from "@/src/components/components-ui/AlertDialog"
 
-import { Button } from "@/src/components/components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import {
   OfferCreationRequest,
@@ -58,6 +57,7 @@ export default function MintOffer({ listing }: MintProps) {
   const { data: session } = useSession()
 
   const offers = useGetOffersUser(listing.id).data || []
+  const isFetching = useGetOffersUser(listing.id).isFetching
 
   useEffect(() => {
     if (offers && offers.length >= 2) {
@@ -127,7 +127,7 @@ export default function MintOffer({ listing }: MintProps) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({
-          queryKey: ["userOffers", listing.id]
+          queryKey: ["userOffers", listing.id],
         })
         // await queryClient.refetchQueries({
         //   queryKey: ["userOffers", listing.id],
@@ -155,7 +155,11 @@ export default function MintOffer({ listing }: MintProps) {
   return (
     <div>
       <AlertDialog>
-        {!listing.isSold && (
+        {isFetching ? (
+          <AlertDialogTrigger className="relative h-10 w-32 rounded-lg border-2 border-customAccentTwo font-bold text-muted-foreground shadow-lg">
+            <p>SEND OFFER</p>
+          </AlertDialogTrigger>
+        ) : (
           <AlertDialogTrigger
             disabled={offerLimit}
             className={cn(
@@ -182,6 +186,7 @@ export default function MintOffer({ listing }: MintProps) {
             </>
           </AlertDialogTrigger>
         )}
+
         <AlertDialogContent>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">

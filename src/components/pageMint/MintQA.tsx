@@ -11,13 +11,15 @@ export default function MintQA({ listing }: MintQAParams) {
   const listingId = listing.id
 
   const queries = useGetQueriesAuthor(listingId).data || []
-  const isReFetching = useGetQueriesAuthor(listingId).isRefetching
-  queries && queries.sort((a: any, b: any) => b.createdAt! - a.createdAt!)
+  const isFetching = useGetQueriesAuthor(listingId).isFetching
+  if (queries.length >= 0) {
+    queries.sort((a: any, b: any) => b.createdAt! - a.createdAt!)
+  }
 
   return (
     <div className="mt-5">
-      {!isReFetching ? (
-        queries &&
+      {!isFetching ? (
+        queries.length >= 0 &&
         queries.map((qa, index) => {
           if (qa.isPublic === true) {
             return (

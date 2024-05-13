@@ -68,13 +68,15 @@ export async function getNotifications() {
   }
 }
 
-// Get General Listings
-export async function getListings(decodedParam: string) {
+// Get Listing by Id
+export async function getListingById(listingId: string) {
   try {
     const listingGeneral = await db
       .select()
       .from(listings)
-      .where(eq(listings.id, decodedParam))
+      .where(eq(listings.id, listingId))
+    
+      
     console.log("General listing query successful.")
     return listingGeneral
   } catch (error) {

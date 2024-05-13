@@ -55,7 +55,9 @@ export default function MintOfferCardUserActions({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["authorOffers", adOffer.id] })
+        await queryClient.invalidateQueries({
+          queryKey: ["authorOffers", adOffer.adId],
+        })
       }
     },
   })
@@ -85,7 +87,9 @@ export default function MintOfferCardUserActions({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["authorOffers", adOffer.id] })
+        await queryClient.invalidateQueries({
+          queryKey: ["authorOffers", adOffer.adId],
+        })
       }
     },
   })
@@ -115,7 +119,9 @@ export default function MintOfferCardUserActions({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["authorOffers", adOffer.id] })
+        await queryClient.invalidateQueries({
+          queryKey: ["authorOffers", adOffer.adId],
+        })
       }
     },
   })

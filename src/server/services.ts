@@ -12,7 +12,7 @@ import {
 import {
   getQueriesAuthor,
   getQueriesUser,
-  getListings,
+  getListingById,
   getNotifications,
   getBucket,
   getWishlist,
@@ -80,12 +80,13 @@ export function useGetNotifications() {
   })
 }
 
-// export function useGetListing(mintId: any) {
-//   return useQuery<listingsType>({
-//     queryKey: ["listing"],
-//     queryFn: () => mintId && getListings(mintId),
-//   })
-// }
+// GET LISTING BY ID
+export function useGetListingById(listingId: any) {
+  return useQuery<listingsType[]>({
+    queryKey: ["listing"],
+    queryFn: () => listingId && getListingById(listingId),
+  })
+}
 
 // GET CHATROOM
 export function useGetChatrooms(mintId: any) {

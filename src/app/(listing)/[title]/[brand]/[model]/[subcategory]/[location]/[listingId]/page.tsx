@@ -4,9 +4,7 @@ import MintQA from "@/src/components/pageMint/MintQA"
 import MintOffer from "@/src/components/pageMintOffers/MintOffer"
 import MintList from "@/src/components/pageMint/MintList"
 import MintInfo from "@/src/components/pageMint/MintInfo"
-import MintRenew from "@/src/components/pageMint/MintRenew"
-import MintSold from "@/src/components/pageMint/MintSold"
-import MintSoldRenew from "@/src/components/pageMint/MintSoldRenew"
+import MintActionButton from "@/src/components/pageMintActionButton/MintActionButton"
 import MintManager from "@/src/components/pageMint/MintManager"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
@@ -55,18 +53,6 @@ export default async function MintPage({ params }: MintPageProps) {
 
   const userName = user[0].name.replace(" ", "-")
 
-  //  // OFFER QUERY
-  //  await queryClient.prefetchQuery({
-  //   queryKey: ["adOffers", listingId],
-  //   queryFn: () => listing && getAdOffers(listingId),
-  // })
-
-  // // QUERIES QUERY
-  // await queryClient.prefetchQuery({
-  //   queryKey: ["adQueries", listingId],
-  //   queryFn: () => listing && getAdQueries(listingId),
-  // })
-
   // PRICE TEXT FORMATTER
   const formatPrice = (price: any) => {
     const formatter = new Intl.NumberFormat("en-US", {
@@ -91,18 +77,11 @@ export default async function MintPage({ params }: MintPageProps) {
                     <p className="mb-5 text-3xl font-bold text-customAccent">
                       R {formatPrice(item.price)}
                     </p>
-                    {session &&
-                      (item.price &&
-                      item.title &&
-                      item.authorId !== session.user.id ? (
-                        <MintOffer listing={item} />
-                      ) : item.isExpired ? (
-                        <MintRenew listing={item} />
-                      ) : item.isSold ? (
-                        <MintSoldRenew listing={item} />
-                      ) : (
-                        <MintSold listing={item} />
-                      ))}
+                    {session?.user.id !== item.authorId ? (
+                      <MintOffer listing={item} />
+                    ) : (
+                      <MintActionButton listing={item} />
+                    )}
                   </div>
                   <h1 className="mb-2 text-2xl font-bold">{item.title}</h1>
                   <p className="text-xs italic text-secondary">

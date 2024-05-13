@@ -15,7 +15,6 @@ interface MintRenewProps {
 export default function MintRenew({ listing }: MintRenewProps) {
   const queryClient = useQueryClient()
 
-  const [expired, setExpired] = useState<boolean>(listing.isExpired!)
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { mutate: updateIsExpired } = useMutation({
@@ -40,30 +39,29 @@ export default function MintRenew({ listing }: MintRenewProps) {
       })
     },
     onSettled: async (_, error) => {
-      setExpired(false)
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["listing"] })
+        await queryClient.invalidateQueries({
+          queryKey: ["listing", listing.id],
+        })
       }
     },
   })
 
   return (
     <div>
-      {expired && (
-        <Button
-          variant="outlineTwo"
-          className="animate-bounce"
-          onClick={() => updateIsExpired(JSON.stringify(listing.id))}
-        >
-          {isLoading ? (
-            <Loader2 className="h-5 w-5 animate-spin" />
-          ) : (
-            <span>RENEW</span>
-          )}
-        </Button>
-      )}
+      <Button
+        variant="outlineTwo"
+        className="animate-bounce"
+        onClick={() => updateIsExpired(JSON.stringify(listing.id))}
+      >
+        {isLoading ? (
+          <Loader2 className="h-5 w-5 animate-spin" />
+        ) : (
+          <span>RENEW</span>
+        )}
+      </Button>
     </div>
   )
 }

@@ -7,21 +7,21 @@ import { useMutation } from "@tanstack/react-query"
 import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
+import { useGetListingById } from "@/src/server/services"
 
 interface MintRenewProps {
   listing: listingsType
 }
 
-export default function MintSold({ listing }: MintRenewProps) {
+export default function MintMarkAvailable({ listing }: MintRenewProps) {
   const queryClient = useQueryClient()
-
-  const [expired, setExpired] = useState<boolean>(listing.isExpired!)
+  const isFetching = useGetListingById(listing.id).isFetching
   const [isLoading, setIsLoading] = useState<boolean>(false)
 
   const { mutate: updateIsExpired } = useMutation({
     mutationFn: async (listingId: any) => {
       setIsLoading(true)
-      await axios.patch("/api/editIsSold", listingId)
+      await axios.patch("/api/editIsSoldRenew", listingId)
     },
     onError: () => {
       setIsLoading(false)
@@ -36,15 +36,16 @@ export default function MintSold({ listing }: MintRenewProps) {
       setIsLoading(false)
       return toast({
         title: "Success!",
-        description: "Successfully marked your listing as sold.",
+        description: "Successfully marked your listing as not yet sold.",
       })
     },
     onSettled: async (_, error) => {
-      setExpired(false)
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["listing"] })
+        await queryClient.invalidateQueries({
+          queryKey: ["listing"],
+        })
       }
     },
   })
@@ -53,13 +54,15 @@ export default function MintSold({ listing }: MintRenewProps) {
     <div>
       <Button
         variant="outlineTwo"
-        className="w-32"
+        className="w-[160px]"
         onClick={() => updateIsExpired(JSON.stringify(listing.id))}
       >
         {isLoading ? (
           <Loader2 className="h-5 w-5 animate-spin" />
+        ) : isFetching ? (
+          <span className="text-muted-foreground">Mark As Available</span>
         ) : (
-          <span>Mark As Sold</span>
+          <span>Mark As Available</span>
         )}
       </Button>
     </div>

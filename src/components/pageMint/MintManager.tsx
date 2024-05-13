@@ -3,7 +3,7 @@ import React from "react"
 import MintPageAuthorActions from "./MintPageAuthorActions"
 import MintPageUsersActions from "./MintPageUsersActions"
 import { useSession } from "next-auth/react"
-import { listingsType } from "@/src/types/db"
+import { listingsType, queryType } from "@/src/types/db"
 import {
   useGetOffersAuthor,
   useGetOffersUser,
@@ -39,9 +39,15 @@ export default function MintManager({ listing }: MintManagerProps) {
   const authorQueries = useGetQueriesAuthor(listingId).data || []
 
   userQueries &&
-    userQueries.sort((a: any, b: any) => a.createdAt! - b.createdAt!)
+    userQueries.sort((a: any, b: any) => {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    })
   authorQueries &&
-    authorQueries.sort((a: any, b: any) => a.createdAt! - b.createdAt!)
+    authorQueries.sort((a: any, b: any) => {
+      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+    })
+
+  console.log("userQueries", userQueries)
 
   return (
     <div>
