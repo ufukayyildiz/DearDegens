@@ -102,7 +102,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({
-          queryKey: ["adQueries"],
+          queryKey: ["authorQueries"],
         })
       }
     },

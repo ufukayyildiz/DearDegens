@@ -126,14 +126,14 @@ export default function MintOffer({ listing }: MintProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        // await queryClient.invalidateQueries({
-        //   queryKey: ["userOffers", listing.id]
-        // })
-        await queryClient.refetchQueries({
-          queryKey: ["userOffers", listing.id],
-          type: "all",
-          exact: true,
+        await queryClient.invalidateQueries({
+          queryKey: ["userOffers", listing.id]
         })
+        // await queryClient.refetchQueries({
+        //   queryKey: ["userOffers", listing.id],
+        //   type: "all",
+        //   exact: true,
+        // })
       }
     },
   })

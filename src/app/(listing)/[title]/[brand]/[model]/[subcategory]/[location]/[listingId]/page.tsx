@@ -10,10 +10,10 @@ import MintSoldRenew from "@/src/components/pageMint/MintSoldRenew"
 import MintManager from "@/src/components/pageMint/MintManager"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { formatTimeToNow } from "@/src/lib/utils"
-
+import Link from "next/link"
 import { db } from "@/src/server/db"
-import { listings, queries, offers } from "@/src/server/db/schema"
-import { listingsType, queryType } from "@/src/types/db"
+import { listings, queries, offers, users } from "@/src/server/db/schema"
+import { listingsType, queryType, userType } from "@/src/types/db"
 import {
   dehydrate,
   HydrationBoundary,
@@ -48,11 +48,12 @@ export default async function MintPage({ params }: MintPageProps) {
     (await db.select().from(listings).where(eq(listings.id, decodedParam))) ||
     []
 
+  const user: userType[] = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, listing[0].authorId))
 
-  const query: queryType[] =
-    (await db.select().from(queries).where(eq(queries.adId, decodedParam))) ||
-    []
-
+  const userName = user[0].name.replace(" ", "-")
 
   //  // OFFER QUERY
   //  await queryClient.prefetchQuery({
@@ -60,13 +61,11 @@ export default async function MintPage({ params }: MintPageProps) {
   //   queryFn: () => listing && getAdOffers(listingId),
   // })
 
-
   // // QUERIES QUERY
   // await queryClient.prefetchQuery({
   //   queryKey: ["adQueries", listingId],
   //   queryFn: () => listing && getAdQueries(listingId),
   // })
-
 
   // PRICE TEXT FORMATTER
   const formatPrice = (price: any) => {
@@ -116,6 +115,13 @@ export default async function MintPage({ params }: MintPageProps) {
                 <MintCarousel listing={item.images} />
                 <MintInfo listing={item} />
               </div>
+              <Link
+                className="flex w-full italic"
+                href={`/more-ads-by/${userName}/${user[0].id}`}
+              >
+                More ads by:
+                <span className="pl-2 font-bold text-customAccent">{`${user[0].name}`}</span>
+              </Link>
 
               {session?.user.id && (
                 <>
@@ -123,7 +129,7 @@ export default async function MintPage({ params }: MintPageProps) {
                   <hr className="my-2 border border-t-muted-foreground" />
                   <div className="flex min-h-[40px] justify-between">
                     <ShareButtons domain={domain} />
-                    <MintManager listing={item}/>
+                    <MintManager listing={item} />
                   </div>
                   {/* @ts-expect-error Server Component */}
                   <MintList
