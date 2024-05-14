@@ -80,6 +80,7 @@ export default async function MintPage({ params }: MintPageProps) {
                     {session?.user.id !== item.authorId ? (
                       <MintOffer listing={item} />
                     ) : (
+                      /* @ts-expect-error Server Component */
                       <MintActionButton listing={item} />
                     )}
                   </div>
