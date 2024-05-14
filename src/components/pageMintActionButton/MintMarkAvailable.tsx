@@ -8,12 +8,14 @@ import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
 import { useGetListingById } from "@/src/server/services"
+import { useRouter } from "next/navigation"
 
 interface MintRenewProps {
   listing: listingsType
 }
 
 export default function MintMarkAvailable({ listing }: MintRenewProps) {
+  const router = useRouter()
   const queryClient = useQueryClient()
   const isFetching = useGetListingById(listing.id).isFetching
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -43,6 +45,7 @@ export default function MintMarkAvailable({ listing }: MintRenewProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
+        router.refresh()
         await queryClient.invalidateQueries({
           queryKey: ["listing"],
         })
@@ -54,15 +57,15 @@ export default function MintMarkAvailable({ listing }: MintRenewProps) {
     <div>
       <Button
         variant="outlineTwo"
-        className="w-[160px]"
+        className="w-28"
         onClick={() => updateIsExpired(JSON.stringify(listing.id))}
       >
         {isLoading ? (
           <Loader2 className="h-5 w-5 animate-spin" />
         ) : isFetching ? (
-          <span className="text-muted-foreground">Mark As Available</span>
+          <span className="text-muted-foreground">AVAILABLE</span>
         ) : (
-          <span>Mark As Available</span>
+          <span>AVAILABLE</span>
         )}
       </Button>
     </div>

@@ -14,9 +14,10 @@ import { offerType } from "@/src/types/db"
 
 interface MintManagerProps {
   listing: listingsType
+  domain: string
 }
 
-export default function MintManager({ listing }: MintManagerProps) {
+export default function MintManager({ listing, domain }: MintManagerProps) {
   const { data: session } = useSession()
   const userId = session?.user.id!
   const listingId = listing.id
@@ -57,6 +58,7 @@ export default function MintManager({ listing }: MintManagerProps) {
           offers={authorOffers}
           isLoading={authorLoading}
           listing={listing}
+          domain={domain}
         />
       ) : (
         <MintPageUsersActions
@@ -64,6 +66,7 @@ export default function MintManager({ listing }: MintManagerProps) {
           offers={userOffers}
           isLoading={userLoading}
           listing={listing}
+          domain={domain}
         />
       )}
     </div>

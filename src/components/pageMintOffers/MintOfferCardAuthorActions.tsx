@@ -108,7 +108,7 @@ export default function MintOfferCardAuthorActions({
     },
     onSuccess: () => {
       return toast({
-        title: "Wahp wahp waaah!",
+        title: "Success!",
         description: `The offer of R ${adOffer.offerPrice} was successfully declined.`,
       })
     },
@@ -134,7 +134,7 @@ export default function MintOfferCardAuthorActions({
       <div className="flex w-1/2 items-end justify-end gap-1">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger className="focus-visible:outline-none">
               <Button
                 variant="icon"
                 size="icon"
@@ -148,7 +148,7 @@ export default function MintOfferCardAuthorActions({
             </TooltipContent>
           </Tooltip>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger className="focus-visible:outline-none">
               <Button
                 variant="icon"
                 size="icon"
@@ -163,7 +163,7 @@ export default function MintOfferCardAuthorActions({
             </TooltipContent>
           </Tooltip>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger className="focus-visible:outline-none">
               <Button
                 variant="icon"
                 size="icon"
@@ -201,7 +201,7 @@ export default function MintOfferCardAuthorActions({
       <div className="flex w-1/2 items-end justify-end gap-1">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger className="focus-visible:outline-none">
               <Button
                 variant="icon"
                 size="icon"

@@ -19,24 +19,22 @@ export default function MintActionButton({ listing }: MintActionButtonProps) {
   const listingQuery = useGetListingById(listing.id).data || []
   const listingData = listingQuery[0]
 
-  console.log("listingData", listingData)
-
   // _______________________________________________________________________
   // CHECK IS SOLD
   const [isSold, setIsSold] = useState<boolean>(false)
   useEffect(() => {
-    if (listingData && listingData.isSold === true) {
+    if (listing && listing.isSold === true) {
       setIsSold(true)
     }
   }, [])
 
   // _______________________________________________________________________
   // RENDERS
-  if (listingData && listingData.isExpired === true) {
+  if (listing && listing.isExpired === true) {
     return <MintRenew listing={listing} />
   }
 
-  if (listingData && listingData.isExpired === false) {
+  if (listing && listing.isExpired === false) {
     return !isSold ? (
       <MintMarkSold listing={listing} />
     ) : (

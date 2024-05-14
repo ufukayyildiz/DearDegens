@@ -64,7 +64,7 @@ export default async function MintPage({ params }: MintPageProps) {
   }
 
   return (
-    <div className="flex h-auto w-full">
+    <div className="flex h-auto min-h-screen w-full">
       {/* <HydrationBoundary state={dehydrate(queryClient)}> */}
       <div className="mx-auto w-10/12 md:w-8/12">
         {listing &&
@@ -107,9 +107,8 @@ export default async function MintPage({ params }: MintPageProps) {
                 <>
                   {/* MANAGER SECTION */}
                   <hr className="my-2 border border-t-muted-foreground" />
-                  <div className="flex min-h-[40px] justify-between">
-                    <ShareButtons domain={domain} />
-                    <MintManager listing={item} />
+                  <div className="flex min-h-[40px] justify-end">
+                    <MintManager listing={item} domain={domain}/>
                   </div>
                   {/* @ts-expect-error Server Component */}
                   <MintList

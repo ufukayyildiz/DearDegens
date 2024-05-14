@@ -17,6 +17,7 @@ interface UserActionsProps {
   offers: offerType[]
   queries: queryType[]
   isLoading: boolean
+  domain: string
 }
 
 export default function MintPageAuthorActions({
@@ -24,6 +25,7 @@ export default function MintPageAuthorActions({
   queries,
   listing,
   isLoading,
+  domain,
 }: UserActionsProps) {
   const { data: session } = useSession()
   const userId = session?.user.id!
@@ -31,6 +33,7 @@ export default function MintPageAuthorActions({
   return (
     <div className="flex w-full justify-end">
       <div className="flex w-full justify-end space-x-2">
+        <ShareButtons domain={domain} />
         <MintManageOffers offers={offers} isLoading={isLoading} />
         <MintManageQueries queries={queries} userId={userId} />
         <Link

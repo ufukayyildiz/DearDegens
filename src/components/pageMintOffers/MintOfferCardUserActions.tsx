@@ -155,7 +155,7 @@ export default function MintOfferCardUserActions({
       <div className="flex w-1/2 items-end justify-end gap-1">
         <TooltipProvider>
           <Tooltip>
-            <TooltipTrigger>
+            <TooltipTrigger className="focus-visible:outline-none">
               <Button
                 onClick={() => offerBuyerDecline()}
                 variant="icon"

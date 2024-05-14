@@ -7,12 +7,14 @@ import { useMutation } from "@tanstack/react-query"
 import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Loader2 } from "lucide-react"
+import { useRouter } from "next/navigation"
 
 interface MintRenewProps {
   listing: listingsType
 }
 
 export default function MintRenew({ listing }: MintRenewProps) {
+  const router = useRouter()
   const queryClient = useQueryClient()
 
   const [isLoading, setIsLoading] = useState<boolean>(false)
@@ -42,6 +44,7 @@ export default function MintRenew({ listing }: MintRenewProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
+        router.refresh()
         await queryClient.invalidateQueries({
           queryKey: ["listing", listing.id],
         })

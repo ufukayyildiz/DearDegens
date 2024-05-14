@@ -210,7 +210,7 @@ export default function CreateListing() {
   })
 
   return (
-    <div className="mx-auto mb-32 flex w-11/12 flex-col py-10 md:w-8/12">
+    <div className="mx-auto mb-32 flex min-h-screen w-11/12 flex-col py-10 md:w-8/12">
       {/* LISTING IMAGES */}
       <ListingSelectImage
         defaultImages={defaultImages}
