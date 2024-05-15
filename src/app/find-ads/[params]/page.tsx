@@ -6,7 +6,7 @@ import axios from "axios"
 import MintFilter from "@/src/components/pageMintFilter/MintFilter"
 import { Button } from "@/src/components/components-ui/Button"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
-import { Loader2, Filter } from "lucide-react"
+import { Loader2, Filter, Search } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -111,7 +111,12 @@ export default function FindAds() {
           </div>
         ) : listings[0] !== undefined ? (
           <CardsFeed listings={listings} />
-        ) : null}
+        ) : (
+          <div className="flex  h-40 w-full items-center justify-center gap-5">
+            <Search size={30} />
+            <p className="text-center italic">No results found</p>
+          </div>
+        )}
         {isFetchingNextPage ? (
           <div className="flex justify-center py-10">
             {/* <Loader2 className="h-10 w-10 animate-spin text-zinc-500" /> */}

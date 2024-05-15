@@ -63,17 +63,18 @@ export async function GET(req: Request) {
           AND ('${location}' = '' OR "location" = '${location}')
           AND "price" > '${priceMin}'
           AND "price" < '${priceMax}'
-          AND "mileage" > '${mileageMin}'
-          AND "mileage" < '${mileageMax}'
-          AND "year" > '${yearMin}'
-          AND "year" < '${yearMax}'
-          AND ('${transmission}' = '' OR "transmission" = '${transmission}')
+          AND (('${mileageMin}' = '' OR "mileage" IS NULL) OR "mileage" >= '${mileageMin}')
+          AND (('${mileageMax}' = '' OR "mileage" IS NULL) OR "mileage" <= '${mileageMax}')
+          AND (('${yearMin}' = '' OR "year" IS NULL) OR "year" >= '${yearMin}')
+          AND (('${yearMax}' = '' OR "year" IS NULL) OR "year" <= '${yearMax}')
+          AND (('${transmission}' = '' OR "transmission" IS NULL) OR "transmission" = '${transmission}')
           ORDER BY "createdAt" DESC
           OFFSET ${offset}
           LIMIT ${parseInt(limit)}; 
         `
       )
     )
+
 
     return new Response(JSON.stringify(result), { status: 200 })
   } catch (error) {
