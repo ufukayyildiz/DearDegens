@@ -110,7 +110,7 @@ export default async function MintPage({ params }: MintPageProps) {
                   <div className="flex min-h-[40px] justify-end">
                     <MintManager listing={item} domain={domain}/>
                   </div>
-                  {/* @ts-expect-error Server Component */}
+                  {/* @ts-ignore */}
                   <MintList
                     items={item.items}
                     adId={item.id}
