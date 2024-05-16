@@ -215,7 +215,7 @@ export default function EditListing({ listing }: EditListingProps) {
   })
 
   return (
-    <div className="mx-auto mb-44 flex min-h-screen w-11/12 flex-col py-10 sm:w-8/12">
+    <div className="mx-auto mb-52 flex min-h-screen w-11/12 flex-col py-10 sm:w-8/12">
       {/* LISTING IMAGES */}
       <ListingSelectImage
         defaultImages={defaultImages}

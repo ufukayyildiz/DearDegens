@@ -11,7 +11,7 @@ export default function Footer() {
             support@deardegens.com
           </p>
           <Link
-            href="/termsofservice"
+            href="/user-guide"
             className="flex w-full justify-center text-center"
           >
             DearDegens User Guide
