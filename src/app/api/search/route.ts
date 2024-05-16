@@ -54,7 +54,7 @@ export async function GET(req: Request) {
       sql.raw(
         `
           SELECT * FROM listings 
-          WHERE tsvector_title @@ to_tsquery('${searchString}')
+          WHERE tsvector_title @@ to_tsquery('${searchString}:*')
           AND "isExpired" = 'f'
           AND "isSold" = 'f'
           AND ('${tab}' = '' OR "tab" = '${tab}')
@@ -75,6 +75,7 @@ export async function GET(req: Request) {
       )
     )
 
+    console.log("search results:", result)
 
     return new Response(JSON.stringify(result), { status: 200 })
   } catch (error) {

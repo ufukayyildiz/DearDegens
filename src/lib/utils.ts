@@ -6,6 +6,8 @@ import { twMerge } from "tailwind-merge"
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs))
 }
+const currentDate = new Date()
+export const currentYear = currentDate.getFullYear()
 
 const formatDistanceLocale = {
   lessThanXSeconds: "just now",

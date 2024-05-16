@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
 import {
   Carousel,
   CarouselContent,
@@ -10,15 +10,21 @@ import {
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
 import CarouselMintCardComponent from "../componentsCards/CarouselMintCardComponent"
-import { Plus } from "lucide-react"
+import { Plus, Loader2 } from "lucide-react"
 import "@splidejs/react-splide/css/core"
 import { Button } from "../components-ui/Button"
+import { listingsType } from "@/src/types/db"
+import { queryLimit } from "@/src/server/queryLimit"
 
-export default function HomeCarousel() {
+interface HomeCarouselProps {
+  initListing: listingsType[]
+}
+
+export default function HomeCarousel({ initListing }: HomeCarouselProps) {
   const fetchListings = async ({ pageParam }: any) => {
     try {
       const response = await axios.get(
-        `/api/getHomepage?page=${pageParam}&limit=${4}`
+        `/api/getHomepage?page=${pageParam}&limit=${queryLimit}`
       )
       return response.data
     } catch (error) {
@@ -28,15 +34,27 @@ export default function HomeCarousel() {
 
   const { data, fetchNextPage, isFetchingNextPage, isFetching } =
     useInfiniteQuery({
-      queryKey: ["results"],
+      queryKey: ["home"],
       queryFn: fetchListings,
       initialPageParam: 1,
       getNextPageParam: (_, pages) => {
         return pages.length + 1
       },
+      initialData: {
+        pages: [initListing.slice(0, queryLimit)],
+        pageParams: [1],
+      },
     })
 
   const listings = data?.pages.flatMap((page) => page.rows) || [""]
+  let sortedListings: listingsType[] = []
+  const sortListings = listings.map((item) => {
+    if (item !== undefined) {
+      sortedListings.push(item)
+    }
+  })
+
+  const listingsData: listingsType[] = [...data.pages[0], ...sortedListings]
 
   return (
     <div>
@@ -49,22 +67,26 @@ export default function HomeCarousel() {
         className="h-full w-full"
       >
         <CarouselContent className="ml-0 flex">
-          {!isFetching &&
-            listings.map((listing: any, index: any) => (
-              <CarouselItem
-                key={index}
-                tabIndex={index}
-                className="basis-auto p-5"
-              >
-                <CarouselMintCardComponent listing={listing} />
-              </CarouselItem>
-            ))}
+          {listingsData.map((listing: listingsType, index: any) => (
+            <CarouselItem
+              key={index}
+              tabIndex={index}
+              className="flex basis-auto flex-row p-5"
+            >
+              <CarouselMintCardComponent listing={listing} />
+            </CarouselItem>
+          ))}
+
           <CarouselItem className="basis-auto p-5">
             <Button
               onClick={() => fetchNextPage()}
               className="h-60 w-40  rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:bg-background"
             >
-              <Plus className="h-20 w-20 animate-pulse text-muted" />
+              {!isFetchingNextPage ? (
+                <Plus className="h-20 w-20 animate-pulse text-muted" />
+              ) : (
+                <Loader2 className="h-20 w-20 animate-spin text-muted" />
+              )}
             </Button>
           </CarouselItem>
         </CarouselContent>

@@ -20,7 +20,11 @@ export default function SearchbarTop() {
     await queryClient.invalidateQueries({
       queryKey: ["results"],
     })
-    router.push(`/find-ads/${searchParams}`)
+    if (searchParams !== "") {
+      router.push(`/find-ads/${searchParams}`)
+    } else {
+      router.push(`/find-ads/no-result`)
+    }
   }
 
   useEffect(() => {

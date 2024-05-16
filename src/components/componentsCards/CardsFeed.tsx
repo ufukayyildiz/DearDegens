@@ -11,7 +11,7 @@ interface CardFeedProps {
 }
 
 export default function CardsFeed({ listings }: CardFeedProps) {
-  const isAboveMediumScreens = useMediaQuery("(min-width: 1020px)")
+  const isAboveMediumScreens = useMediaQuery("(min-width: 768px)")
   const isAboveSmallScreens = useMediaQuery("(min-width: 465px)")
   return isAboveMediumScreens ? (
     <div className="flex flex-col justify-center gap-5 px-5 py-5">

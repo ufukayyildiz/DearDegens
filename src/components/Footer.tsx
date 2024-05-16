@@ -1,5 +1,6 @@
 import React from "react"
 import Link from "next/link"
+import { currentYear } from "../lib/utils"
 
 export default function Footer() {
   return (
@@ -34,7 +35,7 @@ export default function Footer() {
       </div>
 
       <p className="my-auto h-auto w-full justify-center text-center text-xs">
-        Copyright © 2024 - Developed by{" "}
+        <span>Copyright © {currentYear} - Developed by </span>
         <a href="https://www.buidl.co.za" target="_blank" rel="noreferrer">
           Buidl.co.za
         </a>{" "}

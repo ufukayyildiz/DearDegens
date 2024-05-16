@@ -12,6 +12,8 @@ import { Input } from "../components-ui/Input"
 import { listingCategories } from "@/src/lib/categories/AdCategories"
 import { southAfricaSearch } from "@/src/lib/locations/southAfricaSearch"
 import { ScrollArea } from "../components-ui/ScrollArea"
+import { useQueryClient } from "@tanstack/react-query"
+import { currentYear } from "@/src/lib/utils"
 
 interface MintFilterProps {
   setFilterCallback: (data: any) => void
@@ -50,6 +52,8 @@ export default function MintFilter({
     initPayload.transmission
   )
 
+  const queryClient = useQueryClient()
+
   const mainCategories = listingCategories.filter((item, index) => {
     if (item.type === type) {
       return item.categories.map((sub) => sub)
@@ -80,8 +84,9 @@ export default function MintFilter({
     transmission: transmission,
   })
 
-  const sendSetFilterCallback = (payload: any) => {
+  const sendSetFilterCallback = async (payload: any) => {
     setFilterCallback(payload)
+    await queryClient.invalidateQueries({ queryKey: ["results"] })
   }
 
   useEffect(() => {
@@ -115,6 +120,22 @@ export default function MintFilter({
     yearMax,
     transmission,
   ])
+
+  const setDefaultPayload = async () => {
+    setType("")
+    setCategory("")
+    setSubCategory("")
+    setPriceMin(0)
+    setPriceMax(9999999)
+    setLocation("")
+    setMileageMin(0)
+    setMileageMax(300000)
+    setYearMin(1900)
+    setYearMax(currentYear)
+    setTransmission("")
+    setFilterCallback(payload)
+    await queryClient.invalidateQueries({ queryKey: ["results"] })
+  }
 
   console.log("payload:", payload)
 
@@ -241,10 +262,7 @@ export default function MintFilter({
               id="priceMin"
               placeholder=""
               defaultValue={priceMin}
-              onChange={(event) =>
-                /* @ts-ignore */
-                setPriceMin(parseInt(event.target.value))
-              }
+              onChange={(event) => setPriceMin(parseInt(event.target.value))}
             />
           </div>
           <div>
@@ -254,10 +272,7 @@ export default function MintFilter({
               id="priceMax"
               placeholder=""
               defaultValue={priceMax}
-              onChange={(event) =>
-                /* @ts-ignore */
-                setPriceMax(parseInt(event.target.value))
-              }
+              onChange={(event) => setPriceMax(parseInt(event.target.value))}
             />
           </div>
         </div>
@@ -273,7 +288,6 @@ export default function MintFilter({
                   placeholder=""
                   defaultValue={mileageMin}
                   onChange={(event) =>
-                    /* @ts-ignore */
                     setMileageMin(parseInt(event.target.value))
                   }
                 />
@@ -286,7 +300,6 @@ export default function MintFilter({
                   placeholder=""
                   defaultValue={mileageMax}
                   onChange={(event) =>
-                    /* @ts-ignore */
                     setMileageMax(parseInt(event.target.value))
                   }
                 />
@@ -300,10 +313,7 @@ export default function MintFilter({
                   id="yearMin"
                   placeholder=""
                   defaultValue={yearMin}
-                  onChange={(event) =>
-                    /* @ts-ignore */
-                    setYearMin(parseInt(event.target.value))
-                  }
+                  onChange={(event) => setYearMin(parseInt(event.target.value))}
                 />
               </div>
               <div>
@@ -313,10 +323,7 @@ export default function MintFilter({
                   id="yearMax"
                   placeholder=""
                   defaultValue={yearMax}
-                  onChange={(event) =>
-                    /* @ts-ignore */
-                    setYearMax(parseInt(event.target.value))
-                  }
+                  onChange={(event) => setYearMax(parseInt(event.target.value))}
                 />
               </div>
             </div>
@@ -338,14 +345,14 @@ export default function MintFilter({
             </div>
           </>
         )}
-        <div>
+        <div className="flex flex-row gap-5 pt-5">
           <Button
             variant="outlineTwo"
-            className="mt-5"
             onClick={() => sendSetFilterCallback(payload)}
           >
-            Send
+            Filter
           </Button>
+          <Button onClick={setDefaultPayload}>Reset</Button>
         </div>
       </div>
     </ScrollArea>
