@@ -21,7 +21,7 @@ export default async function MintEditPage({ params }: MintPageProps) {
     .where(eq(listings.id, decodedParam))
 
   return (
-    <div className="p-10">
+    <div>
       <EditListing listing={listing} />
     </div>
   )

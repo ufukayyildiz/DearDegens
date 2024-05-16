@@ -107,6 +107,7 @@ export default function EditListing({ listing }: EditListingProps) {
       tab: listing[0].tab || "",
       category: listing[0].category || "",
       subCategory: listing[0].subCategory || "",
+      // @ts-ignore
       price: listing[0].price || 0,
       condition: listing[0].condition || "",
       title: listing[0].title || "",
@@ -214,7 +215,7 @@ export default function EditListing({ listing }: EditListingProps) {
   })
 
   return (
-    <div className="mx-auto mb-32 flex min-h-screen w-11/12 flex-col py-10 md:w-8/12">
+    <div className="mx-auto mb-44 flex min-h-screen w-11/12 flex-col py-10 sm:w-8/12">
       {/* LISTING IMAGES */}
       <ListingSelectImage
         defaultImages={defaultImages}
@@ -399,7 +400,7 @@ export default function EditListing({ listing }: EditListingProps) {
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(event) =>
-                      /* @ts-ignore */
+                      // @ts-ignore
                       field.handleChange(event.target.value)
                     }
                   />
@@ -585,7 +586,7 @@ export default function EditListing({ listing }: EditListingProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(event) =>
-                          /* @ts-ignore */
+                          // @ts-ignore
                           field.handleChange(event.target.value)
                         }
                       />
@@ -622,7 +623,7 @@ export default function EditListing({ listing }: EditListingProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(event) =>
-                          /* @ts-ignore */
+                          // @ts-ignore
                           field.handleChange(event.target.value)
                         }
                       />
@@ -795,9 +796,9 @@ export default function EditListing({ listing }: EditListingProps) {
                                       /* @ts-ignore */
                                       value={field.state.value}
                                       onBlur={field.handleBlur}
-                                      onChange={(e) =>
-                                        /* @ts-ignore */
-                                        field.handleChange(e.target.value)
+                                      onChange={(event) =>
+                                        // @ts-ignore
+                                        field.handleChange(event.target.value)
                                       }
                                       className="w-full text-primary"
                                     />
@@ -893,7 +894,7 @@ export default function EditListing({ listing }: EditListingProps) {
             <form.Field name="meetup">
               {(field) => {
                 return (
-                  <div className="relative mb-20 w-full flex-col md:mb-10">
+                  <div className="relative w-full flex-col">
                     <div className="flex w-full justify-between">
                       <FieldLabel>Meeting preferance:</FieldLabel>
                       <FieldLabel className="py-2 text-xs italic text-rose-400">
@@ -940,7 +941,7 @@ export default function EditListing({ listing }: EditListingProps) {
               htmlFor="disable"
               className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
             >
-              Agree to{" "}
+              I have read the{" "}
               <Link href="/disclaimer" target="_blank" className="underline">
                 disclaimer
               </Link>{" "}

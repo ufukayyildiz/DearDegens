@@ -26,7 +26,7 @@ export default function MintManageOffers({
 }: ManageOffersProps) {
   return (
     <Sheet>
-      <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
+      <SheetTrigger className="group flex h-10 min-w-10 items-center justify-center hover:text-teal-500">
         <Gavel />
       </SheetTrigger>
       <SheetContent>

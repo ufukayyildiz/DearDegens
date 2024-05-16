@@ -1,9 +1,12 @@
 import { db } from "@/src/server/db"
 import { sql } from "drizzle-orm"
+import { NextResponse } from "next/server"
+
+export const revalidate = 0
 
 export async function GET() {
   try {
-    await db.execute(
+    const result = await db.execute(
       sql.raw(
         `
         UPDATE listings 
@@ -13,8 +16,10 @@ export async function GET() {
       `
       )
     )
-    
-    return new Response("Successfully updated isNew tags.", { status: 200 })
+
+    return NextResponse.json({
+      result: result,
+    })
   } catch (error) {
     console.error("Failed to update isNew tags.", error)
     return new Response("Failed to update isNew tags.", { status: 500 })

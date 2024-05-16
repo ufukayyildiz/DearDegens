@@ -49,7 +49,7 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
 
   return (
     <Sheet>
-      <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-blue-500">
+      <SheetTrigger className="group flex h-10 min-w-10 items-center justify-center hover:text-blue-500">
         <MessageCircle />
       </SheetTrigger>
       <SheetContent>

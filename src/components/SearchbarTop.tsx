@@ -9,7 +9,6 @@ import useKeyPress from "../hooks/useKeyPress"
 import { useQueryClient } from "@tanstack/react-query"
 
 export default function SearchbarTop() {
-  const isAboveMediumScreens = useMediaQuery("(min-width: 768px)")
   const queryClient = useQueryClient()
   const router = useRouter()
   const [input, setInput] = useState<string>("")

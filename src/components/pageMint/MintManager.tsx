@@ -48,10 +48,8 @@ export default function MintManager({ listing, domain }: MintManagerProps) {
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     })
 
-  console.log("userQueries", userQueries)
-
   return (
-    <div>
+    <div className="flex min-h-[40px] w-full">
       {session?.user.id === listing.authorId ? (
         <MintPageAuthorActions
           queries={authorQueries}

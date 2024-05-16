@@ -30,16 +30,14 @@ export default function MintPageUsersActions({
   const userId = session?.user.id!
 
   return (
-    <div className="flex w-full justify-end">
-      <div className=" flex w-full justify-end space-x-2">
-        <ShareButtons domain={domain} />
-        <MintAddToWishlist listing={listing} />
-        <MintManageOffers offers={offers} isLoading={isLoading} />
-        <MintManageQueries queries={queries} userId={userId} />
-        <MintQuery listing={listing} />
-        <MintReport listing={listing} />
-        <ChatSheet listingId={listing.id} />
-      </div>
+    <div className="flex w-full justify-end space-x-1 md:space-x-2">
+      <ShareButtons domain={domain} />
+      <MintAddToWishlist listing={listing} />
+      <MintManageOffers offers={offers} isLoading={isLoading} />
+      <MintManageQueries queries={queries} userId={userId} />
+      <MintQuery listing={listing} />
+      <MintReport listing={listing} />
+      <ChatSheet listingId={listing.id} />
     </div>
   )
 }

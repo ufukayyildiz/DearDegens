@@ -107,9 +107,7 @@ export default async function MintPage({ params }: MintPageProps) {
                 <>
                   {/* MANAGER SECTION */}
                   <hr className="my-2 border border-t-muted-foreground" />
-                  <div className="flex min-h-[40px] justify-end">
-                    <MintManager listing={item} domain={domain}/>
-                  </div>
+                  <MintManager listing={item} domain={domain} />
                   {/* @ts-ignore */}
                   <MintList
                     items={item.items}

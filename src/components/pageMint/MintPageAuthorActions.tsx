@@ -31,20 +31,18 @@ export default function MintPageAuthorActions({
   const userId = session?.user.id!
 
   return (
-    <div className="flex w-full justify-end">
-      <div className="flex w-full justify-end space-x-2">
-        <ShareButtons domain={domain} />
-        <MintManageOffers offers={offers} isLoading={isLoading} />
-        <MintManageQueries queries={queries} userId={userId} />
-        <Link
-          href={`/ad/edit/${listing.id}`}
-          className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"
-        >
-          <FileEdit />
-        </Link>
-        <MintDelete listingId={listing.id} />
-        <ChatSheet listingId={listing.id} />
-      </div>
+    <div className="flex w-full justify-end space-x-1 md:space-x-2">
+      <ShareButtons domain={domain} />
+      <MintManageOffers offers={offers} isLoading={isLoading} />
+      <MintManageQueries queries={queries} userId={userId} />
+      <Link
+        href={`/ad/edit/${listing.id}`}
+        className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"
+      >
+        <FileEdit />
+      </Link>
+      <MintDelete listingId={listing.id} />
+      <ChatSheet listingId={listing.id} />
     </div>
   )
 }

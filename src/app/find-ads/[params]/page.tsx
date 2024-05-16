@@ -129,7 +129,7 @@ export default function FindAds() {
               {searchParams}
             </span>
           </div>
-          <div className="fixed right-0 z-50 flex h-32 w-10  flex-col items-center justify-center gap-5 rounded-bl-3xl rounded-tl-3xl border-l-2 border-customAccent bg-background shadow-lg md:static md:h-10 md:w-32 md:flex-row md:justify-end md:rounded-full md:border-2 md:border-transparent md:shadow-none">
+          <div className="fixed right-0 z-50 flex h-32 w-12  flex-col items-center justify-center gap-5 rounded-bl-3xl rounded-tl-3xl border-l-2 border-customAccent bg-background shadow-lg md:static md:h-10 md:w-32 md:flex-row md:justify-end md:rounded-full md:border-2 md:border-transparent md:shadow-none">
             <Sheet>
               <SheetTrigger className="flex items-center justify-center rounded-full bg-background font-bold shadow-xl hover:text-customAccent md:h-10 md:w-10 md:shadow-lg">
                 <Filter size={22} />
