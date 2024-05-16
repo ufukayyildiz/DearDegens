@@ -147,6 +147,7 @@ export default function FindAds() {
 
             <DropdownMenu>
               <DropdownMenuTrigger className="z-50 flex h-10 w-10 items-center justify-center rounded-full hover:text-customAccent focus:outline-none md:shadow-lg">
+                {/* @ts-expect-error Server Component */}
                 <SortIcon state={sort} />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-background">
