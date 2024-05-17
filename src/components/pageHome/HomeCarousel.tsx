@@ -32,29 +32,18 @@ export default function HomeCarousel({ initListing }: HomeCarouselProps) {
     }
   }
 
-  const { data, fetchNextPage, isFetchingNextPage, isFetching } =
-    useInfiniteQuery({
-      queryKey: ["home"],
-      queryFn: fetchListings,
-      initialPageParam: 1,
-      getNextPageParam: (_, pages) => {
-        return pages.length + 1
-      },
-      initialData: {
-        pages: [initListing.slice(0, queryLimit)],
-        pageParams: [1],
-      },
-    })
-
-  const listings = data?.pages.flatMap((page) => page.rows) || [""]
-  let sortedListings: listingsType[] = []
-  const sortListings = listings.map((item) => {
-    if (item !== undefined) {
-      sortedListings.push(item)
-    }
+  const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
+    queryKey: ["home"],
+    staleTime: 60 * 1000,
+    refetchInterval: 60 * 1000,
+    queryFn: fetchListings,
+    initialPageParam: 1,
+    getNextPageParam: (_, pages) => {
+      return pages.length + 1
+    },
   })
 
-  const listingsData: listingsType[] = [...data.pages[0], ...sortedListings]
+  const listingsData = data?.pages.flatMap((page) => page.rows) || [""]
 
   return (
     <div>
@@ -67,15 +56,16 @@ export default function HomeCarousel({ initListing }: HomeCarouselProps) {
         className="h-full w-full"
       >
         <CarouselContent className="ml-0 flex">
-          {listingsData.map((listing: listingsType, index: any) => (
-            <CarouselItem
-              key={index}
-              tabIndex={index}
-              className="flex basis-auto flex-row p-5"
-            >
-              <CarouselMintCardComponent listing={listing} />
-            </CarouselItem>
-          ))}
+          {listingsData[0] !== "" &&
+            listingsData.map((listing: listingsType, index: any) => (
+              <CarouselItem
+                key={index}
+                tabIndex={index}
+                className="flex basis-auto flex-row p-5"
+              >
+                <CarouselMintCardComponent listing={listing} />
+              </CarouselItem>
+            ))}
 
           <CarouselItem className="basis-auto p-5">
             <Button
