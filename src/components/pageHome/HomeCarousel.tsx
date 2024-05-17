@@ -10,6 +10,7 @@ import {
 import { useInfiniteQuery } from "@tanstack/react-query"
 import axios from "axios"
 import CarouselMintCardComponent from "../componentsCards/CarouselMintCardComponent"
+import CarouselMintCardSkeleton from "../componentsCards/CarouselMintCardSkeleton"
 import { Plus, Loader2 } from "lucide-react"
 import "@splidejs/react-splide/css/core"
 import { Button } from "../components-ui/Button"
@@ -21,6 +22,7 @@ interface HomeCarouselProps {
 }
 
 export default function HomeCarousel({ initListing }: HomeCarouselProps) {
+  const mock = ["1", "2", "3", "4", "5"]
   const fetchListings = async ({ pageParam }: any) => {
     try {
       const response = await axios.get(
@@ -66,7 +68,16 @@ export default function HomeCarousel({ initListing }: HomeCarouselProps) {
                 <CarouselMintCardComponent listing={listing} />
               </CarouselItem>
             ))}
-
+          {listingsData[0] === "" &&
+            mock.map((item, index) => (
+              <CarouselItem
+                key={item}
+                tabIndex={index}
+                className="flex basis-auto flex-row p-5"
+              >
+                <CarouselMintCardSkeleton />
+              </CarouselItem>
+            ))}
           <CarouselItem className="basis-auto p-5">
             <Button
               onClick={() => fetchNextPage()}

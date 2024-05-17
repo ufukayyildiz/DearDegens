@@ -14,6 +14,7 @@ import { southAfricaSearch } from "@/src/lib/locations/southAfricaSearch"
 import { ScrollArea } from "../components-ui/ScrollArea"
 import { useQueryClient } from "@tanstack/react-query"
 import { currentYear } from "@/src/lib/utils"
+import { SheetClose } from "../components-ui/Sheet"
 
 interface MintFilterProps {
   setFilterCallback: (data: any) => void
@@ -349,10 +350,16 @@ export default function MintFilter({
           <Button
             variant="outlineTwo"
             onClick={() => sendSetFilterCallback(payload)}
+            className="w-20"
           >
             Filter
           </Button>
-          <Button onClick={setDefaultPayload}>Reset</Button>
+          <Button onClick={setDefaultPayload} className="w-20">
+            Reset
+          </Button>
+          <SheetClose className="h-10 w-20 rounded-full bg-background shadow-lg hover:bg-muted">
+            Close
+          </SheetClose>
         </div>
       </div>
     </ScrollArea>
