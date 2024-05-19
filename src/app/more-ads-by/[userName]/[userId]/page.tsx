@@ -24,7 +24,7 @@ export default async function SellerPage({ params }: SellerPageProps) {
   adListings.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
   return (
-    <div className="z-20 mx-auto mb-44 min-h-screen w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
+    <div className="z-20 mx-auto mb-52 min-h-screen w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
       <h1 className="mt-10 text-xl font-bold text-primary">
         Ads listed by:
         <span className="pl-2 font-bold text-customAccent">{`${userName}`}</span>

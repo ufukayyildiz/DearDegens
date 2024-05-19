@@ -151,8 +151,6 @@ export default function FindAds() {
                 <SortIcon state={sort} />
               </DropdownMenuTrigger>
               <DropdownMenuContent className="bg-background">
-                <DropdownMenuLabel></DropdownMenuLabel>
-                <DropdownMenuSeparator />
                 <DropdownMenuItem
                   onClick={async () => {
                     setSort("latest"),
