@@ -41,6 +41,8 @@ export default function SearchbarTop() {
   useEffect(() => {
     if (specialCharsRegex.test(input)) {
       setDisabled(true)
+    } else {
+      setDisabled(false)
     }
     specialCharacterDetected()
   }, [input])
