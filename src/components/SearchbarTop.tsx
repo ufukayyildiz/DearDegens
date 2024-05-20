@@ -4,14 +4,16 @@ import { Input } from "./components-ui/Input"
 import { Button } from "./components-ui/Button"
 import { Search } from "lucide-react"
 import { useRouter } from "next/navigation"
-import useMediaQuery from "../hooks/useMediaQuery"
 import useKeyPress from "../hooks/useKeyPress"
 import { useQueryClient } from "@tanstack/react-query"
+import { specialCharsRegex } from "../lib/regex"
+import { toast } from "../hooks/use-toast"
 
 export default function SearchbarTop() {
   const queryClient = useQueryClient()
   const router = useRouter()
   const [input, setInput] = useState<string>("")
+  const [disabled, setDisabled] = useState<boolean>(false)
   const enterKey = useKeyPress("Enter")
   const searchParams = input.replace(/ /g, "-")
 
@@ -25,6 +27,23 @@ export default function SearchbarTop() {
       router.push(`/find-ads/no-result`)
     }
   }
+
+  const specialCharacterDetected = () => {
+    if (specialCharsRegex.test(input)) {
+      return toast({
+        title: "No special characters allowed.",
+        description: "Please refrain from using spacial characters.",
+        variant: "destructive",
+      })
+    }
+  }
+
+  useEffect(() => {
+    if (specialCharsRegex.test(input)) {
+      setDisabled(true)
+    }
+    specialCharacterDetected()
+  }, [input])
 
   useEffect(() => {
     if (enterKey) {
@@ -41,6 +60,7 @@ export default function SearchbarTop() {
         onChange={(event: any) => setInput(event.target.value)}
       />
       <Button
+        disabled={disabled}
         className="relative z-30 -ml-8 flex h-10 w-[85px] items-center justify-end rounded-full bg-customAccent text-zinc-100 hover:text-customAccent"
         onClick={() => {
           handleSearch()

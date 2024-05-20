@@ -1,6 +1,5 @@
 import React from "react"
 import Image from "next/image"
-import MintCardComponent from "@/src/components/componentsCards/MintCardComponent"
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"

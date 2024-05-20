@@ -1,7 +1,7 @@
 import React from "react"
 import { db } from "@/src/server/db"
 import { listings, users } from "@/src/server/db/schema"
-import { eq } from "drizzle-orm"
+import { eq, and, not } from "drizzle-orm"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
 
 interface SellerPageProps {
@@ -19,7 +19,7 @@ export default async function SellerPage({ params }: SellerPageProps) {
   const adListings = await db
     .select()
     .from(listings)
-    .where(eq(listings.authorId, userId))
+    .where(and(eq(listings.authorId, userId), eq(listings.isExpired, false)))
 
   adListings.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
