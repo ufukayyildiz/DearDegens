@@ -3,6 +3,8 @@ import { eq } from "drizzle-orm"
 import type { NextAuthOptions } from "next-auth"
 import { getServerSession } from "next-auth"
 import GoogleProvider from "next-auth/providers/google"
+import CredentialsProvider from "next-auth/providers/credentials"
+import bcrypt from "bcrypt"
 
 import { users } from "../../server/db/schema"
 import { DrizzleAdapter } from "./drizzle-adapter"
@@ -20,6 +22,23 @@ export const authOptions: NextAuthOptions = {
     GoogleProvider({
       clientId: process.env.GOOGLE_CLIENT_ID as string,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET as string,
+    }),
+    CredentialsProvider({
+      credentials: {
+        email: {},
+        password: {},
+      },
+      async authorize(credentials) {
+        if (!credentials) return null
+
+        const { email, password } = credentials
+        const user = await db.select().from(users).where(eq(users.email, email))
+        if (user && bcrypt.compareSync(password, user[0].password)) {
+          return { id: user[0].id, name: user[0].name, email: user[0].email }
+        } else {
+          throw new Error("Invalid credentials")
+        }
+      },
     }),
   ],
   callbacks: {
@@ -54,9 +73,9 @@ export const authOptions: NextAuthOptions = {
         picture: dbUser.image,
       }
     },
-    redirect() {
-      return "/"
-    },
+    // redirect() {
+    //   return "/profile"
+    // },
   },
 }
 

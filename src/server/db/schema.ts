@@ -92,6 +92,7 @@ export const users = pgTable(
     name: varchar("name", { length: 255 }),
     email: varchar("email", { length: 255 }).notNull(),
     emailVerified: timestamp("emailVerified"),
+    password: varchar("password", { length: 255 }).notNull().default(""),
     image: varchar("image", { length: 255 }),
     imageBucket: text("imageBucket").default(""),
     wishlist: varchar("wishlist", { length: 191 }).references(
