@@ -3,6 +3,7 @@ import React, { useState, useEffect } from "react"
 import { useParams } from "next/navigation"
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
+import MintFilterCategories from "@/src/components/pageMintFilter/MintFilterCategories"
 import MintFilter from "@/src/components/pageMintFilter/MintFilter"
 import { Button } from "@/src/components/components-ui/Button"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
@@ -26,17 +27,13 @@ import { currentYear } from "@/src/lib/utils"
 import SortIcon from "@/src/components/pageMintFilter/SortIcon"
 import { listingsType } from "@/src/types/db"
 
-export default function FindAds() {
-  const params = useParams()
-  const paramsString = JSON.stringify(params?.params)
-  const searchParams = paramsString.replace(/-/g, " ")
+export default function FindVehicles() {
   const queryClient = useQueryClient()
-
+  const type = "Vehicles" // <------ SET PER PAGE CATEGORY
   const [sort, setSort] = useState<string>("latest")
 
   const [payload, setPayload] = useState<any>({
-    search: searchParams,
-    tab: "",
+    tab: type,
     category: "",
     subCategory: "",
     priceMin: 0,
@@ -50,12 +47,10 @@ export default function FindAds() {
     sort: sort,
   })
 
-  console.log("payload:", payload)
-
   const fetchResults = async ({ pageParam }: any) => {
     try {
       const response = await axios.get(
-        `/api/search?page=${pageParam}&limit=${queryLimit}&searchParam=${searchParams}`,
+        `/api/searchCategories?page=${pageParam}&limit=${queryLimit}`,
         { params: { payload } }
       )
       return response.data
@@ -65,7 +60,7 @@ export default function FindAds() {
   }
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["results"],
+    queryKey: [`${type}`],
     queryFn: fetchResults,
     initialPageParam: 1,
     getNextPageParam: (_, pages) => {
@@ -75,8 +70,7 @@ export default function FindAds() {
 
   const getSetFilterCallback = async (data: any) => {
     setPayload({
-      search: searchParams,
-      tab: data.tab,
+      tab: type,
       category: data.category,
       subCategory: data.subCategory,
       priceMin: data.priceMin,
@@ -89,7 +83,7 @@ export default function FindAds() {
       transmission: data.transmission,
       sort: sort,
     })
-    await queryClient.invalidateQueries({ queryKey: ["results"] })
+    await queryClient.invalidateQueries({ queryKey: [`${type}`] })
   }
 
   useEffect(() => {
@@ -130,11 +124,8 @@ export default function FindAds() {
         <div className="mt-10 flex flex-row justify-between md:items-center ">
           <div className="flex flex-col items-start justify-start sm:flex-row">
             <h1 className="pr-3 text-left text-xl font-bold">
-              Showing results for:
+              Showing results for Vehicles:
             </h1>
-            <span className="text-xl font-bold italic text-customAccent">
-              {searchParams}
-            </span>
           </div>
           <div className="fixed right-0 z-50 flex h-32 w-12  flex-col items-center justify-center gap-5 rounded-bl-3xl rounded-tl-3xl border-l-2 border-customAccent bg-background shadow-lg md:static md:h-10 md:w-32 md:flex-row md:justify-end md:rounded-full md:border-2 md:border-transparent md:shadow-none">
             <Sheet>
@@ -145,7 +136,7 @@ export default function FindAds() {
                 <SheetTitle className="text-customAccent">
                   Filter Results:
                 </SheetTitle>
-                <MintFilter
+                <MintFilterCategories
                   setFilterCallback={getSetFilterCallback}
                   initPayload={payload}
                 />
@@ -157,12 +148,12 @@ export default function FindAds() {
                 {/* @ts-expect-error Server Component */}
                 <SortIcon state={sort} />
               </DropdownMenuTrigger>
-              <DropdownMenuContent className="bg-background" sideOffset={10}>
+              <DropdownMenuContent className="bg-background">
                 <DropdownMenuItem
                   onClick={async () => {
                     setSort("latest"),
                       await queryClient.invalidateQueries({
-                        queryKey: ["results"],
+                        queryKey: [`${type}`],
                       })
                   }}
                 >
@@ -172,7 +163,7 @@ export default function FindAds() {
                   onClick={async () => {
                     setSort("oldest"),
                       await queryClient.invalidateQueries({
-                        queryKey: ["results"],
+                        queryKey: [`${type}`],
                       })
                   }}
                 >
@@ -182,7 +173,7 @@ export default function FindAds() {
                   onClick={async () => {
                     setSort("high"),
                       await queryClient.invalidateQueries({
-                        queryKey: ["results"],
+                        queryKey: [`${type}`],
                       })
                   }}
                 >
@@ -192,7 +183,7 @@ export default function FindAds() {
                   onClick={async () => {
                     setSort("low"),
                       await queryClient.invalidateQueries({
-                        queryKey: ["results"],
+                        queryKey: [`${type}`],
                       })
                   }}
                 >

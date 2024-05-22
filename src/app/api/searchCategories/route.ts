@@ -7,7 +7,6 @@ export async function GET(req: Request) {
 
     const page: string = url.searchParams.get("page") || ""
     const limit: string = url.searchParams.get("limit") || ""
-    const searchParams = url.searchParams.get("searchParam")?.replace(/"/g, "")
     const offset = (parseInt(page) - 1) * parseInt(limit)
 
     const tab = url.searchParams.get("payload[tab]")
@@ -38,27 +37,13 @@ export async function GET(req: Request) {
     //   transmission
     // )
 
-    const formatSearch = (searchParams: string | undefined) => {
-      const splitString = searchParams
-        ?.split(" ")
-        .filter((str) => str.trim() !== "")
-      if (splitString?.length === 1) {
-        return searchParams
-      } else {
-        return splitString?.join(" | ")
-      }
-    }
-
-    const searchString = formatSearch(searchParams)
-
     const result = await db.execute(
       sql.raw(
         `
           SELECT * FROM listings 
-          WHERE tsvector_title @@ to_tsquery('${searchString}:*')
+          WHERE tab = '${tab}'
           AND "isExpired" = 'f'
           AND "isSold" = 'f'
-          AND ('${tab}' = '' OR "tab" = '${tab}')
           AND ('${category}' = '' OR "category" = '${category}')
           AND ('${subCategory}' = '' OR "subCategory" = '${subCategory}')
           AND ('${location}' = '' OR "location" = '${location}')
