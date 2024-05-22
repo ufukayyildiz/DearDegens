@@ -35,5 +35,19 @@ export const validateSignUp = z.object({
   password: validatePassword,
 })
 
+export const validateResetPassword = z.object({
+  email: z.string(),
+  previousPassword: validatePassword,
+  password: validatePassword,
+})
+
+export const validateForgotPassword = z.object({
+  email: z.string(),
+})
+
 export type SignInCreationRequest = z.infer<typeof validateSignIn>
 export type SignUpCreationRequest = z.infer<typeof validateSignUp>
+export type ResetPasswordCreationRequest = z.infer<typeof validateResetPassword>
+export type ForgotPasswordCreationRequest = z.infer<
+  typeof validateForgotPassword
+>

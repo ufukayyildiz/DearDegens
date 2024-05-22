@@ -1,15 +1,19 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import UserAuthForm from "./UserAuthForm"
+import { userType } from "@/src/types/db"
+import axios from "axios"
 import { useForm } from "@tanstack/react-form"
+import { useMutation } from "@tanstack/react-query"
 import { zodValidator } from "@tanstack/zod-form-adapter"
-import { SignInCreationRequest } from "@/src/lib/validators/validateAuth"
-import { signIn } from "next-auth/react"
-import { Button } from "../components-ui/Button"
-import { validatePassword } from "@/src/lib/validators/validateAuth"
-import ForgotPassword from "./ForgotPassword"
-import { Input } from "../components-ui/Input"
 import type { FieldApi } from "@tanstack/react-form"
+import { signOut } from "next-auth/react"
+import {
+  ResetPasswordCreationRequest,
+  validatePassword,
+} from "@/src/lib/validators/validateAuth"
+import { toast } from "@/src/hooks/use-toast"
+import { Input } from "../components-ui/Input"
+import { Button } from "../components-ui/Button"
 import {
   onChangeAsync,
   onChangeAsyncDebounceMs,
@@ -17,6 +21,11 @@ import {
 import { Loader2 } from "lucide-react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { useRouter } from "next/navigation"
+import { useSession } from "next-auth/react"
+
+interface ForgotPasswordFormProps {
+  user: userType[]
+}
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -30,7 +39,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   )
 }
 
-const SignIn = () => {
+export default function ForgotPasswordForm({ user }: ForgotPasswordFormProps) {
   const router = useRouter()
   const captchaKey = process.env.NEXT_PUBLIC_GOOGLE_CAPTCHA_SITE_KEY!
   const [captchaValue, setCaptchaValue] = useState<string>("")
@@ -39,19 +48,60 @@ const SignIn = () => {
   const form = useForm({
     validatorAdapter: zodValidator,
     defaultValues: {
-      email: "",
+      previousPassword: "",
       password: "",
+      confirm: "",
     },
     onSubmit: async ({ value }) => {
-      const payload: SignInCreationRequest = {
-        email: value.email,
-        password: value.password,
+      if (value.password === value.confirm) {
+        const payload: ResetPasswordCreationRequest = {
+          email: user[0].email,
+          previousPassword: value.previousPassword,
+          password: value.password,
+        }
+        resetPassword(payload)
+        console.log("Submit Payload:", payload)
+      } else {
+        return toast({
+          title: "Password miss match!",
+          description:
+            "The passwords supplied do not match, please re-enter your password",
+        })
       }
-      console.log("Submit Payload:", payload)
-      const response = await signIn("credentials", {
-        email: payload.email,
-        password: payload.password,
-        redirect: true,
+    },
+  })
+
+  const { mutate: resetPassword } = useMutation({
+    // PAYLOAD
+    mutationFn: async ({
+      email,
+      password,
+      previousPassword,
+    }: ResetPasswordCreationRequest) => {
+      const payload: ResetPasswordCreationRequest = {
+        email,
+        previousPassword,
+        password,
+      }
+      const post = await axios.post("/api/auth/forgot-password/", payload)
+      return post
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description:
+          "There was an error while attempting to change your password. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSuccess: () => {
+      form.reset()
+
+      router.push("/signin")
+
+      return toast({
+        title: "Success!",
+        description: "Your password was changed successfully!",
       })
     },
   })
@@ -63,8 +113,11 @@ const SignIn = () => {
   }, [captchaValue])
 
   return (
-    <div className="mx-auto flex w-full flex-col justify-center space-y-6">
-      <UserAuthForm />
+    <div className="flex flex-col">
+      <h1 className="mt-10 text-center">
+        Reset password for account:{" "}
+        <span className="italic text-customAccent">{user[0].email}</span>
+      </h1>
       <form.Provider>
         <form
           onSubmit={(event) => {
@@ -72,28 +125,8 @@ const SignIn = () => {
             event.stopPropagation()
             void form.handleSubmit()
           }}
-          className="space-y-6"
+          className="mx-auto mt-5 w-full space-y-6 md:w-6/12"
         >
-          {/* EMAIL */}
-          <form.Field name="email">
-            {(field) => {
-              return (
-                <div className="relative w-full flex-col">
-                  <Input
-                    id={field.name}
-                    type="email"
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(event) => field.handleChange(event.target.value)}
-                    className="w-full text-[17px] text-primary"
-                    placeholder="Email"
-                  />
-                </div>
-              )
-            }}
-          </form.Field>
-
           {/* PASSWORD */}
           <form.Field
             name="password"
@@ -114,8 +147,37 @@ const SignIn = () => {
                     onBlur={field.handleBlur}
                     onChange={(event) => field.handleChange(event.target.value)}
                     className="w-full text-[17px] text-primary"
-                    placeholder="Password"
+                    placeholder="New Password"
                   />
+                  <FieldInfo field={field} />
+                </div>
+              )
+            }}
+          </form.Field>
+
+          {/* CONFIRM PASSWORD */}
+          <form.Field
+            name="confirm"
+            validators={{
+              onChange: validatePassword,
+              onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+              onChangeAsync: onChangeAsync,
+            }}
+          >
+            {(field) => {
+              return (
+                <div className="relative mb-10 w-full flex-col">
+                  <Input
+                    id={field.name}
+                    type="password"
+                    name={field.name}
+                    value={field.state.value}
+                    onBlur={field.handleBlur}
+                    onChange={(event) => field.handleChange(event.target.value)}
+                    className="w-full text-[17px] text-primary"
+                    placeholder="Confirm New Password"
+                  />
+                  <FieldInfo field={field} />
                 </div>
               )
             }}
@@ -138,21 +200,18 @@ const SignIn = () => {
                     onChange={(value: any) => setCaptchaValue(value)}
                   />
                 )}
-                <div className="flex w-full flex-row gap-5">
-                  <Button
-                    type="submit"
-                    disabled={disabled || !canSubmit}
-                    variant="outline"
-                    className="w-20"
-                  >
-                    {isSubmitting ? (
-                      <Loader2 className="h-5 w-5 animate-spin" />
-                    ) : (
-                      "Login"
-                    )}
-                  </Button>
-                  <ForgotPassword />
-                </div>
+                <Button
+                  type="submit"
+                  disabled={disabled || !canSubmit}
+                  variant="outline"
+                  className=""
+                >
+                  {isSubmitting ? (
+                    <Loader2 className="h-5 w-5 animate-spin" />
+                  ) : (
+                    "Reset Password"
+                  )}
+                </Button>
               </>
             )}
           </form.Subscribe>
@@ -161,5 +220,3 @@ const SignIn = () => {
     </div>
   )
 }
-
-export default SignIn

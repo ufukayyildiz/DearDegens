@@ -1,8 +1,38 @@
 "use client"
 import React from "react"
 import { Button } from "@/src/components/components-ui/Button"
+import { useMutation } from "@tanstack/react-query"
+import axios from "axios"
+import { toast } from "@/src/hooks/use-toast"
+import { useSession } from "next-auth/react"
 
 export default function Profile() {
+  const { data: session } = useSession()
+  const userEmail = session?.user.email || ""
+
+  const { mutate: updatePassword } = useMutation({
+    mutationFn: async (email: string) => {
+      const payload = {
+        email: email,
+      }
+      await axios.post("/api/editUpdatePassword", payload)
+    },
+    onError: () => {
+      return toast({
+        title: "Something went wrong.",
+        description: "Failed to send reset password email. Please try again.",
+        variant: "destructive",
+      })
+    },
+    onSuccess: () => {
+      return toast({
+        title: "Success!",
+        description:
+          "Please check your account email for a link to change your password.",
+      })
+    },
+  })
+
   return (
     <div className="z-20 mx-auto mb-52 min-h-screen w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
       <h1 className="mt-10 text-xl font-bold text-primary">Profile</h1>
@@ -50,13 +80,16 @@ export default function Profile() {
 
       {/* SECURITY */}
       <div className="space-y-5 text-primary">
-        <h2 className="mb-5 font-bold text-customAccent">
-          Security:
-        </h2>
+        <h2 className="mb-5 font-bold text-customAccent">Security:</h2>
         <div className="grid w-full grid-cols-2">
-          <p className="font-bold pt-1">Reset Password:</p>
+          <p className="pt-1 font-bold">Reset Password:</p>
           <p>
-            <Button variant="outlineTwo">RESET</Button>
+            <Button
+              variant="outlineTwo"
+              onClick={() => updatePassword(userEmail)}
+            >
+              RESET PASSWORD
+            </Button>
           </p>
         </div>
       </div>

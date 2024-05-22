@@ -3,7 +3,6 @@
 import Link from "next/link"
 import { signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
-
 import { User } from "../types/user"
 import {
   DropdownMenu,
@@ -46,6 +45,10 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         </div>
 
         <DropdownMenuItem asChild>
+          <Link href="/profile">Profile</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
           <Link href="/ad/create">Create Ad</Link>
         </DropdownMenuItem>
 
@@ -55,10 +58,6 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
 
         <DropdownMenuItem asChild>
           <Link href="/ad/mywishlist">Wishlist</Link>
-        </DropdownMenuItem>
-
-        <DropdownMenuItem asChild>
-          <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>

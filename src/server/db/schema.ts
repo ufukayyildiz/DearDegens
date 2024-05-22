@@ -93,6 +93,10 @@ export const users = pgTable(
     email: varchar("email", { length: 255 }).notNull(),
     emailVerified: timestamp("emailVerified"),
     password: varchar("password", { length: 255 }).notNull().default(""),
+    resetPasswordToken: varchar("resetPasswordToken", { length: 255 }),
+    resetPasswordTokenExpiry: timestamp("resetPasswordTokenExpiry").default(
+      sql`CURRENT_TIMESTAMP`
+    ),
     image: varchar("image", { length: 255 }),
     imageBucket: text("imageBucket").default(""),
     wishlist: varchar("wishlist", { length: 191 }).references(
