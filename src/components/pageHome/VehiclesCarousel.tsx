@@ -17,12 +17,12 @@ import { Button } from "../components-ui/Button"
 import { listingsType } from "@/src/types/db"
 import { queryLimit } from "@/src/server/queryLimit"
 
-export default function HomeCarousel() {
+export default function VehiclesCarousel() {
   const mock = ["1", "2", "3", "4", "5"]
   const fetchListings = async ({ pageParam }: any) => {
     try {
       const response = await axios.get(
-        `/api/getHome?page=${pageParam}&limit=${queryLimit}`
+        `/api/getVehicles?page=${pageParam}&limit=${queryLimit}`
       )
       return response.data
     } catch (error) {
@@ -31,7 +31,7 @@ export default function HomeCarousel() {
   }
 
   const { data, fetchNextPage, isFetchingNextPage } = useInfiniteQuery({
-    queryKey: ["homeCarousel"],
+    queryKey: ["vehiclesCarousel"],
     staleTime: 60 * 1000,
     refetchInterval: 60 * 1000,
     queryFn: fetchListings,

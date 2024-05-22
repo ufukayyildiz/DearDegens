@@ -9,20 +9,12 @@ export async function GET(req: Request) {
     const limit: string = url.searchParams.get("limit") || ""
     const offset = (parseInt(page) - 1) * parseInt(limit)
 
-    const formatSearch = (searchParams: string | undefined) => {
-      const splitString = searchParams?.split(" ")
-      if (splitString?.length === 1) {
-        return searchParams
-      } else {
-        return splitString?.join(" | ")
-      }
-    }
-
     const result = await db.execute(
       sql.raw(
         `
           SELECT * FROM listings 
-          WHERE "isExpired" = 'f'
+          WHERE "tab" = 'Home & Garden'
+          AND "isExpired" = 'f'
           AND "isSold" = 'f'
           ORDER BY "createdAt" DESC
           OFFSET ${offset}
