@@ -5,21 +5,21 @@ import { regexNumber } from "../regex"
 
 export const validatePassword = z
   .string()
-  .min(8, { message: "Password needs to contain a minimum of 8 characters" })
+  .min(8, { message: "Requires minimum 8 characters" })
   .refine((value) => specialCharsRegex.test(value), {
-    message: "Password should conatin at least one of the following: &%$#@!",
+    message: "Requires minimum one special character: &%$#@!",
   })
   .refine((value) => regexNumber.test(value), {
-    message: "Password should contain at least one number",
+    message: "Requires minimum one number",
   })
   .refine((value) => regexUppercase.test(value), {
-    message: "Password should contain at least one uppercase letter.",
+    message: "Requies minimum one uppercase letter.",
   })
 
 export const validateEmail = z
   .string()
   .refine((value) => regexEmail.test(value), {
-    message: "You need to supply a valid email.",
+    message: "Not a valid email.",
   })
 
 export const validateSignIn = z.object({

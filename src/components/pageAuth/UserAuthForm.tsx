@@ -32,11 +32,16 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
   }
 
   return (
-    <div className={cn("flex justify-center", className)} {...props}>
+    <div
+      className={cn(
+        "flex justify-center rounded-full bg-gradient-to-r from-red-500 via-yellow-300 to-blue-500 p-[1.5px]",
+        className
+      )}
+      {...props}
+    >
       <Button
         type="button"
-        size="sm"
-        className="w-full"
+        className="z-50 w-full border border-muted"
         onClick={loginWithGoogle}
         disabled={isLoading}
       >

@@ -75,8 +75,6 @@ export async function GET(req: Request) {
       )
     )
 
-    console.log("search results:", result)
-
     return new Response(JSON.stringify(result), { status: 200 })
   } catch (error) {
     console.error("Server error: Failed to fetch search params:", error)

@@ -56,13 +56,8 @@ const SignIn = () => {
       const response = await signIn("credentials", {
         email: payload.email,
         password: payload.password,
-        redirect: false,
+        redirect: true,
       })
-      console.log("Response:", response)
-      if (!response?.error) {
-        router.push("/profile")
-        router.refresh()
-      }
     },
   })
 
@@ -95,7 +90,8 @@ const SignIn = () => {
   }, [captchaValue])
 
   return (
-    <div className="mx-auto flex w-full flex-col justify-center space-y-10">
+    <div className="mx-auto flex w-full flex-col justify-center space-y-6">
+      <UserAuthForm />
       <form.Provider>
         <form
           onSubmit={(event) => {
@@ -103,13 +99,13 @@ const SignIn = () => {
             event.stopPropagation()
             void form.handleSubmit()
           }}
-          className="space-y-8"
+          className="space-y-6"
         >
           {/* EMAIL */}
           <form.Field name="email">
             {(field) => {
               return (
-                <div className="relative mb-10 w-full flex-col">
+                <div className="relative w-full flex-col">
                   <Input
                     id={field.name}
                     type="email"
@@ -186,7 +182,6 @@ const SignIn = () => {
           </form.Subscribe>
         </form>
       </form.Provider>
-      <UserAuthForm />
     </div>
   )
 }

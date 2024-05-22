@@ -102,7 +102,8 @@ const SignUp = () => {
   }, [captchaValue])
 
   return (
-    <div className="mx-auto flex w-full flex-col justify-center space-y-10">
+    <div className="mx-auto flex w-full flex-col justify-center space-y-6">
+      <UserAuthForm />
       <form.Provider>
         <form
           onSubmit={(event) => {
@@ -110,13 +111,13 @@ const SignUp = () => {
             event.stopPropagation()
             void form.handleSubmit()
           }}
-          className="space-y-8"
+          className="space-y-6"
         >
           {/* NAME */}
           <form.Field name="name">
             {(field) => {
               return (
-                <div className="relative mb-10 w-full flex-col">
+                <div className="relative w-full flex-col">
                   <Input
                     id={field.name}
                     name={field.name}
@@ -143,7 +144,7 @@ const SignUp = () => {
           >
             {(field) => {
               return (
-                <div className="relative mb-10 w-full flex-col">
+                <div className="relative w-full flex-col">
                   <Input
                     type="email"
                     id={field.name}
@@ -250,7 +251,6 @@ const SignUp = () => {
           </form.Subscribe>
         </form>
       </form.Provider>
-      <UserAuthForm />
     </div>
   )
 }
