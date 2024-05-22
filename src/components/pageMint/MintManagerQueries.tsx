@@ -34,7 +34,7 @@ export default function MintManageQueries({
           {queries.length === 0 ? (
             <div className="flex w-full flex-col items-center justify-center">
               <div className="w-full pt-10 text-center italic">
-                You have not yet posted an ad.
+                There are no queries available for this listing.
               </div>
               <Image
                 src={Rabbit}

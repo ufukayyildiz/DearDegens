@@ -35,7 +35,7 @@ export default function MintManageOffers({
           {offers.length === 0 ? (
             <div className="flex w-full flex-col items-center justify-center">
               <div className="w-full pt-10 text-center italic">
-                You have not yet recieved any offers for this listing.
+                There are no offers available for this listing.
               </div>
               <Image
                 src={Fish}

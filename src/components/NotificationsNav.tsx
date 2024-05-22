@@ -234,7 +234,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                     </AlertDialogDescription>
                   </AlertDialogHeader>
                   <AlertDialogFooter>
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full flex-col justify-between gap-5 md:flex-row">
                       <div className="flex items-center justify-start space-x-2">
                         <Checkbox
                           id="disable"
@@ -249,17 +249,18 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                         </label>
                       </div>
                       <div>
-                        <AlertDialogCancel>Cancel</AlertDialogCancel>
                         <AlertDialogTrigger asChild>
                           <Button
                             onClick={() => handleDeleteAllNotifications(userId)}
                             disabled={disabled}
                             variant="destructive"
-                            className="ml-5"
                           >
                             Delete
                           </Button>
                         </AlertDialogTrigger>
+                        <AlertDialogCancel className="ml-5">
+                          Cancel
+                        </AlertDialogCancel>
                       </div>
                     </div>
                   </AlertDialogFooter>
