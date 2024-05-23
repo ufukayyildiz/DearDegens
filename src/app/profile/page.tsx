@@ -1,15 +1,38 @@
 "use client"
-import React from "react"
+import React, { useState, useEffect } from "react"
 import { Button } from "@/src/components/components-ui/Button"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "@/src/hooks/use-toast"
 import { useSession } from "next-auth/react"
+import { useQueryClient } from "@tanstack/react-query"
+import { useGetUserInfo } from "@/src/server/services"
+import { userType } from "@/src/types/db"
+import ProfileData from "@/src/components/pageProfile/ProfileData"
+import ProfileDataForm from "@/src/components/pageProfile/ProfileDataForm"
 
 export default function Profile() {
-  const { data: session } = useSession()
-  const userEmail = session?.user.email || ""
+  const [isEdit, setIsEdit] = useState<boolean>(false)
 
+  const [disabled, setDisabled] = useState<boolean>(false)
+
+  const user = (useGetUserInfo().data as userType[]) || ""
+  const isFetching = useGetUserInfo().isFetching
+
+  const isGoogleAccount = () => {
+    if (user && user[0].password.length > 50) {
+      setDisabled(true)
+    }
+  }
+  useEffect(() => {
+    isGoogleAccount()
+  }, [])
+
+  const getSetEditCallback = (data: any) => {
+    setIsEdit(data)
+  }
+
+  // EDIT PASSWORD MUTATION
   const { mutate: updatePassword } = useMutation({
     mutationFn: async (email: string) => {
       const payload = {
@@ -39,57 +62,41 @@ export default function Profile() {
       <hr className="my-2 border border-t-muted-foreground" />
 
       {/* USER DETAILS */}
-      <div className="space-y-5 text-primary">
-        <h2 className="mb-5 font-bold text-customAccent">User Details:</h2>
-        <div className="grid w-full grid-cols-2">
-          <p className="font-bold">Name:</p>
-          <p>Shane Hubsch</p>
-        </div>
-        <div className="grid w-full grid-cols-2">
-          <p className="font-bold">Email:</p>
-          <p>shane@gmail.com</p>
-        </div>
-        <div className="grid w-full grid-cols-2">
-          <p className="font-bold">Phone Number:</p>
-          <p>+27 (0) 60 460 7122</p>
-        </div>
-        <div className="flex w-full items-center justify-end">
-          <Button variant="outline">Edit</Button>
-        </div>
-      </div>
-      <hr className="mb-2 mt-5 border border-t-muted-foreground" />
+      {!isEdit ? (
+        <ProfileData
+          user={user}
+          isFetching={isFetching}
+          setEditCallback={getSetEditCallback}
+        />
+      ) : (
+        <ProfileDataForm
+          user={user}
+          isFetching={isFetching}
+          setEditCallback={getSetEditCallback}
+        />
+      )}
 
-      {/* SUBSCRIPTION */}
-      <div className="space-y-5 text-primary">
-        <h2 className="mb-5 font-bold text-customAccent">
-          Subscription Details:
-        </h2>
-        <div className="grid w-full grid-cols-2">
-          <p className="font-bold">Subscription Plan:</p>
-          <p>Pro Plan</p>
-        </div>
-        <div className="grid w-full grid-cols-2">
-          <p className="font-bold">Billing Amount:</p>
-          <p>R 65.00 p/month</p>
-        </div>
-        <div className="flex w-full items-center justify-end">
-          <Button variant="outline">Edit</Button>
-        </div>
-      </div>
-      <hr className="mb-2 mt-5  border border-t-muted-foreground" />
+      <div className="flex w-full items-center justify-end"></div>
+      <hr className="mb-2 mt-5 border border-t-muted-foreground" />
 
       {/* SECURITY */}
       <div className="space-y-5 text-primary">
         <h2 className="mb-5 font-bold text-customAccent">Security:</h2>
         <div className="grid w-full grid-cols-2">
-          <p className="pt-1 font-bold">Reset Password:</p>
-          <p>
-            <Button
-              variant="outlineTwo"
-              onClick={() => updatePassword(userEmail)}
-            >
-              RESET PASSWORD
-            </Button>
+          <Button
+            variant="outlineTwo"
+            onClick={() => updatePassword(user[0].email)}
+            className="w-44"
+            disabled={disabled}
+          >
+            RESET PASSWORD
+          </Button>
+          <p className="text-sm italic">
+            Note: By clicking "RESET PASSWORD", you will be sent an email with a
+            confirmation link to change your password. Once your password has
+            been successfully updated, you&apos;ll be automatically logged out
+            and sent to the sign in page from where you can use your new details
+            to sign back in.
           </p>
         </div>
       </div>

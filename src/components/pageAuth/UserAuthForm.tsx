@@ -34,7 +34,7 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
   return (
     <div
       className={cn(
-        "flex justify-center rounded-full bg-gradient-to-r from-red-500 via-yellow-300 to-blue-500 p-[1.5px]",
+        "flex justify-center rounded-full bg-gradient-to-r from-red-500 via-yellow-300 to-blue-500 p-[1.5px] shadow-md",
         className
       )}
       {...props}
@@ -45,7 +45,7 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
         onClick={loginWithGoogle}
         disabled={isLoading}
       >
-        {isLoading ? null : <Icons.google className="mr-2 h-4 w-4" />}
+        <Icons.google className="mr-2 h-4 w-4" />
         Google
       </Button>
     </div>

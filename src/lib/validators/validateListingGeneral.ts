@@ -15,7 +15,8 @@ import {
   listingItems,
   listingMileage,
   listingTransmission,
-  listingYear
+  listingYear,
+  listingFuel,
 } from "./validateListing"
 
 export const validateListing = z.object({
@@ -30,6 +31,7 @@ export const validateListing = z.object({
   mileage: listingMileage,
   year: listingYear,
   transmission: listingTransmission,
+  fuel: listingFuel,
   description: listingDescription,
   items: listingItems,
   images: listingImages,

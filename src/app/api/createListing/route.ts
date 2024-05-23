@@ -1,14 +1,11 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateListing } from "@/src/lib/validators/validateListingGeneral"
 import { db } from "@/src/server/db"
-import {
-  listings,
-  notifications,
-} from "@/src/server/db/schema"
+import { listings, notifications } from "@/src/server/db/schema"
 import { nanoid } from "nanoid"
 import { z } from "zod"
 import { sql } from "drizzle-orm"
-import { Ratelimit } from "@upstash/ratelimit" 
+import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
 
@@ -62,6 +59,7 @@ export async function POST(req: Request) {
       mileage,
       year,
       transmission,
+      fuel,
       description,
       items,
       images,
@@ -79,6 +77,7 @@ export async function POST(req: Request) {
       brand,
       model,
       description,
+      fuel,
       items,
       images,
       location,
@@ -106,6 +105,7 @@ export async function POST(req: Request) {
         mileage: mileage,
         year: year,
         transmission: transmission,
+        fuel: fuel,
         description: description,
         items: JSON.stringify(items),
         images: images,
@@ -113,13 +113,15 @@ export async function POST(req: Request) {
         meetup: meetup,
       })
 
-      await db.execute(sql.raw(
-        `
+      await db.execute(
+        sql.raw(
+          `
         UPDATE listings 
         SET tsvector_title = to_tsvector(title)
         WHERE id = '${listingId}';
         `
-      ))
+        )
+      )
 
       const notification = await db.insert(notifications).values({
         id: notificationId,

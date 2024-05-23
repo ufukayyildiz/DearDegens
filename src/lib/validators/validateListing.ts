@@ -20,7 +20,9 @@ export const listingTab = z.string()
 export const listingCategory = z.string()
 export const listingSubCategory = z.string()
 export const listingCondition = z.string()
-export const listingPrice = z.coerce.number().max(9999999, {message: "Max price is 9,999,999"})
+export const listingPrice = z.coerce
+  .number()
+  .max(9999999, { message: "Max price is 9,999,999" })
 export const listingTitle = z
   .string()
   .min(1, {
@@ -78,13 +80,13 @@ export const listingDescription = z
     message:
       "Phone number detected. You will be able to communicate with buyers once an offer is agreed upon.",
   })
-  export const listingItems = z.array(
-    z.object({
-      id: z.string(),
-      name: z.string(),
-      price: z.coerce.number(),
-    })
-  )
+export const listingItems = z.array(
+  z.object({
+    id: z.string(),
+    name: z.string(),
+    price: z.coerce.number(),
+  })
+)
 // export const listingItems = z.array(
 //   z.object({
 //     id: z.string(),
@@ -106,3 +108,4 @@ export const listingYear = z.coerce
   .min(1900, { message: "Are you selling a 1885 Benz Patent Motor Car?" })
   .max(currentYear, { message: "Are you Morty McFly or what?" })
 export const listingTransmission = z.string()
+export const listingFuel = z.string()

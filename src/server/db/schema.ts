@@ -97,6 +97,7 @@ export const users = pgTable(
     resetPasswordTokenExpiry: timestamp("resetPasswordTokenExpiry").default(
       sql`CURRENT_TIMESTAMP`
     ),
+    contact: varchar("contact", { length: 191 }),
     image: varchar("image", { length: 255 }),
     imageBucket: text("imageBucket").default(""),
     wishlist: varchar("wishlist", { length: 191 }).references(
@@ -212,6 +213,7 @@ export const listings = pgTable(
     mileage: integer("mileage"),
     year: integer("year"),
     transmission: varchar("transmission", { length: 191 }),
+    fuel: varchar("fuel", { length: 191 }),
 
     // ATTRIBUTES
     images: text("images"),

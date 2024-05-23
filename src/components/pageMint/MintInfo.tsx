@@ -30,6 +30,10 @@ export default function MintInfo({ listing }: InfoGeneralProps) {
             <p className="min-w-32 font-bold">Transmission:</p>
             <h3 className="">{listing.transmission}</h3>
           </div>
+          <div className="flex w-full">
+            <p className="min-w-32 font-bold">Fuel Type:</p>
+            <h3 className="">{listing.fuel}</h3>
+          </div>
         </>
       )}
 

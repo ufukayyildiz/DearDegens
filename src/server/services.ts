@@ -1,6 +1,5 @@
 "use client"
 import { useQuery } from "@tanstack/react-query"
-import axios from "axios"
 import {
   roomType,
   listingsType,
@@ -10,6 +9,7 @@ import {
   userType,
 } from "../types/db"
 import {
+  getUserInfo,
   getQueriesAuthor,
   getQueriesUser,
   getListingById,
@@ -21,6 +21,15 @@ import {
   getOffersAuthor,
   getOffersUser,
 } from "./actions"
+
+// GET USER INFO
+export function useGetUserInfo() {
+  return useQuery<userType[]>({
+    queryKey: ["userInfo"],
+    // @ts-ignore
+    queryFn: () => getUserInfo(),
+  })
+}
 
 // GET AUTHOR QUERIES
 export function useGetQueriesAuthor(listingId: any) {

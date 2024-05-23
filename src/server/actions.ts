@@ -18,7 +18,27 @@ import {
 } from "./db/schema"
 import { alias } from "drizzle-orm/pg-core"
 
+// Get User Info
+export async function getUserInfo() {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      console.log("Unauthorised.")
+      return null
+    }
 
+    if (session) {
+      const user = await db
+        .select()
+        .from(users)
+        .where(eq(users.id, session?.user.id))
+      console.log("User info query successful")
+      return user
+    }
+  } catch (error) {
+    console.error("Server Error: Failed to fetch user info - ", error)
+  }
+}
 
 // Get user image bucket by userId
 export async function getBucket() {
@@ -75,8 +95,7 @@ export async function getListingById(listingId: string) {
       .select()
       .from(listings)
       .where(eq(listings.id, listingId))
-    
-      
+
     console.log("General listing query successful.")
     return listingGeneral
   } catch (error) {
@@ -92,13 +111,15 @@ export async function getOffersAuthor(listingId: any) {
       return new Response("Unauthorised", { status: 401 })
     }
     const userId = session.user.id
-    const adOffers = await db.execute(sql.raw(
-      `
+    const adOffers = await db.execute(
+      sql.raw(
+        `
         SELECT * FROM offers 
         WHERE "sellerId" = '${userId}'; 
       `
-    ))
-    const offers = adOffers.rows.filter(item => item.adId === listingId)
+      )
+    )
+    const offers = adOffers.rows.filter((item) => item.adId === listingId)
     console.log("User offers query successful")
     return offers
   } catch (error) {
@@ -114,20 +135,21 @@ export async function getOffersUser(listingId: any) {
       return new Response("Unauthorised", { status: 401 })
     }
     const userId = session.user.id
-    const adOffers = await db.execute(sql.raw(
-      `
+    const adOffers = await db.execute(
+      sql.raw(
+        `
         SELECT * FROM offers 
         WHERE "userId" = '${userId}'; 
       `
-    ))
-    const offers = adOffers.rows.filter(item => item.adId === listingId)
+      )
+    )
+    const offers = adOffers.rows.filter((item) => item.adId === listingId)
     console.log("User offers query successful")
     return offers
   } catch (error) {
     console.error("Server error: Failed to fetch user offers - ", error)
   }
 }
-
 
 // Get Author Queries
 export async function getQueriesAuthor(listingId: string) {
@@ -137,13 +159,15 @@ export async function getQueriesAuthor(listingId: string) {
       return new Response("Unauthorised", { status: 401 })
     }
     const userId = session.user.id
-    const adQueries = await db.execute(sql.raw(
-      `
+    const adQueries = await db.execute(
+      sql.raw(
+        `
         SELECT * FROM queries 
         WHERE "adId" = '${listingId}'; 
       `
-    ))
-    const offers = adQueries.rows.filter(item => item.adId === listingId)
+      )
+    )
+    const offers = adQueries.rows.filter((item) => item.adId === listingId)
     console.log("Author queries query successful")
     return offers
   } catch (error) {
@@ -159,13 +183,15 @@ export async function getQueriesUser(listingId: string) {
       return new Response("Unauthorised", { status: 401 })
     }
     const userId = session.user.id
-    const adQueries = await db.execute(sql.raw(
-      `
+    const adQueries = await db.execute(
+      sql.raw(
+        `
         SELECT * FROM queries 
         WHERE "userId" = '${userId}'; 
       `
-    ))
-    const offers = adQueries.rows.filter(item => item.adId === listingId)
+      )
+    )
+    const offers = adQueries.rows.filter((item) => item.adId === listingId)
     console.log("User queries query successful")
     return offers
   } catch (error) {

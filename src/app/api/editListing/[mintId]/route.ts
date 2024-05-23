@@ -2,10 +2,7 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateListing } from "@/src/lib/validators/validateListingGeneral"
 import { db } from "@/src/server/db"
 import { sql } from "drizzle-orm"
-import {
-  listings,
-  notifications,
-} from "@/src/server/db/schema"
+import { listings, notifications } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
@@ -28,12 +25,18 @@ export async function PATCH(req: Request, context: any) {
     const currentDate: Date = new Date()
 
     const {
+      tab,
       category,
       subCategory,
       price,
+      condition,
       title,
       brand,
       model,
+      mileage,
+      year,
+      transmission,
+      fuel,
       description,
       items,
       images,
@@ -42,19 +45,21 @@ export async function PATCH(req: Request, context: any) {
     } = validateListing.parse(body)
     console.log(
       "data:",
+      tab,
       category,
       subCategory,
       price,
+      condition,
       title,
       brand,
       model,
       description,
+      fuel,
       items,
       images,
       location,
       meetup
     )
-
 
     const post = await db
       .update(listings)
@@ -67,6 +72,10 @@ export async function PATCH(req: Request, context: any) {
         brand: brand,
         model: model,
         description: description,
+        mileage: mileage,
+        year: year,
+        transmission: transmission,
+        fuel: fuel,
         items: JSON.stringify(items),
         images: images,
         location: location,
@@ -74,13 +83,15 @@ export async function PATCH(req: Request, context: any) {
       })
       .where(eq(listings.id, listingId))
 
-      await db.execute(sql.raw(
+    await db.execute(
+      sql.raw(
         `
         UPDATE listings 
         SET tsvector_title = to_tsvector(title)
         WHERE id = '${listingId}';
         `
-      ))
+      )
+    )
 
     const notification = await db.insert(notifications).values({
       id: notificationId,

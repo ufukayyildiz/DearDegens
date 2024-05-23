@@ -7,6 +7,7 @@ import { toast } from "@/src/hooks/use-toast"
 import { listingCategories } from "@/src/lib/categories/AdCategories"
 import { condition } from "@/src/lib/categories/Condition"
 import { transmission } from "@/src/lib/categories/Transmission"
+import { fuel } from "@/src/lib/categories/Fuel"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import { ListingCreationRequest } from "@/src/lib/validators/validateListingGeneral"
 import { useMutation } from "@tanstack/react-query"
@@ -109,6 +110,7 @@ export default function CreateListing() {
       mileage: 0,
       year: 2000,
       transmission: "",
+      fuel: "",
       description: "",
       items: [
         {
@@ -134,6 +136,7 @@ export default function CreateListing() {
         mileage: value.mileage,
         year: value.year,
         transmission: value.transmission,
+        fuel: value.fuel,
         description: value.description,
         items: value.items || [""],
         images: JSON.stringify(selectedImages),
@@ -161,6 +164,7 @@ export default function CreateListing() {
       mileage,
       year,
       transmission,
+      fuel,
       description,
       items,
       images,
@@ -179,6 +183,7 @@ export default function CreateListing() {
         mileage,
         year,
         transmission,
+        fuel,
         description,
         items,
         images,
@@ -621,38 +626,73 @@ export default function CreateListing() {
                 </form.Field>
               </div>
 
-              {/* TRANSMISSION */}
-              <form.Field name="transmission">
-                {(field) => {
-                  return (
-                    <div className="relative w-1/2 flex-col">
-                      <div className="flex w-full justify-between">
-                        <FieldLabel>Transmission:</FieldLabel>
-                        <FieldLabel className="py-2 text-xs italic text-rose-400">
-                          (required)
-                        </FieldLabel>
-                      </div>
+              <div className="flex flex-col gap-10 md:flex-row">
+                {/* TRANSMISSION */}
+                <form.Field name="transmission">
+                  {(field) => {
+                    return (
+                      <div className="relative w-1/2 flex-col">
+                        <div className="flex w-full justify-between">
+                          <FieldLabel>Transmission:</FieldLabel>
+                          <FieldLabel className="py-2 text-xs italic text-rose-400">
+                            (required)
+                          </FieldLabel>
+                        </div>
 
-                      <Select
-                        required
-                        onValueChange={(event) => field.handleChange(event)}
-                      >
-                        <SelectTrigger className="w-full">
-                          <SelectValue />
-                        </SelectTrigger>
-                        <SelectContent className="max-h-96 overflow-auto p-2">
-                          {transmission.map((item) => (
-                            <SelectItem key={item} value={item}>
-                              {item}
-                            </SelectItem>
-                          ))}
-                        </SelectContent>
-                      </Select>
-                      <FieldDescription>One foot or two?</FieldDescription>
-                    </div>
-                  )
-                }}
-              </form.Field>
+                        <Select
+                          required
+                          onValueChange={(event) => field.handleChange(event)}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-96 overflow-auto p-2">
+                            {transmission.map((item) => (
+                              <SelectItem key={item} value={item}>
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FieldDescription>One foot or two?</FieldDescription>
+                      </div>
+                    )
+                  }}
+                </form.Field>
+
+                {/* FUEL */}
+                <form.Field name="fuel">
+                  {(field) => {
+                    return (
+                      <div className="relative w-1/2 flex-col">
+                        <div className="flex w-full justify-between">
+                          <FieldLabel>Fuel Type:</FieldLabel>
+                          <FieldLabel className="py-2 text-xs italic text-rose-400">
+                            (required)
+                          </FieldLabel>
+                        </div>
+
+                        <Select
+                          required
+                          onValueChange={(event) => field.handleChange(event)}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-96 overflow-auto p-2">
+                            {fuel.map((item) => (
+                              <SelectItem key={item} value={item}>
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FieldDescription>Petrol or Diesel?</FieldDescription>
+                      </div>
+                    )
+                  }}
+                </form.Field>
+              </div>
             </>
           )}
 

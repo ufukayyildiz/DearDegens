@@ -89,7 +89,7 @@ export default function ForgotPassword() {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger className="group flex h-9 items-center justify-center rounded-full border-2 border-transparent bg-background px-3 shadow-lg hover:border-customAccent">
+        <AlertDialogTrigger className="group flex h-9 items-center justify-center rounded-full border border-transparent bg-background px-3 shadow-lg hover:bg-muted">
           Forgot Password
         </AlertDialogTrigger>
         <AlertDialogContent>

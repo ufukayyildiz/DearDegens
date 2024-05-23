@@ -2,6 +2,7 @@ import { z } from "zod"
 import { regexEmail, specialCharsRegex } from "../regex"
 import { regexUppercase } from "../regex"
 import { regexNumber } from "../regex"
+import { validateName } from "./validateUserProfile"
 
 export const validatePassword = z
   .string()
@@ -28,9 +29,7 @@ export const validateSignIn = z.object({
 })
 
 export const validateSignUp = z.object({
-  name: z
-    .string()
-    .max(128, { message: "Your full name cannot exceed 128 characters." }),
+  name: validateName,
   email: validateEmail,
   password: validatePassword,
 })
