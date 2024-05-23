@@ -41,7 +41,7 @@ const UserAuthForm: FC<UserAuthFormProps> = ({ className, ...props }) => {
     >
       <Button
         type="button"
-        className="z-50 w-full border border-muted"
+        className="w-full border border-muted"
         onClick={loginWithGoogle}
         disabled={isLoading}
       >

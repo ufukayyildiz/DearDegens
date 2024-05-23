@@ -54,20 +54,20 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
 
   // SET TRIGGER USER DETAILS
   const userName = () => {
-    if (roomData.sellerId !== session?.user.id) {
+    if (roomData.seller.id !== session?.user.id) {
       return (
         <ChatRoomTrigger
           roomData={roomData}
-          userName={roomData.sellerName}
-          userImage={roomData.sellerImage}
+          userName={roomData.seller.name}
+          userImage={roomData.seller.image}
         />
       )
     } else {
       return (
         <ChatRoomTrigger
           roomData={roomData}
-          userName={roomData.buyerName}
-          userImage={roomData.buyerImage}
+          userName={roomData.buyer.name}
+          userImage={roomData.buyer.image}
         />
       )
     }
@@ -78,14 +78,14 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
     validatorAdapter: zodValidator,
     defaultValues: {
       message: "",
-      roomId: roomData.roomId,
+      roomId: roomData.chatRoom.id,
       userId: session?.user.id,
       userName: session?.user.name,
     },
     onSubmit: async ({ value }) => {
       const payload: ChatMessageCreationRequest = {
         message: value.message,
-        roomId: roomData.roomId,
+        roomId: roomData.chatRoom.id,
         userId: session?.user.id || "",
         userName: session?.user.name || "",
       }
@@ -161,7 +161,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
               {messages &&
                 messages.map((msg: messagesType, i: any) => (
                   <>
-                    {msg.roomId === roomData.roomId && (
+                    {msg.roomId === roomData.chatRoom.id && (
                       <div
                         className="mt-3 flex flex-col justify-center rounded-md border border-muted bg-background p-2"
                         key={i}

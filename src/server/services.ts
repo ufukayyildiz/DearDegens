@@ -108,8 +108,7 @@ export function useGetChatrooms(mintId: any) {
 // GET MESSAGES
 export function useGetMessages(roomId: any) {
   return useQuery<messagesType[]>({
-    queryKey: ["messages"],
+    queryKey: ["messages", roomId],
     queryFn: () => roomId && getMessages(roomId),
-    refetchInterval: 1000,
   })
 }

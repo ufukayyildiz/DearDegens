@@ -21,35 +21,40 @@ interface ChatSheetProps {
 }
 
 export default function ChatSheet({ listingId }: ChatSheetProps) {
-  const queryClient = useQueryClient()
-  const { data, isFetching } = useGetChatrooms(listingId)
+  const [selectedRoom, setSelectedRoom] = useState<string>("")
   const { data: session } = useSession()
   const userId = session?.user.id
+
+  const queryClient = useQueryClient()
+  const messages = useGetMessages(selectedRoom).data
+  const { data, isFetching } = useGetChatrooms(listingId)
 
   const chatRoomData: roomType[] = []
   const filteredRoom =
     data &&
-    data.map((data) => {
-      if (data.sellerId === userId || data.buyerId === userId) {
+    data.map((data: roomType) => {
+      if (data.seller.id === userId || data.buyer.id === userId) {
         chatRoomData.push(data)
       }
     })
 
-  // SELECTED ROOM
-  const [selectedRoom, setSelectedRoom] = useState<string>("")
-
-  // MESSAGES QUERY
-  const messages = useGetMessages(selectedRoom).data
+  // INVALIDATE LISTING CHAT
+  const handleInvalidateChat = async () => {
+    await queryClient.invalidateQueries({ queryKey: ["chatroom"] })
+  }
 
   // MANAGE ROOM SELECT
   const handleRoomChange = async (data: roomType) => {
-    setSelectedRoom(data.roomId)
-    await queryClient.fetchQuery({ queryKey: ["messages"] })
+    setSelectedRoom(data.chatRoom.id)
+    await queryClient.invalidateQueries({ queryKey: ["messages"] })
   }
 
   return (
     <Sheet>
-      <SheetTrigger className="group flex h-10 min-w-10 items-center justify-center hover:text-blue-500">
+      <SheetTrigger
+        className="group flex h-10 min-w-10 items-center justify-center hover:text-blue-500"
+        onClick={handleInvalidateChat}
+      >
         <MessageCircle />
       </SheetTrigger>
       <SheetContent>
@@ -63,13 +68,13 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
             <div className="h-full">
               {chatRoomData && chatRoomData.length > 0 ? (
                 <div className="flex flex-col space-y-1">
-                  {chatRoomData.map((data) => {
+                  {chatRoomData.map((data, index) => {
                     return (
-                      <div onClick={() => handleRoomChange(data)}>
+                      <div onClick={() => handleRoomChange(data)} key={index}>
                         <ChatRoom
                           roomData={data}
                           messages={messages!}
-                          key={data.roomId}
+                          key={data.chatRoom.id}
                         />
                       </div>
                     )

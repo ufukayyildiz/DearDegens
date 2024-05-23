@@ -21,6 +21,7 @@ import {
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 import ShareButtons from "@/src/components/pageMint/ShareButtons"
+import MintGetStarted from "@/src/components/pageMint/MintGetStarted"
 
 interface MintPageProps {
   params: {
@@ -103,10 +104,10 @@ export default async function MintPage({ params }: MintPageProps) {
                 <span className="pl-2 font-bold text-customAccent">{`${user[0].name}`}</span>
               </Link>
 
-              {session?.user.id && (
+              <hr className="my-2 border border-t-muted-foreground" />
+              {session?.user.id ? (
                 <>
                   {/* MANAGER SECTION */}
-                  <hr className="my-2 border border-t-muted-foreground" />
                   <MintManager listing={item} domain={domain} />
                   {/* @ts-ignore */}
                   <MintList
@@ -115,6 +116,8 @@ export default async function MintPage({ params }: MintPageProps) {
                     sellerId={item.authorId}
                   />
                 </>
+              ) : (
+                <MintGetStarted />
               )}
 
               {/* DESCRIPTION SECTION */}

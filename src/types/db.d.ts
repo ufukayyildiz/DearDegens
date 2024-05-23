@@ -22,13 +22,7 @@ export type messagesType = InferInsertModel<typeof messages>
 export type chatRoomType = InferInsertModel<typeof chatRoom>
 
 export type roomType = {
-  roomId: string
-  adId: string
-  buyerId: string
-  buyerName: string
-  buyerImage: string
-  sellerId: string
-  sellerName: string
-  sellerImage: string
-  createdAt: Date
+  chatRoom: chatRoomType
+  buyer: userType
+  seller: userType
 }

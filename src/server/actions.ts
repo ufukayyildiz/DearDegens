@@ -236,17 +236,7 @@ export async function getChatrooms(mintId: string) {
     const seller = alias(users, "seller")
 
     const roomQueries = await db
-      .select({
-        roomId: chatRoom.id,
-        adId: chatRoom.adId,
-        buyerId: buyer.id,
-        buyerName: buyer.name,
-        buyerImage: buyer.image,
-        sellerId: seller.id,
-        sellerName: seller.name,
-        sellerImage: seller.image,
-        createdAt: chatRoom.createdAt,
-      })
+      .select()
       .from(chatRoom)
       .leftJoin(buyer, eq(buyer.id, chatRoom.userId))
       .leftJoin(seller, eq(seller.id, chatRoom.sellerId))
@@ -265,16 +255,12 @@ export async function getChatrooms(mintId: string) {
 // Get Chatroom Messages
 export async function getMessages(roomId: string) {
   try {
-    const roomMessages = await db
-      .select()
-      .from(messages)
-      .where(eq(messages.roomId, roomId))
+    const roomMessages = await db.execute(
+      sql.raw(`SELECT * FROM messages WHERE "roomId" = '${roomId}'`)
+    )
 
-    roomMessages &&
-      roomMessages.sort((a: any, b: any) => a.createdAt - b.createdAt)
-
-    // console.log("Chatroom messages query successful")
-    return roomMessages
+    console.log("Chatroom messages query successful")
+    return roomMessages.rows
   } catch (error) {
     console.error("Server error: Failed to fetch chatroom messages - ", error)
   }

@@ -1,9 +1,10 @@
 import React from "react"
 import { UserAvatar } from "../components-ui/UserAvatar"
 import { formatDateFromTimestamp } from "@/src/lib/utils"
+import { roomType } from "@/src/types/db"
 
 interface ChatRoomTriggerProps {
-  roomData: any
+  roomData: roomType
   userName: string
   userImage: string
 }
@@ -24,7 +25,7 @@ export default function ChatRoomTrigger({
       />
       <h1 className="w-full text-left">{userName}</h1>
       <span className="flex w-36 justify-end text-xs italic text-muted-foreground">
-        {formatDateFromTimestamp(roomData.createdAt!)}
+        {formatDateFromTimestamp(roomData.chatRoom.createdAt!)}
       </span>
     </div>
   )
