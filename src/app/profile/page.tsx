@@ -92,7 +92,7 @@ export default function Profile() {
             RESET PASSWORD
           </Button>
           <p className="text-sm italic">
-            Note: By clicking "RESET PASSWORD", you will be sent an email with a
+            Note: By clicking &quot;RESET PASSWORD&quot;, you will be sent an email with a
             confirmation link to change your password. Once your password has
             been successfully updated, you&apos;ll be automatically logged out
             and sent to the sign in page from where you can use your new details

@@ -39,7 +39,7 @@ export default function MintCarousel(listing: any) {
                     />
                   </div>
                 ) : (
-                  <div className="flex h-full min-h-[40vh] w-full justify-center rounded-lg bg-muted">
+                  <div className="flex h-full w-full justify-center rounded-lg bg-muted">
                     <Image
                       className="my-auto h-[50%] w-[50%] animate-pulse text-muted-foreground"
                       alt="imageLoader"
