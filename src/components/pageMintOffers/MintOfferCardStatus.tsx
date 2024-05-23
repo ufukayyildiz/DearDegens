@@ -8,8 +8,8 @@ interface CardStatusProps {
 export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
   if (adOffer.isConfirmed) {
     return (
-      <div className="flex w-full justify-between">
-        <p className="text-sm italic">Offer Status:</p>
+      <div className="flex w-full justify-end">
+        {/* <p className="text-sm italic">Offer Status:</p> */}
         <p className="text-sm italic text-teal-500">Deal is sealed!</p>
       </div>
     )
@@ -17,8 +17,8 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
 
   if (adOffer.isAccepted) {
     return (
-      <div className="flex w-full justify-between">
-        <p className="text-sm italic">Offer Status:</p>
+      <div className="flex w-full justify-end">
+        {/* <p className="text-sm italic">Offer Status:</p> */}
         <p className="text-sm italic text-teal-500">Offer accepted!</p>
       </div>
     )
@@ -26,8 +26,8 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
 
   if (adOffer.isDeclined) {
     return (
-      <div className="flex w-full justify-between">
-        <p className="text-sm italic">Offer Status:</p>
+      <div className="flex w-full justify-end">
+        {/* <p className="text-sm italic">Offer Status:</p> */}
         <p className="text-sm italic text-rose-500">Declined</p>
       </div>
     )
@@ -35,8 +35,8 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
 
   if (adOffer.isCountered) {
     return (
-      <div className="flex w-full justify-between">
-        <p className="text-sm italic">Offer Status:</p>
+      <div className="flex w-full justify-end">
+        {/* <p className="text-sm italic">Offer Status:</p> */}
         <p className="text-sm italic text-amber-500">
           Countered @ R {adOffer.counterPrice}
         </p>
@@ -50,8 +50,8 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
     adOffer.isDeclined === false
   ) {
     return (
-      <div className="flex w-full justify-between">
-        <p className="text-sm italic">Offer Status:</p>
+      <div className="flex w-full justify-end">
+        {/* <p className="text-sm italic">Offer Status:</p> */}
         <p className="text-sm italic">Pending</p>
       </div>
     )
