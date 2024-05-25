@@ -154,15 +154,15 @@ export default function MintCounterTwo({ adOffer }: CounterProps) {
                   </Label>
                 </div>
                 <div className="flex gap-5">
-                  <AlertDialogCancel onClick={() => setDisabled(true)}>
-                    Cancel
-                  </AlertDialogCancel>
                   <AlertDialogAction
                     onClick={() => onSubmit()}
                     disabled={disabled}
                   >
                     Send
                   </AlertDialogAction>
+                  <AlertDialogCancel onClick={() => setDisabled(true)}>
+                    Cancel
+                  </AlertDialogCancel>
                 </div>
               </div>
             </AlertDialogFooter>

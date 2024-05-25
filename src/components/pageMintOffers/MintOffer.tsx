@@ -117,7 +117,8 @@ export default function MintOffer({ listing }: MintProps) {
         variant: "destructive",
       })
     },
-    onSuccess: (data) => {
+    onSuccess: () => {
+      form.reset()
       return toast({
         description: "Your offer is on the way to the seller.",
       })

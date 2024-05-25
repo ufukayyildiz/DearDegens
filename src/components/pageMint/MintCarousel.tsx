@@ -28,7 +28,7 @@ export default function MintCarousel(listing: any) {
             {imageUrls.map((images: any, index: any) => (
               <CarouselItem
                 key={index}
-                className="flex h-[50vh] w-full items-center justify-center shadow-lg"
+                className="flex w-full items-center justify-center shadow-lg"
               >
                 {imageUrls.length !== 0 ? (
                   <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-lg">

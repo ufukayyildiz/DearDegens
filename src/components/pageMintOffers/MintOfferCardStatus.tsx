@@ -6,39 +6,49 @@ interface CardStatusProps {
 }
 
 export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
+  const formatter = new Intl.NumberFormat("en-US", {
+    style: "decimal",
+    minimumFractionDigits: 0,
+  })
+
   if (adOffer.isConfirmed) {
     return (
-      <div className="flex w-full justify-end">
+      <div className="flex w-full">
         {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic text-teal-500">Deal is sealed!</p>
+        <p className="text-sm font-semibold italic">
+          Confirmed, chat section unlocked.
+        </p>
       </div>
     )
   }
 
   if (adOffer.isAccepted) {
     return (
-      <div className="flex w-full justify-end">
+      <div className="flex w-full">
         {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic text-teal-500">Offer accepted!</p>
+        <p className="text-sm font-semibold italic">
+          Offer accepted! Awaiting buyer final confirmation.
+        </p>
       </div>
     )
   }
 
   if (adOffer.isDeclined) {
     return (
-      <div className="flex w-full justify-end">
+      <div className="flex w-full">
         {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic text-rose-500">Declined</p>
+        <p className="text-sm font-semibold italic">Offer declined</p>
       </div>
     )
   }
 
   if (adOffer.isCountered) {
     return (
-      <div className="flex w-full justify-end">
+      <div className="flex w-full">
         {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic text-amber-500">
-          Countered @ R {adOffer.counterPrice}
+        <p className="text-sm font-semibold italic text-customAccent">
+          Countered @ R {formatter.format(adOffer.counterPrice!)} - awaiting
+          buyer acceptance.
         </p>
       </div>
     )
@@ -50,9 +60,11 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
     adOffer.isDeclined === false
   ) {
     return (
-      <div className="flex w-full justify-end">
+      <div className="flex w-full">
         {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic">Pending</p>
+        <p className="text-sm font-semibold italic">
+          Pending response from the seller.
+        </p>
       </div>
     )
   }

@@ -29,9 +29,11 @@ export default function MintManageOffers({
       <SheetTrigger className="group flex h-10 min-w-10 items-center justify-center hover:text-teal-500">
         <Gavel />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="p-0">
         <SheetHeader className="h-full">
-          <SheetTitle className="text-customAccent">Offers:</SheetTitle>
+          <SheetTitle className="mx-auto mt-5 w-11/12 text-customAccent">
+            Offers:
+          </SheetTitle>
           {offers.length === 0 ? (
             <div className="flex w-full flex-col items-center justify-center">
               <div className="w-full pt-10 text-center italic">
@@ -45,7 +47,7 @@ export default function MintManageOffers({
               />
             </div>
           ) : (
-            <ScrollArea className="mt-5 flex h-full flex-col pb-12 pr-5">
+            <ScrollArea className="mt-5 flex h-full flex-col pb-12 pr-2">
               {offers &&
                 offers.map((item: any, index) => {
                   return isLoading === true ? (

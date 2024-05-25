@@ -28,9 +28,11 @@ export default function MintManageQueries({
       <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
         <FileQuestion className="h-6 w-10" />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="p-0">
         <SheetHeader className="h-full">
-          <SheetTitle className="mt-5 text-customAccent">Queries:</SheetTitle>
+          <SheetTitle className="mx-auto mt-5 w-11/12 text-customAccent">
+            Queries:
+          </SheetTitle>
           {queries.length === 0 ? (
             <div className="flex w-full flex-col items-center justify-center">
               <div className="w-full pt-10 text-center italic">
@@ -44,7 +46,7 @@ export default function MintManageQueries({
               />
             </div>
           ) : (
-            <ScrollArea className="mt-5 flex h-full flex-col pb-16 pr-5">
+            <ScrollArea className="mt-5 flex h-full flex-col pb-16 pr-2">
               {queries &&
                 userId &&
                 queries.map((item: any, index) => {

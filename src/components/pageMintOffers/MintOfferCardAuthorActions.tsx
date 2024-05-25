@@ -219,7 +219,7 @@ export default function MintOfferCardAuthorActions({
               <Button
                 variant="icon"
                 size="icon"
-                className="hover:text-customAccent"
+                className="hover:text-teal-500"
                 onClick={() => reAcceptOffer()}
               >
                 <Check size={20} />

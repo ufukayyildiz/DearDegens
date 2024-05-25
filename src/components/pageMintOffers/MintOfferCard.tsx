@@ -25,44 +25,31 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
   const redPrice = askPrice && askPrice * 0.5
 
   return (
-    <div className="mb-3 flex h-[100px] flex-col justify-between rounded-lg border border-muted p-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent">
-      <div className="flex w-full justify-end">
-        {/* <h1 className="font-bold italic">Offer Amount:</h1> */}
-        {askPrice && offerPrice && orangePrice && redPrice && (
-          <h1
-            className={cn(
-              "font-bold italic",
-              offerPrice > orangePrice &&
-                offerPrice <= askPrice &&
-                "text-primary",
-              offerPrice > askPrice && "font-semibold text-teal-500",
-              offerPrice > redPrice &&
-                offerPrice <= orangePrice &&
-                "text-amber-500",
-              redPrice >= offerPrice && "text-rose-500"
-            )}
-          >
-            R {formatter.format(offerPrice)}
-          </h1>
-        )}
-      </div>
-      {/* @ts-expect-error Server Component */}
-      <MintOfferCardStatus adOffer={adOffer} />
-
-      <div className="flex">
-        <div className="flex w-1/2 flex-col">
-          <div className="flex w-full gap-1">
-            <p className="text-xs italic">Buyer:</p>
-            <p className="text-xs">{adOffer.userName}</p>
-          </div>
-          <div className="flex w-full gap-1 text-muted-foreground">
-            <p className="text-xs italic">sent</p>
-            <p className="text-xs italic">
-              {formatTimeToNow(adOffer.createdAt!)}
-            </p>
-          </div>
+    <div className="mx-auto mb-3 flex w-11/12 flex-col justify-between rounded-lg border border-muted p-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent">
+      <div className="flex flex-row justify-between">
+        {/* PRICE */}
+        <div className="flex w-full">
+          {/* <h1 className="font-bold italic">Offer Amount:</h1> */}
+          {askPrice && offerPrice && orangePrice && redPrice && (
+            <h1
+              className={cn(
+                "pt-1 text-lg font-bold italic",
+                offerPrice > orangePrice &&
+                  offerPrice <= askPrice &&
+                  "text-primary",
+                offerPrice > askPrice && "font-semibold text-teal-500",
+                offerPrice > redPrice &&
+                  offerPrice <= orangePrice &&
+                  "text-customAccent",
+                redPrice >= offerPrice && "text-rose-500"
+              )}
+            >
+              R {formatter.format(offerPrice)}
+            </h1>
+          )}
         </div>
 
+        {/* ACTIONS */}
         {userId === adOffer.sellerId ? (
           /* @ts-expect-error Server Component */
           <MintOfferCardAuthorActions adOffer={adOffer} />
@@ -70,6 +57,24 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
           /* @ts-expect-error Server Component */
           <MintOfferCardUserActions adOffer={adOffer} />
         )}
+      </div>
+
+      {/* @ts-expect-error Server Component */}
+      <MintOfferCardStatus adOffer={adOffer} />
+
+      <div className="flex">
+        <div className="flex w-1/2 flex-col">
+          {/* <div className="flex w-full gap-1">
+            <p className="text-xs italic">Buyer:</p>
+            <p className="text-xs">{adOffer.userName}</p>
+          </div> */}
+          <div className="flex w-full gap-1 text-muted-foreground">
+            <p className="text-xs italic">sent</p>
+            <p className="text-xs italic">
+              {formatTimeToNow(adOffer.createdAt!)}
+            </p>
+          </div>
+        </div>
       </div>
     </div>
   )

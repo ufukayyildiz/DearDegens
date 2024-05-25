@@ -175,7 +175,7 @@ export default function MintOfferCardUserActions({
                 onClick={() => offerBuyerAcceptance()}
                 variant="icon"
                 size="icon"
-                className="hover:text-customAccent"
+                className="hover:text-teal-500"
               >
                 <Check size={20} />
               </Button>
