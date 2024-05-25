@@ -126,7 +126,7 @@ export default function FindAds() {
 
   return (
     <div className="min-w-screen relative min-h-screen w-full">
-      <div className="mx-auto mb-52 h-auto min-h-screen w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
+      <div className="mx-auto mb-60 pb-10 h-auto min-h-screen w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
         <div className="mt-10 flex flex-row justify-between md:items-center ">
           <div className="flex flex-col items-start justify-start sm:flex-row">
             <h1 className="pr-3 text-left text-xl font-bold">

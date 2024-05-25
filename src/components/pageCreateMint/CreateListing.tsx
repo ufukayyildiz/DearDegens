@@ -631,7 +631,7 @@ export default function CreateListing() {
                 <form.Field name="transmission">
                   {(field) => {
                     return (
-                      <div className="relative w-1/2 flex-col">
+                      <div className="relative w-full flex-col">
                         <div className="flex w-full justify-between">
                           <FieldLabel>Transmission:</FieldLabel>
                           <FieldLabel className="py-2 text-xs italic text-rose-400">
@@ -664,7 +664,7 @@ export default function CreateListing() {
                 <form.Field name="fuel">
                   {(field) => {
                     return (
-                      <div className="relative w-1/2 flex-col">
+                      <div className="relative w-full flex-col">
                         <div className="flex w-full justify-between">
                           <FieldLabel>Fuel Type:</FieldLabel>
                           <FieldLabel className="py-2 text-xs italic text-rose-400">

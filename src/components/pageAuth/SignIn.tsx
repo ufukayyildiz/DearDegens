@@ -17,6 +17,8 @@ import {
 import { Loader2 } from "lucide-react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { useRouter } from "next/navigation"
+import axios from "axios"
+import { toast } from "@/src/hooks/use-toast"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -56,11 +58,23 @@ const SignIn = () => {
     },
   })
 
-  useEffect(() => {
-    if (captchaValue && captchaValue.length > 20) {
-      setDisabled(false)
+  const verifyCaptcha = async (token: string) => {
+    try {
+      const response = await axios.post(`/api/auth/captcha?token=${token}`)
+
+      if (response.data.success === true) {
+        setDisabled(false)
+      }
+    } catch (error) {
+      console.error("Failed to verify CAPTCHA token, error:", error)
+      return toast({
+        title: "Semthing went wrong.",
+        description:
+          "Failed to verify the existence of a carbon based life form",
+        variant: "destructive",
+      })
     }
-  }, [captchaValue])
+  }
 
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6">
@@ -135,7 +149,7 @@ const SignIn = () => {
                 {captchaKey && (
                   <ReCAPTCHA
                     sitekey={captchaKey}
-                    onChange={(value: any) => setCaptchaValue(value)}
+                    onChange={(value: any) => verifyCaptcha(value)}
                   />
                 )}
                 <div className="flex w-full flex-row gap-5">

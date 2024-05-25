@@ -95,11 +95,23 @@ const SignUp = () => {
     },
   })
 
-  useEffect(() => {
-    if (captchaValue && captchaValue.length > 20) {
-      setDisabled(false)
+  const verifyCaptcha = async (token: string) => {
+    try {
+      const response = await axios.post(`/api/auth/captcha?token=${token}`)
+
+      if (response.data.success === true) {
+        setDisabled(false)
+      }
+    } catch (error) {
+      console.error("Failed to verify CAPTCHA token, error:", error)
+      return toast({
+        title: "Semthing went wrong.",
+        description:
+          "Failed to verify the existence of a carbon based life form",
+        variant: "destructive",
+      })
     }
-  }, [captchaValue])
+  }
 
   return (
     <div className="mx-auto flex w-full flex-col justify-center space-y-6">
@@ -231,7 +243,7 @@ const SignUp = () => {
                 {captchaKey && (
                   <ReCAPTCHA
                     sitekey={captchaKey}
-                    onChange={(value: any) => setCaptchaValue(value)}
+                    onChange={(value: any) => verifyCaptcha(value)}
                   />
                 )}
                 <Button
