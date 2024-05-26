@@ -49,11 +49,11 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/ad/create">Create Ad</Link>
+          <Link href="/ad/ads-manager">Ads Manager</Link>
         </DropdownMenuItem>
-
+        
         <DropdownMenuItem asChild>
-          <Link href="/ad/myads">My Ads</Link>
+          <Link href="/ad/create">Create Ad</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>

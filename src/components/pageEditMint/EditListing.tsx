@@ -211,7 +211,7 @@ export default function EditListing({ listing }: EditListingProps) {
 
     // SUCCESS
     onSuccess: () => {
-      router.push("/ad/myads")
+      router.push("/ad/ads-manager")
       router.refresh()
       return toast({
         description: "Your post has been updated.",

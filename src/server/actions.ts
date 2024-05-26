@@ -120,10 +120,36 @@ export async function getOffersAuthor(listingId: any) {
       )
     )
     const offers = adOffers.rows.filter((item) => item.adId === listingId)
-    console.log("User offers query successful")
+    console.log("Author offers query successful")
     return offers
   } catch (error) {
-    console.error("Server error: Failed to fetch user offers - ", error)
+    console.error("Server error: Failed to fetch author offers - ", error)
+  }
+}
+
+// Get Author Manager Offers
+export async function getOffersManagerAuthor() {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const offers = await db.execute(
+      sql.raw(
+        `
+        SELECT * FROM offers 
+        WHERE "sellerId" = '${userId}'; 
+      `
+      )
+    )
+    console.log("Author manager offers query successful")
+    return offers.rows
+  } catch (error) {
+    console.error(
+      "Server error: Failed to fetch author manager offers - ",
+      error
+    )
   }
 }
 
@@ -151,6 +177,29 @@ export async function getOffersUser(listingId: any) {
   }
 }
 
+// Get User Manager Offers
+export async function getOffersManagerUser() {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const offers = await db.execute(
+      sql.raw(
+        `
+        SELECT * FROM offers 
+        WHERE "userId" = '${userId}'; 
+      `
+      )
+    )
+    console.log("User manager offers query successful")
+    return offers.rows
+  } catch (error) {
+    console.error("Server error: Failed to fetch user manager offers - ", error)
+  }
+}
+
 // Get Author Queries
 export async function getQueriesAuthor(listingId: string) {
   try {
@@ -158,7 +207,7 @@ export async function getQueriesAuthor(listingId: string) {
     if (!session) {
       return new Response("Unauthorised", { status: 401 })
     }
-    const userId = session.user.id
+
     const adQueries = await db.execute(
       sql.raw(
         `
@@ -167,11 +216,37 @@ export async function getQueriesAuthor(listingId: string) {
       `
       )
     )
-    const offers = adQueries.rows.filter((item) => item.adId === listingId)
+    const queries = adQueries.rows.filter((item) => item.adId === listingId)
     console.log("Author queries query successful")
-    return offers
+    return queries
   } catch (error) {
     console.error("Server error: Failed to fetch author queries - ", error)
+  }
+}
+
+// Get Author Manager Queries
+export async function getQueriesManagerAuthor() {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const queries = await db.execute(
+      sql.raw(
+        `
+        SELECT * FROM queries 
+        WHERE "sellerId" = '${userId}'; 
+      `
+      )
+    )
+    console.log("Author manager queries query successful")
+    return queries.rows
+  } catch (error) {
+    console.error(
+      "Server error: Failed to fetch author manager queries - ",
+      error
+    )
   }
 }
 
@@ -196,6 +271,32 @@ export async function getQueriesUser(listingId: string) {
     return offers
   } catch (error) {
     console.error("Server error: Failed to fetch user queries - ", error)
+  }
+}
+
+// Get User Manager Queries
+export async function getQueriesManagerUser() {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session) {
+      return new Response("Unauthorised", { status: 401 })
+    }
+    const userId = session.user.id
+    const queries = await db.execute(
+      sql.raw(
+        `
+        SELECT * FROM queries 
+        WHERE "userId" = '${userId}'; 
+      `
+      )
+    )
+    console.log("User manager queries query successful")
+    return queries.rows
+  } catch (error) {
+    console.error(
+      "Server error: Failed to fetch user manager queries - ",
+      error
+    )
   }
 }
 

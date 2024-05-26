@@ -20,17 +20,13 @@ import {
   getMessages,
   getOffersAuthor,
   getOffersUser,
+  getOffersManagerAuthor,
+  getOffersManagerUser,
+  getQueriesManagerAuthor,
+  getQueriesManagerUser,
 } from "./actions"
 
-// GET USER INFO
-export function useGetUserInfo() {
-  return useQuery<userType[]>({
-    queryKey: ["userInfo"],
-    // @ts-ignore
-    queryFn: () => getUserInfo(),
-  })
-}
-
+// ______________________________________________________________
 // GET AUTHOR QUERIES
 export function useGetQueriesAuthor(listingId: any) {
   return useQuery<queryType[]>({
@@ -65,6 +61,42 @@ export function useGetOffersUser(listingId: any) {
   })
 }
 
+// ______________________________________________________________
+// GET AUTHOR MANAGER QUERIES
+export function useGetQueriesManagerAuthor() {
+  return useQuery({
+    queryKey: ["authorQueriesManager"],
+    queryFn: () => getQueriesManagerAuthor(),
+  })
+}
+
+// GET USER MANAGER QUERIES
+export function useGetQueriesManagerUser() {
+  return useQuery({
+    queryKey: ["userQueriesManager"],
+    queryFn: () => getQueriesManagerUser(),
+  })
+}
+
+// GET AUTHOR MANAGER OFFERS
+export function useGetOffersManagerAuthor() {
+  return useQuery({
+    queryKey: ["authorOffersManager"],
+    queryFn: () => getOffersManagerAuthor(),
+    refetchOnMount: true,
+  })
+}
+
+// GET USER MANAGER OFFERS
+export function useGetOffersManagerUser() {
+  return useQuery({
+    queryKey: ["userOffersManager"],
+    queryFn: () => getOffersManagerUser(),
+    refetchOnMount: true,
+  })
+}
+
+// ______________________________________________________________
 // GET WISHLIST
 export function useGetWishlist() {
   return useQuery({
@@ -97,6 +129,16 @@ export function useGetListingById(listingId: any) {
   })
 }
 
+// GET USER INFO
+export function useGetUserInfo() {
+  return useQuery<userType[]>({
+    queryKey: ["userInfo"],
+    // @ts-ignore
+    queryFn: () => getUserInfo(),
+  })
+}
+
+// ______________________________________________________________
 // GET CHATROOM
 export function useGetChatrooms(mintId: any) {
   return useQuery<roomType[]>({
