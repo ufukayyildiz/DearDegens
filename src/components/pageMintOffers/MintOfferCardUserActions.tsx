@@ -1,5 +1,5 @@
-import React from "react"
-import { useParams } from "next/navigation"
+import React, { useState } from "react"
+import MintOfferDelete from "./MintOfferDelete"
 import {
   Tooltip,
   TooltipContent,
@@ -23,6 +23,20 @@ export default function MintOfferCardUserActions({
 }: MintOfferCardProps) {
   const offerId = JSON.stringify(adOffer.id)
   const queryClient = useQueryClient()
+
+  const currentDate = new Date().getTime()
+  const createdAt = new Date(adOffer.createdAt!).getTime()
+  const oneDay = 24 * 60 * 60 * 1000
+  const tenDays = 15 * 24 * 60 * 60 * 1000
+  const endDate = createdAt + tenDays
+  const differance = (endDate - currentDate) / oneDay
+  const daysLeft = Math.ceil(differance)
+
+  const [canDelete, setCanDelete] = useState<boolean>(false)
+
+  if (daysLeft <= 0) {
+    setCanDelete(true)
+  }
 
   // ________________________________________________________________________
   // MUTATION CONFIRMATION
@@ -126,10 +140,30 @@ export default function MintOfferCardUserActions({
     },
   })
 
+  if (
+    adOffer.isAccepted === false &&
+    adOffer.isCountered === false &&
+    adOffer.isDeclined === false
+  ) {
+    return (
+      <MintOfferDelete
+        offer={adOffer}
+        canDelete={canDelete}
+        daysLeft={daysLeft}
+      />
+    )
+  }
+
   // ________________________________________________________________________
   // DEAL SEALED ACTIONS
   if (adOffer.isConfirmed) {
-    return null
+    return (
+      <MintOfferDelete
+        offer={adOffer}
+        canDelete={canDelete}
+        daysLeft={daysLeft}
+      />
+    )
   }
 
   // ________________________________________________________________________
@@ -152,7 +186,7 @@ export default function MintOfferCardUserActions({
   // COUNTERED ACTIONS
   if (adOffer.isCountered) {
     return (
-      <div className="flex w-1/2 items-end justify-end gap-1">
+      <div className="z-50 flex w-1/2 items-end justify-end gap-1">
         <TooltipProvider>
           <Tooltip>
             <TooltipTrigger className="focus-visible:outline-none">
@@ -185,6 +219,11 @@ export default function MintOfferCardUserActions({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+        <MintOfferDelete
+          offer={adOffer}
+          canDelete={canDelete}
+          daysLeft={daysLeft}
+        />
       </div>
     )
   }

@@ -14,8 +14,9 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
   if (adOffer.isConfirmed) {
     return (
       <div className="flex w-full">
-        {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic">Confirmed, chat section unlocked.</p>
+        <p className="text-left text-sm italic text-teal-500">
+          Confirmed, chat section unlocked.
+        </p>
       </div>
     )
   }
@@ -23,8 +24,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
   if (adOffer.isAccepted) {
     return (
       <div className="flex w-full">
-        {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic">
+        <p className="text-left text-sm italic">
           Offer accepted! Awaiting buyer final confirmation.
         </p>
       </div>
@@ -34,8 +34,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
   if (adOffer.isDeclined) {
     return (
       <div className="flex w-full">
-        {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic">Offer declined</p>
+        <p className="text-left text-sm italic text-red-500">Offer declined</p>
       </div>
     )
   }
@@ -43,8 +42,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
   if (adOffer.isCountered) {
     return (
       <div className="flex w-full">
-        {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic text-customAccent">
+        <p className="text-left text-sm italic text-customAccent">
           Countered @ R {formatter.format(adOffer.counterPrice!)} - awaiting
           buyer acceptance.
         </p>
@@ -59,8 +57,9 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
   ) {
     return (
       <div className="flex w-full">
-        {/* <p className="text-sm italic">Offer Status:</p> */}
-        <p className="text-sm italic">Pending response from the seller.</p>
+        <p className="text-left text-sm italic">
+          Pending response from the seller.
+        </p>
       </div>
     )
   }

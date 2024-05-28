@@ -48,14 +48,16 @@ export default function MintManageOffers({
             </div>
           ) : (
             <ScrollArea className="mt-5 flex h-full flex-col pb-12 pr-2">
-              {offers &&
-                offers.map((item: any, index) => {
-                  return isLoading === true ? (
-                    <MintOfferCardSkeleton />
-                  ) : (
-                    <MintOfferCard key={index} adOffer={item} />
-                  )
-                })}
+              <div className="mt-8">
+                {offers &&
+                  offers.map((item: any, index) => {
+                    return isLoading === true ? (
+                      <MintOfferCardSkeleton />
+                    ) : (
+                      <MintOfferCard key={index} adOffer={item} />
+                    )
+                  })}
+              </div>
             </ScrollArea>
           )}
         </SheetHeader>

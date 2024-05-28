@@ -1,4 +1,4 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import {
   Tooltip,
   TooltipContent,
@@ -10,7 +10,7 @@ import { offerType } from "@/src/types/db"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import { Check, X } from "lucide-react"
-
+import MintOfferDelete from "./MintOfferDelete"
 import { Button } from "../components-ui/Button"
 import MintCounterTwo from "./MintCounterTwo"
 
@@ -23,6 +23,20 @@ export default function MintOfferCardAuthorActions({
 }: MintOfferCardProps) {
   const offerId = JSON.stringify(adOffer.id)
   const queryClient = useQueryClient()
+
+  const currentDate = new Date().getTime()
+  const createdAt = new Date(adOffer.createdAt!).getTime()
+  const oneDay = 24 * 60 * 60 * 1000
+  const tenDays = 15 * 24 * 60 * 60 * 1000
+  const endDate = createdAt + tenDays
+  const differance = (endDate - currentDate) / oneDay
+  const daysLeft = Math.ceil(differance)
+
+  const [canDelete, setCanDelete] = useState<boolean>(false)
+
+  if (daysLeft <= 0) {
+    setCanDelete(true)
+  }
 
   // ________________________________________________________________________
   // ACCEPT OFFER
@@ -178,6 +192,11 @@ export default function MintOfferCardAuthorActions({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+        <MintOfferDelete
+          offer={adOffer}
+          canDelete={canDelete}
+          daysLeft={daysLeft}
+        />
       </div>
     )
   }
@@ -185,13 +204,25 @@ export default function MintOfferCardAuthorActions({
   // ________________________________________________________________________
   // DEAL SEALED ACTIONS
   if (adOffer.isConfirmed) {
-    return null
+    return (
+      <MintOfferDelete
+        offer={adOffer}
+        canDelete={canDelete}
+        daysLeft={daysLeft}
+      />
+    )
   }
 
   // ________________________________________________________________________
   // ACCEPTED ACTIONS
   if (adOffer.isAccepted === true) {
-    return null
+    return (
+      <MintOfferDelete
+        offer={adOffer}
+        canDelete={canDelete}
+        daysLeft={daysLeft}
+      />
+    )
   }
 
   // ________________________________________________________________________
@@ -230,6 +261,11 @@ export default function MintOfferCardAuthorActions({
             </TooltipContent>
           </Tooltip>
         </TooltipProvider>
+        <MintOfferDelete
+          offer={adOffer}
+          canDelete={canDelete}
+          daysLeft={daysLeft}
+        />
       </div>
     )
   }
@@ -237,6 +273,12 @@ export default function MintOfferCardAuthorActions({
   // ________________________________________________________________________
   // COUNTERED ACTIONS
   if (adOffer.isCountered === true) {
-    return null
+    return (
+      <MintOfferDelete
+        offer={adOffer}
+        canDelete={canDelete}
+        daysLeft={daysLeft}
+      />
+    )
   }
 }

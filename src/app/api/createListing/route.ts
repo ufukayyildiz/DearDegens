@@ -131,7 +131,7 @@ export async function POST(req: Request) {
         createdAt: currentDate,
         title: `Listing ${title} is live!`,
         description: "Congratulations, your listing is live!",
-        body: `Thank you for choosing PepperMint to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
+        body: `Thank you for choosing DearDegens to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
         isRead: false,
       })
 

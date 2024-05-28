@@ -47,13 +47,19 @@ export default function MintManageQueries({
             </div>
           ) : (
             <ScrollArea className="mt-5 flex h-full flex-col pb-16 pr-2">
-              {queries &&
-                userId &&
-                queries.map((item: any, index) => {
-                  return (
-                    <MintQueriesCard key={index} query={item} userId={userId} />
-                  )
-                })}
+              <div className="mt-8">
+                {queries &&
+                  userId &&
+                  queries.map((item: any, index) => {
+                    return (
+                      <MintQueriesCard
+                        key={index}
+                        query={item}
+                        userId={userId}
+                      />
+                    )
+                  })}
+              </div>
             </ScrollArea>
           )}
         </SheetHeader>
