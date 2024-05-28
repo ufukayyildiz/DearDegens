@@ -21,13 +21,6 @@ export default function CategoryTags() {
         <p>Home & Garden</p>
       </Link>
       <Link
-        href="/find-electronics"
-        className="flex items-center justify-center gap-3 rounded-full border border-muted bg-background px-3 py-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent hover:text-customAccent"
-      >
-        <Zap className="h-5 w-5" />
-        <p>Electronics</p>
-      </Link>
-      <Link
         href="/find-gaming"
         className="flex items-center justify-center gap-3 rounded-full border border-muted bg-background px-3 py-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent hover:text-customAccent"
       >
@@ -47,6 +40,13 @@ export default function CategoryTags() {
       >
         <Bike className="h-5 w-5" />
         <p>Sports & Outdoors</p>
+      </Link>
+      <Link
+        href="/find-electronics"
+        className="flex items-center justify-center gap-3 rounded-full border border-muted bg-background px-3 py-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent hover:text-customAccent"
+      >
+        <Zap className="h-5 w-5" />
+        <p>Electronics</p>
       </Link>
     </div>
   )

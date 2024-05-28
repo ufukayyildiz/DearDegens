@@ -41,11 +41,11 @@ export default function MintManager({ listing, domain }: MintManagerProps) {
 
   userQueries &&
     userQueries.sort((a: any, b: any) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
   authorQueries &&
     authorQueries.sort((a: any, b: any) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
 
   return (

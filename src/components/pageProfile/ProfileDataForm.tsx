@@ -132,7 +132,7 @@ export default function ProfileDataForm({
           >
             {(field) => (
               <>
-                <div className="grid w-full grid-cols-2 items-center">
+                <div className="grid w-full grid-cols-1 items-center md:grid-cols-2">
                   <p className="h-6 w-full font-bold">Full Name:</p>
                   <Input
                     id={field.name}
@@ -140,7 +140,7 @@ export default function ProfileDataForm({
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    className="h-10 w-full text-primary"
+                    className="mt-1 h-10 w-full text-primary md:mt-0"
                     placeholder="Full Name"
                     required
                   />
@@ -161,7 +161,7 @@ export default function ProfileDataForm({
           >
             {(field) => (
               <>
-                <div className="grid w-full grid-cols-2 items-center">
+                <div className="grid w-full grid-cols-1 items-center md:grid-cols-2">
                   <p className="h-6 w-full font-bold">Email:</p>
                   <Input
                     id={field.name}
@@ -171,7 +171,7 @@ export default function ProfileDataForm({
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    className="h-10 w-full text-primary"
+                    className="mt-1 h-10 w-full text-primary md:mt-0"
                     placeholder="Email"
                     required
                   />
@@ -192,7 +192,7 @@ export default function ProfileDataForm({
           >
             {(field) => (
               <>
-                <div className="grid w-full grid-cols-2 items-center">
+                <div className="grid w-full grid-cols-1 items-center md:grid-cols-2">
                   <p className="h-6 w-full font-bold">Contact Number:</p>
                   <Input
                     id={field.name}
@@ -201,7 +201,7 @@ export default function ProfileDataForm({
                     value={field.state.value}
                     onBlur={field.handleBlur}
                     onChange={(e) => field.handleChange(e.target.value)}
-                    className="h-10 w-full text-primary"
+                    className="mt-1 h-10 w-full text-primary md:mt-0"
                     placeholder="Contact Number"
                   />
                   <FieldInfo field={field} />

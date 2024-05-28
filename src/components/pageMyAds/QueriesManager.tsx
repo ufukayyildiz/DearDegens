@@ -6,7 +6,7 @@ import {
   useGetQueriesManagerAuthor,
   useGetQueriesManagerUser,
 } from "@/src/server/services"
-import MintQueriesCard from "../pageMintQueries/MintQueriesCard"
+import MintQueriesManagerCard from "./MintQueriesManagerCard"
 import {
   Accordion,
   AccordionContent,
@@ -26,13 +26,13 @@ export default function QueriesManager() {
   userQueries &&
     // @ts-ignore
     userQueries.sort((a: any, b: any) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
 
   authorQueries &&
     // @ts-ignore
     authorQueries.sort((a: any, b: any) => {
-      return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
 
   return (
@@ -44,7 +44,7 @@ export default function QueriesManager() {
             {authorQueries &&
               // @ts-ignore
               authorQueries.map((query: queryType) => (
-                <MintQueriesCard query={query} userId={userId} />
+                <MintQueriesManagerCard query={query} userId={userId} />
               ))}
           </AccordionContent>
         </AccordionItem>
@@ -54,7 +54,7 @@ export default function QueriesManager() {
             {userQueries &&
               // @ts-ignore
               userQueries.map((query: queryType) => (
-                <MintQueriesCard query={query} userId={userId} />
+                <MintQueriesManagerCard query={query} userId={userId} />
               ))}
           </AccordionContent>
         </AccordionItem>

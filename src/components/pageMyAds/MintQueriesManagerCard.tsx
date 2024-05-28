@@ -2,21 +2,24 @@ import React from "react"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { queryType } from "@/src/types/db"
 
-import MintQueryReply from "./MintQueryReply"
+import MintQueryReply from "../pageMintQueries/MintQueryReply"
 
-interface QueryCardProps {
+interface QueryManagerCardProps {
   query: queryType
   userId: string
 }
 
-export default function MintQueriesCard({ query, userId }: QueryCardProps) {
+export default function MintQueriesManagerCard({
+  query,
+  userId,
+}: QueryManagerCardProps) {
   console.log("query", query)
   return (
     <div className="relative z-40 mx-auto mb-3 flex h-auto min-h-[100px] w-11/12 max-w-[500px] flex-col overflow-hidden rounded-lg border border-muted p-2 text-left text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent sm:text-sm">
-      {/* <div className="mb-3 flex items-center space-x-2">
-        <p className="font-semibold italic text-secondary">Name:</p>
-        <p>{query.userName}</p>
-      </div> */}
+      <div className="mb-3 flex items-center space-x-2 text-xs font-bold italic text-muted-foreground">
+        {/* <p>Listing Title:</p> */}
+        <p>{query.adTitle}</p>
+      </div>
       <div>
         <p className="mb-2 rounded-lg bg-muted p-2 italic">
           &quot;{query.query}&quot;

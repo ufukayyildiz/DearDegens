@@ -82,21 +82,21 @@ export default function Profile() {
       {/* SECURITY */}
       <div className="space-y-5 text-primary">
         <h2 className="mb-5 font-bold text-customAccent">Security:</h2>
-        <div className="grid w-full grid-cols-2">
+        <div className="grid w-full grid-cols-1 md:grid-cols-2">
           <Button
             variant="outlineTwo"
             onClick={() => updatePassword(user[0].email)}
-            className="w-44"
+            className="mx-auto w-44"
             disabled={disabled}
           >
             RESET PASSWORD
           </Button>
-          <p className="text-sm italic">
-            Note: By clicking &quot;RESET PASSWORD&quot;, you will be sent an email with a
-            confirmation link to change your password. Once your password has
-            been successfully updated, you&apos;ll be automatically logged out
-            and sent to the sign in page from where you can use your new details
-            to sign back in.
+          <p className="mt-5 text-sm italic md:mt-0">
+            Note: By clicking &quot;RESET PASSWORD&quot;, you will be sent an
+            email with a confirmation link to change your password. Once your
+            password has been successfully updated, you&apos;ll be automatically
+            logged out and sent to the sign in page from where you can use your
+            new details to sign back in.
           </p>
         </div>
       </div>
