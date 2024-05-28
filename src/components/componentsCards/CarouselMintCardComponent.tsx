@@ -71,7 +71,7 @@ export default function CarouselMintCardComponent({ listing }: MyMintsProps) {
           {/* INFO */}
           <div className="h-full w-full p-1">
             <div>
-              <h1 className="mb-2 truncate text-sm font-bold text-primary">
+              <h1 className=" line-clamp-2 h-12 text-sm font-bold text-primary">
                 {listing.title}
               </h1>
             </div>
