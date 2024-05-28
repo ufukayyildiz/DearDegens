@@ -16,6 +16,7 @@ export async function GET(req: Request) {
           WHERE "tab" = 'Vehicles'
           AND "isExpired" = 'f'
           AND "isSold" = 'f'
+          AND "isReviewed" = 't'
           ORDER BY "createdAt" DESC
           OFFSET ${offset}
           LIMIT ${parseInt(limit)}; 

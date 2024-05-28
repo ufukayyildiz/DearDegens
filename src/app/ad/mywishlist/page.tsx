@@ -4,7 +4,7 @@ import MintCardComponent from "@/src/components/componentsCards/MintCardComponen
 import { authOptions } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listings, wishlistItem, wishlist } from "@/src/server/db/schema"
-import { eq } from "drizzle-orm"
+import { eq, and } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
 import Rabbit from "@/src/assets/rabbit.svg"
@@ -21,7 +21,13 @@ export default async function MyMints() {
     .from(wishlist)
     .leftJoin(wishlistItem, eq(wishlist.id, wishlistItem.wishlistId))
     .leftJoin(listings, eq(wishlistItem.adId, listings.id))
-    .where(eq(wishlist.userId, session?.user.id))
+    .where(
+      and(
+        eq(wishlist.userId, session?.user.id),
+        eq(listings.isExpired, false),
+        eq(listings.isReviewed, true)
+      )
+    )
 
   const adListings = userWishlist.map((item) => {
     return item.listings

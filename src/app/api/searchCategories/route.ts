@@ -44,6 +44,7 @@ export async function GET(req: Request) {
           WHERE tab = '${tab}'
           AND "isExpired" = 'f'
           AND "isSold" = 'f'
+          AND "isReviewed" = 't'
           AND ('${category}' = '' OR "category" = '${category}')
           AND ('${subCategory}' = '' OR "subCategory" = '${subCategory}')
           AND ('${location}' = '' OR "location" = '${location}')

@@ -58,6 +58,7 @@ export async function GET(req: Request) {
           WHERE tsvector_title @@ to_tsquery('${searchString}:*')
           AND "isExpired" = 'f'
           AND "isSold" = 'f'
+          AND "isReviewed" = 't'
           AND ('${tab}' = '' OR "tab" = '${tab}')
           AND ('${category}' = '' OR "category" = '${category}')
           AND ('${subCategory}' = '' OR "subCategory" = '${subCategory}')

@@ -19,7 +19,13 @@ export default async function SellerPage({ params }: SellerPageProps) {
   const adListings = await db
     .select()
     .from(listings)
-    .where(and(eq(listings.authorId, userId), eq(listings.isExpired, false)))
+    .where(
+      and(
+        eq(listings.authorId, userId),
+        eq(listings.isExpired, false),
+        eq(listings.isReviewed, true)
+      )
+    )
 
   adListings.sort((a: any, b: any) => b.createdAt - a.createdAt)
 

@@ -214,6 +214,7 @@ export const listings = pgTable(
     year: integer("year"),
     transmission: varchar("transmission", { length: 191 }),
     fuel: varchar("fuel", { length: 191 }),
+    dekra: varchar("dekra", { length: 191 }),
 
     // ATTRIBUTES
     images: text("images"),
@@ -228,6 +229,9 @@ export const listings = pgTable(
     isHot: boolean("isHot").default(false),
     isSold: boolean("isSold").default(false),
     isExpired: boolean("isExpired").default(false),
+    wasRenewed: boolean("wasRenewed").default(false),
+    isReviewed: boolean("isReviewed").default(false),
+    reviewedExpiry: timestamp("reviewedExpiry"),
   },
   (listing) => ({
     idIndex: uniqueIndex("listings__id__idx").on(listing.id),
