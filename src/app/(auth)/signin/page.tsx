@@ -14,10 +14,10 @@ const page: FC = () => {
         />
         <p>
           &quot;..welcome to a new experience in the online second-hand goods
-          market. DearDegens.com is the answer to life's most challenging
+          market. DearDegens.com is the answer to life&apos;s most challenging
           questions, questions such as{" "}
-          <span className="italic">"Is it still available?"</span> and{" "}
-          <span className="italic">"Are you still interested?"</span>
+          <span className="italic">&quot;Is it still available?&quot;</span> and{" "}
+          <span className="italic">&quot;Are you still interested?&quot;</span>
         </p>
         <p>
           We know (oh yes.. we know..) the challenges facing everyday users in
