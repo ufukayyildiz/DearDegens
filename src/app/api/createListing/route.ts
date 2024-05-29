@@ -65,7 +65,7 @@ export async function POST(req: Request) {
       images,
       location,
       meetup,
-      displayContact
+      displayContact,
     } = validateListing.parse(body)
     console.log(
       "data:",
@@ -113,7 +113,7 @@ export async function POST(req: Request) {
         images: images,
         location: location,
         meetup: meetup,
-        displayContact: displayContact
+        displayContact: displayContact,
       })
 
       await db.execute(
@@ -132,9 +132,9 @@ export async function POST(req: Request) {
         adId: listingId,
         adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listingId}`,
         createdAt: currentDate,
-        title: `Listing ${title} is live!`,
-        description: "Congratulations, your listing is live!",
-        body: `Thank you for choosing DearDegens to place your ${brand} ${model} on the market. Your ad has been published to the our marketplace and we will be keeping you posted any new developements. Head over to "My Ads" to view or make any changes to your listing.`,
+        title: `Listing ${title} has been submitted!`,
+        description: "Your almost there!",
+        body: `Thank you for choosing DearDegens. Your ad for the ${brand} ${model} has been submitted and is currently being reviewed to ensure it meets our content policies. This process can take up to 2 working days. A notification will be sent to you when your listing goes live.`,
         isRead: false,
       })
 

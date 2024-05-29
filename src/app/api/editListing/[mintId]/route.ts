@@ -42,7 +42,7 @@ export async function PATCH(req: Request, context: any) {
       images,
       location,
       meetup,
-      displayContact
+      displayContact,
     } = validateListing.parse(body)
     console.log(
       "data:",
@@ -82,7 +82,7 @@ export async function PATCH(req: Request, context: any) {
         images: images,
         location: location,
         meetup: meetup,
-        displayContact: displayContact
+        displayContact: displayContact,
       })
       .where(eq(listings.id, listingId))
 
@@ -102,9 +102,9 @@ export async function PATCH(req: Request, context: any) {
       adId: listingId,
       adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listingId}`,
       createdAt: currentDate,
-      title: `${title} updated!`,
-      description: `Your listing titled:"${title}" has been updated.`,
-      body: `The updates to your listing have gone live, go check them out! Goodluck and happy selling!`,
+      title: `Listing ${title} updates have been submitted!`,
+      description: "We just need to run a few checks!",
+      body: `The updates to your ad for the ${brand} ${model} have been submitted and are currently being reviewed to ensure it meets our content policies. This process can take up to 2 working days. A notification will be sent to you when your listing goes live.`,
       isRead: false,
     })
     return new Response(JSON.stringify(post), { status: 200 })
