@@ -65,6 +65,7 @@ export async function POST(req: Request) {
       images,
       location,
       meetup,
+      displayContact
     } = validateListing.parse(body)
     console.log(
       "data:",
@@ -81,7 +82,8 @@ export async function POST(req: Request) {
       items,
       images,
       location,
-      meetup
+      meetup,
+      displayContact
     )
 
     if (!limitReached) {
@@ -111,6 +113,7 @@ export async function POST(req: Request) {
         images: images,
         location: location,
         meetup: meetup,
+        displayContact: displayContact
       })
 
       await db.execute(

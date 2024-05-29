@@ -23,12 +23,17 @@ import { Label } from "../components-ui/Label"
 import { FieldDescription } from "./FieldDescription"
 import { FieldLabel } from "./FieldLabel"
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/src/components/components-ui/Accordion"
-
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components-ui/AlertDialog"
+import { AlertCircle } from "lucide-react"
 import { Input } from "../components-ui/Input"
 import {
   Select,
@@ -69,6 +74,7 @@ export default function CreateListing() {
   const router = useRouter()
   const defaultImages = [""]
   const [disabled, setDisabled] = useState<boolean>(true)
+  const [displayContact, setDisplayContact] = useState<boolean>(false)
   const [isList, setIsList] = useState<boolean>(false)
   const [type, setType] = useState<string>("")
   const [category, setCategory] = useState<string>("")
@@ -122,6 +128,7 @@ export default function CreateListing() {
       images: "",
       location: "",
       meetup: "",
+      displayContact: displayContact,
     },
     onSubmit: async ({ value }) => {
       const payload: ListingCreationRequest = {
@@ -142,6 +149,7 @@ export default function CreateListing() {
         images: JSON.stringify(selectedImages),
         location: value.location,
         meetup: value.meetup,
+        displayContact: displayContact,
       }
       createPost(payload)
       setDisabled(true)
@@ -170,6 +178,7 @@ export default function CreateListing() {
       images,
       location,
       meetup,
+      displayContact,
     }: ListingCreationRequest) => {
       const payload: ListingCreationRequest = {
         tab,
@@ -189,6 +198,7 @@ export default function CreateListing() {
         images,
         location,
         meetup,
+        displayContact,
       }
       const { data } = await axios.post("/api/createListing", payload)
 
@@ -206,7 +216,7 @@ export default function CreateListing() {
 
     // SUCCESS
     onSuccess: () => {
-      router.push("/ad/myads")
+      router.push("/ad/ads-manager")
       router.refresh()
       return toast({
         description: "Your post has been published.",
@@ -977,6 +987,47 @@ export default function CreateListing() {
                 terms of service.
               </Link>
             </Label>
+          </div>
+
+          <div className="mb-10 flex items-center justify-start space-x-2">
+            <Checkbox
+              id="display-contact"
+              checked={displayContact}
+              onCheckedChange={() => setDisplayContact(!displayContact)}
+            />
+            <Label
+              htmlFor="display-contact"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Display contact number on the ad page?
+            </Label>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <AlertCircle className="text-red-500" />
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="flex flex-row items-center justify-start gap-2 text-primary">
+                    <AlertCircle /> Are you absolutely sure?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="flex flex-col text-primary">
+                    <span>
+                      We advise users not to share their contact details in
+                      advertisements before recieving a confirmed offer, as this
+                      increases the risk of encountering spam and uninterested
+                      buyers.
+                    </span>
+                    <span className="mt-3 italic text-customAccent">
+                      Note: Please ensure your contact details are up to date on
+                      your profile page.
+                    </span>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Close</AlertDialogCancel>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
           <div className="flex gap-10">

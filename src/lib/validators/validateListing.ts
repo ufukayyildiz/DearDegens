@@ -109,3 +109,4 @@ export const listingYear = z.coerce
   .max(currentYear, { message: "Are you Morty McFly or what?" })
 export const listingTransmission = z.string()
 export const listingFuel = z.string()
+export const listingDisplayContact = z.boolean().default(false)

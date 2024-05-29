@@ -23,6 +23,18 @@ import { Label } from "../components-ui/Label"
 import { FieldDescription } from "../pageCreateMint/FieldDescription"
 import { FieldLabel } from "../pageCreateMint/FieldLabel"
 
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components-ui/AlertDialog"
+import { AlertCircle } from "lucide-react"
 import { Input } from "../components-ui/Input"
 import {
   Select,
@@ -72,6 +84,7 @@ export default function EditListing({ listing }: EditListingProps) {
   const mintId = listing[0].id
 
   const [disabled, setDisabled] = useState<boolean>(true)
+  const [displayContact, setDisplayContact] = useState<boolean>(false)
   const [isList, setIsList] = useState<boolean>(false)
   const [type, setType] = useState<string>(listing[0].tab!)
   const [category, setCategory] = useState<string>(listing[0].category!)
@@ -127,6 +140,7 @@ export default function EditListing({ listing }: EditListingProps) {
       images: listing[0].images || "",
       location: listing[0].location || "",
       meetup: listing[0].meetup || "",
+      displayContact: listing[0].displayContact || false,
     },
     onSubmit: async ({ value }) => {
       const payload: ListingCreationRequest = {
@@ -147,6 +161,7 @@ export default function EditListing({ listing }: EditListingProps) {
         images: JSON.stringify(selectedImages),
         location: value.location,
         meetup: value.meetup,
+        displayContact: displayContact,
       }
       createPost(payload)
       setDisabled(true)
@@ -175,6 +190,7 @@ export default function EditListing({ listing }: EditListingProps) {
       images,
       location,
       meetup,
+      displayContact,
     }: ListingCreationRequest) => {
       const payload: ListingCreationRequest = {
         tab,
@@ -194,6 +210,7 @@ export default function EditListing({ listing }: EditListingProps) {
         images,
         location,
         meetup,
+        displayContact,
       }
       const { data } = await axios.patch(`/api/editListing/${mintId}`, payload)
 
@@ -995,6 +1012,47 @@ export default function EditListing({ listing }: EditListingProps) {
                 terms of service.
               </Link>
             </Label>
+          </div>
+
+          <div className="mb-10 flex items-center justify-start space-x-2">
+            <Checkbox
+              id="display-contact"
+              checked={displayContact}
+              onCheckedChange={() => setDisplayContact(!displayContact)}
+            />
+            <Label
+              htmlFor="display-contact"
+              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+            >
+              Display contact number on the ad page?
+            </Label>
+            <AlertDialog>
+              <AlertDialogTrigger>
+                <AlertCircle className="text-red-500" />
+              </AlertDialogTrigger>
+              <AlertDialogContent>
+                <AlertDialogHeader>
+                  <AlertDialogTitle className="flex flex-row items-center justify-start gap-2 text-primary">
+                    <AlertCircle /> Are you absolutely sure?
+                  </AlertDialogTitle>
+                  <AlertDialogDescription className="flex flex-col text-primary">
+                    <span>
+                      We advise users not to share their contact details in
+                      advertisements before recieving a confirmed offer, as this
+                      increases the risk of encountering spam and uninterested
+                      buyers.
+                    </span>
+                    <span className="mt-3 italic text-customAccent">
+                      Note: Please ensure your contact details are up to date on
+                      your profile page.
+                    </span>
+                  </AlertDialogDescription>
+                </AlertDialogHeader>
+                <AlertDialogFooter>
+                  <AlertDialogCancel>Close</AlertDialogCancel>
+                </AlertDialogFooter>
+              </AlertDialogContent>
+            </AlertDialog>
           </div>
 
           <div className="flex gap-10">

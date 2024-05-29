@@ -81,11 +81,11 @@ export async function GET(req: Request) {
             END DESC,
             CASE 
               WHEN '${sort}' = 'low' THEN "price"
-                ELSE NULL::numeric
+                ELSE NULL::integer
             END ASC,
             CASE 
               WHEN '${sort}' = 'high' THEN "price"
-                ELSE NULL::numeric
+                ELSE NULL::integer
             END DESC
           OFFSET ${offset}
           LIMIT ${parseInt(limit)}; 

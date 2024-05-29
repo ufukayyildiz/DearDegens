@@ -42,6 +42,7 @@ export async function PATCH(req: Request, context: any) {
       images,
       location,
       meetup,
+      displayContact
     } = validateListing.parse(body)
     console.log(
       "data:",
@@ -58,7 +59,8 @@ export async function PATCH(req: Request, context: any) {
       items,
       images,
       location,
-      meetup
+      meetup,
+      displayContact
     )
 
     const post = await db
@@ -80,6 +82,7 @@ export async function PATCH(req: Request, context: any) {
         images: images,
         location: location,
         meetup: meetup,
+        displayContact: displayContact
       })
       .where(eq(listings.id, listingId))
 

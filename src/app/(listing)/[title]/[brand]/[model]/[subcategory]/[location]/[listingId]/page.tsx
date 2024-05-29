@@ -103,6 +103,14 @@ export default async function MintPage({ params }: MintPageProps) {
                 More ads by:
                 <span className="pl-2 font-bold text-customAccent">{`${user[0].name}`}</span>
               </Link>
+              {item.displayContact === true && (
+                <div className="flex">
+                  <p className="flex italic">Contact:</p>
+                  <p className="pl-2 font-bold italic text-customAccent">
+                    {user[0].contact}
+                  </p>
+                </div>
+              )}
 
               <hr className="my-2 border border-t-muted-foreground" />
               {session?.user.id ? (

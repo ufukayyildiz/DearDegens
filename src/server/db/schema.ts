@@ -221,6 +221,7 @@ export const listings = pgTable(
     condition: varchar("condition", { length: 191 }),
     location: varchar("location", { length: 191 }),
     meetup: varchar("meetup", { length: 191 }),
+    displayContact: boolean("displayContact").default(false),
 
     // STATUS
     isNew: boolean("isNew").default(true),

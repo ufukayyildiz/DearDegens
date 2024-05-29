@@ -17,6 +17,7 @@ import {
   listingTransmission,
   listingYear,
   listingFuel,
+  listingDisplayContact,
 } from "./validateListing"
 
 export const validateListing = z.object({
@@ -37,6 +38,7 @@ export const validateListing = z.object({
   images: listingImages,
   location: listingLocation,
   meetup: listingMeetup,
+  displayContact: listingDisplayContact,
 })
 
 export type ListingCreationRequest = z.infer<typeof validateListing>
