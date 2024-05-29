@@ -5,12 +5,12 @@ import Logo from "@/src/assets/DearDegens.png"
 
 const page: FC = () => {
   return (
-    <div className="grid h-full min-h-screen grid-cols-1 md:grid-cols-2">
-      <div className="mx-auto mt-16 hidden h-[60vh] w-11/12 flex-col items-center justify-center gap-5 rounded-[50px] bg-muted dark:bg-muted-foreground p-12 shadow-lg md:flex xl:w-8/12">
+    <div className="mx-auto grid h-full w-11/12 grid-cols-1 md:grid-cols-2">
+      <div className="mx-auto mt-16 hidden h-[70vh] w-11/12 flex-col items-center justify-center gap-5 rounded-[50px] bg-muted p-12 shadow-lg md:flex xl:w-10/12 dark:bg-muted-foreground">
         <Image
           src={Logo}
           alt="deardegens"
-          className="flex w-full justify-center"
+          className="flex w-8/12 justify-center"
         />
         <p>
           &quot;..welcome to a new experience in the online second-hand goods
