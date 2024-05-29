@@ -1,15 +1,15 @@
 import { FC } from "react"
 import MintAuth from "@/src/components/pageAuth/MintAuth"
 import Image from "next/image"
-import Logo from "@/src/assets/deardegens.png"
+import Logo from "@/src/assets/DearDegens.png"
 
 const page: FC = () => {
   return (
     <div className="grid h-full min-h-screen grid-cols-1 md:grid-cols-2">
-      <div className="mx-auto mt-16 hidden h-[60vh] w-11/12 flex-col items-center justify-center gap-5 rounded-[50px] bg-muted-foreground p-12 shadow-lg md:flex xl:w-8/12">
+      <div className="mx-auto mt-16 hidden h-[60vh] w-11/12 flex-col items-center justify-center gap-5 rounded-[50px] bg-muted dark:bg-muted-foreground p-12 shadow-lg md:flex xl:w-8/12">
         <Image
           src={Logo}
-          alt="dear-degens"
+          alt="deardegens"
           className="flex w-full justify-center"
         />
         <p>
