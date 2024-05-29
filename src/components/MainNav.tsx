@@ -16,12 +16,12 @@ export function MainNav({ items }: MainNavProps) {
       <Link href="/" className="flex items-center space-x-2">
         <div className="h-12">
           <Image
-            className="hidden h-full w-full object-contain dark:block"
+            className="hidden h-full w-32 object-contain dark:block"
             src={DarkLogo}
             alt="DearDegensDark"
           />
           <Image
-            className="h-full w-full object-contain dark:hidden"
+            className="h-full w-32 object-contain dark:hidden"
             src={LightLogo}
             alt="DearDegensLight"
           />
