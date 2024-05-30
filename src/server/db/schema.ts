@@ -232,6 +232,7 @@ export const listings = pgTable(
     isExpired: boolean("isExpired").default(false),
     wasRenewed: boolean("wasRenewed").default(false),
     isReviewed: boolean("isReviewed").default(false),
+    nonCompliant: boolean("nonCompliant").default(false),
     reviewedExpiry: timestamp("reviewedExpiry"),
   },
   (listing) => ({

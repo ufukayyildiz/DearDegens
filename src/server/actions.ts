@@ -18,6 +18,42 @@ import {
 } from "./db/schema"
 import { alias } from "drizzle-orm/pg-core"
 
+// Admin accept listing
+export const handleAccepted = async (listingId: string) => {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      console.log("Unauthorised.")
+      return null
+    }
+    await db
+      .update(listings)
+      .set({ isReviewed: true, nonCompliant: false })
+      .where(eq(listings.id, listingId))
+    console.log("Successfully accepted listing")
+  } catch (error) {
+    console.error("Server Error: Failed to accept listing - ", error)
+  }
+}
+
+// Admin reject listing
+export const handleReject = async (listingId: string) => {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      console.log("Unauthorised.")
+      return null
+    }
+    await db
+      .update(listings)
+      .set({ isReviewed: true, nonCompliant: true })
+      .where(eq(listings.id, listingId))
+    console.log("Successfully rejected listing")
+  } catch (error) {
+    console.error("Server Error: Failed to reject listing - ", error)
+  }
+}
+
 // Get User Info
 export async function getUserInfo() {
   try {
