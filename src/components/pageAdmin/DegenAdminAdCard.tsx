@@ -10,10 +10,10 @@ interface DegenAdminAdCardProps {
 export default function DegenAdminAdCard({ listing }: DegenAdminAdCardProps) {
   return (
     <div className="relative mx-auto w-11/12">
-      {/* @ts-ignore */}
       <DegenAdminAdCardActions listing={listing} />
       <div className="relative flex flex-row">
         <div className="h-40 w-40">
+          {/* @ts-expect-error Server Component */}
           <MintCarousel listing={listing.images} />
         </div>
         <div className="ml-10 flex w-full flex-col gap-2 text-xs">
