@@ -10,6 +10,7 @@ interface DegenAdminAdCardProps {
 export default function DegenAdminAdCard({ listing }: DegenAdminAdCardProps) {
   return (
     <div className="relative mx-auto w-11/12">
+      {/* @ts-expect-error Server Component */}
       <DegenAdminAdCardActions listing={listing} />
       <div className="relative flex flex-row">
         <div className="h-40 w-40">
