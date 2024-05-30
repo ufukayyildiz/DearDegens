@@ -36,7 +36,7 @@ export default async function NavBar() {
         <div className="absolute top-5 flex w-full flex-col gap-3 sm:flex-row sm:gap-5 sm:pr-28">
           <MainNav items={siteConfig.mainNav} />
           <SearchbarTop />
-          {session?.user && admin && admin[0].admin === true && (
+          {admin[0].id === session?.user.id && (
             <Link
               href="/command-centre"
               className="mt-2 flex h-9 min-w-9 items-center justify-center rounded-full shadow-lg"
