@@ -1,5 +1,6 @@
 import { ClassValue, clsx } from "clsx"
 import { formatDistanceToNowStrict } from "date-fns"
+import Resizer from "react-image-file-resizer"
 import locale from "date-fns/locale/en-US"
 import { twMerge } from "tailwind-merge"
 
@@ -81,3 +82,19 @@ export function formatDateFromTimestamp(timestamp: Date) {
 
   return formattedDate
 }
+
+export const resizeFile = (file: any) =>
+  new Promise((resolve) => {
+    Resizer.imageFileResizer(
+      file,
+      800,
+      800,
+      "JPEG",
+      100,
+      0,
+      (uri) => {
+        resolve(uri)
+      },
+      "file"
+    )
+  })

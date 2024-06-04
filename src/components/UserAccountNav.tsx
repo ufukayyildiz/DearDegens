@@ -49,19 +49,19 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
-          <Link href="/profile">Profile</Link>
+          <Link href="/ad/create">Create Ad</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href="/ad/ads-manager">Ads Manager</Link>
         </DropdownMenuItem>
-        
-        <DropdownMenuItem asChild>
-          <Link href="/ad/create">Create Ad</Link>
-        </DropdownMenuItem>
 
         <DropdownMenuItem asChild>
           <Link href="/ad/mywishlist">Wishlist</Link>
+        </DropdownMenuItem>
+
+        <DropdownMenuItem asChild>
+          <Link href="/profile">Profile</Link>
         </DropdownMenuItem>
 
         <DropdownMenuItem asChild>

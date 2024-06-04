@@ -54,6 +54,7 @@ export default function ListingSelectImage({
   const bucket: any = useGetBucket().data
   const isLoading = useGetBucket().isLoading
   const isFetching = useGetBucket().isFetching
+  console.log("bucket:", bucket)
 
   useEffect(() => {
     if (bucket && bucket[0]) {
@@ -85,11 +86,11 @@ export default function ListingSelectImage({
   // MUTATION DELETE IMAGE
   const { mutate: deleteImage } = useMutation({
     mutationFn: async (selectDelete: any) => {
+      setDisabled(true)
       const { data } = await axios.patch(
         "/api/deleteImageBucket",
         JSON.stringify(selectDelete)
       )
-      setDisabled(true)
       return data
     },
     onError: () => {
@@ -195,7 +196,11 @@ export default function ListingSelectImage({
                                   </label>
                                 </div>
                                 <div>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                                  <AlertDialogCancel
+                                    onClick={() => setDisabled(true)}
+                                  >
+                                    Cancel
+                                  </AlertDialogCancel>
                                   <AlertDialogTrigger asChild>
                                     <Button
                                       onClick={() => deleteImage(image)}

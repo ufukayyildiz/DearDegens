@@ -1,4 +1,4 @@
-import React, { useState, useCallback } from "react"
+import React, { useState, useCallback, useEffect } from "react"
 import { useUploadThing } from "@/src/hooks/useUploadThing"
 import { useDropzone } from "@uploadthing/react/hooks"
 import { FileWithPath } from "react-dropzone"
@@ -9,6 +9,7 @@ import { Button } from "../components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { Loader } from "lucide-react"
 import { cn } from "@/src/lib/utils"
+import { resizeFile } from "@/src/lib/utils"
 
 interface UploadProps {
   bucketLength: number
@@ -18,11 +19,22 @@ export default function ListingUploadImage({ bucketLength }: UploadProps) {
   const queryClient = useQueryClient()
 
   const [disabled, setDisabled] = useState<boolean>(false)
-  const [files, setFiles] = useState<File[]>([])
   const [isLoading, setIsLoading] = useState<boolean>(false)
   const [isUploading, setIsUploading] = useState<boolean>(false)
+
+  const [files, setFiles] = useState<File[]>([])
+
   const onDrop = useCallback((acceptedFiles: FileWithPath[]) => {
-    setFiles(acceptedFiles)
+    console.log("acceptedFiles:", acceptedFiles)
+
+    let formattedFiles: any = []
+
+    acceptedFiles.map(async (file) => {
+      const image = await resizeFile(file)
+      await formattedFiles.push(image)
+      await setFiles(formattedFiles)
+    })
+
     setIsUploading(true)
   }, [])
 
@@ -45,6 +57,7 @@ export default function ListingUploadImage({ bucketLength }: UploadProps) {
       })
     },
     onSuccess: async () => {
+      setFiles([])
       return toast({
         title: "Success!",
         description: "New photos were added to your image bucket.",
@@ -130,7 +143,7 @@ export default function ListingUploadImage({ bucketLength }: UploadProps) {
         </div>
       </div>
       <p className="text-xs text-muted-foreground">
-        {`(Max uploads: 10 | Max file size: 1mb)`}
+        {`(Max uploads: 10 | Max file size: 4mb)`}
       </p>
     </div>
   )
