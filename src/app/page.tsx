@@ -7,14 +7,14 @@ import GamingCarousel from "../components/pageHome/GamingCarousel"
 import ElectronicsCarousel from "../components/pageHome/ElectronicsCarousel"
 import SportsCarousel from "../components/pageHome/SportsCarousel"
 import CategoryTags from "../components/pageHome/CategoryTags"
+import Banner from "../components/pageHome/Banner"
 
 export default async function HomePage() {
   return (
     <section className="mb-52 h-auto min-h-screen items-center gap-6 pb-8 pt-6">
       <div className="z-20 mx-auto h-auto w-10/12 min-w-[280px] md:w-8/12">
-        <h1 className="mt-10 text-xl font-bold text-primary">Categories</h1>
-        <hr className="my-2 border border-t-muted-foreground" />
         <CategoryTags />
+        <Banner/>
         <h1 className="mt-10 text-xl font-bold text-primary">Recently Added</h1>
         <hr className="my-2 border border-t-muted-foreground" />
         <RecentCarousel />

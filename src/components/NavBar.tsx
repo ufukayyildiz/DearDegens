@@ -7,9 +7,7 @@ import {
   QueryClient,
 } from "@tanstack/react-query"
 import { getServerSession } from "next-auth"
-import { db } from "../server/db"
-import { sql } from "drizzle-orm"
-import { User, Cog } from "lucide-react"
+import { User } from "lucide-react"
 import { authOptions } from "../lib/auth/auth-options"
 import { getNotifications } from "../server/actions"
 import { AccountNav } from "./AccountNav"
@@ -20,9 +18,7 @@ import { userType } from "../types/db"
 
 export default async function NavBar() {
   const session = await getServerSession(authOptions)
-  const admin: userType[] = (
-    await db.execute(sql.raw(`SELECT * FROM users WHERE "admin" = 't'`))
-  ).rows
+  
 
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
@@ -33,17 +29,9 @@ export default async function NavBar() {
   return (
     <header className="sticky top-0 z-50 flex w-full flex-col items-center justify-center bg-muted/60 px-5 backdrop-blur-xl">
       <div className="relative flex  h-[140px] w-full max-w-[1000px] items-center justify-between space-x-4 sm:h-20 sm:space-x-0">
-        <div className="absolute top-5 flex w-full flex-col gap-3 sm:flex-row sm:gap-5 sm:pr-28">
+        <div className="absolute top-5 flex w-full flex-col gap-3 sm:flex-row sm:gap-5 sm:pr-44">
           <MainNav items={siteConfig.mainNav} />
           <SearchbarTop />
-          {admin[0].id === session?.user.id && (
-            <Link
-              href="/command-centre"
-              className="mt-2 flex h-9 min-w-9 items-center justify-center rounded-full shadow-lg"
-            >
-              <Cog className="flex hover:animate-spin hover:text-customAccent" />
-            </Link>
-          )}
         </div>
 
         {/* SIGN IN */}

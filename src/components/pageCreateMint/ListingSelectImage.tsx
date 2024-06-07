@@ -179,7 +179,7 @@ export default function ListingSelectImage({
                               </AlertDialogDescription>
                             </AlertDialogHeader>
                             <AlertDialogFooter>
-                              <div className="flex w-full justify-between">
+                              <div className="flex w-full flex-col md:flex-row md:justify-between">
                                 <div className="flex items-center justify-start space-x-2">
                                   <Checkbox
                                     id="disable"
@@ -195,22 +195,22 @@ export default function ListingSelectImage({
                                     Confirm image deletion.
                                   </label>
                                 </div>
-                                <div>
-                                  <AlertDialogCancel
-                                    onClick={() => setDisabled(true)}
-                                  >
-                                    Cancel
-                                  </AlertDialogCancel>
+                                <div className="pt-5 md:pt-0">
                                   <AlertDialogTrigger asChild>
                                     <Button
                                       onClick={() => deleteImage(image)}
                                       disabled={disabled}
                                       variant="destructive"
-                                      className="ml-5"
-                                    >
+                                      >
                                       Delete
                                     </Button>
                                   </AlertDialogTrigger>
+                                  <AlertDialogCancel
+                                      className="ml-5"
+                                    onClick={() => setDisabled(true)}
+                                  >
+                                    Cancel
+                                  </AlertDialogCancel>
                                 </div>
                               </div>
                             </AlertDialogFooter>

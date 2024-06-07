@@ -129,7 +129,7 @@ export default function ListingUploadImage({ bucketLength }: UploadProps) {
         )}
         <div className="my-auto flex h-auto">
           {isUploading ? (
-            <Button onClick={() => startUpload(files)} variant="secondary">
+            <Button onClick={() => startUpload(files)} variant="secondary" className="shadow-none hover:bg-background rounded-none">
               Upload {files.length} files
             </Button>
           ) : (
