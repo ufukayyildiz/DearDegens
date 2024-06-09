@@ -8,7 +8,7 @@ export default function Banner() {
   const { data: session } = useSession()
 
   return (
-    <div className="group relative mb-10 flex w-full items-center justify-center overflow-hidden rounded-2xl border-none object-cover shadow-lg">
+    <div className="group relative mb-10 flex w-full max-h-[150px] items-center justify-center overflow-hidden rounded-2xl border-none object-cover shadow-lg">
       <Image
         src={Splash}
         alt="deardegens"
@@ -19,14 +19,14 @@ export default function Banner() {
         {session?.user ? (
           <Link
             href="/ad/create"
-            className="absolute text-3xl font-bold italic text-customAccent transition duration-200 group-hover:scale-[1.1]"
+            className="absolute text-3xl md:text-[30px] font-bold italic text-customAccent transition duration-200 group-hover:scale-[1.1]"
           >
             POST A FREE AD
           </Link>
         ) : (
           <Link
             href="/signin"
-            className="text-3xl font-bold italic text-customAccent transition duration-200 group-hover:scale-[1.1]"
+            className="text-3xl md:text-[30px] font-bold italic text-customAccent transition duration-200 group-hover:scale-[1.1]"
           >
             SIGN IN TO POST A FREE AD
           </Link>
