@@ -14,14 +14,16 @@ import {
 import { UserAvatar } from "./components-ui/UserAvatar"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
-  user: Pick<User, "name" | "image" | "email">
+  user: Pick<User, "name" | "image" | "email" | "id">
+  adminId: string
 }
 
-export function UserAccountNav({ user }: UserAccountNavProps) {
+export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
   const { setTheme, theme } = useTheme()
 
   const userName = user?.name
   const userImage = user?.image
+  const userId = user?.id
 
   return (
     <DropdownMenu>
@@ -43,6 +45,12 @@ export function UserAccountNav({ user }: UserAccountNavProps) {
             )}
           </div>
         </div>
+
+        {adminId === userId && (
+          <DropdownMenuItem asChild>
+            <Link href="/command-centre">Admin Dashboard</Link>
+          </DropdownMenuItem>
+        )}
 
         <DropdownMenuItem asChild>
           <Link href="/">Home</Link>

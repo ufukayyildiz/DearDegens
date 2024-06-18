@@ -18,7 +18,6 @@ import { userType } from "../types/db"
 
 export default async function NavBar() {
   const session = await getServerSession(authOptions)
-  
 
   const queryClient = new QueryClient()
   await queryClient.prefetchQuery({
@@ -29,7 +28,7 @@ export default async function NavBar() {
   return (
     <header className="sticky top-0 z-50 flex w-full flex-col items-center justify-center bg-muted/60 px-5 backdrop-blur-xl">
       <div className="relative flex  h-[140px] w-full max-w-[1000px] items-center justify-between space-x-4 sm:h-20 sm:space-x-0">
-        <div className="absolute top-5 flex w-full flex-col gap-3 sm:flex-row sm:gap-5 sm:pr-44">
+        <div className="absolute top-5 flex w-full flex-col gap-3 sm:flex-row sm:gap-5 sm:pr-56">
           <MainNav items={siteConfig.mainNav} />
           <SearchbarTop />
         </div>
