@@ -45,6 +45,7 @@ export async function GET(req: Request) {
           AND "isExpired" = 'f'
           AND "isSold" = 'f'
           AND "isReviewed" = 't'
+          AND "nonCompliant" = 'f'
           AND ('${category}' = '' OR "category" = '${category}')
           AND ('${subCategory}' = '' OR "subCategory" = '${subCategory}')
           AND ('${location}' = '' OR "location" = '${location}')

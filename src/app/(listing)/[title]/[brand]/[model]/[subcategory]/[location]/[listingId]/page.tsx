@@ -18,10 +18,11 @@ import {
   QueryClient,
   QueryCache,
 } from "@tanstack/react-query"
-import { eq } from "drizzle-orm"
+import { eq, and, or } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 import ShareButtons from "@/src/components/pageMint/ShareButtons"
 import MintGetStarted from "@/src/components/pageMint/MintGetStarted"
+import { redirect } from "next/navigation"
 
 interface MintPageProps {
   params: {
@@ -52,6 +53,11 @@ export default async function MintPage({ params }: MintPageProps) {
     .from(users)
     .where(eq(users.id, listing[0].authorId))
 
+  const admin: userType[] = await db
+    .select()
+    .from(users)
+    .where(eq(users.admin, true))
+
   const userName = user[0].name.replace(" ", "-")
 
   // PRICE TEXT FORMATTER
@@ -62,6 +68,13 @@ export default async function MintPage({ params }: MintPageProps) {
     })
 
     return formatter.format(price)
+  }
+
+  // REDIRECT IF UNAUTHORISED
+  if (session?.user.id !== user[0].id && session?.user.id !== admin[0].id) {
+    if (listing[0].nonCompliant === true || listing[0].isReviewed === false) {
+      redirect("/")
+    }
   }
 
   return (

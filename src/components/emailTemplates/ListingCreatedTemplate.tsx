@@ -110,16 +110,16 @@ export const ListingCreatedTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
             <Text style={paragraph}>DearDegens Team!</Text>
             <Text style={paragraph}>
               There is a new/updated listing &quot;{adTitle}
-              &quote; that is awaiting a detailed review before being let loose
+              &quot; that is awaiting a detailed review before being let loose
               on the system. Please visit the admin page to continue.
             </Text>
-            <Text style={paragraph}>Author Name: &quote;{userName}&quote;</Text>
+            <Text style={paragraph}>Author Name: &quot;{userName}&quot;</Text>
             <Text style={paragraph}>
-              Author Email: &quote;{userEmail}&quote;
+              Author Email: &quot;{userEmail}&quot;
             </Text>
-            <Text style={paragraph}>Listing ID: &quote;{adId}&quote;</Text>
+            <Text style={paragraph}>Listing ID: &quot;{adId}&quot;</Text>
             <Text style={paragraph}>
-              Listing Title: &quote;{adTitle}&quote;
+              Listing Title: &quot;{adTitle}&quot;
             </Text>
 
             <Text style={paragraph}>

@@ -108,7 +108,7 @@ export const ListingRejectedTemplate: React.FC<
             <Text style={paragraph}>Dear {userName},</Text>
             <Text style={paragraph}>
               We regret to inform you that your listing titled &quot;{adTitle}
-              &quote; was rejected during our listings review process.
+              &quot; was rejected during our listings review process.
             </Text>
             <Text style={paragraph}>
               We reserve the right to reject any and all listings that include

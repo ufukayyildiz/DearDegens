@@ -17,6 +17,7 @@ export async function GET(req: Request) {
           AND "isExpired" = 'f'
           AND "isSold" = 'f'
           AND "isReviewed" = 't'
+          AND "nonCompliant" = 'f'
           ORDER BY "createdAt" DESC
           OFFSET ${offset}
           LIMIT ${parseInt(limit)}; 
