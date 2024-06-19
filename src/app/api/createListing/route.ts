@@ -8,6 +8,8 @@ import { sql } from "drizzle-orm"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
+import { Resend } from "resend"
+import { ListingCreatedTemplate } from "@/src/components/emailTemplates/ListingCreatedTemplate"
 
 const rateLimit = new Ratelimit({
   redis,
@@ -18,6 +20,7 @@ const rateLimit = new Ratelimit({
 export async function POST(req: Request) {
   try {
     const session = await getAuthSession()
+    const resend = new Resend(process.env.RESEND_API_KEY)
     const ip = headers().get("x-forwarded-for")
     const {
       remaining,
@@ -125,6 +128,18 @@ export async function POST(req: Request) {
         `
         )
       )
+
+      await resend.emails.send({
+        from: "DearDegens Support <support@deardegens.com>",
+        to: `support@deardegens.com`,
+        subject: "DearDegens.com: Listing Recieved For Review.",
+        react: ListingCreatedTemplate({
+          userName: authorId,
+          userEmail: session.user.email || "",
+          adId: listingId,
+          adTitle: title,
+        }) as React.ReactElement,
+      })
 
       const notification = await db.insert(notifications).values({
         id: notificationId,

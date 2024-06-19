@@ -2,7 +2,7 @@
 
 import { eq, sql, and } from "drizzle-orm"
 import { getServerSession } from "next-auth"
-
+import { Resend } from "resend"
 import { authOptions } from "../lib/auth/auth-options"
 import { db } from "./db"
 import {
@@ -17,6 +17,7 @@ import {
   wishlistItem,
 } from "./db/schema"
 import { alias } from "drizzle-orm/pg-core"
+import { ListingRejectedTemplate } from "../components/emailTemplates/ListingRejectedTemplate"
 
 // Admin accept listing
 export const handleAccepted = async (listingId: string) => {
@@ -37,17 +38,39 @@ export const handleAccepted = async (listingId: string) => {
 }
 
 // Admin reject listing
-export const handleReject = async (listingId: string) => {
+export const handleReject = async (
+  listingId: string,
+  listingTitle: string,
+  authorId: string
+) => {
   try {
     const session = await getServerSession(authOptions)
+    const resend = new Resend(process.env.RESEND_API_KEY)
+
     if (!session?.user) {
       console.log("Unauthorised.")
       return null
     }
+
+    const author = await db.select().from(users).where(eq(users.id, authorId))
+
     await db
       .update(listings)
       .set({ isReviewed: true, nonCompliant: true })
       .where(eq(listings.id, listingId))
+
+    await resend.emails.send({
+      from: "DearDegens Support <support@deardegens.com>",
+      to: `${author[0].email}`,
+      subject: "DearDegens.com: Listing rejected during review process.",
+      react: ListingRejectedTemplate({
+        userName: author[0].name || "",
+        userEmail: author[0].email,
+        adId: listingId,
+        adTitle: listingTitle,
+      }) as React.ReactElement,
+    })
+
     console.log("Successfully rejected listing")
   } catch (error) {
     console.error("Server Error: Failed to reject listing - ", error)

@@ -25,7 +25,9 @@ export default function DegenAdminAdCardActions({
       </Button>
       <Button
         variant="icon"
-        onClick={async () => handleReject(listing.id)}
+        onClick={async () =>
+          handleReject(listing.id, listing.title!, listing.authorId)
+        }
         size="icon"
         className="transition duration-75 hover:scale-[1.2] hover:text-red-500"
       >

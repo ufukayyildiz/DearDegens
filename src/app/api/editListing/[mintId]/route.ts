@@ -6,11 +6,14 @@ import { listings, notifications } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
+import { Resend } from "resend"
+import { ListingCreatedTemplate } from "@/src/components/emailTemplates/ListingCreatedTemplate"
 
 export async function PATCH(req: Request, context: any) {
   try {
     const listingId = context.params.mintId
     const session = await getAuthSession()
+    const resend = new Resend(process.env.RESEND_API_KEY)
 
     if (!session?.user) {
       return new Response("Unauthorized", { status: 401 })
@@ -95,6 +98,18 @@ export async function PATCH(req: Request, context: any) {
         `
       )
     )
+
+    await resend.emails.send({
+      from: "DearDegens Support <support@deardegens.com>",
+      to: `support@deardegens.com`,
+      subject: "DearDegens.com: Listing Recieved For Review (Updated).",
+      react: ListingCreatedTemplate({
+        userName: authorId,
+        userEmail: session.user.email || "",
+        adId: listingId,
+        adTitle: title,
+      }) as React.ReactElement,
+    })
 
     const notification = await db.insert(notifications).values({
       id: notificationId,
