@@ -8,12 +8,13 @@ import { eq, and } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
 import Rabbit from "@/src/assets/rabbit.svg"
+import { redirect } from "next/navigation"
 
 export default async function MyMints() {
   const session = await getServerSession(authOptions)
 
   if (!session) {
-    return console.log("Unauthorised, please login")
+    redirect("/signin")
   }
 
   const userWishlist = await db

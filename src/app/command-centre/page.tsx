@@ -12,19 +12,21 @@ import { db } from "@/src/server/db"
 import { listings } from "@/src/server/db/schema"
 import { eq, and, sql } from "drizzle-orm"
 import { listingsType, userType } from "@/src/types/db"
+import { redirect } from "next/navigation"
 
 export default async function CommandCentre() {
   const session = await getServerSession(authOptions)
-
-  if (!session) {
-    return console.log("Unauthorised, please login")
-  }
 
   const admin: userType[] = (
     await db.execute(sql.raw(`SELECT * FROM users WHERE "admin" = 't'`))
   ).rows
 
+  if (!session) {
+    redirect("/signin")
+  }
+
   if (session.user.id !== admin[0].id) {
+    redirect("/")
   }
 
   const toReview: listingsType[] = await db

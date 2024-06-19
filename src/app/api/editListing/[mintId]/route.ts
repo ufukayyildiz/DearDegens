@@ -99,6 +99,26 @@ export async function PATCH(req: Request, context: any) {
       )
     )
 
+    await db.execute(
+      sql.raw(
+        `
+      UPDATE listings 
+      SET tsvector_brand = to_tsvector(brand)
+      WHERE id = '${listingId}';
+      `
+      )
+    )
+
+    await db.execute(
+      sql.raw(
+        `
+      UPDATE listings 
+      SET tsvector_model = to_tsvector(model)
+      WHERE id = '${listingId}';
+      `
+      )
+    )
+
     await resend.emails.send({
       from: "DearDegens Support <support@deardegens.com>",
       to: `support@deardegens.com`,

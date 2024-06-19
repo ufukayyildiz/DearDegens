@@ -100,7 +100,10 @@ export default async function MintPage({ params }: MintPageProps) {
                   </div>
                   <h1 className="mb-2 text-2xl font-bold">{item.title}</h1>
                   <p className="text-xs italic text-secondary">
-                    Listed {formatTimeToNow(item.createdAt!)}
+                    Listed {formatTimeToNow(item.createdAt!)} in{" "}
+                    <span className="text-sm font-semibold text-primary">
+                      {item.location}
+                    </span>
                   </p>
                 </div>
               </div>
