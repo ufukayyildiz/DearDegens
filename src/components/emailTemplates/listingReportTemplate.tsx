@@ -156,7 +156,7 @@ export const listingReportTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
                 href="https://www.deardegens.com/termsofservice"
                 target="_blank"
               >
-                T's & C's
+                T&apos;s & C&apos;s
               </Link>{" "}
               |{" "}
               <Link

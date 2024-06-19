@@ -165,7 +165,7 @@ export const ListingRejectedTemplate: React.FC<
                 href="https://www.deardegens.com/termsofservice"
                 target="_blank"
               >
-                T's & C's
+                T&apos;s & C&apos;s
               </Link>{" "}
               |{" "}
               <Link
