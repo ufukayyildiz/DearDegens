@@ -18,6 +18,7 @@ import {
 } from "./db/schema"
 import { alias } from "drizzle-orm/pg-core"
 import { ListingRejectedTemplate } from "../components/emailTemplates/ListingRejectedTemplate"
+import { offerType } from "../types/db"
 
 // Admin accept listing
 export const handleAccepted = async (listingId: string) => {
@@ -174,13 +175,14 @@ export async function getOffersAuthor(listingId: any) {
       sql.raw(
         `
         SELECT * FROM offers 
-        WHERE "sellerId" = '${userId}'; 
+        WHERE "sellerId" = '${userId}'
+        AND "adId" = '${listingId}'; 
       `
       )
     )
-    const offers = adOffers.rows.filter((item) => item.adId === listingId)
+
     console.log("Author offers query successful")
-    return offers
+    return adOffers.rows as offerType[]
   } catch (error) {
     console.error("Server error: Failed to fetch author offers - ", error)
   }
@@ -203,7 +205,7 @@ export async function getOffersManagerAuthor() {
       )
     )
     console.log("Author manager offers query successful")
-    return offers.rows
+    return offers.rows as offerType[]
   } catch (error) {
     console.error(
       "Server error: Failed to fetch author manager offers - ",
@@ -224,13 +226,14 @@ export async function getOffersUser(listingId: any) {
       sql.raw(
         `
         SELECT * FROM offers 
-        WHERE "userId" = '${userId}'; 
+        WHERE "userId" = '${userId}'
+        AND "adId" = '${listingId}'; 
       `
       )
     )
-    const offers = adOffers.rows.filter((item) => item.adId === listingId)
+
     console.log("User offers query successful")
-    return offers
+    return adOffers.rows as offerType[]
   } catch (error) {
     console.error("Server error: Failed to fetch user offers - ", error)
   }

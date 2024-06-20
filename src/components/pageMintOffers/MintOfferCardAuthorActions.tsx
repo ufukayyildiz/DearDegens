@@ -34,9 +34,11 @@ export default function MintOfferCardAuthorActions({
 
   const [canDelete, setCanDelete] = useState<boolean>(false)
 
-  if (daysLeft <= 0) {
-    setCanDelete(true)
-  }
+  useEffect(() => {
+    if (daysLeft <= 0) {
+      setCanDelete(true)
+    }
+  }, [])
 
   // ________________________________________________________________________
   // ACCEPT OFFER

@@ -86,6 +86,8 @@ export async function PATCH(req: Request, context: any) {
         location: location,
         meetup: meetup,
         displayContact: displayContact,
+        isReviewed: false,
+        nonCompliant: false,
       })
       .where(eq(listings.id, listingId))
 

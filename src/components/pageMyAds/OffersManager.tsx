@@ -13,14 +13,15 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../components-ui/Accordion"
+import PlaceholderFish from "../placeholdersEmptyState/PlaceholderFish"
 
 export default function OffersManager() {
   const { data: session } = useSession()
   const userId = session?.user.id!
 
-  const userOffers = useGetOffersManagerUser().data || []
+  const userOffers = (useGetOffersManagerUser().data as offerType[]) || []
   const userLoading = useGetOffersManagerUser().isLoading
-  const authorOffers = useGetOffersManagerAuthor().data || []
+  const authorOffers = (useGetOffersManagerAuthor().data as offerType[]) || []
   const authorLoading = useGetOffersManagerAuthor().isLoading
 
   userOffers &&
@@ -49,11 +50,13 @@ export default function OffersManager() {
             Offers recieved:
           </AccordionTrigger>
           <AccordionContent>
-            {authorOffers &&
-              // @ts-ignore
+            {authorOffers.length !== undefined ? (
               authorOffers.map((offer: offerType) => (
                 <MintOffersManagerCard adOffer={offer} />
-              ))}
+              ))
+            ) : (
+              <PlaceholderFish text={"There are no offers available"} />
+            )}
           </AccordionContent>
         </AccordionItem>
         <hr className="mb-2 border border-t-muted-foreground" />
@@ -67,11 +70,13 @@ export default function OffersManager() {
             Offers sent:
           </AccordionTrigger>
           <AccordionContent>
-            {userOffers &&
-              // @ts-ignore
+            {userOffers.length !== undefined ? (
               userOffers.map((offer: offerType) => (
                 <MintOffersManagerCard adOffer={offer} />
-              ))}
+              ))
+            ) : (
+              <PlaceholderFish text={"There are no offers available"} />
+            )}
           </AccordionContent>
         </AccordionItem>
       </Accordion>

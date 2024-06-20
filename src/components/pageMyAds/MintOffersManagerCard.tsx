@@ -25,7 +25,7 @@ export default function MintOffersManagerCard({ adOffer }: MintOfferCardProps) {
   const redPrice = askPrice && askPrice * 0.5
 
   return (
-    <div className="mx-auto mb-5 flex w-11/12 flex-col justify-between border border-t-muted p-2 text-primary">
+    <div className="mx-auto mb-5 flex w-11/12 flex-col justify-between border border-transparent border-t-muted p-2 text-primary">
       <div className="flex flex-col md:flex-row">
         {/* AD TITLE */}
         <div className=" flex w-full items-center truncate font-semibold text-customAccent">
@@ -82,8 +82,10 @@ export default function MintOffersManagerCard({ adOffer }: MintOfferCardProps) {
           /* @ts-expect-error Server Component */
           <MintOfferCardAuthorActions adOffer={adOffer} />
         ) : (
+          // <div></div>
           /* @ts-expect-error Server Component */
           <MintOfferCardUserActions adOffer={adOffer} />
+          // <div></div>
         )}
       </div>
     </div>

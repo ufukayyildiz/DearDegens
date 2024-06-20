@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import MintOfferDelete from "./MintOfferDelete"
 import {
   Tooltip,
@@ -34,9 +34,11 @@ export default function MintOfferCardUserActions({
 
   const [canDelete, setCanDelete] = useState<boolean>(false)
 
-  if (daysLeft <= 0) {
-    setCanDelete(true)
-  }
+  useEffect(() => {
+    if (daysLeft <= 0) {
+      setCanDelete(true)
+    }
+  }, [])
 
   // ________________________________________________________________________
   // MUTATION CONFIRMATION
