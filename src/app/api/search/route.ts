@@ -73,11 +73,11 @@ export async function GET(req: Request) {
           AND (('${transmission}' = '' OR "transmission" IS NULL) OR "transmission" = '${transmission}')
           ORDER BY 
             CASE 
-              WHEN '${sort}' = 'oldest' THEN "createdAt"
+              WHEN '${sort}' = 'oldest' THEN "updatedAt"
                 ELSE NULL::timestamp
             END ASC,
             CASE 
-              WHEN '${sort}' = 'latest' THEN "createdAt"
+              WHEN '${sort}' = 'latest' THEN "updatedAt"
                 ELSE NULL::timestamp
             END DESC,
             CASE 

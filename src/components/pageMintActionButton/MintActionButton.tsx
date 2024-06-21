@@ -14,8 +14,6 @@ interface MintActionButtonProps {
 }
 
 export default function MintActionButton({ listing }: MintActionButtonProps) {
-  const { data: session } = useSession()
-
   const listingQuery = useGetListingById(listing.id).data || []
   const listingData = listingQuery[0]
 
@@ -30,6 +28,11 @@ export default function MintActionButton({ listing }: MintActionButtonProps) {
 
   // _______________________________________________________________________
   // RENDERS
+
+  if (listing && listing.isExpired === true && listing.wasRenewed === true) {
+    return null
+  }
+
   if (listing && listing.isExpired === true) {
     return <MintRenew listing={listing} />
   }

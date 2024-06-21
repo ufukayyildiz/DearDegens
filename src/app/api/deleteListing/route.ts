@@ -2,7 +2,7 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listings, offers, queries } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
-import { Ratelimit } from "@upstash/ratelimit" 
+import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
 
@@ -32,17 +32,11 @@ export async function PUT(req: Request) {
     } else {
       const listingId = await req.json()
 
-      const deleteOffers = await db
-        .delete(offers)
-        .where(eq(offers.adId, listingId))
-      const deleteQueries = await db
-        .delete(queries)
-        .where(eq(queries.adId, listingId))
-      const deleteListing = await db
-        .delete(listings)
-        .where(eq(listings.id, listingId))
+      await db.delete(offers).where(eq(offers.adId, listingId))
+      await db.delete(queries).where(eq(queries.adId, listingId))
+      await db.delete(listings).where(eq(listings.id, listingId))
 
-      console.log("Successfully deleted listing:", deleteListing)
+      console.log("Successfully deleted listing:")
       return new Response("Successfully deleted notification.", { status: 200 })
     }
   } catch (error) {

@@ -18,20 +18,45 @@ import {
 } from "./db/schema"
 import { alias } from "drizzle-orm/pg-core"
 import { ListingRejectedTemplate } from "../components/emailTemplates/ListingRejectedTemplate"
-import { offerType } from "../types/db"
+import { listingsType, offerType } from "../types/db"
+import { nanoid } from "nanoid"
 
 // Admin accept listing
-export const handleAccepted = async (listingId: string) => {
+export const handleAccepted = async (listing: listingsType) => {
   try {
     const session = await getServerSession(authOptions)
     if (!session?.user) {
       console.log("Unauthorised.")
       return null
     }
+
+    const currentDate: Date = new Date()
+    const generateNotificationId = nanoid()
+    const notificationId = generateNotificationId
+
+    const title = listing.title?.replace(/ /g, "-")
+    const brand = listing.brand?.replace(/ /g, "-")
+    const model = listing.model?.replace(/ /g, "-")
+    const subCategory = listing.subCategory?.replace(/ /g, "-")
+    const location = listing.location?.replace(/ /g, "-")
+
     await db
       .update(listings)
       .set({ isReviewed: true, nonCompliant: false })
-      .where(eq(listings.id, listingId))
+      .where(eq(listings.id, listing.id))
+
+    await db.insert(notifications).values({
+      id: notificationId,
+      userId: listing.authorId,
+      adId: listing.id,
+      adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`,
+      createdAt: currentDate,
+      title: `Listing ${listing.title} is live!`,
+      description: "Congratulation! Your listing has gone live",
+      body: `Our team has reviewed your listing and approved it for public circulation on our platform. Good luck and happy selling!`,
+      isRead: false,
+    })
+
     console.log("Successfully accepted listing")
   } catch (error) {
     console.error("Server Error: Failed to accept listing - ", error)
@@ -39,11 +64,7 @@ export const handleAccepted = async (listingId: string) => {
 }
 
 // Admin reject listing
-export const handleReject = async (
-  listingId: string,
-  listingTitle: string,
-  authorId: string
-) => {
+export const handleReject = async (listing: listingsType) => {
   try {
     const session = await getServerSession(authOptions)
     const resend = new Resend(process.env.RESEND_API_KEY)
@@ -53,12 +74,38 @@ export const handleReject = async (
       return null
     }
 
-    const author = await db.select().from(users).where(eq(users.id, authorId))
+    const currentDate: Date = new Date()
+    const generateNotificationId = nanoid()
+    const notificationId = generateNotificationId
+
+    const title = listing.title?.replace(/ /g, "-")
+    const brand = listing.brand?.replace(/ /g, "-")
+    const model = listing.model?.replace(/ /g, "-")
+    const subCategory = listing.subCategory?.replace(/ /g, "-")
+    const location = listing.location?.replace(/ /g, "-")
+
+    const author = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, listing.authorId))
 
     await db
       .update(listings)
       .set({ isReviewed: true, nonCompliant: true })
-      .where(eq(listings.id, listingId))
+      .where(eq(listings.id, listing.id))
+
+    await db.insert(notifications).values({
+      id: notificationId,
+      userId: listing.authorId,
+      adId: listing.id,
+      adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`,
+      createdAt: currentDate,
+      title: `Listing ${listing.title} rejected`,
+      description:
+        "We regret to inform you that your listing has been rejected",
+      body: `Our team has reviewed your listing and found that the content unfortunately does not conform to our content policies. Once you have amended your listing to be in line with the above-mentioned policies and terms of service, it will be resubmitted for review by our team. To make changes to your listing, you can visit your listings page via the ads manager and click on the EDIT button to navigate to your listing's edit page.`,
+      isRead: false,
+    })
 
     await resend.emails.send({
       from: "DearDegens Support <support@deardegens.com>",
@@ -67,8 +114,8 @@ export const handleReject = async (
       react: ListingRejectedTemplate({
         userName: author[0].name || "",
         userEmail: author[0].email,
-        adId: listingId,
-        adTitle: listingTitle,
+        adId: listing.id,
+        adTitle: listing.title || "",
       }) as React.ReactElement,
     })
 

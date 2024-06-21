@@ -38,7 +38,7 @@ export default function CarouselMintCardComponent({ listing }: MyMintsProps) {
   const location = listing.location?.replace(/ /g, "-")
 
   return (
-    <div className="group h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+    <div className="h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
       <Link
         href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}
       >
