@@ -37,7 +37,7 @@ export default function MintDelete(listingId: any) {
       })
     },
     onSuccess: () => {
-      router.push("/ad/myads")
+      router.push("/ad/ads-manager")
       router.refresh()
       return toast({
         title: "Success!",
