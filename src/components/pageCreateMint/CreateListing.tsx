@@ -206,7 +206,8 @@ export default function CreateListing() {
     },
 
     // ERROR
-    onError: () => {
+    onError: (error) => {
+      console.log("Mutation Error:", error)
       return toast({
         title: "Something went wrong.",
         description: "Your post was not published. Please try again.",

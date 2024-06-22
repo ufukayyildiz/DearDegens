@@ -2,19 +2,15 @@ import React from "react"
 import MintOfferList from "../pageMintOffers/MintOfferList"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/src/lib/auth/auth-options"
+import { listingsType } from "@/src/types/db"
 
 interface MintListProps {
-  items: any
-  adId: string
-  sellerId: string
+  listing: listingsType
 }
 
-export default async function MintList({
-  items,
-  adId,
-  sellerId,
-}: MintListProps) {
-  const list = JSON.parse(items)
+export default async function MintList({ listing }: MintListProps) {
+  const list = JSON.parse(listing.items!)
+  console.log("list:", list)
   const session = await getServerSession(authOptions)
 
   // PRICE TEXT FORMATTER
@@ -45,13 +41,14 @@ export default async function MintList({
                   <p className="font-semibold text-customAccent">
                     R {formatPrice(item.price)}
                   </p>
-                  {session?.user.id !== sellerId && (
+                  {session?.user.id !== listing.authorId && (
                     <MintOfferList
                       itemId={item.id}
+                      itemName={item.name}
                       askPrice={item.price}
-                      adId={adId}
-                      sellerId={sellerId}
-                      name={item.name}
+                      adId={listing.id}
+                      sellerId={listing.authorId}
+                      adTitle={listing.title!}
                     />
                   )}
                 </div>

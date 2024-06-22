@@ -134,11 +134,7 @@ export default async function MintPage({ params }: MintPageProps) {
                   {/* MANAGER SECTION */}
                   <MintManager listing={item} domain={domain} />
                   {/* @ts-ignore */}
-                  <MintList
-                    items={item.items}
-                    adId={item.id}
-                    sellerId={item.authorId}
-                  />
+                  <MintList listing={item} />
                 </>
               ) : (
                 <MintGetStarted />

@@ -71,7 +71,7 @@ export default function MidiMintCardComponent({ listing }: MyMintsProps) {
           {/* INFO */}
           <div className="h-full w-full p-2">
             <div>
-              <h1 className="mb-2 line-clamp-2 h-12 overflow-hidden text-sm font-bold text-primary">
+              <h1 className="mb-2 line-clamp-2 h-10 overflow-hidden text-sm font-bold text-primary">
                 {listing.title}
               </h1>
             </div>

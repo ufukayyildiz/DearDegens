@@ -11,9 +11,10 @@ export const validateOfferList = z.object({
     }),
   askPrice: z.coerce.number(),
   adId: z.string(),
+  adTitle: z.string(),
   itemId: z.string(),
   sellerId: z.string(),
-  name: z.string().nullable(),
+  itemName: z.string().nullable(),
 })
 
 export type OfferListCreationRequest = z.infer<typeof validateOfferList>

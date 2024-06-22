@@ -1,8 +1,8 @@
 "use client"
 import React from "react"
-import { listingsType, offerType } from "@/src/types/db"
-import { useSession } from "next-auth/react"
+import { offerType } from "@/src/types/db"
 import MintOffersManagerCard from "./MintOffersManagerCard"
+import MintOffersManagerCardSkeleton from "./MintOffersManagerCardSkeleton"
 import {
   useGetOffersManagerAuthor,
   useGetOffersManagerUser,
@@ -16,13 +16,11 @@ import {
 import PlaceholderFish from "../placeholdersEmptyState/PlaceholderFish"
 
 export default function OffersManager() {
-  const { data: session } = useSession()
-  const userId = session?.user.id!
-
+  const mock = [1, 2, 3]
   const userOffers = (useGetOffersManagerUser().data as offerType[]) || []
-  const userLoading = useGetOffersManagerUser().isLoading
+  const userFetching = useGetOffersManagerUser().isFetching
   const authorOffers = (useGetOffersManagerAuthor().data as offerType[]) || []
-  const authorLoading = useGetOffersManagerAuthor().isLoading
+  const authorFetching = useGetOffersManagerAuthor().isFetching
 
   userOffers &&
     // @ts-ignore
@@ -42,40 +40,32 @@ export default function OffersManager() {
       <Accordion type="single" collapsible>
         <AccordionItem value="in">
           <AccordionTrigger className="relative">
-            {/* {authorOffers && authorOffers.length > 0 && (
-              <div className="absolute -left-8 top-0 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-zinc-100">
-                <p className="flex">{authorOffers.length}</p>
-              </div>
-            )} */}
             Offers recieved:
           </AccordionTrigger>
           <AccordionContent>
-            {authorOffers.length !== undefined ? (
+            {authorFetching ? (
+              mock.map((item) => <MintOffersManagerCardSkeleton />)
+            ) : authorOffers[0] !== undefined ? (
               authorOffers.map((offer: offerType) => (
                 <MintOffersManagerCard adOffer={offer} />
               ))
             ) : (
-              <PlaceholderFish text={"There are no offers available"} />
+              <PlaceholderFish text={"You have not recieved any offers"} />
             )}
           </AccordionContent>
         </AccordionItem>
         <hr className="mb-2 border border-t-muted-foreground" />
         <AccordionItem value="out">
-          <AccordionTrigger className="relative">
-            {/* {userOffers && userOffers.length > 0 && (
-              <div className="absolute -left-8 top-0 z-50 flex h-6 w-6 items-center justify-center rounded-full bg-red-500 text-zinc-100">
-                <p className="flex">{userOffers.length}</p>
-              </div>
-            )} */}
-            Offers sent:
-          </AccordionTrigger>
+          <AccordionTrigger className="relative">Offers sent:</AccordionTrigger>
           <AccordionContent>
-            {userOffers.length !== undefined ? (
+            {userFetching ? (
+              mock.map((item) => <MintOffersManagerCardSkeleton />)
+            ) : userOffers[0] !== undefined ? (
               userOffers.map((offer: offerType) => (
                 <MintOffersManagerCard adOffer={offer} />
               ))
             ) : (
-              <PlaceholderFish text={"There are no offers available"} />
+              <PlaceholderFish text={"You have not sent any offers."} />
             )}
           </AccordionContent>
         </AccordionItem>

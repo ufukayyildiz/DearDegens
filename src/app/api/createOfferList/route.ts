@@ -1,10 +1,10 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { notifications, offersList, listings } from "@/src/server/db/schema"
+import { notifications, offers, listings } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { nanoid } from "nanoid"
 import { z } from "zod"
-import { Ratelimit } from "@upstash/ratelimit" 
+import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
 
@@ -45,19 +45,21 @@ export async function POST(req: Request) {
       currentDate.getTime() + 60 * 24 * 60 * 60 * 1000
     )
 
-    const { sellerId, adId, itemId, offerPrice, askPrice, name } = body
+    const { sellerId, adId, adTitle, itemId, offerPrice, askPrice, itemName } =
+      body
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
     } else {
-      const post = await db.insert(offersList).values({
+      const post = await db.insert(offers).values({
         id: offerId,
         userId: userId,
         userName: userName,
         sellerId: sellerId,
         adId: adId,
+        adTitle: adTitle,
         itemId: itemId,
-        name: name,
+        itemName: itemName,
         createdAt: currentDate,
         expirationDate: expirationDate,
         purgeDate: purgeDate,
@@ -66,23 +68,32 @@ export async function POST(req: Request) {
       })
 
       /* @ts-ignore */
-      const listing: listingsType = await db.select({
-        id: listings.id,
-        title: listings.title,
-        brand: listings.brand,
-        model: listings.model,
-        subCategory: listings.subCategory,
-        location: listings.location,
-      }).from(listings).where(eq(listings.id, adId))
+      const listing: listingsType = await db
+        .select({
+          id: listings.id,
+          title: listings.title,
+          brand: listings.brand,
+          model: listings.model,
+          subCategory: listings.subCategory,
+          location: listings.location,
+        })
+        .from(listings)
+        .where(eq(listings.id, adId))
 
-      const notification = await db.insert(notifications).values({
+      const title = listing.title?.replace(/ /g, "-")
+      const brand = listing.brand?.replace(/ /g, "-")
+      const model = listing.model?.replace(/ /g, "-")
+      const subCategory = listing.subCategory?.replace(/ /g, "-")
+      const location = listing.location?.replace(/ /g, "-")
+
+      await db.insert(notifications).values({
         id: notificationId,
         userId: sellerId,
         adId: adId,
-        adUrl: `/${listing.title}/${listing.brand}/${listing.model}/${listing.subCategory}/${listing.location}/${listing.id}`,
+        adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`,
         createdAt: currentDate,
         title: `Offer recieved!`,
-        description: `Your item ${name} has recieved an offer!`,
+        description: `Your item ${itemName} has recieved an offer!`,
         body: `An offer of R ${offerPrice} has been placed on your listing. Head over to your listings page to either accept or make a counter offer.`,
         isRead: false,
       })

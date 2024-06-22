@@ -81,7 +81,7 @@ export default function MintOffer({ listing }: MintProps) {
   const form = useForm<FormData>({
     resolver: zodResolver(validateOffer),
     defaultValues: {
-      offerPrice: 0,
+      offerPrice: listing.price || 0,
       askPrice: listing.price || 0,
       adId: listing.id,
       sellerId: listing.authorId,
@@ -130,11 +130,6 @@ export default function MintOffer({ listing }: MintProps) {
         await queryClient.invalidateQueries({
           queryKey: ["userOffers", listing.id],
         })
-        // await queryClient.refetchQueries({
-        //   queryKey: ["userOffers", listing.id],
-        //   type: "all",
-        //   exact: true,
-        // })
       }
     },
   })

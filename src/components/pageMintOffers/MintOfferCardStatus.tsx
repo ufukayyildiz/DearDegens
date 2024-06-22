@@ -58,7 +58,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
     return (
       <div className="flex w-full">
         <p className="text-left text-sm italic">
-          Pending response from the seller.
+          Awaiting response from the seller.
         </p>
       </div>
     )

@@ -278,6 +278,8 @@ export const offers = pgTable("offers", {
     .references(() => listings.id),
   sellerId: varchar("sellerId", { length: 191 }),
   adTitle: varchar("adTitle", { length: 191 }),
+  itemId: varchar("itemId", { length: 191 }),
+  itemName: varchar("itemName", { length: 191 }),
   createdAt: timestamp("createdAt")
     .default(sql`CURRENT_TIMESTAMP`)
     .notNull(),
@@ -295,43 +297,6 @@ export const offers = pgTable("offers", {
 export const offersRelations = relations(offers, ({ one }) => ({
   userId: one(users, {
     fields: [offers.userId],
-    references: [users.id],
-  }),
-}))
-
-// __________________________________________________________________________________________________________________
-// OFFERSLIST
-export const offersList = pgTable("offersList", {
-  id: varchar("id", { length: 191 }).primaryKey().notNull(),
-  userId: varchar("userId", { length: 191 })
-    .notNull()
-    .references(() => users.id),
-  userName: varchar("userName", { length: 191 }),
-  adId: varchar("adId", { length: 191 })
-    .notNull()
-    .references(() => listings.id),
-  itemId: varchar("itemId", { length: 191 })
-    .notNull()
-    .references(() => listings.id),
-  sellerId: varchar("sellerId", { length: 191 }),
-  name: varchar("name", { length: 191 }),
-  createdAt: timestamp("createdAt")
-    .default(sql`CURRENT_TIMESTAMP`)
-    .notNull(),
-  expirationDate: timestamp("expirationDate"),
-  purgeDate: timestamp("purgeDate"),
-  askPrice: integer("askPrice"),
-  offerPrice: integer("offerPrice"),
-  counterPrice: integer("counterPrice"),
-  isCountered: boolean("isCountered").default(false),
-  isDeclined: boolean("isDeclined").default(false),
-  isAccepted: boolean("isAccepted").default(false),
-  isConfirmed: boolean("isConfirmed").default(false),
-})
-
-export const offersListRelations = relations(offersList, ({ one }) => ({
-  userId: one(users, {
-    fields: [offersList.userId],
     references: [users.id],
   }),
 }))

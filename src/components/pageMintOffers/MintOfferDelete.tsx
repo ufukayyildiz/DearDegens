@@ -85,7 +85,7 @@ export default function MintOfferDelete({
             </AlertDialogDescription>
           </AlertDialogHeader>
           <AlertDialogFooter>
-            {0 <= 0 ? (
+            {canDelete === true ? (
               <div className="flex w-full flex-col justify-between gap-5 md:flex-row">
                 <div className="flex items-center justify-start space-x-2">
                   <Checkbox

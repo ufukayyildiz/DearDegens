@@ -45,7 +45,8 @@ interface MintProps {
   adId: string
   itemId: string
   sellerId: string
-  name: string | null
+  itemName: string | null
+  adTitle: string
 }
 
 type FormData = z.infer<typeof validateOfferList>
@@ -53,9 +54,10 @@ type FormData = z.infer<typeof validateOfferList>
 export default function MintOfferList({
   askPrice,
   sellerId,
-  name,
+  itemName,
   adId,
   itemId,
+  adTitle,
 }: MintProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const queryClient = useQueryClient()
@@ -63,12 +65,13 @@ export default function MintOfferList({
   const form = useForm<FormData>({
     resolver: zodResolver(validateOfferList),
     defaultValues: {
-      offerPrice: 0,
+      offerPrice: askPrice,
       askPrice: askPrice,
       adId: adId,
+      adTitle: adTitle,
       itemId: itemId,
       sellerId: sellerId,
-      name: name,
+      itemName: itemName,
     },
   })
 
@@ -78,17 +81,19 @@ export default function MintOfferList({
       offerPrice,
       askPrice,
       adId,
+      adTitle,
       itemId,
       sellerId,
-      name,
+      itemName,
     }: OfferListCreationRequest) => {
       const payload: OfferListCreationRequest = {
         offerPrice,
         askPrice,
         adId,
+        adTitle,
         itemId,
         sellerId,
-        name,
+        itemName,
       }
 
       const { data } = await axios.post("/api/createOfferList", payload)
@@ -123,7 +128,8 @@ export default function MintOfferList({
       adId: adId,
       itemId: itemId,
       sellerId: sellerId,
-      name: name,
+      itemName: itemName,
+      adTitle: adTitle,
     }
     setDisabled(true)
     console.log("Submit Payload:", payload)
@@ -149,7 +155,7 @@ export default function MintOfferList({
                       Item:
                     </h1>
                     <h1 className="truncate text-lg font-semibold italic text-customAccent">
-                      {name}
+                      {itemName}
                     </h1>
                   </div>
                 </AlertDialogTitle>
@@ -161,7 +167,7 @@ export default function MintOfferList({
                       name="offerPrice"
                       render={({ field }) => (
                         <FormItem>
-                          <div className="flex h-5 w-60 justify-between">
+                          <div className="flex h-5 w-full justify-between">
                             <FormLabel className="py-1 text-primary">
                               Offer amount:
                             </FormLabel>
@@ -173,7 +179,7 @@ export default function MintOfferList({
                             <Input
                               {...field}
                               type="number"
-                              className="w-60 text-primary"
+                              className="w-full text-primary"
                               required
                             />
                           </FormControl>

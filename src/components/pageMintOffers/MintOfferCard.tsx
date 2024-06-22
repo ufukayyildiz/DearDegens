@@ -26,6 +26,11 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
 
   return (
     <div className="mx-auto mb-3 flex w-11/12 flex-col justify-between rounded-lg border border-muted p-2 text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent">
+      {adOffer.itemName && (
+        <div className="mb-1 flex w-full gap-1">
+          <p className="text-sm font-semibold">Item: {adOffer.itemName}</p>
+        </div>
+      )}
       <div className="flex flex-row justify-between">
         {/* PRICE */}
         <div className="flex w-full">
@@ -63,11 +68,7 @@ export default function MintOfferCard({ adOffer }: MintOfferCardProps) {
       <MintOfferCardStatus adOffer={adOffer} />
 
       <div className="flex">
-        <div className="flex w-1/2 flex-col">
-          {/* <div className="flex w-full gap-1">
-            <p className="text-xs italic">Buyer:</p>
-            <p className="text-xs">{adOffer.userName}</p>
-          </div> */}
+        <div className="flex w-full flex-col">
           <div className="flex w-full gap-1 text-muted-foreground">
             <p className="text-xs italic">sent</p>
             <p className="text-xs italic">
