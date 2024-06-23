@@ -17,7 +17,8 @@ import {
 import { Loader2 } from "lucide-react"
 import ReCAPTCHA from "react-google-recaptcha"
 import { useRouter } from "next/navigation"
-import axios from "axios"
+import axios, { AxiosError, AxiosResponse } from "axios"
+import { useMutation } from "@tanstack/react-query"
 import { toast } from "@/src/hooks/use-toast"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
@@ -50,11 +51,56 @@ const SignIn = () => {
         password: value.password,
       }
       console.log("Submit Payload:", payload)
-      const response = await signIn("credentials", {
-        email: payload.email,
-        password: payload.password,
+      submitSignin(payload)
+    },
+  })
+
+  const { mutate: submitSignin } = useMutation({
+    mutationFn: async ({ email, password }: SignInCreationRequest) => {
+      const payload: SignInCreationRequest = { email, password }
+      await axios.post("/api/auth/signin", payload)
+      await signIn("credentials", {
+        email: email,
+        password: password,
         redirect: true,
       })
+    },
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast({
+          title: "Incorrect password.",
+          description:
+            "The password you supplied was not correct. Please try again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 409) {
+        return toast({
+          title: "Email does not exist.",
+          description:
+            "The email you supplied does not match any of those on record in our database. Please try again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "The server encountered a fatal error. Please try again.",
+          variant: "destructive",
+        })
+      }
+    },
+    onSuccess: () => {
+      return toast({
+        title: "Success!",
+        description: "Login successful!.",
+      })
+    },
+    onSettled: async (_, error) => {
+      if (error) {
+        console.log("onSettled error:", error)
+      }
     },
   })
 

@@ -14,12 +14,11 @@ export async function POST(req: Request) {
       .select()
       .from(users)
       .where(eq(users.email, email))
-    console.log('userExsist', userExists)
-    if (userExists.length === 0) {
+
+    if (userExists[0] === undefined) {
       const post = await db.insert(users).values({
         id: createId(),
         email: email,
-        emailVerified: currentDate,
         password: hashedPassword,
         name: name,
         createdAt: currentDate,
@@ -29,7 +28,7 @@ export async function POST(req: Request) {
       console.log("Successfully created new user")
       return new Response(JSON.stringify(post), { status: 200 })
     } else {
-      return new Response("User already exists!", { status: 500 })
+      return new Response("User already exists!", { status: 409 })
     }
   } catch (error) {
     console.error("Failed to create to user, error:", error)

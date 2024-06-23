@@ -10,7 +10,7 @@ import {
   SignUpCreationRequest,
   validateEmail,
 } from "@/src/lib/validators/validateAuth"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { Button } from "../components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { validatePassword } from "@/src/lib/validators/validateAuth"
@@ -78,12 +78,22 @@ const SignUp = () => {
       const post = await axios.post("/api/auth/register/", payload)
       return post
     },
-    onError: () => {
-      return toast({
-        title: "Something went wrong.",
-        description: "There was an error while registering. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 409) {
+        return toast({
+          title: "Email Already Exists.",
+          description: "Please try registering with a different email address.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "There was an error while registering. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: () => {
       form.reset()
