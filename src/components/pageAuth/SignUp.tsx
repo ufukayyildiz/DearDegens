@@ -100,7 +100,7 @@ const SignUp = () => {
       return toast({
         title: "Success!",
         description:
-          "Your account was created successfully! You may now login.",
+          "Your account was created successfully! Please check your mailbox for a verification email and click on the verification link to log in.",
       })
     },
   })

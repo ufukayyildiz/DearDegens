@@ -2,14 +2,13 @@ import bcrypt from "bcrypt"
 import { db } from "@/src/server/db"
 import { eq } from "drizzle-orm"
 import { users } from "@/src/server/db/schema"
-import { signIn } from "next-auth/react"
 
 export async function POST(req: Request) {
   try {
     const body = await req.json()
     const { email, password } = body
 
-    const user = await db.select().from(users).where(eq(users.email, email))
+    const user = await db.select().from(users).where(eq(users.emailVerified, email))
 
     if (user[0] === undefined) {
       return new Response("Email does not exist.", { status: 409 })

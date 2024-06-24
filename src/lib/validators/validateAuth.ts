@@ -44,9 +44,14 @@ export const validateForgotPassword = z.object({
   email: z.string(),
 })
 
+export const validateVerifyEmail = z.object({
+  emailVerified: z.string()
+})
+
 export type SignInCreationRequest = z.infer<typeof validateSignIn>
 export type SignUpCreationRequest = z.infer<typeof validateSignUp>
 export type ResetPasswordCreationRequest = z.infer<typeof validateResetPassword>
 export type ForgotPasswordCreationRequest = z.infer<
   typeof validateForgotPassword
 >
+export type ValidateEmailCreationRequest = z.infer<typeof validateVerifyEmail>
