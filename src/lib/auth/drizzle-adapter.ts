@@ -10,7 +10,7 @@ import {
   verificationTokens,
 } from "../../server/db/schema"
 
-export function DrizzleAdapter(db: NeonHttpDatabase): Adapter {
+export function DrizzleAdapter(db: any): Adapter {
   return {
     async createUser(userData) {
       await db.insert(users).values({
