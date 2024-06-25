@@ -24,7 +24,7 @@ export default function UserGuide() {
   const icons = "flex absolute bottom-[10px] left-3"
 
   return (
-    <div className="z-20 mx-auto mb-44 w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
+    <div className="z-20 mx-auto mb-56 w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
       <h1 className="mt-10 text-xl font-bold text-primary">User Guide</h1>
       <hr className="my-2 border border-t-muted-foreground" />
       <Heading>Introduction</Heading>
@@ -68,69 +68,47 @@ export default function UserGuide() {
       <Heading>Site Navigation</Heading>
       <Paragraph></Paragraph>
       <Subheading>Create Ad</Subheading>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        Join us on this exciting adventure and list your once-loved possessions
+        that are ready for a new home..
+      </Paragraph>
       <Subheading>My Ads</Subheading>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        Monitor the status of your listed ads, and manage or access any offers
+        and queries you have sent or received.
+      </Paragraph>
       <Subheading>Wishlist</Subheading>
-      <Paragraph></Paragraph>
+      <Paragraph>View saved listings for future referance.</Paragraph>
       <Subheading>Profile</Subheading>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        Update your personal information and security preferences.
+      </Paragraph>
       <Subheading>User Guide</Subheading>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        A more conveniently placed link to this guide than the link located
+        within the site footer.
+      </Paragraph>
       <Subheading>Dark / Light Mode</Subheading>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        To prevent arch eyes and potential blindness, we have provided a
+        &quot;Dark Mode&quot; feature for those users who enjoy browsing at
+        night during their &quot;me&quot; time.
+      </Paragraph>
 
-      {/* SELLER INTERFACE */}
-      <Heading>Listing Page Interface: Seller POV</Heading>
+      {/* LISTING INTERFACE */}
+      <Heading>Listing Page Interface</Heading>
       <Paragraph></Paragraph>
       <div className={headingDiv}>
+        <div className="absolute bottom-[10px] left-3 flex h-6 w-6 rounded-full border-2 border-customAccent bg-background shadow-lg hover:bg-customAccent" />
         <Subheading className={subHeading}>
           Mark as Sold / Mark as Available:
         </Subheading>
       </div>
-      <Paragraph></Paragraph>
-      <div className={headingDiv}>
-        <Share2 className={icons} />
-        <Subheading className={subHeading}>Share Listing:</Subheading>
-      </div>
       <Paragraph>
-        For maximum exposure and in order to help you get your listing out
-        there, we&apos;ve added share buttons to all listings that automatically
-        generate a post on various social media platforms. These include
-        Facebook, X and WhatsApp. Additionally, we&apos;ve included a link
-        generator to help make copying the listings URL a bit easier for use
-        wherever you wish.
+        Toggle between your listing being sold or available.
       </Paragraph>
       <div className={headingDiv}>
-        <Gavel className={icons} />
-        <Subheading className={subHeading}>Offers Manager:</Subheading>
-      </div>
-      <Paragraph></Paragraph>
-      <div className={headingDiv}>
-        <FileQuestion className={icons} />
-        <Subheading className={subHeading}>Queries Manager:</Subheading>
-      </div>
-      <Paragraph></Paragraph>
-      <div className={headingDiv}>
-        <FileEdit className={icons} />
-        <Subheading className={subHeading}>Edit Listing:</Subheading>
-      </div>
-      <Paragraph></Paragraph>
-      <div className={headingDiv}>
-        <Trash2 className={icons} />
-        <Subheading className={subHeading}>Delete Listing:</Subheading>
-      </div>
-      <Paragraph></Paragraph>
-      <div className={headingDiv}>
-        <MessageCircle className={icons} />
-        <Subheading className={subHeading}>Chat Room:</Subheading>
-      </div>
-      <Paragraph></Paragraph>
-
-      {/* BUYER INTERFACE */}
-      <Heading>Listing Page Interface: Buyer POV</Heading>
-      <Paragraph></Paragraph>
-      <div className={headingDiv}>
+        <div className="absolute bottom-[10px] left-3 flex h-6 w-6 rounded-full border-2 border-customAccent bg-background shadow-lg hover:bg-customAccent" />
         <Subheading className={subHeading}>Send an Offer:</Subheading>
       </div>
       <Paragraph>
@@ -139,8 +117,8 @@ export default function UserGuide() {
         product they&apos;ve listed. They&apos;ll then be notified of your offer
         where they can respond via the &quot;Offers Manager&quot;.{" "}
         <span className="font-semibold italic">
-          NOTE: Interested buyers will be limited to sending a maximum of two
-          offers per listing.
+          NOTE: To prevent spam, interested buyers will be limited to sending a
+          maximum of two offers per listing.
         </span>
       </Paragraph>
       <div className={headingDiv}>
@@ -159,32 +137,85 @@ export default function UserGuide() {
         <FaRegHeart className="absolute bottom-[10px] left-3 flex h-6 w-6" />
         <Subheading className={subHeading}>Add to Wishlist:</Subheading>
       </div>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        You like what you see, but maybe you&apos;re not yet ready make an
+        offers? You can save listings to their wishlist for future referance.
+      </Paragraph>
       <div className={headingDiv}>
         <Gavel className={icons} />
         <Subheading className={subHeading}>Offers Manager:</Subheading>
       </div>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        Within the offers manager, you can see all offers sent or received for
+        that listing. Once the offer process has been finalized (when a willing
+        buyer accepts the final confirmation), the involved parties can complete
+        the deal in the chat section.
+      </Paragraph>
       <div className={headingDiv}>
         <FileQuestion className={icons} />
         <Subheading className={subHeading}>Queries Manager:</Subheading>
       </div>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        The queries manager displays all questions sent or received for a
+        listing, enabling potential buyers to ask questions and gather
+        additional information. Sellers have the option to publicly display
+        these questions and their answers on the listing, which can be helpful
+        for other buyers with similar inquiries.
+      </Paragraph>
       <div className={headingDiv}>
         <HelpCircle className={icons} />
         <Subheading className={subHeading}>Send A Query:</Subheading>
       </div>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        As mentioned above, this feature allows interested buyers the
+        oppertunity to fish for more information that the seller may have
+        forgotten to include in the listings details.{" "}
+        <span className="font-semibold italic">
+          NOTE: To prevent spam, interested buyers will be limited to sending a
+          maximum of two queries per listing.
+        </span>
+      </Paragraph>
       <div className={headingDiv}>
-        <AlertTriangle className={icons} />
-        <Subheading className={subHeading}>Report Listing:</Subheading>
+        <FileEdit className={icons} />
+        <Subheading className={subHeading}>Edit Listing:</Subheading>
       </div>
-      <Paragraph></Paragraph>
+      <Paragraph>
+        If a seller wishes to update their listing, they can do so via the edit
+        page. Please note that any updates will require the listing to undergo
+        the review phase again to ensure compliance with our content policies.
+      </Paragraph>
+      <div className={headingDiv}>
+        <Trash2 className={icons} />
+        <Subheading className={subHeading}>Delete Listing:</Subheading>
+      </div>
+      <Paragraph>
+        Want it gone? Then make it so. Deleting your listing will permanantly
+        delete all content (but not including images in your image bucket) as
+        well as any offers and queries recieved for that listing.
+      </Paragraph>
       <div className={headingDiv}>
         <MessageCircle className={icons} />
         <Subheading className={subHeading}>Chat Room:</Subheading>
       </div>
+      <Paragraph>
+        The chatroom is where users can connect after a deal has entered the
+        final confirmation phase, users are encouraged to use the chat section
+        solely for exchanging contact details.
+      </Paragraph>
+
       <Paragraph></Paragraph>
+
+      <div className={headingDiv}>
+        <AlertTriangle className={icons} />
+        <Subheading className={subHeading}>Report Listing:</Subheading>
+      </div>
+      <Paragraph>
+        If you come across a listing that you feel violates our terms of service
+        or content policies, then please feel free to report the listing to us
+        via this feature. You will be asked to elaborate on the reason for your
+        concern, after which an email will be sent to our support team who will
+        then investigate the listing in question.
+      </Paragraph>
     </div>
   )
 }
