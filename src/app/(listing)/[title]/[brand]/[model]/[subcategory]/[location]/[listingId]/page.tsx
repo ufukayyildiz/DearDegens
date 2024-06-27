@@ -111,7 +111,6 @@ export default async function MintPage({ params }: MintPageProps) {
                 {/* @ts-expect-error Server Component */}
                 <MintCarousel images={item.images} />
                 
-                {/* @ts-expect-error Server Component */}
                 <PlaceholderImages images={item.images}/>
                 <MintInfo listing={item} />
               </div>
