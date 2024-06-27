@@ -4,8 +4,8 @@ import { eq } from "drizzle-orm"
 import crypto from "crypto"
 import { Resend } from "resend"
 import { users } from "@/src/server/db/schema"
-import { createId } from "@paralleldrive/cuid2"
 import { VerifyEmailTemplate } from "@/src/components/emailTemplates/VerifyEmailTemplate"
+import { ulid } from "ulid"
 
 const resend = new Resend(process.env.RESEND_API_KEY)
 
@@ -23,7 +23,7 @@ export async function POST(req: Request) {
 
     if (userExists[0] === undefined) {
       const post = await db.insert(users).values({
-        id: createId(),
+        id: `usr-${ulid()}`,
         email: email,
         emailVerified: verifyEmailToken,
         password: hashedPassword,

@@ -2,7 +2,7 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { chatRoom, offers } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
-import { nanoid } from "nanoid"
+import { ulid } from "ulid"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
@@ -30,7 +30,7 @@ export async function PUT(req: Request) {
 
     const body = await req.json()
     const currentDate: Date = new Date()
-    const chatroomId = nanoid()
+    const chatroomId = `chtroom-${ulid()}`
     const { offerId, adId, sellerId, userId } = body
 
     if (!limitReached) {

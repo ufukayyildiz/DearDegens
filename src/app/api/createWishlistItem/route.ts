@@ -2,8 +2,8 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { wishlist, wishlistItem } from "@/src/server/db/schema"
 import { wishlistType } from "@/src/types/db"
+import { ulid } from "ulid"
 import { eq } from "drizzle-orm"
-import { nanoid } from "nanoid"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
@@ -43,13 +43,13 @@ export async function POST(request: Request) {
       // If there is no wishlist, first create one, then create the wishlist item.
       if (userWishlist.length === 0) {
         try {
-          const wishlistId = nanoid()
+          const wishlistId = `wshlist-${ulid()}`
           await db.insert(wishlist).values({
             id: wishlistId,
             userId: userId,
           })
           await db.insert(wishlistItem).values({
-            id: nanoid(),
+            id: `wshlistItm-${ulid()}`,
             wishlistId: wishlistId,
             adId: listingId,
           })
@@ -66,7 +66,7 @@ export async function POST(request: Request) {
         // TO-DO: ADD THIRD STATEMENT THAT CHECKS IF THE LISTING IS ALREADY IN THE WISHLIST.
         // If there is a wishlist, get the wishlist id and create the wishlist item.
         const post = await db.insert(wishlistItem).values({
-          id: nanoid(),
+          id: `wshlistItm-${ulid()}`,
           wishlistId: userWishlist[0].id,
           adId: listingId,
         })

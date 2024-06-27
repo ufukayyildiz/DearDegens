@@ -5,8 +5,8 @@ import { eq } from "drizzle-orm"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
-import { nanoid } from "nanoid"
 import { listingsType } from "@/src/types/db"
+import { ulid } from "ulid"
 
 const rateLimit = new Ratelimit({
   redis,
@@ -46,7 +46,7 @@ export async function PUT(req: Request) {
 
       if (session.user.id === offerUserId)
         await db.insert(notifications).values({
-          id: nanoid(),
+          id: `buyOffDel-${ulid()}`,
           userId: offerSellerId,
           adId: offerAdId,
           adUrl: `/${listing[0].title}/${listing[0].brand}/${listing[0].model}/${listing[0].subCategory}/${listing[0].location}/${listing[0].id}`,
@@ -59,7 +59,7 @@ export async function PUT(req: Request) {
 
       if (session.user.id === offerSellerId)
         await db.insert(notifications).values({
-          id: nanoid(),
+          id: `sellOffDel-${ulid()}`,
           userId: offerUserId,
           adId: offerAdId,
           adUrl: `/${listing[0].title}/${listing[0].brand}/${listing[0].model}/${listing[0].subCategory}/${listing[0].location}/${listing[0].id}`,

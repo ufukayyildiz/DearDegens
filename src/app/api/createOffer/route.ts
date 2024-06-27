@@ -2,7 +2,7 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { notifications, offers, listings } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
-import { nanoid } from "nanoid"
+import { ulid } from "ulid"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit" 
 import { redis } from "@/src/server/upstash"
@@ -34,9 +34,9 @@ export async function POST(req: Request) {
     const userId = session?.user.id
     const userName = session.user.name
 
-    const offerId = nanoid()
+    const offerId = `off-${ulid()}`
 
-    const notificationId = nanoid()
+    const notificationId = `offNot-${ulid()}`
 
     const currentDate: Date = new Date()
     const expirationDate: Date = new Date(

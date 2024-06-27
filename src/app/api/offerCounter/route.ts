@@ -2,7 +2,7 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { notifications, offers } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
-import { nanoid } from "nanoid"
+import { ulid } from "ulid"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
@@ -29,7 +29,7 @@ export async function PUT(req: Request) {
       return new Response("Unauthorized", { status: 401 })
     }
 
-    const notificationId = nanoid()
+    const notificationId = `offCntNot-${ulid()}`
     const currentDate: Date = new Date()
 
     const body = await req.json()

@@ -4,7 +4,7 @@ import { db } from "@/src/server/db"
 import { sql } from "drizzle-orm"
 import { listings, notifications } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
-import { nanoid } from "nanoid"
+import { ulid } from "ulid"
 import { z } from "zod"
 import { Resend } from "resend"
 import { ListingCreatedTemplate } from "@/src/components/emailTemplates/ListingCreatedTemplate"
@@ -22,7 +22,7 @@ export async function PATCH(req: Request, context: any) {
     const body = await req.json()
     const authorId = session?.user.id
 
-    const generateNotificationId = nanoid()
+    const generateNotificationId = `edtList-${ulid()}`
     const notificationId = generateNotificationId
 
     const currentDate: Date = new Date()

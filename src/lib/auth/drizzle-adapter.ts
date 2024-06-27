@@ -1,4 +1,4 @@
-import { createId } from "@paralleldrive/cuid2"
+import { ulid } from "ulid"
 import { and, eq } from "drizzle-orm"
 import type { NeonHttpDatabase } from "drizzle-orm/neon-http"
 import type { Adapter } from "next-auth/adapters"
@@ -14,7 +14,7 @@ export function DrizzleAdapter(db: any): Adapter {
   return {
     async createUser(userData) {
       await db.insert(users).values({
-        id: createId(),
+        id: `usr-${ulid()}`,
         email: userData.email,
         emailVerified: userData.emailVerified,
         name: userData.name,
@@ -79,7 +79,7 @@ export function DrizzleAdapter(db: any): Adapter {
     },
     async linkAccount(account) {
       await db.insert(accounts).values({
-        id: createId(),
+        id: `usrLnk-${ulid()}`,
         userId: account.userId,
         type: account.type,
         provider: account.provider,
@@ -105,7 +105,7 @@ export function DrizzleAdapter(db: any): Adapter {
     },
     async createSession(data) {
       await db.insert(sessions).values({
-        id: createId(),
+        id: `usrSes-${ulid()}`,
         expires: data.expires,
         sessionToken: data.sessionToken,
         userId: data.userId,

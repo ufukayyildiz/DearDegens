@@ -2,7 +2,8 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateListing } from "@/src/lib/validators/validateListingGeneral"
 import { db } from "@/src/server/db"
 import { listings, notifications } from "@/src/server/db/schema"
-import { nanoid } from "nanoid"
+
+import { ulid } from 'ulid'
 import { z } from "zod"
 import { sql } from "drizzle-orm"
 import { Ratelimit } from "@upstash/ratelimit"
@@ -36,10 +37,9 @@ export async function POST(req: Request) {
     const body = await req.json()
     const authorId = session?.user.id
 
-    const vehicleListingId = nanoid()
-    const listingId = vehicleListingId
+    const listingId = `list-${ulid()}`
 
-    const generateNotificationId = nanoid()
+    const generateNotificationId = `listNot-${ulid()}`
     const notificationId = generateNotificationId
 
     const currentDate: Date = new Date()

@@ -2,7 +2,7 @@ import * as React from "react"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { listingReports } from "@/src/server/db/schema"
-import { nanoid } from "nanoid"
+import { ulid } from "ulid"
 import { z } from "zod"
 import { listingReportTemplate } from "@/src/components/emailTemplates/listingReportTemplate"
 import { Resend } from "resend"
@@ -37,7 +37,7 @@ export async function POST(req: Request) {
     const userId = session?.user.id
     const userName = session.user.name || ""
     const userEmail = session.user.email || ""
-    const reportId = nanoid()
+    const reportId = `rep-${ulid()}`
     const currentDate: Date = new Date()
 
     const { sellerId, adId, description, infraction } = body

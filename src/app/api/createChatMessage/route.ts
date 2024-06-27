@@ -2,11 +2,11 @@ import { NextApiResponse } from "next"
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { messages } from "@/src/server/db/schema"
-import { nanoid } from "nanoid"
 import { z } from "zod"
 import { Ratelimit } from "@upstash/ratelimit" 
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
+import { ulid } from 'ulid'
 
 const rateLimit = new Ratelimit({
   redis,
@@ -35,7 +35,7 @@ export async function POST(req: Request, res: NextApiResponse) {
       const body = await req.json()
       const { message, roomId, userId, userName } = body
 
-      const messageId = nanoid()
+      const messageId = `msg-${ulid()}`
       const currentDate: Date = new Date()
 
       const post = await db.insert(messages).values({
