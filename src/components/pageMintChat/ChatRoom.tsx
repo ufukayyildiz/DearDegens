@@ -4,6 +4,7 @@ import { roomType, messagesType } from "@/src/types/db"
 import {
   Sheet,
   SheetContent,
+  SheetClose,
   SheetHeader,
   SheetTrigger,
 } from "../components-ui/Sheet"
@@ -210,7 +211,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 void form.handleSubmit()
               }}
             >
-              <div className="flex h-full w-full flex-col items-end justify-end">
+              <div className="flex h-full w-full flex-col justify-end">
                 <form.Field
                   name="message"
                   validators={{
@@ -227,7 +228,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        className="h-full w-full text-primary"
+                        className="h-full w-full bg-muted text-primary"
                         required
                       />
                     </>
@@ -247,8 +248,8 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                     <Button
                       type="submit"
                       disabled={disabled || !canSubmit}
-                      variant="outline"
-                      className="mt-5"
+                      variant="outlineTwo"
+                      className="mt-5 w-20 hover:bg-customAccent hover:text-zinc-100"
                     >
                       {isSubmitting ? (
                         <Loader2 className="h-5 w-5 animate-spin" />

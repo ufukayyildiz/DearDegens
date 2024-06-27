@@ -466,7 +466,7 @@ export async function getChatrooms(mintId: string) {
 export async function getMessages(roomId: string) {
   try {
     const roomMessages = await db.execute(
-      sql.raw(`SELECT * FROM messages WHERE "roomId" = '${roomId}'`)
+      sql.raw(`SELECT * FROM messages WHERE "roomId" = '${roomId}';`)
     )
 
     console.log("Chatroom messages query successful")
