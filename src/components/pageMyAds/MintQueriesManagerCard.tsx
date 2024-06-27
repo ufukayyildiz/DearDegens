@@ -16,16 +16,16 @@ export default function MintQueriesManagerCard({
   console.log("query", query)
   return (
     <div className="relative z-40 mx-auto mb-3 flex h-auto min-h-[100px] w-11/12 max-w-[500px] flex-col overflow-hidden rounded-lg border border-muted p-2 text-left text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent sm:text-sm">
-      <div className="mb-3 flex items-center space-x-2 text-xs font-bold italic text-muted-foreground">
+      <div className="mb-3 flex items-center space-x-2 text-xs font-bold italic text-customAccent">
         {/* <p>Listing Title:</p> */}
         <p>{query.adTitle}</p>
       </div>
-      <div>
-        <p className="mb-2 rounded-lg bg-muted p-2 italic">
+      <div className="md:ml-5">
+        <p className="mb-5 rounded-lg bg-muted p-2 italic">
           &quot;{query.query}&quot;
         </p>
       </div>
-      <div className="mb-10">
+      <div className="mb-10 ml-5 md:ml-8">
         {query.reply ? (
           <span>{query.reply}</span>
         ) : (

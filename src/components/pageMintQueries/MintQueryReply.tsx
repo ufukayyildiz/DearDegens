@@ -167,9 +167,6 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                             <label className="py-1 text-primary">
                               Type your message here:
                             </label>
-                            <label className="py-1 text-xs italic text-rose-400">
-                              (required)
-                            </label>
                           </div>
                           <Textarea
                             id={field.name}
@@ -234,7 +231,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                   {/* @ts-ignore */}
                   {([canSubmit, isSubmitting]) =>
                     !submitted ? (
-                      <div className="flex w-full justify-between">
+                      <div className="flex w-full flex-col md:flex-row justify-between">
                         <div className="flex items-center justify-start space-x-2">
                           <Checkbox
                             id="disable"
@@ -250,14 +247,11 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                             </Link>
                           </Label>
                         </div>
-                        <div className="flex gap-5">
-                          <AlertDialogCancel onClick={() => setDisabled(true)}>
-                            Cancel
-                          </AlertDialogCancel>
+                        <div className="flex gap-5 mt-10 md:mt-0">
                           <Button
                             type="submit"
                             disabled={disabled || !canSubmit}
-                            variant="outline"
+                            variant="outlineTwo"
                             className="w-28"
                           >
                             {isSubmitting ? (
@@ -266,6 +260,9 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                               "Send"
                             )}
                           </Button>
+                          <AlertDialogCancel onClick={() => setDisabled(true)}>
+                            Cancel
+                          </AlertDialogCancel>
                         </div>
                       </div>
                     ) : (

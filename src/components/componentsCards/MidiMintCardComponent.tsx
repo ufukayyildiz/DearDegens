@@ -38,7 +38,7 @@ export default function MidiMintCardComponent({ listing }: MyMintsProps) {
   const location = listing.location?.replace(/ /g, "-")
 
   return (
-    <div className="h-60 w-full max-w-[180px] rounded-lg border border-background bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:shadow">
+    <div className="h-60 w-full max-w-[180px] rounded-lg border border-background dark:border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:shadow">
       <Link
         href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}
       >

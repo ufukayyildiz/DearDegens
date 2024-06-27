@@ -11,10 +11,16 @@ import {
   CarouselPrevious,
 } from "../components-ui/Carousel"
 
-export default function MintCarousel(listing: any) {
-  const imageUrls = JSON.parse(listing.listing)
+interface MintCarouselProps {
+  images: string | null | undefined
+}
 
-  if (imageUrls.length !== 0) {
+export default function MintCarousel({images}: MintCarouselProps) {
+  
+  const imageUrls = JSON.parse(images!)
+  console.log('type', images)
+
+  if (imageUrls[0] !== undefined) {
     return (
       <div className="flex items-center justify-center">
         <Carousel
@@ -30,22 +36,13 @@ export default function MintCarousel(listing: any) {
                 key={index}
                 className="flex w-full items-center justify-center shadow-lg"
               >
-                {imageUrls.length !== 0 ? (
-                  <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-lg">
-                    <img
-                      src={images}
-                      alt={images}
-                      className="h-full w-full object-cover"
-                    />
-                  </div>
-                ) : (
-                  <div className="flex h-full w-full justify-center rounded-lg bg-muted">
-                    <Image
-                      className="my-auto h-[50%] w-[50%] animate-pulse text-muted-foreground"
-                      alt="imageLoader"
-                    />
-                  </div>
-                )}
+                <div className="flex h-full w-full items-center justify-center overflow-hidden rounded-lg">
+                  <img
+                    src={images}
+                    alt={images}
+                    className="h-full w-full object-cover"
+                  />
+                </div>
               </CarouselItem>
             ))}
           </CarouselContent>

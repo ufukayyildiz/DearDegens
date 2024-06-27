@@ -51,6 +51,7 @@ export default function MintOfferDelete({
       })
     },
     onSuccess: () => {
+      setDisabled(true)
       return toast({
         title: "Success!",
         description: "Successfully deleted offer.",
@@ -60,8 +61,8 @@ export default function MintOfferDelete({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["authorOffers"] })
-        await queryClient.invalidateQueries({ queryKey: ["userOffers"] })
+        await queryClient.invalidateQueries({ queryKey: ["authorOffersManager"] })
+        await queryClient.invalidateQueries({ queryKey: ["userOffersManager"] })
       }
     },
   })
@@ -104,13 +105,13 @@ export default function MintOfferDelete({
                   <AlertDialogTrigger asChild>
                     <Button
                       onClick={() => handleDeleteOffer(offer)}
-                      disabled={disabled || canDelete}
+                      disabled={disabled && canDelete}
                       variant="destructive"
                     >
                       Delete
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogCancel className="ml-5">Cancel</AlertDialogCancel>
+                  <AlertDialogCancel className="ml-5" onClick={() => setDisabled(true)}>Cancel</AlertDialogCancel>
                 </div>
               </div>
             ) : (
