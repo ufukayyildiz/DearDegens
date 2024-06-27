@@ -110,6 +110,7 @@ export default async function MintPage({ params }: MintPageProps) {
               <div className="flex flex-col py-5 md:flex-row">
                 {/* @ts-expect-error Server Component */}
                 <MintCarousel images={item.images} />
+                {/* @ts-expect-error Server Component */}
                 <PlaceholderImages images={item.images}/>
                 <MintInfo listing={item} />
               </div>
