@@ -3,7 +3,7 @@
 import { eq, sql, and } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 import { Resend } from "resend"
-import { authOptions } from "../lib/auth/auth-options"
+import { authOptions, getAuthSession } from "../lib/auth/auth-options"
 import { db } from "./db"
 import {
   chatRoom,
@@ -465,12 +465,22 @@ export async function getChatrooms(mintId: string) {
 // Get Chatroom Messages
 export async function getMessages(roomId: string) {
   try {
-    const roomMessages = await db.execute(
-      sql.raw(`SELECT * FROM messages WHERE "roomId" = '${roomId}';`)
-    )
+    const session = await getAuthSession()
+    const room = await db.select().from(chatRoom).where(eq(chatRoom.id, roomId))
+
+    const buyerId = room[0].userId
+    const sellerId = room[0].sellerId
+
+    const buyerMessages = await db.select().from(messages).where(eq(messages.userId, buyerId))
+
+    const sellerMessages = await db.select().from(messages).where(eq(messages.userId, sellerId))
+
+    const roomMessages = [...sellerMessages, ...buyerMessages]
+
+    const sortedMessages = roomMessages.sort((a: any, b: any) => a.createdAt - b.createdAt)
 
     console.log("Chatroom messages query successful")
-    return roomMessages.rows
+    return sortedMessages
   } catch (error) {
     console.error("Server error: Failed to fetch chatroom messages - ", error)
   }

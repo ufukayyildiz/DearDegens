@@ -29,6 +29,7 @@ import {
 } from "@/src/lib/validators/validateListing"
 import { formatDateFromTimestamp } from "@/src/lib/utils"
 import ChatRoomTrigger from "./ChatRoomTrigger"
+import { cn } from "@/src/lib/utils"
 
 interface ChatRoomProps {
   roomData: roomType
@@ -133,7 +134,9 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["messages"] })
+        await queryClient.invalidateQueries({
+          queryKey: ["messages", roomData.chatRoom.id],
+        })
       }
     },
   })
@@ -156,9 +159,12 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
           <h1>Messages</h1>
         </SheetHeader>
 
-        <div className="absolute bottom-10 z-30 flex w-full flex-col justify-end pr-12">
-          <div className="flex h-full w-full rounded-md pb-10">
-            <ScrollArea className="max-h-[65vh] w-full  pr-5">
+        <div className="relative z-30 mt-11 flex h-[85vh] w-full flex-col justify-end overflow-hidden">
+          <div className="flex h-full w-full rounded-md pb-10 pt-32">
+            <ScrollArea className="mt-2 h-auto  w-full pr-5">
+              <p className="w-full text-end text-xs italic text-muted-foreground">
+                Start of conversation...
+              </p>
               {messages &&
                 messages.map((msg: messagesType, i: any) => (
                   <>
@@ -168,10 +174,22 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                         key={i}
                         ref={i === messages.length - 1 ? bottomRef : null}
                       >
-                        <span className="flex font-bold text-customAccent">
+                        <span
+                          className={cn(
+                            "flex font-bold italic text-primary",
+                            session?.user.id === msg.userId &&
+                              "justify-end text-customAccent"
+                          )}
+                        >
                           {msg.userName}
                         </span>
-                        <p className="p-1 text-left text-primary">
+                        <p
+                          className={cn(
+                            "p-1 text-left text-sm text-primary",
+                            session?.user.id === msg.userId &&
+                              "justify-end text-right"
+                          )}
+                        >
                           {msg.message}
                         </p>
                         <span className="flex w-full justify-end text-xs italic text-muted-foreground">
@@ -187,11 +205,11 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                   key={variables.roomId}
                 >
                   <div className="flex justify-between">
-                    <span className="flex font-bold text-customAccent">
+                    <span className="flex w-full justify-end text-right font-bold italic text-customAccent">
                       {variables.userName}
                     </span>
                   </div>
-                  <p className="p-1 text-left text-primary">
+                  <p className="p-1 text-right text-sm text-primary">
                     {variables.message}
                   </p>
                   <span className="flex w-full justify-end text-xs italic text-muted-foreground">

@@ -46,7 +46,7 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
   // MANAGE ROOM SELECT
   const handleRoomChange = async (data: roomType) => {
     setSelectedRoom(data.chatRoom.id)
-    await queryClient.invalidateQueries({ queryKey: ["messages"] })
+    await queryClient.invalidateQueries({ queryKey: ["messages", data.chatRoom.id] })
   }
 
   return (
