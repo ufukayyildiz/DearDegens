@@ -170,13 +170,13 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                   <>
                     {msg.roomId === roomData.chatRoom.id && (
                       <div
-                        className="mt-3 flex flex-col justify-center rounded-md border border-muted bg-background p-2"
+                        className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"
                         key={i}
                         ref={i === messages.length - 1 ? bottomRef : null}
                       >
                         <span
                           className={cn(
-                            "flex font-bold italic text-primary",
+                            "flex font-bold text-xs italic text-primary",
                             session?.user.id === msg.userId &&
                               "justify-end text-customAccent"
                           )}
@@ -192,7 +192,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                         >
                           {msg.message}
                         </p>
-                        <span className="flex w-full justify-end text-xs italic text-muted-foreground">
+                        <span className={cn("flex w-full text-left pl-1 text-[10px] italic text-muted-foreground", session?.user.id === msg.userId && "justify-end text-right")}>
                           {formatDateFromTimestamp(msg.createdAt!)}
                         </span>
                       </div>
@@ -201,11 +201,11 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 ))}
               {isPending && (
                 <div
-                  className="mt-3 flex flex-col justify-center rounded-md border border-muted bg-background p-2 shadow-lg"
+                  className="mt-3 flex flex-col justify-center rounded-md bg-background p-2 shadow-lg"
                   key={variables.roomId}
                 >
                   <div className="flex justify-between">
-                    <span className="flex w-full justify-end text-right font-bold italic text-customAccent">
+                    <span className="flex w-full justify-end text-right text-xs font-bold italic text-customAccent">
                       {variables.userName}
                     </span>
                   </div>
