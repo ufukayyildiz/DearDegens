@@ -159,7 +159,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
           <h1>Messages</h1>
         </SheetHeader>
 
-        <div className="relative z-30 mt-11 flex h-[85vh] w-full flex-col justify-end overflow-hidden">
+        <div className="relative z-30 mt-11 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
           <div className="flex h-full w-full rounded-md pb-10 pt-32">
             <ScrollArea className="mt-2 h-auto  w-full pr-5">
               <p className="w-full text-end text-xs italic text-muted-foreground">
@@ -176,7 +176,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                       >
                         <span
                           className={cn(
-                            "flex font-bold text-xs italic text-primary",
+                            "flex text-xs font-bold italic text-primary",
                             session?.user.id === msg.userId &&
                               "justify-end text-customAccent"
                           )}
@@ -192,7 +192,13 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                         >
                           {msg.message}
                         </p>
-                        <span className={cn("flex w-full text-left pl-1 text-[10px] italic text-muted-foreground", session?.user.id === msg.userId && "justify-end text-right")}>
+                        <span
+                          className={cn(
+                            "flex w-full pl-1 text-left text-[10px] italic text-muted-foreground",
+                            session?.user.id === msg.userId &&
+                              "justify-end text-right"
+                          )}
+                        >
                           {formatDateFromTimestamp(msg.createdAt!)}
                         </span>
                       </div>
@@ -229,7 +235,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 void form.handleSubmit()
               }}
             >
-              <div className="flex h-full w-full flex-col justify-end">
+              <div className="z-50 flex h-full w-full flex-col justify-end overflow-visible">
                 <form.Field
                   name="message"
                   validators={{
@@ -246,7 +252,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(e) => field.handleChange(e.target.value)}
-                        className="h-full w-full bg-muted text-primary"
+                        className="h-full w-full bg-muted text-primary shadow-sm"
                         required
                       />
                     </>
@@ -267,7 +273,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                       type="submit"
                       disabled={disabled || !canSubmit}
                       variant="outlineTwo"
-                      className="mt-5 w-20 hover:bg-customAccent hover:text-zinc-100"
+                      className="z-50 mt-5 w-20 shadow-sm hover:bg-customAccent hover:text-zinc-100"
                     >
                       {isSubmitting ? (
                         <Loader2 className="h-5 w-5 animate-spin" />
