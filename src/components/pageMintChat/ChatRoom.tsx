@@ -147,11 +147,11 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       <SheetContent>
         <SheetHeader className="z-40 mr-10 h-16 w-[315px] bg-background pt-5 text-lg font-bold text-customAccent">
           <h1>Messages</h1>
-          <div className="h-[1px] w-full bg-customAccent my-3" />
+          <div className="my-3 h-[1px] w-full bg-customAccent" />
         </SheetHeader>
 
         <div className="relative z-30 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
-          <div className="flex absolute top-0 h-[50vh] md:h-[65vh] w-full rounded-md mb-5 overflow-hidden">
+          <div className="absolute top-0 mb-5 flex h-[50vh] w-full overflow-hidden rounded-md md:h-[65vh]">
             <ScrollArea className="flex w-full bg-background pr-5">
               {isPending && (
                 <div
@@ -216,17 +216,17 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                     DearDegens Admin
                   </span>
                 </div>
-                <p className="p-1 text-left italic text-xs text-muted-foreground">
+                <p className="p-1 text-left text-xs italic text-muted-foreground">
                   Automated message: By participating in this chatroom, you
                   agree to abide by the content guidelines stipulated in our
                   terms of service. For any queries please contact us via
                   support@deardegens.com.
                 </p>
-                <span className="flex w-full justify-start text-[10px] italic text-muted-foreground pl-1">
+                <span className="flex w-full justify-start pl-1 text-[10px] italic text-muted-foreground">
                   {formatDateFromTimestamp(roomData.createdAt!)}
                 </span>
               </div>
-              <div className="h-[1px] w-full bg-customAccent my-3" />
+              <div className="my-3 h-[1px] w-full bg-customAccent" />
               <p className="w-full text-end text-xs italic text-muted-foreground">
                 Chatroom opened: {formatDateFromTimestamp(roomData.createdAt!)}
               </p>
@@ -242,7 +242,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 void form.handleSubmit()
               }}
             >
-              <div className="z-50 flex h-full w-full flex-col pr-5 justify-end overflow-visible">
+              <div className="z-50 flex h-full w-full flex-col justify-end overflow-visible pr-5">
                 <form.Field
                   name="message"
                   validators={{
