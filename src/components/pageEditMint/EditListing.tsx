@@ -55,7 +55,7 @@ import {
   onChangeAsync,
   onChangeAsyncDebounceMs,
 } from "@/src/lib/validators/validateListing"
-import { listingsType } from "@/src/types/db"
+import { listingItemType, listingsType } from "@/src/types/db"
 import { Textarea } from "../components-ui/Textarea"
 import ListingSelectImage from "../pageCreateMint/ListingSelectImage"
 
@@ -132,10 +132,11 @@ export default function EditListing({ listing }: EditListingProps) {
       transmission: listing[0].transmission || "",
       fuel: listing[0].fuel || "",
       description: listing[0].description || "",
-      items: items.map((item: any) => ({
+      items: items.map((item: listingItemType) => ({
         id: item.id || nanoid(),
         name: item.name || "",
         price: item.price || 0,
+        isSold: item.isSold || false
       })),
       images: listing[0].images || "",
       location: listing[0].location || "",

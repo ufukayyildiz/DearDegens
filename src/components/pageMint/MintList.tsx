@@ -2,7 +2,9 @@ import React from "react"
 import MintOfferList from "../pageMintOffers/MintOfferList"
 import { getServerSession } from "next-auth"
 import { authOptions } from "@/src/lib/auth/auth-options"
-import { listingsType } from "@/src/types/db"
+import { listingItemType, listingsType } from "@/src/types/db"
+import MintMarkSoldList from "../pageMintActionButtonList/MintMarkSoldList"
+import { cn } from "@/src/lib/utils"
 
 interface MintListProps {
   listing: listingsType
@@ -10,7 +12,6 @@ interface MintListProps {
 
 export default async function MintList({ listing }: MintListProps) {
   const list = JSON.parse(listing.items!)
-  console.log("list:", list)
   const session = await getServerSession(authOptions)
 
   // PRICE TEXT FORMATTER
@@ -28,20 +29,22 @@ export default async function MintList({ listing }: MintListProps) {
       <div className="my-5 w-full">
         <hr className="my-2 border border-t-muted-foreground" />
         <h1 className=" mb-2 text-lg font-bold">Listed Items:</h1>
-        {list.map((item: any, index: any) => {
+        {list.map((item: listingItemType) => {
           return (
             <div className="pl-2">
               <hr className="border border-dotted border-muted" />
               <div
                 key={item.id}
-                className="flex  w-full flex-row items-center justify-between"
+                className="flex h-12 w-full flex-row items-center justify-between"
               >
-                <p>{item.name}</p>
+                <p className={cn(item.isSold === true && " line-through")}>{item.name}</p>
                 <div className="flex items-center space-x-5">
+                  {item.isSold === false && (
                   <p className="font-semibold text-customAccent">
                     R {formatPrice(item.price)}
                   </p>
-                  {session?.user.id !== listing.authorId && (
+                  )}
+                  {session?.user.id !== listing.authorId && item.isSold === false && (
                     <MintOfferList
                       itemId={item.id}
                       itemName={item.name}
@@ -50,6 +53,9 @@ export default async function MintList({ listing }: MintListProps) {
                       sellerId={listing.authorId}
                       adTitle={listing.title!}
                     />
+                  )}
+                  {session?.user.id === listing.authorId && item.isSold === false && (
+                    <MintMarkSoldList listing={listing} item={item}/>
                   )}
                 </div>
               </div>

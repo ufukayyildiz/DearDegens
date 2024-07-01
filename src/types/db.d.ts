@@ -32,3 +32,10 @@ export type roomType = {
   sellerImage: string
   createdAt: Date
 }
+
+export type listingItemType = {
+  id: string,
+  name: string,
+  price: number,
+  isSold: boolean
+}

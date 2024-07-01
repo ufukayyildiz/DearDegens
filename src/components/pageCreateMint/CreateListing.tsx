@@ -123,6 +123,7 @@ export default function CreateListing() {
           id: nanoid(),
           name: "",
           price: 0,
+          isSold: false
         },
       ],
       images: "",
