@@ -81,14 +81,14 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       message: "",
       roomId: roomData.id,
       userId: session?.user.id,
-      userName: roomData.userName,
+      userName: session?.user.name,
     },
     onSubmit: async ({ value }) => {
       const payload: ChatMessageCreationRequest = {
         message: value.message,
         roomId: roomData.id,
         userId: session?.user.id || "",
-        userName: roomData.userName || "",
+        userName: session?.user.name || "",
       }
       console.log("Payload:", payload)
       sendChatMessage(payload)
@@ -160,7 +160,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 >
                   <div className="flex justify-between">
                     <span className="flex w-full justify-end text-right text-xs font-bold italic text-customAccent">
-                      {variables.userName}
+                      {session?.user.name}
                     </span>
                   </div>
                   <p className="p-1 text-right text-sm text-primary">
