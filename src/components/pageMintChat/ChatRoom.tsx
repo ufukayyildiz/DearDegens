@@ -145,13 +145,14 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
         <div className="h-full w-full">{userName()}</div>
       </SheetTrigger>
       <SheetContent>
-        <SheetHeader className="absolute top-0 z-40 mb-5 mr-10 h-16 w-[315px] bg-background pt-5 text-lg font-bold text-customAccent">
+        <SheetHeader className="z-40 mr-10 h-16 w-[315px] bg-background pt-5 text-lg font-bold text-customAccent">
           <h1>Messages</h1>
+          <div className="h-[1px] w-full bg-customAccent my-3" />
         </SheetHeader>
 
-        <div className="relative z-30 mt-11 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
-          <div className="flex h-full  w-full rounded-md pb-10">
-            <ScrollArea className="mt-2 flex w-full bg-background pr-5">
+        <div className="relative z-30 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
+          <div className="flex absolute top-0 h-[50vh] md:h-[65vh] w-full rounded-md mb-5 overflow-hidden">
+            <ScrollArea className="flex w-full bg-background pr-5">
               {isPending && (
                 <div
                   className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"
@@ -241,7 +242,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 void form.handleSubmit()
               }}
             >
-              <div className="z-50 flex h-full w-full flex-col justify-end overflow-visible">
+              <div className="z-50 flex h-full w-full flex-col pr-5 justify-end overflow-visible">
                 <form.Field
                   name="message"
                   validators={{
