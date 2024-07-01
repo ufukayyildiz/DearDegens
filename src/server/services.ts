@@ -152,5 +152,7 @@ export function useGetMessages(roomId: any) {
   return useQuery<messagesType[]>({
     queryKey: ["messages", roomId],
     queryFn: () => roomId && getMessages(roomId),
+    refetchInterval: 1000 * 60,
+    refetchOnMount: 'always'
   })
 }

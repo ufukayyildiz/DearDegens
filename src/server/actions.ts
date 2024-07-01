@@ -495,7 +495,7 @@ export async function getMessages(roomId: string) {
     const roomMessages = [...sellerMessages, ...buyerMessages]
 
     const sortedMessages = roomMessages.sort(
-      (a: any, b: any) => a.createdAt - b.createdAt
+      (a: any, b: any) => b.createdAt - a.createdAt
     )
 
     console.log("Chatroom messages query successful")

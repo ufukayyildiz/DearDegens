@@ -52,7 +52,6 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
   const [disabled, setDisabled] = useState<boolean>(false)
-  const [bottom, setBottom] = useState<boolean>(false)
 
   // SET TRIGGER USER DETAILS
   const userName = () => {
@@ -91,10 +90,9 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
         userId: session?.user.id || "",
         userName: session?.user.name || "",
       }
-      console.log('Payload:', payload)
+      console.log("Payload:", payload)
       sendChatMessage(payload)
       setDisabled(true)
-      setBottom(true)
     },
   })
 
@@ -127,7 +125,6 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       })
     },
     onSuccess: () => {
-      setBottom(false)
       form.reset()
     },
     onSettled: async (_, error) => {
@@ -142,14 +139,6 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
     },
   })
 
-  // FOCUS ON NEW MESSAGE
-  const bottomRef = useRef<HTMLDivElement>(null)
-  useEffect(() => {
-    if (bottomRef.current) {
-      bottomRef.current.scrollIntoView({ behavior: "smooth" })
-    }
-  }, [bottom])
-
   return (
     <Sheet>
       <SheetTrigger>
@@ -162,18 +151,32 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
 
         <div className="relative z-30 mt-11 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
           <div className="flex h-full  w-full rounded-md pb-10">
-            <ScrollArea className="mt-2 flex w-full pr-5 bg-background">
-              <p className="w-full text-end text-xs italic text-muted-foreground">
-                Start of conversation...
-              </p>
+            <ScrollArea className="mt-2 flex w-full bg-background pr-5">
+              {isPending && (
+                <div
+                  className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"
+                  key={variables.roomId}
+                >
+                  <div className="flex justify-between">
+                    <span className="flex w-full justify-end text-right text-xs font-bold italic text-customAccent">
+                      {variables.userName}
+                    </span>
+                  </div>
+                  <p className="p-1 text-right text-sm text-primary">
+                    {variables.message}
+                  </p>
+                  <span className="flex w-full justify-end text-xs italic text-muted-foreground">
+                    Pending
+                  </span>
+                </div>
+              )}
               {messages &&
                 messages.map((msg: messagesType, i: any) => (
                   <>
                     {msg.roomId === roomData.id && (
                       <div
                         className="mt-3 flex flex-col rounded-md bg-background p-2"
-                        key={i}
-                        ref={i === messages.length - 1 ? bottomRef : null}
+                        key={msg.id}
                       >
                         <span
                           className={cn(
@@ -206,24 +209,26 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                     )}
                   </>
                 ))}
-              {isPending && (
-                <div
-                  className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"
-                  key={variables.roomId}
-                >
-                  <div className="flex justify-between">
-                    <span className="flex w-full justify-end text-right text-xs font-bold italic text-customAccent">
-                      {variables.userName}
-                    </span>
-                  </div>
-                  <p className="p-1 text-right text-sm text-primary">
-                    {variables.message}
-                  </p>
-                  <span className="flex w-full justify-end text-xs italic text-muted-foreground">
-                    Pending
+              <div className="mt-3 flex flex-col justify-center rounded-md bg-background p-2">
+                <div className="flex justify-between">
+                  <span className="flex w-full justify-start text-left text-xs font-bold italic text-primary">
+                    DearDegens Admin
                   </span>
                 </div>
-              )}
+                <p className="p-1 text-left italic text-xs text-muted-foreground">
+                  Automated message: By participating in this chatroom, you
+                  agree to abide by the content guidelines stipulated in our
+                  terms of service. For any queries please contact us via
+                  support@deardegens.com.
+                </p>
+                <span className="flex w-full justify-start text-[10px] italic text-muted-foreground pl-1">
+                  {formatDateFromTimestamp(roomData.createdAt!)}
+                </span>
+              </div>
+              <div className="h-[1px] w-full bg-customAccent my-3" />
+              <p className="w-full text-end text-xs italic text-muted-foreground">
+                Chatroom opened: {formatDateFromTimestamp(roomData.createdAt!)}
+              </p>
             </ScrollArea>
           </div>
 
