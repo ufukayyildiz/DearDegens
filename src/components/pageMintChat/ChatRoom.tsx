@@ -81,14 +81,14 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       message: "",
       roomId: roomData.id,
       userId: session?.user.id,
-      userName: session?.user.name,
+      userName: roomData.userName,
     },
     onSubmit: async ({ value }) => {
       const payload: ChatMessageCreationRequest = {
         message: value.message,
         roomId: roomData.id,
         userId: session?.user.id || "",
-        userName: session?.user.name || "",
+        userName: roomData.userName || "",
       }
       console.log("Payload:", payload)
       sendChatMessage(payload)
@@ -172,7 +172,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 </div>
               )}
               {messages &&
-                messages.map((msg: messagesType, i: any) => (
+                messages.map((msg: messagesType) => (
                   <>
                     {msg.roomId === roomData.id && (
                       <div
