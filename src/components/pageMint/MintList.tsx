@@ -43,7 +43,7 @@ export default async function MintList({ listing }: MintListProps) {
                     item.isSold === true && "line-through"
                   )}
                 >
-                  hjhjhjjhjhjhjhjhjhjhjhjhckdhjckdshdoidcjkhsdjnihdsi
+                  {item.name}
                 </p>
                 <div className="flex items-center space-x-5">
                   {item.isSold === false && (
