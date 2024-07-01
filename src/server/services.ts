@@ -142,8 +142,9 @@ export function useGetUserInfo() {
 // GET CHATROOM
 export function useGetChatrooms(mintId: any) {
   return useQuery<roomType[]>({
-    queryKey: ["chatroom"],
+    queryKey: ["chatroom", mintId],
     queryFn: () => mintId && getChatrooms(mintId),
+    refetchOnMount: 'always'
   })
 }
 

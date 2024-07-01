@@ -40,7 +40,7 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
 
   // INVALIDATE LISTING CHAT
   const handleInvalidateChat = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["chatroom"] })
+    await queryClient.invalidateQueries({ queryKey: ["chatroom", listingId] })
   }
 
   // MANAGE ROOM SELECT

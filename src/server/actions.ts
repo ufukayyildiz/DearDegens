@@ -459,15 +459,18 @@ export async function getChatrooms(mintId: string) {
         "chatRoom"."createdAt" AS "createdAt"
       FROM "chatRoom" 
       LEFT JOIN "users" AS "buyer" ON "buyer"."id" = "chatRoom"."userId"
-      LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId"
-      WHERE "adId" = '${mintId}';
+      LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId";
       `)
     )
+
+    console.log("roomQueries:", roomQueries.rows, mintId)
     roomQueries.rows &&
       roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
+    const listingRooms = roomQueries.rows.filter((item) => item.adId === mintId)
+
     console.log("Chatroom queries query successful")
-    return roomQueries.rows
+    return listingRooms
   } catch (error) {
     console.error("Server error: Failed to fetch ad chatrooms - ", error)
   }
@@ -483,13 +486,29 @@ export async function getMessages(roomId: string) {
     const sellerId = room[0].sellerId
 
     const buyerMessages = await db
-      .select()
+      .select({
+        id: messages.id,
+        roomId: messages.roomId,
+        userId: users.id,
+        userName: users.name,
+        message: messages.message,
+        createdAt: messages.createdAt,
+      })
       .from(messages)
+      .leftJoin(users, eq(users.id, buyerId))
       .where(eq(messages.userId, buyerId))
 
     const sellerMessages = await db
-      .select()
+      .select({
+        id: messages.id,
+        roomId: messages.roomId,
+        userId: users.id,
+        userName: users.name,
+        message: messages.message,
+        createdAt: messages.createdAt,
+      })
       .from(messages)
+      .leftJoin(users, eq(users.id, sellerId))
       .where(eq(messages.userId, sellerId))
 
     const roomMessages = [...sellerMessages, ...buyerMessages]
