@@ -9,7 +9,7 @@ import {
   SheetTitle,
   SheetTrigger,
 } from "../components-ui/Sheet"
-import { messagesType, roomType } from "@/src/types/db"
+import { messagesType, roomType, chatRoomType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 import { useGetChatrooms, useGetMessages } from "@/src/server/services"
 import ChatRoom from "./ChatRoom"
@@ -26,14 +26,14 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
   const userId = session?.user.id
 
   const queryClient = useQueryClient()
-  const messages = useGetMessages(selectedRoom).data
+  const messages = useGetMessages(selectedRoom).data as messagesType[]
   const { data, isFetching } = useGetChatrooms(listingId)
 
   const chatRoomData: roomType[] = []
   const filteredRoom =
     data &&
     data.map((data: roomType) => {
-      if (data.seller.id === userId || data.buyer.id === userId) {
+      if (data.sellerId === userId || data.userId === userId) {
         chatRoomData.push(data)
       }
     })
@@ -45,8 +45,8 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
 
   // MANAGE ROOM SELECT
   const handleRoomChange = async (data: roomType) => {
-    setSelectedRoom(data.chatRoom.id)
-    await queryClient.invalidateQueries({ queryKey: ["messages", data.chatRoom.id] })
+    setSelectedRoom(data.id)
+    await queryClient.invalidateQueries({ queryKey: ["messages", data.id] })
   }
 
   return (
@@ -68,13 +68,13 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
             <div className="h-full">
               {chatRoomData && chatRoomData.length > 0 ? (
                 <div className="flex flex-col space-y-1">
-                  {chatRoomData.map((data, index) => {
+                  {chatRoomData.map((data: roomType, index) => {
                     return (
                       <div onClick={() => handleRoomChange(data)} key={index}>
                         <ChatRoom
                           roomData={data}
                           messages={messages!}
-                          key={data.chatRoom.id}
+                          key={data.id}
                         />
                       </div>
                     )

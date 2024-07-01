@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useRef, useEffect } from "react"
-import { roomType, messagesType } from "@/src/types/db"
+import { roomType, messagesType, chatRoomType } from "@/src/types/db"
 import {
   Sheet,
   SheetContent,
@@ -56,20 +56,20 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
 
   // SET TRIGGER USER DETAILS
   const userName = () => {
-    if (roomData.seller.id !== session?.user.id) {
+    if (roomData.sellerId !== session?.user.id) {
       return (
         <ChatRoomTrigger
           roomData={roomData}
-          userName={roomData.seller.name}
-          userImage={roomData.seller.image}
+          userName={roomData.sellerName}
+          userImage={roomData.sellerImage}
         />
       )
     } else {
       return (
         <ChatRoomTrigger
           roomData={roomData}
-          userName={roomData.buyer.name}
-          userImage={roomData.buyer.image}
+          userName={roomData.userName}
+          userImage={roomData.userImage}
         />
       )
     }
@@ -80,17 +80,18 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
     validatorAdapter: zodValidator,
     defaultValues: {
       message: "",
-      roomId: roomData.chatRoom.id,
+      roomId: roomData.id,
       userId: session?.user.id,
       userName: session?.user.name,
     },
     onSubmit: async ({ value }) => {
       const payload: ChatMessageCreationRequest = {
         message: value.message,
-        roomId: roomData.chatRoom.id,
+        roomId: roomData.id,
         userId: session?.user.id || "",
         userName: session?.user.name || "",
       }
+      console.log('Payload:', payload)
       sendChatMessage(payload)
       setDisabled(true)
       setBottom(true)
@@ -135,7 +136,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({
-          queryKey: ["messages", roomData.chatRoom.id],
+          queryKey: ["messages", roomData.id],
         })
       }
     },
@@ -160,17 +161,17 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
         </SheetHeader>
 
         <div className="relative z-30 mt-11 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
-          <div className="flex h-full w-full rounded-md pb-10 pt-32">
-            <ScrollArea className="mt-2 h-auto  w-full pr-5">
+          <div className="flex h-full  w-full rounded-md pb-10">
+            <ScrollArea className="mt-2 flex w-full pr-5 bg-background">
               <p className="w-full text-end text-xs italic text-muted-foreground">
                 Start of conversation...
               </p>
               {messages &&
                 messages.map((msg: messagesType, i: any) => (
                   <>
-                    {msg.roomId === roomData.chatRoom.id && (
+                    {msg.roomId === roomData.id && (
                       <div
-                        className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"
+                        className="mt-3 flex flex-col rounded-md bg-background p-2"
                         key={i}
                         ref={i === messages.length - 1 ? bottomRef : null}
                       >
@@ -207,7 +208,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 ))}
               {isPending && (
                 <div
-                  className="mt-3 flex flex-col justify-center rounded-md bg-background p-2 shadow-lg"
+                  className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"
                   key={variables.roomId}
                 >
                   <div className="flex justify-between">

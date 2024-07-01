@@ -25,7 +25,7 @@ export default function ChatRoomTrigger({
       />
       <h1 className="w-full text-left">{userName}</h1>
       <span className="flex w-36 justify-end text-xs italic text-muted-foreground">
-        {formatDateFromTimestamp(roomData.chatRoom.createdAt!)}
+        {formatDateFromTimestamp(roomData.createdAt!)}
       </span>
     </div>
   )

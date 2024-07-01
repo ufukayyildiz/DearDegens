@@ -442,21 +442,32 @@ export async function getWishlist() {
 // Get listing Chatrooms
 export async function getChatrooms(mintId: string) {
   try {
-    const buyer = alias(users, "buyer")
-    const seller = alias(users, "seller")
+    const roomQueries = await db.execute(
+      sql.raw(`
+      SELECT 
+        "chatRoom"."id" AS "id", 
+        "chatRoom"."adId" AS "adId", 
 
-    const roomQueries = await db
-      .select()
-      .from(chatRoom)
-      .leftJoin(buyer, eq(buyer.id, chatRoom.userId))
-      .leftJoin(seller, eq(seller.id, chatRoom.sellerId))
-      .where(eq(chatRoom.adId, mintId))
+        "buyer"."id" AS "userId", 
+        "buyer"."name" AS "userName", 
+        "buyer"."image" AS "userImage",
 
-    roomQueries &&
-      roomQueries.sort((a: any, b: any) => b.createdAt - a.createdAt)
+        "seller"."id" AS "sellerId",
+        "seller"."name" AS "sellerName",
+        "seller"."image" AS "sellerImage",
+
+        "chatRoom"."createdAt" AS "createdAt"
+      FROM "chatRoom" 
+      LEFT JOIN "users" AS "buyer" ON "buyer"."id" = "chatRoom"."userId"
+      LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId"
+      WHERE "adId" = '${mintId}';
+      `)
+    )
+    roomQueries.rows &&
+      roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
     console.log("Chatroom queries query successful")
-    return roomQueries
+    return roomQueries.rows
   } catch (error) {
     console.error("Server error: Failed to fetch ad chatrooms - ", error)
   }
@@ -471,13 +482,21 @@ export async function getMessages(roomId: string) {
     const buyerId = room[0].userId
     const sellerId = room[0].sellerId
 
-    const buyerMessages = await db.select().from(messages).where(eq(messages.userId, buyerId))
+    const buyerMessages = await db
+      .select()
+      .from(messages)
+      .where(eq(messages.userId, buyerId))
 
-    const sellerMessages = await db.select().from(messages).where(eq(messages.userId, sellerId))
+    const sellerMessages = await db
+      .select()
+      .from(messages)
+      .where(eq(messages.userId, sellerId))
 
     const roomMessages = [...sellerMessages, ...buyerMessages]
 
-    const sortedMessages = roomMessages.sort((a: any, b: any) => a.createdAt - b.createdAt)
+    const sortedMessages = roomMessages.sort(
+      (a: any, b: any) => a.createdAt - b.createdAt
+    )
 
     console.log("Chatroom messages query successful")
     return sortedMessages

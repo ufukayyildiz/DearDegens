@@ -11,7 +11,7 @@ import { fuel } from "@/src/lib/categories/Fuel"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import { ListingCreationRequest } from "@/src/lib/validators/validateListingGeneral"
 import { useMutation } from "@tanstack/react-query"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
@@ -218,12 +218,22 @@ export default function EditListing({ listing }: EditListingProps) {
     },
 
     // ERROR
-    onError: () => {
-      return toast({
-        title: "Something went wrong.",
-        description: "Your post was not updated. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      if (error.code === "409") {
+        return toast({
+          title: "Something went wrong.",
+          description: "This listing is too old to update.",
+          variant: "destructive",
+        })
+      }
+      if (error.code === "500") {
+        
+        return toast({
+          title: "Something went wrong.",
+          description: "Your post was not updated. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
 
     // SUCCESS

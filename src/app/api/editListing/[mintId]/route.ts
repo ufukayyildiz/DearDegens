@@ -19,6 +19,12 @@ export async function PATCH(req: Request, context: any) {
       return new Response("Unauthorized", { status: 401 })
     }
 
+    const listing = await db.select().from(listings).where(eq(listings.id, listingId))
+
+    if (listing[0].isExpired === true && listing[0].wasRenewed === true) {
+      return new Response("This listing cannot be updated.", {status: 409})
+    }
+
     const body = await req.json()
     const authorId = session?.user.id
 

@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { FileEdit } from "lucide-react"
 import MintDelete from "./MintDelete"
@@ -29,18 +29,31 @@ export default function MintPageAuthorActions({
 }: UserActionsProps) {
   const { data: session } = useSession()
   const userId = session?.user.id!
+  const [isExpired, setIsExpired] = useState<boolean>(true)
+
+  useEffect(() => {
+    if (listing.isExpired === false) {
+      setIsExpired(false)
+    }
+  }, [])
 
   return (
     <div className="flex w-full justify-end space-x-1 md:space-x-2">
       <ShareButtons domain={domain} />
       <MintManageOffers offers={offers} isLoading={isLoading} />
       <MintManageQueries queries={queries} userId={userId} />
-      <Link
-        href={`/ad/edit/${listing.id}`}
-        className="group flex h-10 w-10 items-center justify-center hover:text-amber-500"
-      >
-        <FileEdit />
-      </Link>
+      {!isExpired ? (
+        <Link
+          href={`/ad/edit/${listing.id}`}
+          className="group flex h-10 w-10 items-center text-primary justify-center hover:text-amber-500"
+        >
+          <FileEdit />
+        </Link>
+      ) : (
+        <div className="group flex h-10 w-10 items-center text-muted-foreground justify-center hover:text-muted">
+          <FileEdit />
+        </div>
+      )}
       <MintDelete listingId={listing.id} />
       <ChatSheet listingId={listing.id} />
     </div>
