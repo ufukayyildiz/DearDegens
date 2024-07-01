@@ -140,8 +140,11 @@ export default function MintOfferList({
     <div className="">
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button variant="icon" className="hover:text-customAccent">
-            <Gavel />
+          <Button
+            variant="icon"
+            className="itemds-center hover:text-customAccentq relative h-10 w-10 justify-center"
+          >
+            <Gavel className="absolute flex h-5 w-5" />
           </Button>
         </AlertDialogTrigger>
         <AlertDialogContent>
