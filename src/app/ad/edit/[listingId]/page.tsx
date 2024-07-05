@@ -35,7 +35,7 @@ export default async function MintEditPage({ params }: MintPageProps) {
 
   return (
     <div>
-      <EditListing listing={listing} user={user[0]} />
+      <EditListing listing={listing} user={user} />
     </div>
   )
 }
