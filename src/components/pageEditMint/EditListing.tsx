@@ -73,7 +73,7 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 
 interface EditListingProps {
   listing: listingsType[]
-  user: userType
+  user: userType[]
 }
 
 export default function EditListing({ listing, user }: EditListingProps) {
