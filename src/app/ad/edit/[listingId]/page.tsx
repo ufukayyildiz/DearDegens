@@ -1,7 +1,7 @@
 import React from "react"
 import EditListing from "@/src/components/pageEditMint/EditListing"
 import { db } from "@/src/server/db"
-import { listings } from "@/src/server/db/schema"
+import { listings, users } from "@/src/server/db/schema"
 import { listingsType } from "@/src/types/db"
 import { eq } from "drizzle-orm"
 import { getServerSession } from "next-auth"
@@ -28,9 +28,14 @@ export default async function MintEditPage({ params }: MintPageProps) {
     .from(listings)
     .where(eq(listings.id, decodedParam))
 
+  const user = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, session.user.id))
+
   return (
     <div>
-      <EditListing listing={listing} />
+      <EditListing listing={listing} user={user[0]} />
     </div>
   )
 }

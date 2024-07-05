@@ -98,3 +98,8 @@ export const resizeFile = (file: any) =>
       "file"
     )
   })
+
+export const formatPrice = new Intl.NumberFormat("en-US", {
+  style: "decimal",
+  minimumFractionDigits: 0,
+})

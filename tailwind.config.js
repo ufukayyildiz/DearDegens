@@ -22,6 +22,7 @@ module.exports = {
         ring: "hsl(var(--ring))",
         background: "hsl(var(--background))",
         backgroundForeground: "hsl(var(--background-foreground))",
+        backgroundNegetive: "hsl(var(--background-negetive))",
 
         grOne: "hsl(var(--gr-one))",
         grTwo: "hsl(var(--gr-two))",
@@ -35,6 +36,7 @@ module.exports = {
         customAccentTwo: "hsl(var(--custom-accent-two))",
 
         foreground: "hsl(var(--foreground))",
+        primaryNegetive: "hsl(var(--primary-negetive))",
         primary: {
           DEFAULT: "hsl(var(--primary))",
           foreground: "hsl(var(--primary-foreground))",

@@ -87,15 +87,17 @@ export default function MintDelete(listingId: any) {
                 onClick={() => handleDeleteListing(id)}
                 disabled={disabled}
                 variant="destructive"
-                className="flex w-20 text-zinc-100"
+                className="flex w-20 items-center justify-center"
               >
                 {!isPending ? (
                   <p>Delete</p>
                 ) : (
-                  <Loader2 className="absolute flex h-5 w-5 animate-spin" />
+                  <Loader2 className="flex h-5 w-5 animate-spin" />
                 )}
               </Button>
-              <AlertDialogCancel>Cancel</AlertDialogCancel>
+              <AlertDialogCancel onClick={() => setDisabled(true)}>
+                Cancel
+              </AlertDialogCancel>
             </div>
           </div>
         </AlertDialogContent>

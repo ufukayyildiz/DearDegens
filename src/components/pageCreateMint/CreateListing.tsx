@@ -11,7 +11,7 @@ import { fuel } from "@/src/lib/categories/Fuel"
 import { southAfrica } from "@/src/lib/locations/southAfrica"
 import { ListingCreationRequest } from "@/src/lib/validators/validateListingGeneral"
 import { useMutation } from "@tanstack/react-query"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { useForm } from "@tanstack/react-form"
 import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
@@ -57,6 +57,7 @@ import {
 
 import { Textarea } from "../components-ui/Textarea"
 import ListingSelectImage from "./ListingSelectImage"
+import { userType } from "@/src/types/db"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -70,7 +71,11 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   )
 }
 
-export default function CreateListing() {
+interface CreateListingProps {
+  user: userType[]
+}
+
+export default function CreateListing({ user }: CreateListingProps) {
   const router = useRouter()
   const defaultImages = [""]
   const [disabled, setDisabled] = useState<boolean>(true)
@@ -123,7 +128,7 @@ export default function CreateListing() {
           id: nanoid(),
           name: "",
           price: 0,
-          isSold: false
+          isSold: false,
         },
       ],
       images: "",
@@ -207,13 +212,30 @@ export default function CreateListing() {
     },
 
     // ERROR
-    onError: (error) => {
-      console.log("Mutation Error:", error)
-      return toast({
-        title: "Something went wrong.",
-        description: "Your post was not published. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      console.log("error:", error.response?.status)
+      if (error.response?.status === 409) {
+        return toast({
+          title: "User Active Ad Limit Reached.",
+          description: `It seems you have reached the maximum number listed ads on our platform. Either remove an old listing or purchase a higher subscription package.`,
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 429) {
+        return toast({
+          title: "Too Many Requests.",
+          description: "Please wait 30sec before trying again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "Your post was not published as there was an error connecting to the server. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
 
     // SUCCESS
@@ -230,6 +252,7 @@ export default function CreateListing() {
     <div className="mx-auto mb-52 flex min-h-screen w-11/12 flex-col py-10 sm:w-8/12">
       {/* LISTING IMAGES */}
       <ListingSelectImage
+        user={user}
         defaultImages={defaultImages}
         onSelectedImages={callSelectedImages}
       />
@@ -248,11 +271,9 @@ export default function CreateListing() {
             {(field) => {
               return (
                 <div className="relative w-full flex-col md:w-1/2 md:pr-5">
-                  <div className="flex w-full justify-between">
-                    <FieldLabel>Ad Type</FieldLabel>
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                  <div className="flex w-full">
+                    <FieldLabel>Ad Type:</FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
 
                   <Select required onValueChange={(event) => setType(event)}>
@@ -287,14 +308,14 @@ export default function CreateListing() {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       {type === "Vehicles" ? (
                         <FieldLabel>Vehicle Type:</FieldLabel>
                       ) : (
                         <FieldLabel>Category:</FieldLabel>
                       )}
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -333,14 +354,14 @@ export default function CreateListing() {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       {type === "Vehicles" ? (
                         <FieldLabel>Body Type:</FieldLabel>
                       ) : (
                         <FieldLabel>Sub-category:</FieldLabel>
                       )}
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -392,11 +413,9 @@ export default function CreateListing() {
             >
               {(field) => (
                 <div className="relative w-full flex-col">
-                  <div className="flex w-full  justify-between">
+                  <div className="flex w-full ">
                     <FieldLabel>Price:</FieldLabel>
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
                   <Input
                     type="number"
@@ -421,10 +440,10 @@ export default function CreateListing() {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       <FieldLabel>Condition:</FieldLabel>
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -461,11 +480,9 @@ export default function CreateListing() {
           >
             {(field) => (
               <div className="relative w-full flex-col">
-                <div className="flex w-full justify-between">
+                <div className="flex w-full">
                   <FieldLabel>Title:</FieldLabel>
-                  <FieldLabel className="py-2 text-xs italic text-rose-400">
-                    (required)
-                  </FieldLabel>
+                  <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                 </div>
                 <Input
                   id={field.name}
@@ -496,15 +513,13 @@ export default function CreateListing() {
             >
               {(field) => (
                 <div className="relative w-full flex-col">
-                  <div className="flex w-full justify-between">
+                  <div className="flex w-full">
                     {type === "Vehicles" ? (
                       <FieldLabel>Manufacturer:</FieldLabel>
                     ) : (
                       <FieldLabel>Brand:</FieldLabel>
                     )}
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -534,11 +549,9 @@ export default function CreateListing() {
             >
               {(field) => (
                 <div className="relative w-full flex-col">
-                  <div className="flex w-full justify-between">
+                  <div className="flex w-full">
                     <FieldLabel>Model:</FieldLabel>
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -614,10 +627,10 @@ export default function CreateListing() {
                 >
                   {(field) => (
                     <div className="relative w-full flex-col">
-                      <div className="flex w-full  justify-between">
+                      <div className="flex w-full">
                         <FieldLabel>Model Year:</FieldLabel>
-                        <FieldLabel className="py-2 text-xs italic text-rose-400">
-                          (required)
+                        <FieldLabel className=" italic text-rose-500">
+                          *
                         </FieldLabel>
                       </div>
                       <Input
@@ -644,10 +657,10 @@ export default function CreateListing() {
                   {(field) => {
                     return (
                       <div className="relative w-full flex-col">
-                        <div className="flex w-full justify-between">
+                        <div className="flex w-full">
                           <FieldLabel>Transmission:</FieldLabel>
-                          <FieldLabel className="py-2 text-xs italic text-rose-400">
-                            (required)
+                          <FieldLabel className=" italic text-rose-500">
+                            *
                           </FieldLabel>
                         </div>
 
@@ -867,7 +880,7 @@ export default function CreateListing() {
                         id: nanoid(),
                         name: "",
                         price: 0,
-                        isSold: false
+                        isSold: false,
                       })
                     }}
                     className="text-muted-foreground hover:text-customAccent"
@@ -888,10 +901,10 @@ export default function CreateListing() {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       <FieldLabel>Location:</FieldLabel>
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -932,10 +945,10 @@ export default function CreateListing() {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       <FieldLabel>Meeting preferance:</FieldLabel>
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 

@@ -1,6 +1,12 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { listings, offers, queries } from "@/src/server/db/schema"
+import {
+  chatRoom,
+  listings,
+  messages,
+  offers,
+  queries,
+} from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
@@ -31,7 +37,15 @@ export async function PUT(req: Request) {
       return new Response("API request limit reached", { status: 429 })
     } else {
       const listingId = await req.json()
+      const chatRooms = await db
+        .select()
+        .from(chatRoom)
+        .where(eq(chatRoom.adId, listingId))
 
+      await chatRooms.map((room) => {
+        db.delete(messages).where(eq(messages.roomId, room.id))
+      })
+      await db.delete(chatRoom).where(eq(chatRoom.adId, listingId))
       await db.delete(offers).where(eq(offers.adId, listingId))
       await db.delete(queries).where(eq(queries.adId, listingId))
       await db.delete(listings).where(eq(listings.id, listingId))

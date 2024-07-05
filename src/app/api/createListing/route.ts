@@ -1,11 +1,11 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { validateListing } from "@/src/lib/validators/validateListingGeneral"
 import { db } from "@/src/server/db"
-import { listings, notifications } from "@/src/server/db/schema"
-
-import { ulid } from 'ulid'
+import { listings, notifications, users } from "@/src/server/db/schema"
+import { products } from "@/src/lib/categories/Products"
+import { ulid } from "ulid"
 import { z } from "zod"
-import { sql } from "drizzle-orm"
+import { sql, eq } from "drizzle-orm"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
@@ -34,9 +34,58 @@ export async function POST(req: Request) {
       return new Response("Unauthorized", { status: 401 })
     }
 
-    const body = await req.json()
-    const authorId = session?.user.id
+    const user = await db
+      .select()
+      .from(users)
+      .where(eq(users.id, session?.user.id))
+    const userListings = await db
+      .select()
+      .from(listings)
+      .where(eq(listings.authorId, user[0].id))
 
+    // USER HAS FREE SUB:
+    if (
+      user[0].subscription === products[0].id &&
+      userListings.length >= products[0].ads
+    ) {
+      return new Response("User has reached ad creation limit.", {
+        status: 409,
+      })
+    }
+
+    // USER HAS ONCE OFF SUB:
+    if (
+      user[0].subscription === products[1].id &&
+      userListings.length >= user[0].maxAds!
+    ) {
+      return new Response("User has reached ad creation limit.", {
+        status: 409,
+      })
+    }
+
+    // USER HAS PRO SUB:
+    if (
+      user[0].subscription === products[2].id &&
+      userListings.length >= products[2].ads
+    ) {
+      return new Response("User has reached ad creation limit.", {
+        status: 409,
+      })
+    }
+
+    // USER HAS BIZ SUB:
+    if (
+      user[0].subscription === products[3].id &&
+      userListings.length >= products[3].ads
+    ) {
+      return new Response("User has reached ad creation limit.", {
+        status: 409,
+      })
+    }
+
+    const body = await req.json()
+
+    const authorId = session?.user.id
     const listingId = `list-${ulid()}`
 
     const generateNotificationId = `listNot-${ulid()}`
@@ -149,6 +198,32 @@ export async function POST(req: Request) {
         )
       )
 
+      // UPDATE SUBSCRIPTION
+      const updatedMaxAds = user[0].maxAds! - 1
+      const updatedMaxImages = user[0].maxImages! - 5
+
+      if (user[0].subscription === products[1].id && user[0].maxAds === 3) {
+        await db
+          .update(users)
+          .set({
+            maxAds: updatedMaxAds,
+            maxImages: updatedMaxImages,
+            subscription: products[0].id,
+          })
+          .where(eq(users.id, session.user.id))
+      }
+
+      if (user[0].subscription === products[1].id && user[0].maxAds! > 3) {
+        await db
+          .update(users)
+          .set({
+            maxAds: updatedMaxAds,
+            maxImages: updatedMaxImages,
+          })
+          .where(eq(users.id, session.user.id))
+      }
+
+      // SEND EMAIL NOTIFICATION TO SUPPORT
       await resend.emails.send({
         from: "DearDegens Support <support@deardegens.com>",
         to: `support@deardegens.com`,

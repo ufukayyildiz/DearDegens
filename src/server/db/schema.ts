@@ -91,13 +91,16 @@ export const users = pgTable(
     admin: boolean("admin").default(false).notNull(),
     name: varchar("name", { length: 255 }),
     email: varchar("email", { length: 255 }).notNull(),
-    emailVerified: varchar("emailVerified", {length: 255}),
+    emailVerified: varchar("emailVerified", { length: 255 }),
     password: varchar("password", { length: 255 }).notNull().default(""),
     resetPasswordToken: varchar("resetPasswordToken", { length: 255 }),
     resetPasswordTokenExpiry: timestamp("resetPasswordTokenExpiry").default(
       sql`CURRENT_TIMESTAMP`
     ),
     contact: varchar("contact", { length: 191 }),
+    subscription: varchar("subscription", { length: 191 }).default("000"),
+    maxImages: integer("maxImages").default(10),
+    maxAds: integer("maxAds").default(2),
     image: varchar("image", { length: 255 }),
     imageBucket: text("imageBucket").default(""),
     wishlist: varchar("wishlist", { length: 191 }).references(

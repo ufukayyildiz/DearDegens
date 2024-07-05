@@ -30,22 +30,48 @@ import { useMutation } from "@tanstack/react-query"
 import { useGetBucket } from "@/src/server/services"
 import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
+import { products } from "@/src/lib/categories/Products"
+import { userType } from "@/src/types/db"
 
 interface ListingSelectImageProps {
   onSelectedImages: (selectedImages: string[]) => void
   defaultImages: string[]
+  user: userType[]
 }
 
 export default function ListingSelectImage({
   defaultImages,
+  user,
   onSelectedImages,
 }: ListingSelectImageProps) {
   const images = ["1", "2", "3"]
   const [selectedImages, setSelectedImages] = useState<string[]>([])
   const [bucketString, setBucketString] = useState<string>("")
   const [bucketLength, setBucketLength] = useState<number>(0)
+  const [bucketSize, setBucketSize] = useState<number>(products[0].images)
   const [disabled, setDisabled] = useState<boolean>(true)
   const queryClient = useQueryClient()
+
+  useEffect(() => {
+    if (user[0].subscription === products[0].id) {
+      setBucketSize(products[0].images)
+    }
+
+    if (user[0].subscription === products[1].id) {
+      setBucketSize(user[0].maxImages)
+    }
+
+    if (
+      user[0].subscription === products[2].id ||
+      user[0].subscription === products[3].id
+    ) {
+      products.map((prod) => {
+        if (prod.id === user[0].subscription) {
+          setBucketSize(prod.images)
+        }
+      })
+    }
+  }, [user])
 
   const selectedImagesString = JSON.stringify(selectedImages)
   const defaultImagesString = JSON.stringify(defaultImages)
@@ -54,7 +80,6 @@ export default function ListingSelectImage({
   const bucket: any = useGetBucket().data
   const isLoading = useGetBucket().isLoading
   const isFetching = useGetBucket().isFetching
-  console.log("bucket:", bucket)
 
   useEffect(() => {
     if (bucket && bucket[0]) {
@@ -139,9 +164,12 @@ export default function ListingSelectImage({
 
               {/* UPLOAD IMAGES */}
               <div className="flex flex-row justify-between">
-                <ListingUploadImage bucketLength={bucketLength} />
+                <ListingUploadImage
+                  bucketLength={bucketLength}
+                  bucketSize={bucketSize}
+                />
                 <p className="flex h-10 items-center justify-center text-sm text-customAccent">
-                  Bucket Size: {`${bucketLength} / 50`}
+                  Bucket Size: {`${bucketLength} / ${bucketSize}`}
                 </p>
               </div>
 
@@ -201,12 +229,12 @@ export default function ListingSelectImage({
                                       onClick={() => deleteImage(image)}
                                       disabled={disabled}
                                       variant="destructive"
-                                      >
+                                    >
                                       Delete
                                     </Button>
                                   </AlertDialogTrigger>
                                   <AlertDialogCancel
-                                      className="ml-5"
+                                    className="ml-5"
                                     onClick={() => setDisabled(true)}
                                   >
                                     Cancel

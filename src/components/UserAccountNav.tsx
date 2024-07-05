@@ -46,45 +46,54 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
           </div>
         </div>
 
-        {adminId === userId && (
-          <DropdownMenuItem asChild>
-            <Link href="/command-centre">Admin Dashboard</Link>
+        <div className="flex flex-col space-y-1">
+          {adminId === userId && (
+            <DropdownMenuItem asChild className=" font-bold text-customAccent">
+              <Link href="/command-centre">Admin Dashboard</Link>
+            </DropdownMenuItem>
+          )}
+
+          <DropdownMenuItem
+            asChild
+            className="bg-customAccent font-bold text-zinc-100 shadow-md transition duration-300 hover:scale-105"
+          >
+            <Link href="/subscriptions/order">GET PRO ACCESS</Link>
           </DropdownMenuItem>
-        )}
 
-        <DropdownMenuItem asChild>
-          <Link href="/">Home</Link>
-        </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/">Home</Link>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href="/ad/create">Create Ad</Link>
-        </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/ad/create">Create Ad</Link>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href="/ad/ads-manager">Ads Manager</Link>
-        </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/ad/ads-manager">Ads Manager</Link>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href="/ad/mywishlist">Wishlist</Link>
-        </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/ad/mywishlist">Wishlist</Link>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href="/profile">Profile</Link>
-        </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/profile">Profile</Link>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem asChild>
-          <Link href="/user-guide">User Guide</Link>
-        </DropdownMenuItem>
+          <DropdownMenuItem asChild>
+            <Link href="/user-guide">User Guide</Link>
+          </DropdownMenuItem>
 
-        <DropdownMenuItem
-          asChild
-          onClick={() => setTheme(theme === "light" ? "dark" : "light")}
-        >
-          <div>
-            <p className="dark:hidden">Dark Mode</p>
-            <p className="hidden dark:block">Light Mode</p>
-          </div>
-        </DropdownMenuItem>
+          <DropdownMenuItem
+            asChild
+            onClick={() => setTheme(theme === "light" ? "dark" : "light")}
+          >
+            <div>
+              <p className="dark:hidden">Dark Mode</p>
+              <p className="hidden dark:block">Light Mode</p>
+            </div>
+          </DropdownMenuItem>
+        </div>
 
         <DropdownMenuSeparator />
 

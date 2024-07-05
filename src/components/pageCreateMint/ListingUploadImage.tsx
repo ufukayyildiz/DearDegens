@@ -4,7 +4,7 @@ import { useDropzone } from "@uploadthing/react/hooks"
 import { FileWithPath } from "react-dropzone"
 import { generateClientDropzoneAccept } from "uploadthing/client"
 import { useQueryClient, useMutation } from "@tanstack/react-query"
-import axios from "axios"
+import axios, { AxiosError } from "axios"
 import { Button } from "../components-ui/Button"
 import { toast } from "@/src/hooks/use-toast"
 import { Loader } from "lucide-react"
@@ -13,9 +13,13 @@ import { resizeFile } from "@/src/lib/utils"
 
 interface UploadProps {
   bucketLength: number
+  bucketSize: number
 }
 
-export default function ListingUploadImage({ bucketLength }: UploadProps) {
+export default function ListingUploadImage({
+  bucketLength,
+  bucketSize,
+}: UploadProps) {
   const queryClient = useQueryClient()
 
   const [disabled, setDisabled] = useState<boolean>(false)
@@ -38,9 +42,11 @@ export default function ListingUploadImage({ bucketLength }: UploadProps) {
     setIsUploading(true)
   }, [])
 
-  if (bucketLength >= 50) {
-    setDisabled(true)
-  }
+  useEffect(() => {
+    if (bucketLength >= bucketSize) {
+      setDisabled(true)
+    }
+  }, [bucketSize])
 
   // MUTATION CREATE IMAGE BUCKET
   const { mutate: createImageBucket } = useMutation({
@@ -48,13 +54,29 @@ export default function ListingUploadImage({ bucketLength }: UploadProps) {
       const { data } = await axios.patch("/api/createImageBucket", fileUrls)
       return data
     },
-    onError: () => {
-      return toast({
-        title: "Something went wrong.",
-        description:
-          "Could not add photos to your image bucket. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 409) {
+        return toast({
+          title: "User Image Bucket Limit Reached.",
+          description: `It seems you are trying to add too many images to your image bucket. Either delete old images or purchase a higher subscription package.`,
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 429) {
+        return toast({
+          title: "Too Many Requests.",
+          description: "Please wait 30sec before trying again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "Your images failed to upload as there was an error connecting to the server. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: async () => {
       setFiles([])
@@ -129,7 +151,11 @@ export default function ListingUploadImage({ bucketLength }: UploadProps) {
         )}
         <div className="my-auto flex h-auto">
           {isUploading ? (
-            <Button onClick={() => startUpload(files)} variant="secondary" className="shadow-none hover:bg-background rounded-none">
+            <Button
+              onClick={() => startUpload(files)}
+              variant="secondary"
+              className="rounded-none shadow-none hover:bg-background"
+            >
               Upload {files.length} files
             </Button>
           ) : (

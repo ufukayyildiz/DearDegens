@@ -55,7 +55,7 @@ import {
   onChangeAsync,
   onChangeAsyncDebounceMs,
 } from "@/src/lib/validators/validateListing"
-import { listingItemType, listingsType } from "@/src/types/db"
+import { listingItemType, listingsType, userType } from "@/src/types/db"
 import { Textarea } from "../components-ui/Textarea"
 import ListingSelectImage from "../pageCreateMint/ListingSelectImage"
 
@@ -73,12 +73,19 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 
 interface EditListingProps {
   listing: listingsType[]
+  user: userType
 }
 
-export default function EditListing({ listing }: EditListingProps) {
+export default function EditListing({ listing, user }: EditListingProps) {
   const router = useRouter()
 
-  const items = listing[0].items && JSON.parse(listing[0].items)
+  const items: listingItemType[] =
+    listing[0].items && JSON.parse(listing[0].items)
+  const [updateItems, setUpdateItems] = useState<Object[]>([
+    {
+      id: items[0].id,
+    },
+  ])
   const itemsString = JSON.stringify(items)
   const defaultImages = listing[0].images && JSON.parse(listing[0].images)
   const mintId = listing[0].id
@@ -136,7 +143,7 @@ export default function EditListing({ listing }: EditListingProps) {
         id: item.id || nanoid(),
         name: item.name || "",
         price: item.price || 0,
-        isSold: item.isSold || false
+        isSold: item.isSold || false,
       })),
       images: listing[0].images || "",
       location: listing[0].location || "",
@@ -228,7 +235,6 @@ export default function EditListing({ listing }: EditListingProps) {
         })
       }
       if (error.code === "500") {
-        
         return toast({
           title: "Something went wrong.",
           description: "Your post was not updated. Please try again.",
@@ -251,6 +257,7 @@ export default function EditListing({ listing }: EditListingProps) {
     <div className="mx-auto mb-52 flex min-h-screen w-11/12 flex-col py-10 sm:w-8/12">
       {/* LISTING IMAGES */}
       <ListingSelectImage
+        user={user}
         defaultImages={defaultImages}
         onSelectedImages={callSelectedImages}
       />
@@ -899,6 +906,7 @@ export default function EditListing({ listing }: EditListingProps) {
                         id: nanoid(),
                         name: "",
                         price: 0,
+                        isSold: false,
                       })
                     }}
                     className="text-muted-foreground hover:text-customAccent"

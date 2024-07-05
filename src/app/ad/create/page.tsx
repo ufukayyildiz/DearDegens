@@ -1,5 +1,8 @@
 import React from "react"
 import CreateListing from "@/src/components/pageCreateMint/CreateListing"
+import { db } from "@/src/server/db"
+import { users } from "@/src/server/db/schema"
+import { eq } from "drizzle-orm"
 import {
   dehydrate,
   HydrationBoundary,
@@ -25,9 +28,14 @@ export default async function MintCreatePage() {
     queryFn: () => getBucket,
   })
 
+  const user = await db
+    .select()
+    .from(users)
+    .where(eq(users.id, session.user.id))
+
   return (
     <HydrationBoundary state={dehydrate(queryClient)}>
-      <CreateListing />
+      <CreateListing user={user} />
     </HydrationBoundary>
   )
 }

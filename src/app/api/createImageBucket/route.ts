@@ -2,6 +2,7 @@ import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
 import { eq } from "drizzle-orm"
 import { users } from "@/src/server/db/schema"
+import { products } from "@/src/lib/categories/Products"
 
 export async function PATCH(req: any) {
   try {
@@ -35,6 +36,39 @@ export async function PATCH(req: any) {
     const filteredBucket = updatedBucket.filter((item: any) =>
       urlRegex.test(item)
     )
+
+    // USER HAS FREE SUB:
+    if (
+      fetchUser[0].subscription === products[0].id &&
+      filteredBucket.length >= products[0].images
+    ) {
+      return new Response("User has reached image limit.", { status: 409 })
+    }
+
+    // USER HAS ONCE OFF SUB:
+    if (
+      fetchUser[0].subscription === products[1].id &&
+      filteredBucket.length >= fetchUser[0].maxImages!
+    ) {
+      return new Response("User has reached image limit.", { status: 409 })
+    }
+
+    // USER HAS PRO SUB:
+    if (
+      fetchUser[0].subscription === products[2].id &&
+      filteredBucket.length >= products[2].images
+    ) {
+      return new Response("User has reached image limit.", { status: 409 })
+    }
+
+    // USER HAS BIZ SUB:
+    if (
+      fetchUser[0].subscription === products[3].id &&
+      filteredBucket.length >= products[3].images
+    ) {
+      return new Response("User has reached image limit.", { status: 409 })
+    }
+
     const filteredBucketString = JSON.stringify(filteredBucket)
 
     const post = await db
