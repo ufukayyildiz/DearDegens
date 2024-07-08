@@ -1,10 +1,14 @@
 import React from "react"
 import Link from "next/link"
+import { db } from "@/src/server/db"
+import { eq } from "drizzle-orm"
+import { users } from "@/src/server/db/schema"
 import { cn, formatPrice } from "@/src/lib/utils"
-import { cookies } from "next/headers"
-import { subscriptionsType } from "@/src/types/subscription"
+import { productType } from "@/src/types/subscription"
 import { Button } from "../components-ui/Button"
+import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { Circle } from "lucide-react"
+import { ulid } from "ulid"
 import {
   Sheet,
   SheetContent,
@@ -12,29 +16,127 @@ import {
   SheetTrigger,
   SheetHeader,
 } from "../components-ui/Sheet"
+import Payfast from "@/src/assets/payfast.svg"
+import Image from "next/image"
 
-interface SubsciptionPlanCardProps {
-  product: subscriptionsType
+interface SubscriptionPlanCardProps {
+  product: productType
 }
 
-export default function SubscriptionPlanCard({
+export default async function SubscriptionPlanCard({
   product,
-}: SubsciptionPlanCardProps) {
-  async function create() {
-    cookies().set({
-      name: "name",
-      value: "lee",
-    })
+}: SubscriptionPlanCardProps) {
+  const session = await getAuthSession()
+  const user = await db
+    .select()
+    .from(users)
+    .where(eq(users.email, session?.user.email!))
+  const merchantIdEnv = process.env.MERCHANT_ID
+  const merchantKeyEnv = process.env.MERCHANT_KEY
+  const passPhrase = process.env.PASSPHRASE!
+  const pfHost = process.env.PFHOST
+  const domain =
+    process.env.SANDBOXMODE === "true" ? process.env.NGROK_URL : process.env.URL
+  const paymentId = `pmnt-${ulid()}`
+  const crypto = require("crypto")
+
+  // _____________________________________________________
+  // GENERATE SIGNATURE
+  const generateSignature = (data: any, passPhrase: any) => {
+    // Create parameter string
+    let pfOutput = ""
+    for (let key in data) {
+      if (data.hasOwnProperty(key)) {
+        if (data[key] !== "") {
+          pfOutput += `${key}=${encodeURIComponent(String(data[key]).trim()).replace(/%20/g, "+")}&`
+        }
+      }
+    }
+
+    // Remove last ampersand
+    let getString = pfOutput.slice(0, -1)
+    if (passPhrase !== null) {
+      getString += `&passphrase=${encodeURIComponent(passPhrase.trim()).replace(/%20/g, "+")}`
+    }
+    const signature = crypto.createHash("md5").update(getString).digest("hex")
+    return signature
   }
+
+  // _____________________________________________________
+  // PAYMENT DATA
+  const paymentData = {
+    merchantId: parseInt(merchantIdEnv!),
+    merchantKey: merchantKeyEnv,
+    returnUrl: `${domain}/`,
+    cancelUrl: `${domain}/`,
+    stdNotifyUrl: `${domain}/api/createPaymentConfirmationStd`,
+    subNotifyUrl: `${domain}/api/createPaymentConfirmationSub`,
+    nameFirst: session?.user.name,
+    emailAddress: session?.user.email,
+    paymentId: paymentId,
+    amount: product.price.toFixed(2),
+    itemName: product.name,
+    itemDescription: product.id,
+    emailConfirmation: 1,
+    confirmationAddress: session?.user.email,
+    subscriptionType: 1,
+    recurringAmount: product.price.toFixed(2),
+    frequency: 3,
+    cycles: 12,
+  }
+
+  // _____________________________________________________
+  // STANDARD PAYMENT DATA
+  const standardData: any = []
+
+  standardData["merchant_id"] = paymentData.merchantId
+  standardData["merchant_key"] = paymentData.merchantKey
+  standardData["return_url"] = paymentData.returnUrl
+  standardData["cancel_url"] = paymentData.cancelUrl
+  standardData["notify_url"] = paymentData.stdNotifyUrl
+  standardData["name_first"] = paymentData.nameFirst
+  standardData["email_address"] = paymentData.emailAddress
+  standardData["m_payment_id"] = paymentData.paymentId
+  standardData["amount"] = paymentData.amount
+  standardData["item_name"] = paymentData.itemName
+  standardData["item_description"] = paymentData.itemDescription
+  standardData["email_confirmation"] = paymentData.emailConfirmation
+  standardData["confirmation_address"] = paymentData.confirmationAddress
+  let standardSignature = generateSignature(standardData, passPhrase)
+  standardData["signature"] = standardSignature
+
+  // _____________________________________________________
+  // SUBSCRIPTION PAYMENT DATA
+  const subscriptionData: any = []
+
+  subscriptionData["merchant_id"] = paymentData.merchantId
+  subscriptionData["merchant_key"] = paymentData.merchantKey
+  subscriptionData["return_url"] = paymentData.returnUrl
+  subscriptionData["cancel_url"] = paymentData.cancelUrl
+  subscriptionData["notify_url"] = paymentData.subNotifyUrl
+  subscriptionData["name_first"] = paymentData.nameFirst
+  subscriptionData["email_address"] = paymentData.emailAddress
+  subscriptionData["m_payment_id"] = paymentData.paymentId
+  subscriptionData["amount"] = paymentData.amount
+  subscriptionData["item_name"] = paymentData.itemName
+  subscriptionData["item_description"] = paymentData.itemDescription
+  subscriptionData["email_confirmation"] = paymentData.emailConfirmation
+  subscriptionData["confirmation_address"] = paymentData.confirmationAddress
+  subscriptionData["subscription_type"] = paymentData.subscriptionType
+  subscriptionData["recurring_amount"] = paymentData.recurringAmount
+  subscriptionData["frequency"] = paymentData.frequency
+  subscriptionData["cycles"] = paymentData.cycles
+  let subscriptionSignature = generateSignature(subscriptionData, passPhrase)
+  subscriptionData["signature"] = subscriptionSignature
 
   return (
     <div
       key={product.id}
       className={cn(
         "group flex min-w-80 flex-col divide-y divide-zinc-600 rounded-lg border border-transparent bg-background shadow-sm transition duration-300 hover:scale-105 dark:border-muted",
-        "flex-1", // This makes the flex item grow to fill the space
-        "basis-1/3", // Assuming you want each card to take up roughly a third of the container's width
-        "max-w-xs" // Sets a maximum width to the cards to prevent them from getting too large
+        "flex-1",
+        "basis-1/3",
+        "max-w-xs"
       )}
     >
       <div className="p-6">
@@ -45,9 +147,9 @@ export default function SubscriptionPlanCard({
           <p className="mt-3 h-12 text-primary">{product.description}</p>
           <hr className="my-2 border border-t-muted-foreground" />
           <div className="text-sm italic text-secondary">
-            <p className="mb-2 mt-3 font-bold underline">Features:</p>
+            <p className="mb-2 mt-3 font-bold underline">Includes:</p>
             <ul>
-              {product.features.map((feat) => (
+              {product.features.map((feat: string) => (
                 <div className="relative flex pl-4">
                   <Circle className="absolute left-0 top-[6px] flex h-2 w-2 text-customAccent" />
                   <li>{feat}</li>
@@ -115,12 +217,325 @@ export default function SubscriptionPlanCard({
               </Link>
             </p>
 
-            <Button
-              variant="secondary"
-              className="mt-5 w-full rounded-md bg-backgroundNegetive text-lg font-bold text-primaryNegetive hover:text-primary"
-            >
-              Proceed to Payment{" "}
-            </Button>
+            {product.id === "001" && (
+              <form action={`https://${pfHost}`} method="post">
+                <input
+                  type="hidden"
+                  name="merchant_id"
+                  value={paymentData.merchantId}
+                />
+                <input
+                  type="hidden"
+                  name="merchant_key"
+                  value={paymentData.merchantKey}
+                />
+                <input
+                  type="hidden"
+                  name="return_url"
+                  value={paymentData.returnUrl}
+                />
+                <input
+                  type="hidden"
+                  name="cancel_url"
+                  value={paymentData.cancelUrl}
+                />
+                <input
+                  type="hidden"
+                  name="notify_url"
+                  value={paymentData.stdNotifyUrl}
+                />
+                <input
+                  type="hidden"
+                  name="name_first"
+                  value={paymentData.nameFirst!}
+                />
+                <input
+                  type="hidden"
+                  name="email_address"
+                  value={paymentData.emailAddress!}
+                />
+                <input
+                  type="hidden"
+                  name="m_payment_id"
+                  value={paymentData.paymentId}
+                />
+                <input type="hidden" name="amount" value={paymentData.amount} />
+                <input
+                  type="hidden"
+                  name="item_name"
+                  value={paymentData.itemName}
+                />
+                <input
+                  type="hidden"
+                  name="item_description"
+                  value={paymentData.itemDescription}
+                />
+                <input
+                  type="hidden"
+                  name="email_confirmation"
+                  value={paymentData.emailConfirmation}
+                />
+                <input
+                  type="hidden"
+                  name="confirmation_address"
+                  value={paymentData.confirmationAddress!}
+                />
+                <input
+                  type="hidden"
+                  name="signature"
+                  value={standardSignature}
+                />
+                {user[0].subscription !== "002" &&
+                user[0].subscription !== "003" ? (
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className="mt-5 w-full rounded-md bg-backgroundNegetive text-lg font-bold text-primaryNegetive hover:text-primary"
+                  >
+                    Proceed to Payment
+                  </Button>
+                ) : (
+                  <p className="mt-2">
+                    It seems you are{" "}
+                    <span className="italic text-customAccent">
+                      already have an active subscription.
+                    </span>{" "}
+                    If you would like to make changes to your current
+                    subscription, please do so in your{" "}
+                    <Link href="/profile" className="underline">
+                      Profile
+                    </Link>{" "}
+                    page.
+                  </p>
+                )}
+              </form>
+            )}
+
+            {product.id === "002" && (
+              <form action={`https://${pfHost}`} method="post">
+                <input
+                  type="hidden"
+                  name="merchant_id"
+                  value={paymentData.merchantId}
+                />
+                <input
+                  type="hidden"
+                  name="merchant_key"
+                  value={paymentData.merchantKey}
+                />
+                <input
+                  type="hidden"
+                  name="return_url"
+                  value={paymentData.returnUrl}
+                />
+                <input
+                  type="hidden"
+                  name="cancel_url"
+                  value={paymentData.cancelUrl}
+                />
+                <input
+                  type="hidden"
+                  name="notify_url"
+                  value={paymentData.subNotifyUrl}
+                />
+                <input
+                  type="hidden"
+                  name="name_first"
+                  value={paymentData.nameFirst!}
+                />
+                <input
+                  type="hidden"
+                  name="email_address"
+                  value={paymentData.emailAddress!}
+                />
+                <input
+                  type="hidden"
+                  name="m_payment_id"
+                  value={paymentData.paymentId}
+                />
+                <input type="hidden" name="amount" value={paymentData.amount} />
+                <input
+                  type="hidden"
+                  name="item_name"
+                  value={paymentData.itemName}
+                />
+                <input
+                  type="hidden"
+                  name="item_description"
+                  value={paymentData.itemDescription}
+                />
+                <input
+                  type="hidden"
+                  name="email_confirmation"
+                  value={paymentData.emailConfirmation}
+                />
+                <input
+                  type="hidden"
+                  name="confirmation_address"
+                  value={paymentData.confirmationAddress!}
+                />
+                <input
+                  type="hidden"
+                  name="subscription_type"
+                  value={paymentData.subscriptionType}
+                />
+                <input
+                  type="hidden"
+                  name="recurring_amount"
+                  value={paymentData.recurringAmount}
+                />
+                <input
+                  type="hidden"
+                  name="frequency"
+                  value={paymentData.frequency}
+                />
+                <input type="hidden" name="cycles" value={paymentData.cycles} />
+                <input
+                  type="hidden"
+                  name="signature"
+                  value={subscriptionSignature}
+                />
+                {user[0].subscription !== "002" &&
+                user[0].subscription !== "003" ? (
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className="mt-5 w-full rounded-md bg-backgroundNegetive text-lg font-bold text-primaryNegetive hover:text-primary"
+                  >
+                    Proceed to Payment
+                  </Button>
+                ) : (
+                  <p className="mt-2">
+                    It seems you are{" "}
+                    <span className="italic text-customAccent">
+                      already have an active subscription.
+                    </span>{" "}
+                    If you would like to make changes to your current
+                    subscription, please do so in your{" "}
+                    <Link href="/profile" className="underline">
+                      Profile
+                    </Link>{" "}
+                    page.
+                  </p>
+                )}
+              </form>
+            )}
+
+            {product.id === "003" && (
+              <form action={`https://${pfHost}`} method="post">
+                <input
+                  type="hidden"
+                  name="merchant_id"
+                  value={paymentData.merchantId}
+                />
+                <input
+                  type="hidden"
+                  name="merchant_key"
+                  value={paymentData.merchantKey}
+                />
+                <input
+                  type="hidden"
+                  name="return_url"
+                  value={paymentData.returnUrl}
+                />
+                <input
+                  type="hidden"
+                  name="cancel_url"
+                  value={paymentData.cancelUrl}
+                />
+                <input
+                  type="hidden"
+                  name="notify_url"
+                  value={paymentData.subNotifyUrl}
+                />
+                <input
+                  type="hidden"
+                  name="name_first"
+                  value={paymentData.nameFirst!}
+                />
+                <input
+                  type="hidden"
+                  name="email_address"
+                  value={paymentData.emailAddress!}
+                />
+                <input
+                  type="hidden"
+                  name="m_payment_id"
+                  value={paymentData.paymentId}
+                />
+                <input type="hidden" name="amount" value={paymentData.amount} />
+                <input
+                  type="hidden"
+                  name="item_name"
+                  value={paymentData.itemName}
+                />
+                <input
+                  type="hidden"
+                  name="item_description"
+                  value={paymentData.itemDescription}
+                />
+                <input
+                  type="hidden"
+                  name="email_confirmation"
+                  value={paymentData.emailConfirmation}
+                />
+                <input
+                  type="hidden"
+                  name="confirmation_address"
+                  value={paymentData.confirmationAddress!}
+                />
+                <input
+                  type="hidden"
+                  name="subscription_type"
+                  value={paymentData.subscriptionType}
+                />
+                <input
+                  type="hidden"
+                  name="recurring_amount"
+                  value={paymentData.recurringAmount}
+                />
+                <input
+                  type="hidden"
+                  name="frequency"
+                  value={paymentData.frequency}
+                />
+                <input type="hidden" name="cycles" value={paymentData.cycles} />
+                <input
+                  type="hidden"
+                  name="signature"
+                  value={subscriptionSignature}
+                />
+                {user[0].subscription !== "002" &&
+                user[0].subscription !== "003" ? (
+                  <Button
+                    type="submit"
+                    variant="secondary"
+                    className="mt-5 w-full rounded-md bg-backgroundNegetive text-lg font-bold text-primaryNegetive hover:text-primary"
+                  >
+                    Proceed to Payment
+                  </Button>
+                ) : (
+                  <p className="mt-2">
+                    It seems you are{" "}
+                    <span className="italic text-customAccent">
+                      already have an active subscription.
+                    </span>{" "}
+                    If you would like to make changes to your current
+                    subscription, please do so in your{" "}
+                    <Link href="/profile" className="underline">
+                      Profile
+                    </Link>{" "}
+                    page.
+                  </p>
+                )}
+              </form>
+            )}
+            <div className="mt-8 flex flex-row items-center justify-end gap-2 text-sm italic">
+              <p>Powered by</p>
+              <div className="flex w-20 overflow-hidden rounded-full">
+                <Image src={Payfast} alt="payfast_logo" />
+              </div>
+            </div>
           </SheetContent>
         </Sheet>
       </div>

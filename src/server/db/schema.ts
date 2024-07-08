@@ -99,6 +99,9 @@ export const users = pgTable(
     ),
     contact: varchar("contact", { length: 191 }),
     subscription: varchar("subscription", { length: 191 }).default("000"),
+    subscriptionToken: varchar("subscriptionToken", { length: 191 }).default(
+      ""
+    ),
     maxImages: integer("maxImages").default(10),
     maxAds: integer("maxAds").default(2),
     image: varchar("image", { length: 255 }),

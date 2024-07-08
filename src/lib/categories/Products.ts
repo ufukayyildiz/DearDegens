@@ -1,6 +1,6 @@
-import { subscriptionsType } from "@/src/types/subscription"
+import { productType } from "@/src/types/subscription"
 
-export const products: subscriptionsType[] = [
+export const products: productType[] = [
   {
     id: "000",
     name: "Free",
@@ -12,9 +12,9 @@ export const products: subscriptionsType[] = [
   },
   {
     id: "001",
-    name: "Once off",
-    description: "Once off payment per additional listing.",
-    price: 25,
+    name: "Additional Ad",
+    description: "Once off payment per single use additional listing.",
+    price: 25.0,
     images: 5,
     ads: 1,
     features: [
@@ -27,7 +27,7 @@ export const products: subscriptionsType[] = [
     id: "002",
     name: "Pro Plan",
     description: "The hustler package.",
-    price: 65,
+    price: 65.0,
     images: 50,
     ads: 10,
     features: ["Maximum 10 listings.", "Image bucket size: 50"],
@@ -36,7 +36,7 @@ export const products: subscriptionsType[] = [
     id: "003",
     name: "Business Plan",
     description: "For small business owners.",
-    price: 120,
+    price: 120.0,
     images: 150,
     ads: 30,
     features: ["Maximum 30 listings.", "Image bucket size: 150"],

@@ -16,7 +16,6 @@ import {
   wishlist,
   wishlistItem,
 } from "./db/schema"
-import { alias } from "drizzle-orm/pg-core"
 import { ListingRejectedTemplate } from "../components/emailTemplates/ListingRejectedTemplate"
 import { listingsType, offerType } from "../types/db"
 import { nanoid } from "nanoid"
@@ -463,7 +462,6 @@ export async function getChatrooms(mintId: string) {
       `)
     )
 
-    console.log("roomQueries:", roomQueries.rows, mintId)
     roomQueries.rows &&
       roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
 

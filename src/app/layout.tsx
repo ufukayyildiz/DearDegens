@@ -15,7 +15,6 @@ import { Toaster } from "../components/components-ui/Toaster"
 import Footer from "../components/Footer"
 import NavBar from "../components/NavBar"
 
-
 export const metadata: Metadata = {
   title: {
     default: siteConfig.name,
@@ -63,6 +62,7 @@ export default async function RootLayout({ children }: RootLayoutProps) {
           crossOrigin="anonymous"
           src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-8040318911928921"
         />
+        <Script src="https://www.payfast.co.za/onsite/engine.js"></Script>
         <body
           className={cn(
             "min-h-screen bg-background font-sans antialiased",
