@@ -231,6 +231,11 @@ export async function getUserSubscription(token: string) {
       console.log("User subscription query successful")
       return subscription.data.data.response
     }
+
+    if (token === (undefined || "")) {
+      console.log("User has no subscription")
+      return "User subscription query successful, no subscription available."
+    }
   } catch (error) {
     console.error("Server Error: Failed to fetch user subscription - ", error)
   }
