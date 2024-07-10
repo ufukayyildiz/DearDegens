@@ -19,6 +19,8 @@ import {
 import { ListingRejectedTemplate } from "../components/emailTemplates/ListingRejectedTemplate"
 import { listingsType, offerType } from "../types/db"
 import { nanoid } from "nanoid"
+import axios, { AxiosError } from "axios"
+import { ISO8601Timestamp } from "../lib/utils"
 
 // Admin accept listing
 export const handleAccepted = async (listing: listingsType) => {
@@ -143,6 +145,94 @@ export async function getUserInfo() {
     }
   } catch (error) {
     console.error("Server Error: Failed to fetch user info - ", error)
+  }
+}
+
+// Get user subscription
+export async function getUserSubscription(token: string) {
+  try {
+    const sandboxMode = process.env.SANDBOXMODE
+    const merchantIdEnv = process.env.MERCHANT_ID
+    const passPhrase = process.env.PASSPHRASE!
+    const apiVersion = process.env.API_VERSION
+    const timestamp = ISO8601Timestamp()
+    const crypto = require("crypto")
+
+    // GENERATE SIGNATURE
+    const generateSignature = (data: any, passPhrase: any) => {
+      // Arrange the array by key alphabetically for API calls
+      let ordered_data: any = {}
+
+      Object.keys(data)
+        .sort()
+        .forEach((key) => {
+          ordered_data[key] = data[key]
+        })
+      data = ordered_data
+
+      // Create the get string
+      let getString = ""
+      for (let key in data) {
+        getString +=
+          key + "=" + encodeURIComponent(data[key]).replace(/%20/g, "+") + "&"
+      }
+
+      // Remove the last '&'
+      getString = getString.substring(0, getString.length - 1)
+      return crypto.createHash("md5").update(getString).digest("hex")
+    }
+
+    const apiData = {
+      merchantId: parseInt(merchantIdEnv!),
+      version: apiVersion,
+      timestamp: timestamp,
+      passphrase: passPhrase,
+    }
+
+    let data: any = []
+    data["merchant-id"] = apiData.merchantId
+    data["passphrase"] = apiData.passphrase
+    data["timestamp"] = apiData.timestamp
+    data["version"] = apiData.version
+    let signature = generateSignature(data, passPhrase)
+    data["signature"] = signature
+
+    if (sandboxMode && token !== (undefined || "")) {
+      const subscription = await axios.get(
+        `https://api.payfast.co.za/subscriptions/${token}/fetch?testing=true`,
+        {
+          headers: {
+            "merchant-id": apiData.merchantId,
+            version: apiData.version,
+            timestamp: apiData.timestamp,
+            signature: signature,
+          },
+        }
+      )
+      console.log(
+        "User subscription query successful (sandbox)",
+        subscription.data
+      )
+      return subscription.data.data.response
+    }
+
+    if (!sandboxMode && token !== (undefined || "")) {
+      const subscription = await axios.get(
+        `https://api.payfast.co.za/subscriptions/${token}/fetch`,
+        {
+          headers: {
+            "merchant-id": apiData.merchantId,
+            version: apiData.version,
+            timestamp: apiData.timestamp,
+            signature: signature,
+          },
+        }
+      )
+      console.log("User subscription query successful")
+      return subscription.data.data.response
+    }
+  } catch (error) {
+    console.error("Server Error: Failed to fetch user subscription - ", error)
   }
 }
 

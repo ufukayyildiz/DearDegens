@@ -10,6 +10,7 @@ import {
 } from "../types/db"
 import {
   getUserInfo,
+  getUserSubscription,
   getQueriesAuthor,
   getQueriesUser,
   getListingById,
@@ -138,13 +139,21 @@ export function useGetUserInfo() {
   })
 }
 
+// GET USER SUBSCRIPTION
+export function useGetUserSubscription(token: string) {
+  return useQuery({
+    queryKey: ["userSubscription", token],
+    queryFn: () => getUserSubscription(token),
+  })
+}
+
 // ______________________________________________________________
 // GET CHATROOM
 export function useGetChatrooms(mintId: any) {
   return useQuery<roomType[]>({
     queryKey: ["chatroom", mintId],
     queryFn: () => mintId && getChatrooms(mintId),
-    refetchOnMount: 'always'
+    refetchOnMount: "always",
   })
 }
 
@@ -154,6 +163,6 @@ export function useGetMessages(roomId: any) {
     queryKey: ["messages", roomId],
     queryFn: () => roomId && getMessages(roomId),
     refetchInterval: 1000 * 60,
-    refetchOnMount: 'always'
+    refetchOnMount: "always",
   })
 }

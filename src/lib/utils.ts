@@ -103,3 +103,24 @@ export const formatPrice = new Intl.NumberFormat("en-US", {
   style: "decimal",
   minimumFractionDigits: 0,
 })
+
+export const ISO8601Timestamp = () => {
+  const pad = (num: number) => num.toString().padStart(2, "0")
+
+  const currentDate = new Date()
+
+  const year = currentDate.getFullYear()
+  const month = pad(currentDate.getMonth() + 1)
+  const day = pad(currentDate.getDate())
+  const hours = pad(currentDate.getHours())
+  const minutes = pad(currentDate.getMinutes())
+  const seconds = pad(currentDate.getSeconds())
+
+  const offset = currentDate.getTimezoneOffset()
+  const absOffset = Math.abs(offset)
+  const offsetSign = offset <= 0 ? "+" : "-"
+  const offsetHours = pad(Math.floor(absOffset / 60))
+  const offsetMinutes = pad(absOffset % 60)
+
+  return `${year}-${month}-${day}T${hours}:${minutes}:${seconds}${offsetSign}${offsetHours}:${offsetMinutes}`
+}

@@ -8,6 +8,18 @@ export type productType = {
   features: string[]
 }
 
+export type payfastAPI = {
+  amount: number
+  cycles: number
+  cycles_complete: number
+  frequency: number
+  run_date: Date
+  status: number
+  status_reason: string
+  status_text: string
+  token: string
+}
+
 export type paymentResponseData = {
   m_payment_id: string
   pf_payment_id: string

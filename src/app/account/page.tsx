@@ -4,12 +4,11 @@ import { Button } from "@/src/components/components-ui/Button"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "@/src/hooks/use-toast"
-import { useSession } from "next-auth/react"
-import { useQueryClient } from "@tanstack/react-query"
 import { useGetUserInfo } from "@/src/server/services"
 import { userType } from "@/src/types/db"
 import ProfileData from "@/src/components/pageProfile/ProfileData"
 import ProfileDataForm from "@/src/components/pageProfile/ProfileDataForm"
+import ProfileAccount from "@/src/components/pageProfile/ProfileAccount"
 
 export default function Profile() {
   const [isEdit, setIsEdit] = useState<boolean>(false)
@@ -75,6 +74,12 @@ export default function Profile() {
           setEditCallback={getSetEditCallback}
         />
       )}
+
+      <div className="flex w-full items-center justify-end"></div>
+      <hr className="mb-2 mt-5 border border-t-muted-foreground" />
+
+      {/* ACCOUNT */}
+      <ProfileAccount user={user} isFetching={isFetching} />
 
       <div className="flex w-full items-center justify-end"></div>
       <hr className="mb-2 mt-5 border border-t-muted-foreground" />

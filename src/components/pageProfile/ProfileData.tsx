@@ -27,7 +27,7 @@ export default function ProfileData({
             James Andersen.
           </p>
         ) : (
-          <p className="mt-1 h-10 w-full pt-2 italic text-muted-foreground md:mt-0 md:pl-3">
+          <p className="mt-1 h-10 w-full pt-2 italic text-primary md:mt-0 md:pl-3">
             {user[0].name}
           </p>
         )}
@@ -39,7 +39,7 @@ export default function ProfileData({
             something@domain.co.za
           </p>
         ) : (
-          <p className="mt-1 h-10 w-full pt-2 italic text-muted-foreground md:mt-0 md:pl-3">
+          <p className="mt-1 h-10 w-full pt-2 italic text-primary md:mt-0 md:pl-3">
             {user[0].email}
           </p>
         )}
@@ -51,7 +51,7 @@ export default function ProfileData({
             +(27) xx xxx xxxx
           </p>
         ) : (
-          <p className="mt-1 h-10 w-full pt-2 italic text-muted-foreground md:mt-0 md:pl-3">
+          <p className="mt-1 h-10 w-full pt-2 italic text-primary md:mt-0 md:pl-3">
             {user[0].contact}
           </p>
         )}

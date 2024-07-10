@@ -201,7 +201,9 @@ export default async function SubscriptionPlanCard({
             {product.id !== "001" && (
               <p className="mt-5 py-2 text-sm italic text-secondary">
                 This is a recurring billing service that will be charged monthly
-                over a period of 12 billing cycles.
+                over a period of 12 billing cycles. DearDegens.com does not
+                offer refunds, and users can cancel their subscriptions at any
+                time with immediate effect.
               </p>
             )}
             <p className="py-2 text-sm italic text-secondary">
@@ -516,14 +518,14 @@ export default async function SubscriptionPlanCard({
                   </Button>
                 ) : (
                   <p className="mt-2">
-                    It seems you are{" "}
+                    It seems you{" "}
                     <span className="italic text-customAccent">
                       already have an active subscription.
                     </span>{" "}
                     If you would like to make changes to your current
                     subscription, please do so in your{" "}
-                    <Link href="/profile" className="underline">
-                      Profile
+                    <Link href="/Account" className="underline">
+                      account
                     </Link>{" "}
                     page.
                   </p>
