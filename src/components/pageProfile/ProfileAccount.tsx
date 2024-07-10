@@ -29,7 +29,7 @@ export default function ProfileAccount({
   const token = (user && user[0].subscriptionToken) || ""
 
   const payfastData = useGetUserSubscription(token).data as payfastAPI
-  const subAmt = payfastData && JSON.stringify(payfastData.amount)
+  const subAmt = (payfastData && JSON.stringify(payfastData.amount)) || "none"
   const subPrice = payfastData && subAmt.substring(0, subAmt.length - 2)
 
   const setUserSubscription = () => {

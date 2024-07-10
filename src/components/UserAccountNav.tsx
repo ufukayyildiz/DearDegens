@@ -3,6 +3,7 @@
 import Link from "next/link"
 import { signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
+import { ThemeToggle } from "./components-global/theme-toggle"
 import { User } from "../types/user"
 import {
   DropdownMenu,
@@ -12,6 +13,16 @@ import {
   DropdownMenuTrigger,
 } from "./components-ui/DropdownMenu"
 import { UserAvatar } from "./components-ui/UserAvatar"
+import {
+  Home,
+  UserIcon,
+  FilePlus,
+  Heart,
+  BookOpen,
+  FileCog,
+  Moon,
+  Sun,
+} from "lucide-react"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
   user: Pick<User, "name" | "image" | "email" | "id">
@@ -61,27 +72,69 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href="/">Home</Link>
+            <div>
+              <div className="relative flex h-8 w-8 items-center justify-center">
+                <Home className="absolute h-6 w-6" />
+              </div>
+              <Link href="/" className="pl-2">
+                Home
+              </Link>
+            </div>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href="/account">Account</Link>
+            <div>
+              <div className="relative flex h-8 w-8 items-center justify-center">
+                <UserIcon className="absolute h-6 w-6" />
+              </div>
+              <Link href="/account" className="pl-2">
+                Account
+              </Link>
+            </div>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href="/ad/create">Create Ad</Link>
+            <div>
+              <div className="relative flex h-8 w-8 items-center justify-center">
+                <FilePlus className="absolute h-6 w-6" />
+              </div>
+              <Link href="/ad/create" className="pl-2">
+                Create Ad
+              </Link>
+            </div>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href="/ad/ads-manager">Ads Manager</Link>
+            <div>
+              <div className="relative flex h-8 w-8 items-center justify-center">
+                <FileCog className="absolute h-6 w-6" />
+              </div>
+              <Link href="/ad/ads-manager" className="pl-2">
+                Ads Manager
+              </Link>
+            </div>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href="/ad/mywishlist">Wishlist</Link>
+            <div>
+              <div className="relative flex h-8 w-8 items-center justify-center">
+                <Heart className="absolute h-6 w-6" />
+              </div>
+              <Link href="/ad/mywishlist" className="pl-2">
+                Wishlist
+              </Link>
+            </div>
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
-            <Link href="/user-guide">User Guide</Link>
+            <div>
+              <div className="relative flex h-8 w-8 items-center justify-center">
+                <BookOpen className="absolute h-6 w-6" />
+              </div>
+              <Link href="/user-guide" className="pl-2">
+                User Guide
+              </Link>
+            </div>
           </DropdownMenuItem>
 
           <DropdownMenuItem
@@ -89,8 +142,9 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
             onClick={() => setTheme(theme === "light" ? "dark" : "light")}
           >
             <div>
-              <p className="dark:hidden">Dark Mode</p>
-              <p className="hidden dark:block">Light Mode</p>
+              <ThemeToggle />
+              <p className="pl-2 dark:hidden">Dark Mode</p>
+              <p className="hidden pl-2 dark:block">Light Mode</p>
             </div>
           </DropdownMenuItem>
         </div>
