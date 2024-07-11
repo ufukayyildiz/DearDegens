@@ -241,6 +241,28 @@ export async function getUserSubscription(token: string) {
   }
 }
 
+// Get User Listings
+export async function getUserListings() {
+  try {
+    const session = await getServerSession(authOptions)
+    if (!session?.user) {
+      console.log("Unauthorised.")
+      return null
+    }
+
+    if (session) {
+      const listing = await db
+        .select()
+        .from(listings)
+        .where(eq(listings.authorId, session?.user.id))
+      console.log("User listings query successful")
+      return listing
+    }
+  } catch (error) {
+    console.error("Server Error: Failed to fetch user listings - ", error)
+  }
+}
+
 // Get user image bucket by userId
 export async function getBucket() {
   try {

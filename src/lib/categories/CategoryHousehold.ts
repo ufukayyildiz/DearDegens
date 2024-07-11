@@ -18,7 +18,7 @@ export const categoryHousehold = [
       "Washing Machines",
       "Dryers",
       "Cleaning Appliances",
-      "Miscellanious"
+      "Miscellanious",
     ],
   },
   {
@@ -27,27 +27,13 @@ export const categoryHousehold = [
       "Desks",
       "Chairs",
       "Bookcases & Filing Cabinets",
-      "Office Stationary"
-    ],
-  },
-  {
-    name: "Clothing & Accessories",
-    subCategories: [
-      "Womans Clothing",
-      "Womans Shoes",
-      "Mens Clothing",
-      "Mens Shoes",
-      "Childrens Clothing",
-      "Childrens Shoes",
-      "Bags & Luggage",
-      "Jewelry & Accessories",
+      "Office Stationary",
     ],
   },
   {
     name: "Baby & Toddler",
     subCategories: [
       "Baby Toys & Activity Gear",
-      "Baby Clothing",
       "Travel",
       "Nursing",
       "Safety Equipment",
@@ -101,7 +87,7 @@ export const categoryHousehold = [
       "Tiles & Carpets",
       "Roofing",
       "Paint & Primer",
-      "Fasteners & Consumables"
+      "Fasteners & Consumables",
     ],
   },
 ]

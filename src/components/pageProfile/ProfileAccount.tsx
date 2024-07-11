@@ -1,6 +1,6 @@
 "use client"
 import { useState, useEffect } from "react"
-import { userType } from "@/src/types/db"
+import { listingsType, userType } from "@/src/types/db"
 import { useGetUserSubscription } from "@/src/server/services"
 import axios from "axios"
 import React from "react"
@@ -9,14 +9,19 @@ import { products } from "@/src/lib/categories/Products"
 import { payfastAPI, productType } from "@/src/types/subscription"
 import { formatDateFromTimestamp, formatPrice } from "@/src/lib/utils"
 
+type imageArray = string[] | undefined
 interface ProfileAccountProps {
   user: userType[]
   isFetching: boolean
+  listings: listingsType[]
+  images: imageArray
 }
 
 export default function ProfileAccount({
   user,
   isFetching,
+  listings,
+  images,
 }: ProfileAccountProps) {
   const [subscription, setSubscription] = useState<any>({
     id: products[0].id,
@@ -26,7 +31,11 @@ export default function ProfileAccount({
     price: products[0].price,
   })
 
-  const token = (user && user[0].subscriptionToken) || ""
+  let token: string = ""
+
+  if (user && user[0].subscriptionToken !== (undefined || "")) {
+    token = user[0].subscriptionToken
+  }
 
   const payfastData = useGetUserSubscription(token).data as payfastAPI
   const subAmt = (payfastData && JSON.stringify(payfastData.amount)) || "none"
@@ -87,7 +96,7 @@ export default function ProfileAccount({
           </p>
         ) : (
           <p className="mt-1 h-10 w-full pt-2 italic text-primary md:mt-0 md:pl-3">
-            {user[0].maxAds} / {subscription.ads}
+            {listings.length} / {subscription.ads}
           </p>
         )}
       </div>
@@ -99,7 +108,7 @@ export default function ProfileAccount({
           </p>
         ) : (
           <p className="mt-1 h-10 w-full pt-2 italic text-primary md:mt-0 md:pl-3">
-            {user[0].maxImages} / {subscription.images}
+            {images && images[0].length} / {subscription.images}
           </p>
         )}
       </div>

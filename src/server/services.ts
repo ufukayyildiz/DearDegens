@@ -11,6 +11,7 @@ import {
 import {
   getUserInfo,
   getUserSubscription,
+  getUserListings,
   getQueriesAuthor,
   getQueriesUser,
   getListingById,
@@ -144,6 +145,14 @@ export function useGetUserSubscription(token: string) {
   return useQuery({
     queryKey: ["userSubscription", token],
     queryFn: () => getUserSubscription(token),
+  })
+}
+
+// GET USER LISTINGS
+export function useGetUserListings() {
+  return useQuery({
+    queryKey: ["userListings"],
+    queryFn: () => getUserListings(),
   })
 }
 

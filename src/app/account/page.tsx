@@ -4,18 +4,25 @@ import { Button } from "@/src/components/components-ui/Button"
 import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { toast } from "@/src/hooks/use-toast"
-import { useGetUserInfo } from "@/src/server/services"
-import { userType } from "@/src/types/db"
+import {
+  useGetBucket,
+  useGetUserInfo,
+  useGetUserListings,
+} from "@/src/server/services"
+import { listingsType, userType } from "@/src/types/db"
 import ProfileData from "@/src/components/pageProfile/ProfileData"
 import ProfileDataForm from "@/src/components/pageProfile/ProfileDataForm"
 import ProfileAccount from "@/src/components/pageProfile/ProfileAccount"
 
+type imageArray = string[] | undefined
+
 export default function Profile() {
   const [isEdit, setIsEdit] = useState<boolean>(false)
-
   const [disabled, setDisabled] = useState<boolean>(false)
 
   const user = (useGetUserInfo().data as userType[]) || ""
+  const listings = (useGetUserListings().data as listingsType[]) || []
+  const images = useGetBucket().data as imageArray
   const isFetching = useGetUserInfo().isFetching
 
   const isGoogleAccount = () => {
@@ -79,7 +86,12 @@ export default function Profile() {
       <hr className="mb-2 mt-5 border border-t-muted-foreground" />
 
       {/* ACCOUNT */}
-      <ProfileAccount user={user} isFetching={isFetching} />
+      <ProfileAccount
+        user={user}
+        isFetching={isFetching}
+        listings={listings}
+        images={images!}
+      />
 
       <div className="flex w-full items-center justify-end"></div>
       <hr className="mb-2 mt-5 border border-t-muted-foreground" />
