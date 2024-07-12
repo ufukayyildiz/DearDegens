@@ -113,13 +113,13 @@ export default function CreateListing({ user }: CreateListingProps) {
     defaultValues: {
       category: "",
       subCategory: "",
-      price: 0,
+      price: "0",
       condition: "",
       title: "",
       brand: "",
       model: "",
-      mileage: 0,
-      year: 2000,
+      mileage: "0",
+      year: "2000",
       transmission: "",
       fuel: "",
       description: "",
@@ -603,7 +603,6 @@ export default function CreateListing({ user }: CreateListingProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(event) =>
-                          /* @ts-ignore */
                           field.handleChange(event.target.value)
                         }
                       />
@@ -640,7 +639,7 @@ export default function CreateListing({ user }: CreateListingProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(event) =>
-                          field.handleChange(parseInt(event.target.value))
+                          field.handleChange(event.target.value)
                         }
                       />
 

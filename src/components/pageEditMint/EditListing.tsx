@@ -128,14 +128,13 @@ export default function EditListing({ listing, user }: EditListingProps) {
       tab: listing[0].tab || "",
       category: listing[0].category || "",
       subCategory: listing[0].subCategory || "",
-      // @ts-ignore
-      price: listing[0].price || 0,
+      price: JSON.stringify(listing[0].price) || "0",
       condition: listing[0].condition || "",
       title: listing[0].title || "",
       brand: listing[0].brand || "",
       model: listing[0].model || "",
-      mileage: listing[0].mileage || 0,
-      year: listing[0].year || 2000,
+      mileage: JSON.stringify(listing[0].mileage) || "0",
+      year: JSON.stringify(listing[0].year) || "2000",
       transmission: listing[0].transmission || "",
       fuel: listing[0].fuel || "",
       description: listing[0].description || "",
@@ -276,11 +275,9 @@ export default function EditListing({ listing, user }: EditListingProps) {
             {(field) => {
               return (
                 <div className="relative w-full flex-col md:w-1/2 md:pr-5">
-                  <div className="flex w-full justify-between">
+                  <div className="flex w-full">
                     <FieldLabel>Ad Type</FieldLabel>
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
 
                   <Select
@@ -320,14 +317,14 @@ export default function EditListing({ listing, user }: EditListingProps) {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       {type === "Vehicles" ? (
                         <FieldLabel>Vehicle Type:</FieldLabel>
                       ) : (
                         <FieldLabel>Category:</FieldLabel>
                       )}
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -367,14 +364,14 @@ export default function EditListing({ listing, user }: EditListingProps) {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       {type === "Vehicles" ? (
                         <FieldLabel>Body Type:</FieldLabel>
                       ) : (
                         <FieldLabel>Sub-category:</FieldLabel>
                       )}
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -427,11 +424,9 @@ export default function EditListing({ listing, user }: EditListingProps) {
             >
               {(field) => (
                 <div className="relative w-full flex-col">
-                  <div className="flex w-full  justify-between">
+                  <div className="flex w-full">
                     <FieldLabel>Price:</FieldLabel>
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
                   <Input
                     type="number"
@@ -439,10 +434,7 @@ export default function EditListing({ listing, user }: EditListingProps) {
                     name={field.name}
                     value={field.state.value}
                     onBlur={field.handleBlur}
-                    onChange={(event) =>
-                      // @ts-ignore
-                      field.handleChange(event.target.value)
-                    }
+                    onChange={(event) => field.handleChange(event.target.value)}
                   />
 
                   <FieldDescription>Have a price in mind?</FieldDescription>
@@ -456,10 +448,10 @@ export default function EditListing({ listing, user }: EditListingProps) {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       <FieldLabel>Condition:</FieldLabel>
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -497,11 +489,9 @@ export default function EditListing({ listing, user }: EditListingProps) {
           >
             {(field) => (
               <div className="relative w-full flex-col">
-                <div className="flex w-full justify-between">
+                <div className="flex w-full">
                   <FieldLabel>Title:</FieldLabel>
-                  <FieldLabel className="py-2 text-xs italic text-rose-400">
-                    (required)
-                  </FieldLabel>
+                  <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                 </div>
                 <Input
                   id={field.name}
@@ -532,15 +522,13 @@ export default function EditListing({ listing, user }: EditListingProps) {
             >
               {(field) => (
                 <div className="relative w-full flex-col">
-                  <div className="flex w-full justify-between">
+                  <div className="flex w-full">
                     {type === "Vehicles" ? (
                       <FieldLabel>Manufacturer:</FieldLabel>
                     ) : (
                       <FieldLabel>Brand:</FieldLabel>
                     )}
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -570,11 +558,9 @@ export default function EditListing({ listing, user }: EditListingProps) {
             >
               {(field) => (
                 <div className="relative w-full flex-col">
-                  <div className="flex w-full justify-between">
+                  <div className="flex w-full">
                     <FieldLabel>Model:</FieldLabel>
-                    <FieldLabel className="py-2 text-xs italic text-rose-400">
-                      (required)
-                    </FieldLabel>
+                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                   </div>
                   <Input
                     id={field.name}
@@ -613,10 +599,10 @@ export default function EditListing({ listing, user }: EditListingProps) {
                 >
                   {(field) => (
                     <div className="relative w-full flex-col">
-                      <div className="flex w-full  justify-between">
+                      <div className="flex w-full">
                         <FieldLabel>Mileage:</FieldLabel>
-                        <FieldLabel className="py-2 text-xs italic text-rose-400">
-                          (required)
+                        <FieldLabel className=" italic text-rose-500">
+                          *
                         </FieldLabel>
                       </div>
                       <Input
@@ -626,7 +612,6 @@ export default function EditListing({ listing, user }: EditListingProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(event) =>
-                          // @ts-ignore
                           field.handleChange(event.target.value)
                         }
                       />
@@ -650,10 +635,10 @@ export default function EditListing({ listing, user }: EditListingProps) {
                 >
                   {(field) => (
                     <div className="relative w-full flex-col">
-                      <div className="flex w-full  justify-between">
+                      <div className="flex w-full">
                         <FieldLabel>Model Year:</FieldLabel>
-                        <FieldLabel className="py-2 text-xs italic text-rose-400">
-                          (required)
+                        <FieldLabel className=" italic text-rose-500">
+                          *
                         </FieldLabel>
                       </div>
                       <Input
@@ -663,7 +648,6 @@ export default function EditListing({ listing, user }: EditListingProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(event) =>
-                          // @ts-ignore
                           field.handleChange(event.target.value)
                         }
                       />
@@ -681,10 +665,10 @@ export default function EditListing({ listing, user }: EditListingProps) {
                   {(field) => {
                     return (
                       <div className="relative w-full flex-col">
-                        <div className="flex w-full justify-between">
+                        <div className="flex w-full">
                           <FieldLabel>Transmission:</FieldLabel>
-                          <FieldLabel className="py-2 text-xs italic text-rose-400">
-                            (required)
+                          <FieldLabel className=" italic text-rose-500">
+                            *
                           </FieldLabel>
                         </div>
 
@@ -715,10 +699,10 @@ export default function EditListing({ listing, user }: EditListingProps) {
                   {(field) => {
                     return (
                       <div className="relative w-full flex-col">
-                        <div className="flex w-full justify-between">
+                        <div className="flex w-full">
                           <FieldLabel>Fuel Type:</FieldLabel>
-                          <FieldLabel className="py-2 text-xs italic text-rose-400">
-                            (required)
+                          <FieldLabel className=" italic text-rose-500">
+                            *
                           </FieldLabel>
                         </div>
 
@@ -758,11 +742,9 @@ export default function EditListing({ listing, user }: EditListingProps) {
           >
             {(field) => (
               <div className="relative w-full flex-col">
-                <div className="flex w-full justify-between">
+                <div className="flex w-full">
                   <FieldLabel>Type your message here:</FieldLabel>
-                  <FieldLabel className="py-2 text-xs italic text-rose-400">
-                    (required)
-                  </FieldLabel>
+                  <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                 </div>
                 <Textarea
                   id={field.name}
@@ -927,10 +909,10 @@ export default function EditListing({ listing, user }: EditListingProps) {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       <FieldLabel>Location:</FieldLabel>
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 
@@ -972,10 +954,10 @@ export default function EditListing({ listing, user }: EditListingProps) {
               {(field) => {
                 return (
                   <div className="relative w-full flex-col">
-                    <div className="flex w-full justify-between">
+                    <div className="flex w-full">
                       <FieldLabel>Meeting preferance:</FieldLabel>
-                      <FieldLabel className="py-2 text-xs italic text-rose-400">
-                        (required)
+                      <FieldLabel className=" italic text-rose-500">
+                        *
                       </FieldLabel>
                     </div>
 

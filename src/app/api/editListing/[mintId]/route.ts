@@ -19,10 +19,13 @@ export async function PATCH(req: Request, context: any) {
       return new Response("Unauthorized", { status: 401 })
     }
 
-    const listing = await db.select().from(listings).where(eq(listings.id, listingId))
+    const listing = await db
+      .select()
+      .from(listings)
+      .where(eq(listings.id, listingId))
 
     if (listing[0].isExpired === true && listing[0].wasRenewed === true) {
-      return new Response("This listing cannot be updated.", {status: 409})
+      return new Response("This listing cannot be updated.", { status: 409 })
     }
 
     const body = await req.json()
@@ -78,13 +81,13 @@ export async function PATCH(req: Request, context: any) {
         updatedAt: currentDate,
         category: category,
         subCategory: subCategory,
-        price: price,
+        price: parseInt(price),
         title: title,
         brand: brand,
         model: model,
         description: description,
-        mileage: mileage,
-        year: year,
+        mileage: parseInt(mileage),
+        year: parseInt(year),
         transmission: transmission,
         fuel: fuel,
         items: JSON.stringify(items),

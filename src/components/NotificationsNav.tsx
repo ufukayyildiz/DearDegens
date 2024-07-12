@@ -16,7 +16,7 @@ import {
 import { useMutation } from "@tanstack/react-query"
 import { useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
-import { Bell, Loader, MoreVertical } from "lucide-react"
+import { Bell, Loader, MoreVertical, Loader2 } from "lucide-react"
 
 import { toast } from "../hooks/use-toast"
 import { formatTimeToNow } from "../lib/utils"
@@ -58,6 +58,12 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
   const adUrl =
     displayedNotification && displayedNotification?.adUrl?.replace(/ /g, "-")
 
+  // SPINNERS STATE
+  const [isReading, setIsReading] = useState<boolean>(false)
+  const [isReadingAll, setIsReadingAll] = useState<boolean>(false)
+  const [isDel, setIsDel] = useState<boolean>(false)
+  const [isDelAll, setIsDelAll] = useState<boolean>(false)
+
   // QUERIES
   const queryClient = useQueryClient()
   const notifications = useGetNotifications().data
@@ -67,10 +73,12 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
   const { mutate: handleReadNotification } = useMutation({
     mutationFn: async (notify: any) => {
       setSelectedNotificationId(notify.id)
+      setIsReading(true)
       const notifyId = JSON.stringify(notify.id)
       await axios.put("/api/readNotification", notifyId)
     },
     onError: () => {
+      setIsReading(false)
       return toast({
         title: "Something went wrong.",
         description: "Error updating notification status. Please try again.",
@@ -81,6 +89,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
+        setIsReading(false)
         await queryClient.invalidateQueries({ queryKey: ["notify"] })
       }
     },
@@ -89,10 +98,12 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
   // MUTATION: Read all notifications
   const { mutate: handleReadAllNotifications } = useMutation({
     mutationFn: async (userId: any) => {
+      setIsReadingAll(true)
       const usersId = JSON.stringify(userId)
       await axios.put("/api/readAllNotifications", usersId)
     },
     onError: () => {
+      setIsReadingAll(false)
       return toast({
         title: "Something went wrong.",
         description: "Error updating notification status. Please try again.",
@@ -103,6 +114,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
+        setIsReadingAll(false)
         await queryClient.invalidateQueries({ queryKey: ["notify"] })
       }
     },
@@ -111,10 +123,12 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
   // MUTATION: Delete notifications
   const { mutate: handleDeleteNotification } = useMutation({
     mutationFn: async (notify: any) => {
+      setIsDel(true)
       const notifyId = JSON.stringify(notify.id)
       await axios.put("/api/deleteNotification", notifyId)
     },
     onError: () => {
+      setIsDel(false)
       return toast({
         title: "Something went wrong.",
         description: "Error deleting notification. Please try again.",
@@ -125,6 +139,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
+        setIsDel(false)
         await queryClient.invalidateQueries({ queryKey: ["notify"] })
       }
     },
@@ -133,10 +148,12 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
   // MUTATION: Delete all notifications
   const { mutate: handleDeleteAllNotifications } = useMutation({
     mutationFn: async (userId: any) => {
+      setIsDelAll(true)
       const usersId = JSON.stringify(userId)
       await axios.put("/api/deleteAllNotifications", usersId)
     },
     onError: () => {
+      setIsDelAll(false)
       return toast({
         title: "Something went wrong.",
         description: "Error deleting notification. Please try again.",
@@ -147,6 +164,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
+        setIsDelAll(false)
         await queryClient.invalidateQueries({ queryKey: ["notify"] })
       }
     },
@@ -189,7 +207,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
               <Bell className="h-6 w-6" />
               <div className="absolute -right-3 -top-3 flex h-6 w-6 content-center rounded-full bg-red-500 shadow-md">
                 {isFetching === true ? (
-                  <Loader
+                  <Loader2
                     className="absolute top-1 mx-auto w-full animate-spin text-white"
                     size={15}
                   />
@@ -212,15 +230,29 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
               <Button
                 onClick={() => handleReadAllNotifications(userId)}
                 variant="outline"
-                className="bg-muted"
+                className="relative w-40 bg-muted"
               >
-                Mark all as read
+                {isReadingAll ? (
+                  <Loader2
+                    className="absolute mx-auto animate-spin text-white"
+                    size={20}
+                  />
+                ) : (
+                  <p>Mark All As Read</p>
+                )}
               </Button>
 
               <AlertDialog>
                 <AlertDialogTrigger asChild>
-                  <Button variant="passivedestructive" className="bg-muted">
-                    Delete all
+                  <Button
+                    variant="passivedestructive"
+                    className="relative w-28 bg-muted"
+                  >
+                    {isDelAll ? (
+                      <Loader2 className="absolute mx-auto h-5 w-5 animate-spin text-white" />
+                    ) : (
+                      <p>Delete All</p>
+                    )}
                   </Button>
                 </AlertDialogTrigger>
                 <AlertDialogContent>
@@ -310,9 +342,7 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                                 }}
                                 variant="outline"
                                 className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
-                              >
-                                Delete
-                              </Button>
+                              ></Button>
                               <Button
                                 onClick={() => handleReadNotification(notify)}
                                 variant="outline"

@@ -151,37 +151,39 @@ export default function MintOffer({ listing }: MintProps) {
   return (
     <div>
       <AlertDialog>
-        {isFetching ? (
-          <AlertDialogTrigger className="relative h-10 w-32 rounded-lg border-2 border-customAccentTwo font-bold text-muted-foreground shadow-lg">
-            <p>SEND OFFER</p>
-          </AlertDialogTrigger>
-        ) : (
-          <AlertDialogTrigger
-            disabled={offerLimit}
-            className={cn(
-              "relative h-10 w-32 rounded-lg border-2 border-customAccent font-bold shadow-lg",
-              offerLimit && "border-customAccentTwo text-muted-foreground"
-            )}
-          >
-            <div
-              id="button"
-              className="absolute left-0 top-0 flex h-full w-full"
-            />
-            {offerLimit && (
-              <div
+        {isFetching
+          ? session && (
+              <AlertDialogTrigger className="relative h-10 w-32 rounded-lg border-2 border-customAccentTwo font-bold text-muted-foreground shadow-lg">
+                <p>SEND OFFER</p>
+              </AlertDialogTrigger>
+            )
+          : session && (
+              <AlertDialogTrigger
+                disabled={offerLimit}
                 className={cn(
-                  "absolute -left-3 top-12 flex h-10 w-40 rounded-lg border border-muted bg-background p-1 text-center text-xs font-normal text-primary opacity-0 shadow-md",
-                  hover && " opacity-1 transition duration-75"
+                  "relative h-10 w-32 rounded-lg border-2 border-customAccent font-bold shadow-lg",
+                  offerLimit && "border-customAccentTwo text-muted-foreground"
                 )}
               >
-                You have reached your offer limit for this ad.
-              </div>
+                <div
+                  id="button"
+                  className="absolute left-0 top-0 flex h-full w-full"
+                />
+                {offerLimit && (
+                  <div
+                    className={cn(
+                      "absolute -left-3 top-12 flex h-10 w-40 rounded-lg border border-muted bg-background p-1 text-center text-xs font-normal text-primary opacity-0 shadow-md",
+                      hover && " opacity-1 transition duration-75"
+                    )}
+                  >
+                    You have reached your offer limit for this ad.
+                  </div>
+                )}
+                <>
+                  <p>SEND OFFER</p>
+                </>
+              </AlertDialogTrigger>
             )}
-            <>
-              <p>SEND OFFER</p>
-            </>
-          </AlertDialogTrigger>
-        )}
 
         <AlertDialogContent>
           <Form {...form}>

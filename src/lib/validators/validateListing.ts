@@ -20,9 +20,17 @@ export const listingTab = z.string()
 export const listingCategory = z.string()
 export const listingSubCategory = z.string()
 export const listingCondition = z.string()
-export const listingPrice = z.coerce
-  .number()
-  .max(9999999, { message: "Max price is 9,999,999" })
+export const listingPrice = z
+  .string()
+  .min(2, {
+    message: "Price must be at least 2 characters long",
+  })
+  .max(7, {
+    message: "Price must be less than 7 characters long",
+  })
+// export const listingPrice = z.coerce
+//   .number()
+//   .max(9999999, { message: "Max price is 9,999,999" })
 export const listingTitle = z
   .string()
   .min(1, {
@@ -99,14 +107,16 @@ export const listingLocation = z.string()
 export const listingMeetup = z.string()
 
 // Vehicle Listing Validators
-export const listingMileage = z.coerce
-  .number()
-  .min(0, { message: "Mileage cannot be less than 0." })
-  .max(1000000, { message: "Surely this thing still can't be running?" })
-export const listingYear = z.coerce
-  .number()
-  .min(1900, { message: "Are you selling a 1885 Benz Patent Motor Car?" })
-  .max(currentYear, { message: "Are you Morty McFly or what?" })
+export const listingMileage = z.string()
+export const listingYear = z.string()
+// export const listingMileage = z.coerce
+//   .number()
+//   .min(0, { message: "Mileage cannot be less than 0." })
+//   .max(1000000, { message: "Surely this thing still can't be running?" })
+// export const listingYear = z.coerce
+//   .number()
+//   .min(1900, { message: "Are you selling a 1885 Benz Patent Motor Car?" })
+//   .max(currentYear, { message: "Are you Morty McFly or what?" })
 export const listingTransmission = z.string()
 export const listingFuel = z.string()
 export const listingDisplayContact = z.boolean().default(false)
