@@ -91,9 +91,9 @@ export const ListingCreatedTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         <Container style={container}>
           <Section style={logo}>
             <Img
-              width={500}
+              width={250}
               src={
-                "https://utfs.io/f/b862962d-902a-4cdf-9b5d-8e46e3742cf8-k3gcps.png"
+                "https://www.deardegens.com/_next/static/media/DearDegens_Light.09613ca8.svg"
               }
             />
           </Section>
@@ -114,13 +114,9 @@ export const ListingCreatedTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
               on the system. Please visit the admin page to continue.
             </Text>
             <Text style={paragraph}>Author Name: &quot;{userName}&quot;</Text>
-            <Text style={paragraph}>
-              Author Email: &quot;{userEmail}&quot;
-            </Text>
+            <Text style={paragraph}>Author Email: &quot;{userEmail}&quot;</Text>
             <Text style={paragraph}>Listing ID: &quot;{adId}&quot;</Text>
-            <Text style={paragraph}>
-              Listing Title: &quot;{adTitle}&quot;
-            </Text>
+            <Text style={paragraph}>Listing Title: &quot;{adTitle}&quot;</Text>
 
             <Text style={paragraph}>
               Thanks,

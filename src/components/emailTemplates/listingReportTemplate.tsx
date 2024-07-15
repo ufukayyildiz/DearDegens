@@ -93,9 +93,9 @@ export const listingReportTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
         <Container style={container}>
           <Section style={logo}>
             <Img
-              width={500}
+              width={250}
               src={
-                "https://utfs.io/f/b862962d-902a-4cdf-9b5d-8e46e3742cf8-k3gcps.png"
+                "https://www.deardegens.com/_next/static/media/DearDegens_Light.09613ca8.svg"
               }
             />
           </Section>
