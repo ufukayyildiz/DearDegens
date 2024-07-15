@@ -590,10 +590,10 @@ export default function CreateListing({ user }: CreateListingProps) {
                 >
                   {(field) => (
                     <div className="relative w-full flex-col">
-                      <div className="flex w-full  justify-between">
+                      <div className="flex w-full">
                         <FieldLabel>Mileage:</FieldLabel>
-                        <FieldLabel className="py-2 text-xs italic text-rose-400">
-                          (required)
+                        <FieldLabel className=" italic text-rose-500">
+                          *
                         </FieldLabel>
                       </div>
                       <Input
@@ -689,10 +689,10 @@ export default function CreateListing({ user }: CreateListingProps) {
                   {(field) => {
                     return (
                       <div className="relative w-full flex-col">
-                        <div className="flex w-full justify-between">
+                        <div className="flex w-full">
                           <FieldLabel>Fuel Type:</FieldLabel>
-                          <FieldLabel className="py-2 text-xs italic text-rose-400">
-                            (required)
+                          <FieldLabel className=" italic text-rose-500">
+                            *
                           </FieldLabel>
                         </div>
 
@@ -731,11 +731,9 @@ export default function CreateListing({ user }: CreateListingProps) {
           >
             {(field) => (
               <div className="relative w-full flex-col">
-                <div className="flex w-full justify-between">
+                <div className="flex w-full">
                   <FieldLabel>Type your message here:</FieldLabel>
-                  <FieldLabel className="py-2 text-xs italic text-rose-400">
-                    (required)
-                  </FieldLabel>
+                  <FieldLabel className=" italic text-rose-500">*</FieldLabel>
                 </div>
                 <Textarea
                   id={field.name}

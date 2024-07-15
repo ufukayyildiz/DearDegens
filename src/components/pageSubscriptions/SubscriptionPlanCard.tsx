@@ -133,7 +133,7 @@ export default async function SubscriptionPlanCard({
     <div
       key={product.id}
       className={cn(
-        "group flex min-w-80 flex-col divide-y divide-zinc-600 rounded-lg border border-transparent bg-background shadow-sm transition duration-300 hover:scale-105 dark:border-muted",
+        "group flex min-w-80 flex-col divide-y divide-zinc-600 rounded-lg border border-transparent bg-background shadow-lg transition duration-300 md:hover:scale-105 dark:border-muted",
         "flex-1",
         "basis-1/3",
         "max-w-xs"
@@ -169,7 +169,7 @@ export default async function SubscriptionPlanCard({
         <Sheet>
           {product.id !== "000" && (
             <SheetTrigger className="mt-8 h-8 w-full rounded-md border border-customAccent text-center text-sm font-semibold text-primary shadow-lg hover:bg-customAccent hover:text-zinc-100">
-              SELECT
+              ORDER
             </SheetTrigger>
           )}
           <SheetContent>
