@@ -99,22 +99,27 @@ export default function Profile() {
       {/* SECURITY */}
       <div className="space-y-5 text-primary">
         <h2 className="mb-5 font-bold text-customAccent">Security:</h2>
-        <div className="grid w-full grid-cols-1 md:grid-cols-2">
-          <Button
-            variant="outlineTwo"
-            onClick={() => updatePassword(user[0].email)}
-            className="mx-auto w-44"
-            disabled={disabled}
-          >
-            RESET PASSWORD
-          </Button>
-          <p className="mt-5 text-sm italic md:mt-0">
-            Note: By clicking &quot;RESET PASSWORD&quot;, you will be sent an
-            email with a confirmation link to change your password. Once your
-            password has been successfully updated, you&apos;ll be automatically
-            logged out and sent to the sign in page from where you can use your
-            new details to sign back in.
+        <div className="grid w-full grid-cols-1">
+          <p className="mt-5 text-sm md:mt-0">
+            Note: By clicking{" "}
+            <span className="font-semibold italic">
+              &quot;RESET PASSWORD&quot;
+            </span>
+            , you will be sent an email with a confirmation link to change your
+            password. Once your password has been successfully updated,
+            you&apos;ll be automatically logged out and sent to the sign in page
+            from where you can use your new details to sign back in.
           </p>
+          <div className="mt-5 flex w-full justify-center md:justify-end">
+            <Button
+              variant="outlineTwo"
+              onClick={() => updatePassword(user[0].email)}
+              className=" h-10 font-semibold"
+              disabled={disabled}
+            >
+              RESET PASSWORD
+            </Button>
+          </div>
         </div>
       </div>
       <hr className="mb-2 mt-5  border border-t-muted-foreground" />

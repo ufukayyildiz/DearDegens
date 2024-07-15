@@ -209,10 +209,7 @@ export async function getUserSubscription(token: string) {
           },
         }
       )
-      console.log(
-        "User subscription query successful (sandbox)",
-        subscription.data
-      )
+      console.log("User subscription query successful (sandbox)")
       return subscription.data.data.response
     }
 
