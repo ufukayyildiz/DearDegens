@@ -6,6 +6,7 @@ import { ulid } from "ulid"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
+import { revalidatePath } from "next/cache"
 
 const rateLimit = new Ratelimit({
   redis,
@@ -48,6 +49,10 @@ export async function PUT(req: Request) {
         sellerId: sellerId,
         createdAt: currentDate,
       })
+
+      revalidatePath(
+        "/(listing)/[title]/[brand]/[model]/[subcategory]/[location]/[listingId]"
+      )
 
       return new Response(JSON.stringify(updateIsConfirmed), { status: 200 })
     }

@@ -572,17 +572,18 @@ export async function getChatrooms(mintId: string) {
         "chatRoom"."createdAt" AS "createdAt"
       FROM "chatRoom" 
       LEFT JOIN "users" AS "buyer" ON "buyer"."id" = "chatRoom"."userId"
-      LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId";
+      LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId"
+      WHERE "chatRoom"."adId" = '${mintId}';
       `)
     )
 
     roomQueries.rows &&
       roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
-    const listingRooms = roomQueries.rows.filter((item) => item.adId === mintId)
+    console.log("chatRoom", roomQueries.rows)
 
     console.log("Chatroom queries query successful")
-    return listingRooms
+    return roomQueries.rows
   } catch (error) {
     console.error("Server error: Failed to fetch ad chatrooms - ", error)
   }
