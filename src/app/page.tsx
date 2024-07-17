@@ -7,6 +7,7 @@ import GamingCarousel from "../components/pageHome/GamingCarousel"
 import ElectronicsCarousel from "../components/pageHome/ElectronicsCarousel"
 import SportsCarousel from "../components/pageHome/SportsCarousel"
 import FashionCarousel from "../components/pageHome/FashionCarousel"
+import ComputersCarousel from "../components/pageHome/ComputersCarousel"
 import CategoryTags from "../components/pageHome/CategoryTags"
 
 export default async function HomePage() {
@@ -49,7 +50,7 @@ export default async function HomePage() {
           </Link>
         </div>
         <hr className="my-2 border border-t-muted-foreground" />
-        <HomeCarousel />
+        <FashionCarousel />
         <div className="mt-10 flex flex-row justify-between">
           <h1 className="text-xl font-bold text-primary">Gaming</h1>
           <Link
@@ -61,6 +62,17 @@ export default async function HomePage() {
         </div>
         <hr className="my-2 border border-t-muted-foreground" />
         <GamingCarousel />
+        <div className="mt-10 flex flex-row justify-between">
+          <h1 className="text-xl font-bold text-primary">Computers</h1>
+          <Link
+            href="/find-computers"
+            className="my-auto h-5 italic text-muted-foreground underline"
+          >
+            See more
+          </Link>
+        </div>
+        <hr className="my-2 border border-t-muted-foreground" />
+        <ComputersCarousel />
         <div className="mt-10 flex flex-row justify-between">
           <h1 className="text-xl font-bold text-primary">Electronics</h1>
           <Link
