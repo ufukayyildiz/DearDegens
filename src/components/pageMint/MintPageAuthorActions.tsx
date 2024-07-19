@@ -45,12 +45,12 @@ export default function MintPageAuthorActions({
       {!isExpired ? (
         <Link
           href={`/ad/edit/${listing.id}`}
-          className="group flex h-10 w-10 items-center text-primary justify-center hover:text-amber-500"
+          className="group flex h-10 w-10 items-center justify-center text-primary hover:text-amber-500"
         >
           <FileEdit />
         </Link>
       ) : (
-        <div className="group flex h-10 w-10 items-center text-muted-foreground justify-center hover:text-muted">
+        <div className="group flex h-10 w-10 items-center justify-center text-muted-foreground hover:text-muted">
           <FileEdit />
         </div>
       )}

@@ -9,7 +9,7 @@ export default function MintOffersManagerCardSkeleton() {
     <div className="mx-auto mb-5 flex w-11/12 flex-col justify-between border border-transparent border-t-muted p-2 text-primary">
       <div className="flex w-full flex-col md:flex-row">
         {/* AD TITLE */}
-        <div className="mr-10 mb-2 md:mb-0 h-6 w-full animate-pulse rounded-full bg-muted"></div>
+        <div className="mb-2 mr-10 h-6 w-full animate-pulse rounded-full bg-muted md:mb-0"></div>
 
         {/* STATUS */}
         <div className="mr-10 h-6 w-full animate-pulse rounded-full bg-muted"></div>
@@ -19,7 +19,7 @@ export default function MintOffersManagerCardSkeleton() {
         {/* ASKING PRICE */}
         <div className="flex w-full text-muted-foreground">
           <h1 className="animate-pulse font-semibold">Asking price:</h1>
-          <div className="ml-2 mb-2 md:mb-0 h-6 w-28 animate-pulse rounded-full bg-muted"></div>
+          <div className="mb-2 ml-2 h-6 w-28 animate-pulse rounded-full bg-muted md:mb-0"></div>
         </div>
 
         {/* OFFER PRICE */}

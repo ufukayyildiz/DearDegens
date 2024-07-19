@@ -86,6 +86,7 @@ export default function MintOffer({ listing }: MintProps) {
       adId: listing.id,
       sellerId: listing.authorId,
       title: listing.title,
+      url: listing.url,
     },
   })
 
@@ -97,6 +98,7 @@ export default function MintOffer({ listing }: MintProps) {
       adId,
       sellerId,
       title,
+      url,
     }: OfferCreationRequest) => {
       const payload: OfferCreationRequest = {
         offerPrice,
@@ -104,6 +106,7 @@ export default function MintOffer({ listing }: MintProps) {
         adId,
         sellerId,
         title,
+        url,
       }
 
       const { data } = await axios.post("/api/createOffer", payload)
@@ -141,6 +144,7 @@ export default function MintOffer({ listing }: MintProps) {
       adId: listing.id,
       sellerId: listing.authorId,
       title: listing.title || "",
+      url: listing.url,
     }
     setNewData(payload)
     setDisabled(true)

@@ -32,17 +32,9 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
 
   const formattedPrice = formatter.format(price!)
 
-  const title = listing.title?.replace(/ /g, "-")
-  const brand = listing.brand?.replace(/ /g, "-")
-  const model = listing.model?.replace(/ /g, "-")
-  const subCategory = listing.subCategory?.replace(/ /g, "-")
-  const location = listing.location?.replace(/ /g, "-")
-
   return (
-    <div className="mx-auto w-full rounded-lg border border-background dark:border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
-      <Link
-        href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}
-      >
+    <div className="mx-auto w-full rounded-lg border border-background bg-background shadow-md transition duration-75 hover:scale-[0.99] dark:border-muted">
+      <Link href={listing.url}>
         <div className="relative flex h-28 justify-between ">
           {/* IMAGE */}
           <div className="h-full w-4/12">

@@ -88,6 +88,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
       adModel: listing?.model || "",
       adSubCategory: listing?.subCategory || "",
       adLocation: listing?.location || "",
+      url: listing.url,
     },
     onSubmit: async ({ value }) => {
       const payload: QueryCreationRequest = {
@@ -99,6 +100,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
         adModel: listing?.model || "",
         adSubCategory: listing?.subCategory || "",
         adLocation: listing?.location || "",
+        url: listing.url,
       }
       createQuery(payload)
       setDisabled(true)
@@ -117,6 +119,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
       adModel,
       adSubCategory,
       adLocation,
+      url,
     }: QueryCreationRequest) => {
       const payload: QueryCreationRequest = {
         query,
@@ -127,6 +130,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
         adModel,
         adSubCategory,
         adLocation,
+        url,
       }
 
       const { data } = await axios.post("/api/createQuery", payload)

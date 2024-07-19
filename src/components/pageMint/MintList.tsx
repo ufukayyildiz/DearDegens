@@ -60,6 +60,7 @@ export default async function MintList({ listing }: MintListProps) {
                         adId={listing.id}
                         sellerId={listing.authorId}
                         adTitle={listing.title!}
+                        url={listing.url}
                       />
                     )}
                   {session?.user.id === listing.authorId &&

@@ -39,3 +39,25 @@ export type listingItemType = {
   price: number,
   isSold: boolean
 }
+
+export type offersManagerType = {
+  id: string,
+    userId: string,
+    userName: string,
+    adId: string,
+    sellerId: string,
+    adTitle: string,
+    createdAt: Date,
+    expirationDate: Date,
+    purgeDate: Date,
+    askPrice: number,
+    offerPrice: number,
+    counterPrice: number | null,
+    isCountered: boolean,
+    isDeclined: boolean,
+    isAccepted: boolean,
+    isConfirmed: boolean,
+    itemId: string | null,
+    itemName: string | null,
+    url: string
+}

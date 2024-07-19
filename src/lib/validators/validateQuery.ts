@@ -7,9 +7,9 @@ export const validateQuery = z.object({
   sellerId: z.string(),
   adTitle: z.string(),
   adBrand: z.string(),
-          adModel: z.string(),
-          adSubCategory: z.string(),
-          adLocation: z.string(),
+  adModel: z.string(),
+  adSubCategory: z.string(),
+  adLocation: z.string(),
   query: z
     .string()
     .min(3, {
@@ -22,6 +22,7 @@ export const validateQuery = z.object({
       message:
         "Phone number detected. You will be able to communicate with buyers once an offer is agreed upon.",
     }),
+  url: z.string()
 })
 
 export type QueryCreationRequest = z.infer<typeof validateQuery>

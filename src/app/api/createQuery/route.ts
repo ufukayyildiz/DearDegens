@@ -54,6 +54,7 @@ export async function POST(req: Request) {
       adModel,
       adSubCategory,
       adLocation,
+      url
     } = body
 
     if (!limitReached) {
@@ -73,11 +74,11 @@ export async function POST(req: Request) {
         reply: "",
       })
 
-      const notification = await db.insert(notifications).values({
+      await db.insert(notifications).values({
         id: notificationId,
         userId: sellerId,
         adId: adId,
-        adUrl: `/${adTitle}/${adBrand}/${adModel}/${adSubCategory}/${adLocation}/${adId}`,
+        adUrl: url,
         createdAt: currentDate,
         title: `Query recieved!`,
         description: `Your listing ${adTitle} has recieved a query`,

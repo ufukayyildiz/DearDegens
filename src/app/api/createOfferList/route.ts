@@ -68,29 +68,16 @@ export async function POST(req: Request) {
       })
 
       /* @ts-ignore */
-      const listing: listingsType = await db
-        .select({
-          id: listings.id,
-          title: listings.title,
-          brand: listings.brand,
-          model: listings.model,
-          subCategory: listings.subCategory,
-          location: listings.location,
-        })
+      const listing: listingsType[] = await db
+        .select()
         .from(listings)
         .where(eq(listings.id, adId))
-
-      const title = listing.title?.replace(/ /g, "-")
-      const brand = listing.brand?.replace(/ /g, "-")
-      const model = listing.model?.replace(/ /g, "-")
-      const subCategory = listing.subCategory?.replace(/ /g, "-")
-      const location = listing.location?.replace(/ /g, "-")
 
       await db.insert(notifications).values({
         id: notificationId,
         userId: sellerId,
         adId: adId,
-        adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`,
+        adUrl: listing[0].url,
         createdAt: currentDate,
         title: `Offer recieved!`,
         description: `Your item ${itemName} has recieved an offer!`,

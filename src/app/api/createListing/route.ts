@@ -138,11 +138,20 @@ export async function POST(req: Request) {
       displayContact
     )
 
+    const listingTitle = title.replace(/ /g, "-")
+    const listingBrand = brand.replace(/ /g, "-")
+    const listingModel = model.replace(/ /g, "-")
+    const listingSubcategory = subCategory.replace(/ /g, "-")
+    const listingLocation = location.replace(/ /g, "-")
+
+    const url: string = `/${listingTitle}/${listingBrand}/${listingModel}/${listingSubcategory}/${listingLocation}/${listingId}`
+
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
     } else {
       const post = await db.insert(listings).values({
         id: listingId,
+        url: url,
         authorId: authorId,
         createdAt: currentDate,
         updatedAt: currentDate,
@@ -236,11 +245,11 @@ export async function POST(req: Request) {
         }) as React.ReactElement,
       })
 
-      const notification = await db.insert(notifications).values({
+      await db.insert(notifications).values({
         id: notificationId,
         userId: authorId,
         adId: listingId,
-        adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listingId}`,
+        adUrl: url,
         createdAt: currentDate,
         title: `Listing ${title} has been submitted!`,
         description: "Your almost there!",

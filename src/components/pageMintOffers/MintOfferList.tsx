@@ -47,6 +47,7 @@ interface MintProps {
   sellerId: string
   itemName: string | null
   adTitle: string
+  url: string
 }
 
 type FormData = z.infer<typeof validateOfferList>
@@ -58,6 +59,7 @@ export default function MintOfferList({
   adId,
   itemId,
   adTitle,
+  url,
 }: MintProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const queryClient = useQueryClient()
@@ -72,6 +74,7 @@ export default function MintOfferList({
       itemId: itemId,
       sellerId: sellerId,
       itemName: itemName,
+      url: url,
     },
   })
 
@@ -85,6 +88,7 @@ export default function MintOfferList({
       itemId,
       sellerId,
       itemName,
+      url,
     }: OfferListCreationRequest) => {
       const payload: OfferListCreationRequest = {
         offerPrice,
@@ -94,6 +98,7 @@ export default function MintOfferList({
         itemId,
         sellerId,
         itemName,
+        url,
       }
 
       const { data } = await axios.post("/api/createOfferList", payload)
@@ -130,6 +135,7 @@ export default function MintOfferList({
       sellerId: sellerId,
       itemName: itemName,
       adTitle: adTitle,
+      url: url,
     }
     setDisabled(true)
     console.log("Submit Payload:", payload)

@@ -15,6 +15,7 @@ export const validateOfferList = z.object({
   itemId: z.string(),
   sellerId: z.string(),
   itemName: z.string().nullable(),
+  url: z.string()
 })
 
 export type OfferListCreationRequest = z.infer<typeof validateOfferList>

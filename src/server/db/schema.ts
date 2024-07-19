@@ -192,6 +192,7 @@ export const listings = pgTable(
   {
     // GENERAL PROPERTIES:
     id: varchar("id", { length: 191 }).primaryKey().notNull(),
+    url: text("url").notNull(),
     authorId: varchar("authorId", { length: 191 })
       .notNull()
       .references(() => users.id),

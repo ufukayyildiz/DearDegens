@@ -15,8 +15,7 @@ interface MintCarouselProps {
   images: string | null | undefined
 }
 
-export default function MintCarousel({images}: MintCarouselProps) {
-  
+export default function MintCarousel({ images }: MintCarouselProps) {
   const imageUrls = JSON.parse(images!)
 
   if (imageUrls[0] !== undefined) {

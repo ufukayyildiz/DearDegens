@@ -13,6 +13,7 @@ export const validateOffer = z.object({
   adId: z.string(),
   sellerId: z.string(),
   title: z.string().nullable(),
+  url: z.string()
 })
 
 export type OfferCreationRequest = z.infer<typeof validateOffer>

@@ -61,7 +61,9 @@ export default function MintOfferDelete({
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["authorOffersManager"] })
+        await queryClient.invalidateQueries({
+          queryKey: ["authorOffersManager"],
+        })
         await queryClient.invalidateQueries({ queryKey: ["userOffersManager"] })
       }
     },
@@ -111,7 +113,12 @@ export default function MintOfferDelete({
                       Delete
                     </Button>
                   </AlertDialogTrigger>
-                  <AlertDialogCancel className="ml-5" onClick={() => setDisabled(true)}>Cancel</AlertDialogCancel>
+                  <AlertDialogCancel
+                    className="ml-5"
+                    onClick={() => setDisabled(true)}
+                  >
+                    Cancel
+                  </AlertDialogCancel>
                 </div>
               </div>
             ) : (

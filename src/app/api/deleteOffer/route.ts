@@ -31,7 +31,6 @@ export async function PUT(req: Request) {
 
     const body = await req.json()
     const { offerId, offerAdId, offerSellerId, offerUserId } = body
-    console.log("body:", body)
     const currentDate: Date = new Date()
 
     if (!limitReached) {
@@ -49,7 +48,7 @@ export async function PUT(req: Request) {
           id: `buyOffDel-${ulid()}`,
           userId: offerSellerId,
           adId: offerAdId,
-          adUrl: `/${listing[0].title}/${listing[0].brand}/${listing[0].model}/${listing[0].subCategory}/${listing[0].location}/${listing[0].id}`,
+          adUrl: listing[0].url,
           createdAt: currentDate,
           title: `Offer withdrawn.`,
           description: "A user has withdrawn their offer.",
@@ -62,7 +61,7 @@ export async function PUT(req: Request) {
           id: `sellOffDel-${ulid()}`,
           userId: offerUserId,
           adId: offerAdId,
-          adUrl: `/${listing[0].title}/${listing[0].brand}/${listing[0].model}/${listing[0].subCategory}/${listing[0].location}/${listing[0].id}`,
+          adUrl: listing[0].url,
           createdAt: currentDate,
           title: `Offer deleted.`,
           description: "The owner of a listing has deleted your offer.",

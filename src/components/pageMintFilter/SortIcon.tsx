@@ -1,7 +1,7 @@
 import React from "react"
 import { CalendarMinus, CalendarPlus } from "lucide-react"
 import { FaSortAmountDown } from "react-icons/fa"
-import { FaSortAmountDownAlt } from "react-icons/fa";
+import { FaSortAmountDownAlt } from "react-icons/fa"
 
 interface SortIconProps {
   state: string

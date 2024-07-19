@@ -1,6 +1,7 @@
 import React from "react"
+import Link from "next/link"
 import { cn, formatTimeToNow } from "@/src/lib/utils"
-import { offerType } from "@/src/types/db"
+import { offersManagerType, offerType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 
 import MintOfferCardAuthorActions from "../pageMintOffers/MintOfferCardAuthorActions"
@@ -8,7 +9,7 @@ import MintOfferCardStatus from "../pageMintOffers/MintOfferCardStatus"
 import MintOfferCardUserActions from "../pageMintOffers/MintOfferCardUserActions"
 
 interface MintOfferCardProps {
-  adOffer: offerType
+  adOffer: offersManagerType
 }
 
 export default function MintOffersManagerCard({ adOffer }: MintOfferCardProps) {
@@ -28,8 +29,8 @@ export default function MintOffersManagerCard({ adOffer }: MintOfferCardProps) {
     <div className="mx-auto mb-5 flex w-11/12 flex-col justify-between border border-transparent border-t-muted p-2 text-primary">
       <div className="flex flex-col md:flex-row">
         {/* AD TITLE */}
-        <div className=" flex w-full items-center truncate font-semibold text-customAccent">
-          <p>{adOffer.adTitle}</p>
+        <div className=" flex w-full items-center truncate font-semibold text-customAccent underline">
+          <Link href={adOffer.url}>{adOffer.adTitle}</Link>
         </div>
 
         {/* STATUS */}

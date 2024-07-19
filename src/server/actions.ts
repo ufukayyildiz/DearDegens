@@ -17,7 +17,7 @@ import {
   wishlistItem,
 } from "./db/schema"
 import { ListingRejectedTemplate } from "../components/emailTemplates/ListingRejectedTemplate"
-import { listingsType, offerType } from "../types/db"
+import { listingsType, offersManagerType, offerType } from "../types/db"
 import { nanoid } from "nanoid"
 import axios, { AxiosError } from "axios"
 import { ISO8601Timestamp } from "../lib/utils"
@@ -35,12 +35,6 @@ export const handleAccepted = async (listing: listingsType) => {
     const generateNotificationId = nanoid()
     const notificationId = generateNotificationId
 
-    const title = listing.title?.replace(/ /g, "-")
-    const brand = listing.brand?.replace(/ /g, "-")
-    const model = listing.model?.replace(/ /g, "-")
-    const subCategory = listing.subCategory?.replace(/ /g, "-")
-    const location = listing.location?.replace(/ /g, "-")
-
     await db
       .update(listings)
       .set({ isReviewed: true, nonCompliant: false })
@@ -50,7 +44,7 @@ export const handleAccepted = async (listing: listingsType) => {
       id: notificationId,
       userId: listing.authorId,
       adId: listing.id,
-      adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`,
+      adUrl: listing.url,
       createdAt: currentDate,
       title: `Listing ${listing.title} is live!`,
       description: "Congratulation! Your listing has gone live",
@@ -79,12 +73,6 @@ export const handleReject = async (listing: listingsType) => {
     const generateNotificationId = nanoid()
     const notificationId = generateNotificationId
 
-    const title = listing.title?.replace(/ /g, "-")
-    const brand = listing.brand?.replace(/ /g, "-")
-    const model = listing.model?.replace(/ /g, "-")
-    const subCategory = listing.subCategory?.replace(/ /g, "-")
-    const location = listing.location?.replace(/ /g, "-")
-
     const author = await db
       .select()
       .from(users)
@@ -99,7 +87,7 @@ export const handleReject = async (listing: listingsType) => {
       id: notificationId,
       userId: listing.authorId,
       adId: listing.id,
-      adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`,
+      adUrl: listing.url,
       createdAt: currentDate,
       title: `Listing ${listing.title} rejected`,
       description:
@@ -359,13 +347,17 @@ export async function getOffersManagerAuthor() {
     const offers = await db.execute(
       sql.raw(
         `
-        SELECT * FROM offers 
-        WHERE "sellerId" = '${userId}'; 
+        SELECT 
+          "offers".*,
+          "listings"."url"
+        FROM offers 
+        LEFT JOIN "listings" ON "offers"."adId" = "listings"."id"
+        WHERE "offers"."sellerId" = '${userId}';
       `
       )
     )
-    console.log("Author manager offers query successful")
-    return offers.rows as offerType[]
+    console.log("Author manager offers query successful", offers.rows)
+    return offers.rows as offersManagerType[]
   } catch (error) {
     console.error(
       "Server error: Failed to fetch author manager offers - ",
@@ -410,13 +402,17 @@ export async function getOffersManagerUser() {
     const offers = await db.execute(
       sql.raw(
         `
-        SELECT * FROM offers 
-        WHERE "userId" = '${userId}'; 
+        SELECT 
+          offers.*,
+          "listings"."url"
+        FROM offers 
+        LEFT JOIN "listings" ON "offers"."adId" = "listings"."id"
+        WHERE "offers"."userId" = '${userId}'; 
       `
       )
     )
     console.log("User manager offers query successful")
-    return offers.rows
+    return offers.rows as offersManagerType[]
   } catch (error) {
     console.error("Server error: Failed to fetch user manager offers - ", error)
   }
@@ -579,8 +575,6 @@ export async function getChatrooms(mintId: string) {
 
     roomQueries.rows &&
       roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
-
-    console.log("chatRoom", roomQueries.rows)
 
     console.log("Chatroom queries query successful")
     return roomQueries.rows

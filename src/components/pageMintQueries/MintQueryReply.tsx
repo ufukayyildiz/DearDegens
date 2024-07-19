@@ -231,7 +231,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                   {/* @ts-ignore */}
                   {([canSubmit, isSubmitting]) =>
                     !submitted ? (
-                      <div className="flex w-full flex-col md:flex-row justify-between">
+                      <div className="flex w-full flex-col justify-between md:flex-row">
                         <div className="flex items-center justify-start space-x-2">
                           <Checkbox
                             id="disable"
@@ -247,7 +247,7 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
                             </Link>
                           </Label>
                         </div>
-                        <div className="flex gap-5 mt-10 md:mt-0">
+                        <div className="mt-10 flex gap-5 md:mt-0">
                           <Button
                             type="submit"
                             disabled={disabled || !canSubmit}

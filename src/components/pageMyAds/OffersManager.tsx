@@ -1,6 +1,6 @@
 "use client"
 import React from "react"
-import { offerType } from "@/src/types/db"
+import { offerType, offersManagerType } from "@/src/types/db"
 import MintOffersManagerCard from "./MintOffersManagerCard"
 import MintOffersManagerCardSkeleton from "./MintOffersManagerCardSkeleton"
 import {
@@ -17,20 +17,22 @@ import PlaceholderFish from "../placeholdersEmptyState/PlaceholderFish"
 
 export default function OffersManager() {
   const mock = [1, 2, 3]
-  const userOffers = (useGetOffersManagerUser().data as offerType[]) || []
+  const userOffers =
+    (useGetOffersManagerUser().data as offersManagerType[]) || []
   const userFetching = useGetOffersManagerUser().isFetching
-  const authorOffers = (useGetOffersManagerAuthor().data as offerType[]) || []
+  const authorOffers =
+    (useGetOffersManagerAuthor().data as offersManagerType[]) || []
   const authorFetching = useGetOffersManagerAuthor().isFetching
 
   userOffers &&
     // @ts-ignore
-    userOffers.sort((a: offerType, b: offerType) => {
+    userOffers.sort((a: offersManagerType, b: offersManagerType) => {
       // @ts-ignore
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     })
   authorOffers &&
     // @ts-ignore
-    authorOffers.sort((a: offerType, b: offerType) => {
+    authorOffers.sort((a: offersManagerType, b: offersManagerType) => {
       // @ts-ignore
       return new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
     })
@@ -46,7 +48,7 @@ export default function OffersManager() {
             {authorFetching ? (
               mock.map((item) => <MintOffersManagerCardSkeleton />)
             ) : authorOffers[0] !== undefined ? (
-              authorOffers.map((offer: offerType) => (
+              authorOffers.map((offer: offersManagerType) => (
                 <MintOffersManagerCard adOffer={offer} />
               ))
             ) : (
@@ -61,7 +63,7 @@ export default function OffersManager() {
             {userFetching ? (
               mock.map((item) => <MintOffersManagerCardSkeleton />)
             ) : userOffers[0] !== undefined ? (
-              userOffers.map((offer: offerType) => (
+              userOffers.map((offer: offersManagerType) => (
                 <MintOffersManagerCard adOffer={offer} />
               ))
             ) : (

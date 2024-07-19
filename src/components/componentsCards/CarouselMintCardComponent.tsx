@@ -31,17 +31,9 @@ export default function CarouselMintCardComponent({ listing }: MyMintsProps) {
 
   const formattedPrice = formatter.format(price!)
 
-  const title = listing.title?.replace(/ /g, "-")
-  const brand = listing.brand?.replace(/ /g, "-")
-  const model = listing.model?.replace(/ /g, "-")
-  const subCategory = listing.subCategory?.replace(/ /g, "-")
-  const location = listing.location?.replace(/ /g, "-")
-
   return (
     <div className="h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
-      <Link
-        href={`/${title}/${brand}/${model}/${subCategory}/${location}/${listing.id}`}
-      >
+      <Link href={listing.url}>
         <div className="relative flex h-full w-full flex-col">
           <div className="w-full">
             {/* IMAGE */}

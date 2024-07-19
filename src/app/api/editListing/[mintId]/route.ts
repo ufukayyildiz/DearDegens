@@ -75,9 +75,18 @@ export async function PATCH(req: Request, context: any) {
       displayContact
     )
 
+    const listingTitle = title.replace(/ /g, "-")
+    const listingBrand = brand.replace(/ /g, "-")
+    const listingModel = model.replace(/ /g, "-")
+    const listingSubcategory = subCategory.replace(/ /g, "-")
+    const listingLocation = location.replace(/ /g, "-")
+
+    const url: string = `/${listingTitle}/${listingBrand}/${listingModel}/${listingSubcategory}/${listingLocation}/${listingId}`
+
     const post = await db
       .update(listings)
       .set({
+        url: url,
         updatedAt: currentDate,
         category: category,
         subCategory: subCategory,
@@ -99,6 +108,10 @@ export async function PATCH(req: Request, context: any) {
         nonCompliant: false,
       })
       .where(eq(listings.id, listingId))
+    
+    await db.update(notifications).set({
+      adUrl: url
+    }).where(eq(notifications.adId, listingId))
 
     await db.execute(
       sql.raw(
@@ -142,11 +155,11 @@ export async function PATCH(req: Request, context: any) {
       }) as React.ReactElement,
     })
 
-    const notification = await db.insert(notifications).values({
+    await db.insert(notifications).values({
       id: notificationId,
       userId: authorId,
       adId: listingId,
-      adUrl: `/${title}/${brand}/${model}/${subCategory}/${location}/${listingId}`,
+      adUrl: url,
       createdAt: currentDate,
       title: `Listing ${title} updates have been submitted!`,
       description: "We just need to run a few checks!",

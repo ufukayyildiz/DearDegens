@@ -46,7 +46,7 @@ export async function POST(req: Request) {
       currentDate.getTime() + 60 * 24 * 60 * 60 * 1000
     )
 
-    const { sellerId, adId, offerPrice, askPrice, title } = body
+    const { sellerId, adId, offerPrice, askPrice, title, url } = body
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
@@ -65,21 +65,11 @@ export async function POST(req: Request) {
         askPrice: askPrice,
       })
 
-      /* @ts-ignore */
-      const listing: listingsType = await db.select({
-        id: listings.id,
-        title: listings.title,
-        brand: listings.brand,
-        model: listings.model,
-        subCategory: listings.subCategory,
-        location: listings.location,
-      }).from(listings).where(eq(listings.id, adId))
-
-      const notification = await db.insert(notifications).values({
+      await db.insert(notifications).values({
         id: notificationId,
         userId: sellerId,
         adId: adId,
-        adUrl: `/${listing.title}/${listing.brand}/${listing.model}/${listing.subCategory}/${listing.location}/${listing.id}`,
+        adUrl: url,
         createdAt: currentDate,
         title: `Offer recieved!`,
         description: `Your listing ${title} has recieved an offer!`,

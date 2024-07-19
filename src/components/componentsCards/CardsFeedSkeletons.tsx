@@ -4,7 +4,6 @@ import MidiMintCardComponentSkeleton from "./MidiMintCardComponentSkeleton"
 import MintCardComponentSkeleton from "./MintCardComponentSkeleton"
 import useMediaQuery from "@/src/hooks/useMediaQuery"
 
-
 export default function CardsFeedSkeleton() {
   const mock = ["1", "2", "3", "4", "5"]
   const isAboveMediumScreens = useMediaQuery("(min-width: 768px)")

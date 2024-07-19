@@ -24,7 +24,7 @@ export default function MintMarkSoldList({ item, listing }: MintSoldProps) {
     mutationFn: async () => {
       const payload = {
         itemId: item.id,
-        listingId: listing.id
+        listingId: listing.id,
       }
       setIsLoading(true)
       await axios.patch("/api/editIsSoldItem", payload)
@@ -59,7 +59,7 @@ export default function MintMarkSoldList({ item, listing }: MintSoldProps) {
     <div>
       <Button
         variant="outlineTwo"
-        className="w-16 h-8"
+        className="h-8 w-16"
         onClick={() => updateIsSold()}
       >
         {isLoading ? (
