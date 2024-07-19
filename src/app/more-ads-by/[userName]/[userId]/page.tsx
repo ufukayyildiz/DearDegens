@@ -1,5 +1,6 @@
 import React from "react"
 import { db } from "@/src/server/db"
+import { revalidatePath } from "next/cache"
 import { listings, users } from "@/src/server/db/schema"
 import { eq, and, not } from "drizzle-orm"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
@@ -15,6 +16,10 @@ export default async function SellerPage({ params }: SellerPageProps) {
   const param = params
   const userName = decodeURIComponent(param.userName).replace("-", " ")
   const userId = decodeURIComponent(param.userId)
+
+  revalidatePath(
+    "/more-ads-by/[userName]/[userId]"
+  )
 
   const adListings = await db
     .select()
