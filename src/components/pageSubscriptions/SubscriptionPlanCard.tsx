@@ -304,7 +304,7 @@ export default async function SubscriptionPlanCard({
                     </span>{" "}
                     If you would like to make changes to your current
                     subscription, please do so in your{" "}
-                    <Link href="/profile" className="underline">
+                    <Link href="/account" className="underline">
                       Profile
                     </Link>{" "}
                     page.
