@@ -34,30 +34,30 @@ export type roomType = {
 }
 
 export type listingItemType = {
-  id: string,
-  name: string,
-  price: number,
-  isSold: boolean
+  id: string
+  name: string
+  price: number
+  isSold: string
 }
 
 export type offersManagerType = {
-  id: string,
-    userId: string,
-    userName: string,
-    adId: string,
-    sellerId: string,
-    adTitle: string,
-    createdAt: Date,
-    expirationDate: Date,
-    purgeDate: Date,
-    askPrice: number,
-    offerPrice: number,
-    counterPrice: number | null,
-    isCountered: boolean,
-    isDeclined: boolean,
-    isAccepted: boolean,
-    isConfirmed: boolean,
-    itemId: string | null,
-    itemName: string | null,
-    url: string
+  id: string
+  userId: string
+  userName: string
+  adId: string
+  sellerId: string
+  adTitle: string
+  createdAt: Date
+  expirationDate: Date
+  purgeDate: Date
+  askPrice: number
+  offerPrice: number
+  counterPrice: number | null
+  isCountered: boolean
+  isDeclined: boolean
+  isAccepted: boolean
+  isConfirmed: boolean
+  itemId: string | null
+  itemName: string | null
+  url: string
 }

@@ -16,7 +16,7 @@ export async function PATCH(req: Request) {
       id: "",
       name: "",
       price: 0,
-      isSold: true
+      isSold: 'true'
     }
 
     items.map((item: listingItemType) => {
@@ -25,7 +25,7 @@ export async function PATCH(req: Request) {
           id: item.id,
           name: item.name,
           price: item.price,
-          isSold: true
+          isSold: 'true'
         }
       }
     })

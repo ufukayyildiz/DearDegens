@@ -142,7 +142,7 @@ export default function EditListing({ listing, user }: EditListingProps) {
         id: item.id || nanoid(),
         name: item.name || "",
         price: item.price || 0,
-        isSold: item.isSold || false,
+        isSold: item.isSold || "false",
       })),
       images: listing[0].images || "",
       location: listing[0].location || "",
@@ -164,7 +164,7 @@ export default function EditListing({ listing, user }: EditListingProps) {
         transmission: value.transmission,
         fuel: value.fuel,
         description: value.description,
-        items: value.items || [""],
+        items: value.items,
         images: JSON.stringify(selectedImages),
         location: value.location,
         meetup: value.meetup,
@@ -865,6 +865,39 @@ export default function EditListing({ listing, user }: EditListingProps) {
                                 )
                               }}
                             </itemsField.Field>
+
+                            <itemsField.Field
+                              /* @ts-ignore */
+                              index={index}
+                              /* @ts-ignore */
+                              name="isSold"
+                            >
+                              {(field) => {
+                                return (
+                                  <div>
+                                    <Select
+                                      required
+                                      onValueChange={(event) =>
+                                        field.handleChange(event)
+                                      }
+                                      defaultValue={items.isSold}
+                                    >
+                                      <SelectTrigger className="h-10 w-28 text-sm">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent className="max-h-96 overflow-auto p-2 text-sm">
+                                        <SelectItem key="t" value="true">
+                                          True
+                                        </SelectItem>
+                                        <SelectItem key="f" value="false">
+                                          False
+                                        </SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                )
+                              }}
+                            </itemsField.Field>
                             <Button
                               variant="icon"
                               onClick={(event) => {
@@ -888,7 +921,7 @@ export default function EditListing({ listing, user }: EditListingProps) {
                         id: nanoid(),
                         name: "",
                         price: 0,
-                        isSold: false,
+                        isSold: "false",
                       })
                     }}
                     className="text-muted-foreground hover:text-customAccent"

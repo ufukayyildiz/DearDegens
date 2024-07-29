@@ -93,6 +93,7 @@ export const listingItems = z.array(
     id: z.string(),
     name: z.string(),
     price: z.coerce.number(),
+    isSold: z.string(),
   })
 )
 // export const listingItems = z.array(

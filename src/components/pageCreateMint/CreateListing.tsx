@@ -128,7 +128,7 @@ export default function CreateListing({ user }: CreateListingProps) {
           id: nanoid(),
           name: "",
           price: 0,
-          isSold: false,
+          isSold: "false",
         },
       ],
       images: "",
@@ -854,6 +854,40 @@ export default function CreateListing({ user }: CreateListingProps) {
                                 )
                               }}
                             </itemsField.Field>
+
+                            <itemsField.Field
+                              /* @ts-ignore */
+                              index={index}
+                              /* @ts-ignore */
+                              name="isSold"
+                            >
+                              {(field) => {
+                                return (
+                                  <div className="hidden">
+                                    <Select
+                                      required
+                                      onValueChange={(event) =>
+                                        field.handleChange(event)
+                                      }
+                                      defaultValue="false"
+                                    >
+                                      <SelectTrigger className="h-10 w-28 text-sm">
+                                        <SelectValue />
+                                      </SelectTrigger>
+                                      <SelectContent className="max-h-96 overflow-auto p-2 text-sm">
+                                        <SelectItem key="t" value="true">
+                                          True
+                                        </SelectItem>
+                                        <SelectItem key="f" value="false">
+                                          False
+                                        </SelectItem>
+                                      </SelectContent>
+                                    </Select>
+                                  </div>
+                                )
+                              }}
+                            </itemsField.Field>
+
                             <Button
                               variant="icon"
                               onClick={(event) => {
@@ -877,7 +911,7 @@ export default function CreateListing({ user }: CreateListingProps) {
                         id: nanoid(),
                         name: "",
                         price: 0,
-                        isSold: false,
+                        isSold: "false",
                       })
                     }}
                     className="text-muted-foreground hover:text-customAccent"

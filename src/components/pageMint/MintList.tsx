@@ -40,19 +40,19 @@ export default async function MintList({ listing }: MintListProps) {
                 <p
                   className={cn(
                     "w-40 truncate md:w-9/12",
-                    item.isSold === true && "line-through"
+                    item.isSold === "true" && "line-through"
                   )}
                 >
                   {item.name}
                 </p>
                 <div className="flex items-center space-x-5">
-                  {item.isSold === false && (
+                  {item.isSold === "false" && (
                     <p className="font-semibold text-customAccent">
                       R {formatPrice(item.price)}
                     </p>
                   )}
                   {session?.user.id !== listing.authorId &&
-                    item.isSold === false && (
+                    item.isSold === "false" && (
                       <MintOfferList
                         itemId={item.id}
                         itemName={item.name}
@@ -64,7 +64,7 @@ export default async function MintList({ listing }: MintListProps) {
                       />
                     )}
                   {session?.user.id === listing.authorId &&
-                    item.isSold === false && (
+                    item.isSold === "false" && (
                       <MintMarkSoldList listing={listing} item={item} />
                     )}
                 </div>
