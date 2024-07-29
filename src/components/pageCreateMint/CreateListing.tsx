@@ -17,6 +17,7 @@ import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
 import { Loader2, X, PlusCircle } from "lucide-react"
 import { nanoid } from "nanoid"
+import { cn } from "@/src/lib/utils"
 import { Button } from "../components-ui/Button"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
@@ -776,14 +777,14 @@ export default function CreateListing({ user }: CreateListingProps) {
               </Label>
             )}
           </div>
-          {isList === true ? (
+          <div className={cn(!isList && "hidden")}>
             <form.Field name="items" mode="array">
               {(itemsField) => (
                 <div className="w-full">
                   <FieldLabel>Listed Items:</FieldLabel>
-                  <div className="mr-16 flex flex-row">
+                  <div className="flex flex-row pr-12">
                     <FieldDescription className="w-full">
-                      Name (Max 64 Char.):
+                      Name <span className="text-[10px]">(Max 64 Char.)</span>:
                     </FieldDescription>
                     <FieldDescription className="w-full pl-3">
                       Price:
@@ -800,7 +801,7 @@ export default function CreateListing({ user }: CreateListingProps) {
                           <div
                             id={items.id}
                             key={index}
-                            className="relative mb-5 flex w-full flex-row space-x-5 pr-16"
+                            className="relative mb-5 flex w-full flex-row space-x-5 pr-12"
                           >
                             <itemsField.Field
                               /* @ts-ignore */
@@ -894,9 +895,12 @@ export default function CreateListing({ user }: CreateListingProps) {
                                 event.preventDefault()
                                 itemsField.removeValue(index)
                               }}
-                              className="absolute bottom-1 right-0 items-center justify-center hover:text-customAccent"
+                              className={cn(
+                                "absolute bottom-1 right-0 items-center justify-center hover:text-customAccent",
+                                itemsField.state.value.length <= 1 && "hidden"
+                              )}
                             >
-                              <X className="w-10 text-muted-foreground" />
+                              <X className="absolute w-10 text-muted-foreground" />
                             </Button>
                           </div>
                         )
@@ -921,9 +925,7 @@ export default function CreateListing({ user }: CreateListingProps) {
                 </div>
               )}
             </form.Field>
-          ) : (
-            <></>
-          )}
+          </div>
           <hr className="border border-muted" />
 
           <div className="flex flex-col gap-10 md:flex-row">

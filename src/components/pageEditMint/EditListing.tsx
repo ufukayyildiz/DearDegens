@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
@@ -13,6 +13,7 @@ import { ListingCreationRequest } from "@/src/lib/validators/validateListingGene
 import { useMutation } from "@tanstack/react-query"
 import axios, { AxiosError } from "axios"
 import { useForm } from "@tanstack/react-form"
+import { cn } from "@/src/lib/utils"
 import type { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
 import { Loader2, X, PlusCircle } from "lucide-react"
@@ -81,12 +82,6 @@ export default function EditListing({ listing, user }: EditListingProps) {
 
   const items: listingItemType[] =
     listing[0].items && JSON.parse(listing[0].items)
-  const [updateItems, setUpdateItems] = useState<Object[]>([
-    {
-      id: items[0].id,
-    },
-  ])
-  const itemsString = JSON.stringify(items)
   const defaultImages = listing[0].images && JSON.parse(listing[0].images)
   const mintId = listing[0].id
 
@@ -98,6 +93,12 @@ export default function EditListing({ listing, user }: EditListingProps) {
   const [subCategory, setSubCategory] = useState<string>(
     listing[0].subCategory!
   )
+
+  useEffect(() => {
+    if (items[0].name !== "") {
+      setIsList(true)
+    }
+  }, [])
 
   const mainCategories = listingCategories.filter((item, index) => {
     if (item.type === type) {
@@ -787,20 +788,21 @@ export default function EditListing({ listing, user }: EditListingProps) {
               </Label>
             )}
           </div>
-          {isList === true ? (
+          <div className={cn("w-full", !isList && "hidden")}>
             <form.Field name="items" mode="array">
               {(itemsField) => (
                 <div className="w-full">
                   <FieldLabel>Listed Items:</FieldLabel>
-                  <div className="mr-16 flex flex-row">
+                  <div className="mb-2 flex flex-row pr-12">
                     <FieldDescription className="w-full">
-                      Name (Max 64 Char.):
+                      Name <span className="text-[10px]">(Max 64 Char.)</span>:
                     </FieldDescription>
-                    <FieldDescription className="w-full pl-3">
+                    <FieldDescription className="w-full">
                       Price:
                     </FieldDescription>
+                    <FieldDescription className="w-8">Sold?</FieldDescription>
                   </div>
-                  <div>
+                  <div className="w-full">
                     {!itemsField.state.value.length ? (
                       <FieldDescription className="mb-5">
                         Click the &quot;Plus&quot; icon to start adding items..
@@ -811,7 +813,7 @@ export default function EditListing({ listing, user }: EditListingProps) {
                           <div
                             id={items.id}
                             key={index}
-                            className="relative mb-5 flex w-full flex-row space-x-5 pr-16"
+                            className="relative mb-5 flex w-full flex-row space-x-5 pr-12"
                           >
                             <itemsField.Field
                               /* @ts-ignore */
@@ -882,15 +884,15 @@ export default function EditListing({ listing, user }: EditListingProps) {
                                       }
                                       defaultValue={items.isSold}
                                     >
-                                      <SelectTrigger className="h-10 w-28 text-sm">
+                                      <SelectTrigger className="mt-1 flex h-8 w-8 items-center justify-center rounded-full border-2 border-customAccent text-center text-sm">
                                         <SelectValue />
                                       </SelectTrigger>
-                                      <SelectContent className="max-h-96 overflow-auto p-2 text-sm">
+                                      <SelectContent className="max-h-96 overflow-auto text-sm">
                                         <SelectItem key="t" value="true">
-                                          True
+                                          Y
                                         </SelectItem>
                                         <SelectItem key="f" value="false">
-                                          False
+                                          N
                                         </SelectItem>
                                       </SelectContent>
                                     </Select>
@@ -904,9 +906,12 @@ export default function EditListing({ listing, user }: EditListingProps) {
                                 event.preventDefault()
                                 itemsField.removeValue(index)
                               }}
-                              className="absolute bottom-1 right-0 items-center justify-center hover:text-customAccent"
+                              className={cn(
+                                "absolute bottom-1 right-0 items-center justify-center hover:text-customAccent",
+                                itemsField.state.value.length <= 1 && "hidden"
+                              )}
                             >
-                              <X className="w-10 text-muted-foreground" />
+                              <X className="absolute w-10 text-muted-foreground" />
                             </Button>
                           </div>
                         )
@@ -931,9 +936,7 @@ export default function EditListing({ listing, user }: EditListingProps) {
                 </div>
               )}
             </form.Field>
-          ) : (
-            <></>
-          )}
+          </div>
           <hr className="border border-muted" />
 
           <div className="flex flex-col gap-10 md:flex-row">
