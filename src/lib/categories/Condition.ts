@@ -1,7 +1,7 @@
 export const condition = [
   "New",
-  "Unwrapped yesterday",
+  "As New",
   "Good",
-  "Used-ish",
-  "Moeg!",
+  "Fair",
+  "Needs TLC",
 ]

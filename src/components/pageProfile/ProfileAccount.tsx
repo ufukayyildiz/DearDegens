@@ -194,7 +194,7 @@ export default function ProfileAccount({
         )}
       </div>
       <div className="grid w-full grid-cols-1 items-center md:grid-cols-2">
-        <p className="h-6 w-full font-bold">Available Ad Space:</p>
+        <p className="h-6 w-full font-bold">Ad Space:</p>
         {isFetching ? (
           <p className="mt-1 h-10 w-60 animate-pulse rounded-full pt-2 italic text-muted-foreground md:mt-0 md:pl-3">
             0 / {products[0].ads}
@@ -206,7 +206,7 @@ export default function ProfileAccount({
         )}
       </div>
       <div className="grid w-full grid-cols-1 items-center md:grid-cols-2">
-        <p className="h-6 w-full font-bold">Available Image Space:</p>
+        <p className="h-6 w-full font-bold">Image Space:</p>
         {isFetching ? (
           <p className="mt-1 h-10 w-60 animate-pulse rounded-full pt-2 italic text-muted-foreground md:mt-0 md:pl-3">
             0 / {products[0].images}

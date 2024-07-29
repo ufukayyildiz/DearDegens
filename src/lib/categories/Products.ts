@@ -6,8 +6,8 @@ export const products: productType[] = [
     name: "Free",
     description: "Basic free plan for all users.",
     price: 0,
-    images: 10,
-    ads: 2,
+    images: 15,
+    ads: 3,
     features: ["Maximum 2 listings.", "Image bucket size: 10"],
   },
   {
@@ -28,8 +28,8 @@ export const products: productType[] = [
     name: "Pro Plan",
     description: "The hustler package.",
     price: 65.0,
-    images: 50,
-    ads: 10,
+    images: 75,
+    ads: 15,
     features: ["Maximum 10 listings.", "Image bucket size: 50"],
   },
   {
@@ -37,8 +37,8 @@ export const products: productType[] = [
     name: "Business Plan",
     description: "For small business owners.",
     price: 120.0,
-    images: 150,
-    ads: 30,
+    images: 250,
+    ads: 50,
     features: ["Maximum 30 listings.", "Image bucket size: 150"],
   },
 ]
