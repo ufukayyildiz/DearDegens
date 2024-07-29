@@ -28,7 +28,7 @@ export default async function MintList({ listing }: MintListProps) {
     return (
       <div className="my-5 w-full">
         <hr className="my-2 border border-t-muted-foreground" />
-        <h1 className=" mb-2 text-lg font-bold">Listed Items:</h1>
+        <h1 className=" mb-2 text-lg font-bold">Items Sold Separately:</h1>
         {list.map((item: listingItemType) => {
           return (
             <div className="pl-2">
