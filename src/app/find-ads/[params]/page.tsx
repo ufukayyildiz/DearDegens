@@ -43,7 +43,7 @@ export default function FindAds() {
     priceMax: 9999999,
     location: "",
     mileageMin: 0,
-    mileageMax: 300000,
+    mileageMax: 400000,
     yearMin: 1900,
     yearMax: currentYear,
     transmission: "",

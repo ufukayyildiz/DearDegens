@@ -26,6 +26,7 @@ import { queryLimit } from "@/src/server/queryLimit"
 import { currentYear } from "@/src/lib/utils"
 import SortIcon from "@/src/components/pageMintFilter/SortIcon"
 import { listingsType } from "@/src/types/db"
+import { revalidatePath } from "next/cache"
 
 export default function FindVehicles() {
   const queryClient = useQueryClient()
@@ -40,7 +41,7 @@ export default function FindVehicles() {
     priceMax: 9999999,
     location: "",
     mileageMin: 0,
-    mileageMax: 300000,
+    mileageMax: 400000,
     yearMin: 1900,
     yearMax: currentYear,
     transmission: "",

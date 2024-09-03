@@ -1,7 +1,12 @@
 // import { connect } from "@planetscale/database"
-import { neon } from "@neondatabase/serverless"
-import { drizzle } from "drizzle-orm/neon-http"
 
-const sql = neon(process.env.DATABASE_URL!)
+// import { neon } from "@neondatabase/serverless"
+// import { drizzle } from "drizzle-orm/neon-http"
 
-export const db = drizzle(sql)
+import { drizzle } from "drizzle-orm/node-postgres";
+import { Client } from "pg";
+
+const client = new Client({connectionString: process.env.DATABASE_URL!})
+
+await client.connect()
+export const db = drizzle(client)
