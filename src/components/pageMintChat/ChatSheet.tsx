@@ -15,6 +15,7 @@ import { useGetChatrooms, useGetMessages } from "@/src/server/services"
 import ChatRoom from "./ChatRoom"
 import ChatRoomSkeleton from "./ChatRoomSkeleton"
 import { useQueryClient } from "@tanstack/react-query"
+import { cn } from "@/src/lib/utils"
 
 interface ChatSheetProps {
   listingId: any
@@ -49,12 +50,32 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
     await queryClient.invalidateQueries({ queryKey: ["messages", data.id] })
   }
 
+  // TOOLTIP
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("chatTrigger")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
+
   return (
     <Sheet>
       <SheetTrigger
-        className="group flex h-10 min-w-10 items-center justify-center hover:text-blue-500"
+        id="chatTrigger"
+        className="group relative flex h-10 min-w-10 items-center justify-center hover:text-blue-500"
         onClick={handleInvalidateChat}
       >
+        <p
+          className={cn(
+            "absolute -top-10 flex h-8 w-[85px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+            tooltipVisible &&
+              "opacity-100 transition-opacity duration-200 ease-in"
+          )}
+        >
+          Chat Room
+        </p>
         <MessageCircle />
       </SheetTrigger>
       <SheetContent>

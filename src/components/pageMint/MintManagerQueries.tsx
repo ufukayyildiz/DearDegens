@@ -1,5 +1,5 @@
 "use client"
-import React from "react"
+import React, { useState } from "react"
 import { FileQuestion } from "lucide-react"
 import {
   Sheet,
@@ -13,6 +13,7 @@ import MintQueriesCard from "../pageMintQueries/MintQueriesCard"
 import { queryType } from "@/src/types/db"
 import Image from "next/image"
 import Rabbit from "@/src/assets/rabbit.svg"
+import { cn } from "@/src/lib/utils"
 
 interface ManageQueriesProps {
   queries: queryType[]
@@ -23,9 +24,29 @@ export default function MintManageQueries({
   queries,
   userId,
 }: ManageQueriesProps) {
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("queriesTrigger")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
   return (
     <Sheet>
-      <SheetTrigger className="group flex h-10 w-10 items-center justify-center hover:text-teal-500">
+      <SheetTrigger
+        id="queriesTrigger"
+        className="group relative flex h-10 w-10 items-center justify-center hover:text-teal-500"
+      >
+        <p
+          className={cn(
+            "absolute -top-12 flex h-10 w-[75px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+            tooltipVisible &&
+              "opacity-100 transition-opacity duration-200 ease-in"
+          )}
+        >
+          Manage Queries
+        </p>
         <FileQuestion className="h-6 w-10" />
       </SheetTrigger>
       <SheetContent className="p-0">

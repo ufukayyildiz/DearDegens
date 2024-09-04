@@ -41,6 +41,7 @@ import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
 import { activities } from "@/src/lib/categories/Report"
 import { listingsType } from "@/src/types/db"
+import { cn } from "@/src/lib/utils"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   return (
@@ -62,6 +63,14 @@ export default function MintReport({ listing }: MintReportProps) {
   const [disabled, setDisabled] = useState<boolean>(true)
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [infraction, setInfraction] = useState<string>("")
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("reportTrigger")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
 
   const form = useForm({
     validatorAdapter: zodValidator,
@@ -127,7 +136,19 @@ export default function MintReport({ listing }: MintReportProps) {
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger className="group flex h-10 w-10 items-center justify-center hover:text-orange-500">
+        <AlertDialogTrigger
+          id="reportTrigger"
+          className="group relative flex h-10 w-10 items-center justify-center hover:text-orange-500"
+        >
+          <p
+            className={cn(
+              "absolute -top-10 flex h-8 w-[85px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+              tooltipVisible &&
+                "opacity-100 transition-opacity duration-200 ease-in"
+            )}
+          >
+            Report Ad
+          </p>
           <AlertTriangle />
         </AlertDialogTrigger>
         <AlertDialogContent>

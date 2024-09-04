@@ -1,6 +1,6 @@
 "use client"
 import { useParams } from "next/navigation"
-import React from "react"
+import React, { useState } from "react"
 import { Facebook } from "lucide-react"
 import { FaXTwitter } from "react-icons/fa6"
 import { FaWhatsapp } from "react-icons/fa"
@@ -15,6 +15,7 @@ import {
   DropdownMenuTrigger,
 } from "@/src/components/components-ui/DropdownMenu"
 import { Button } from "../components-ui/Button"
+import { cn } from "@/src/lib/utils"
 
 import {
   FacebookShareButton,
@@ -29,11 +30,33 @@ interface ShareButtonProps {
 export default function ShareButtons(domain: ShareButtonProps) {
   const params = useParams()
   const url = `${domain.domain}/${params?.title}/${params?.brand}/${params?.model}/${params?.subcategory}/${params?.location}/${params?.listingId}`
+
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("shareTrigger")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
+
   return (
     <div className="items-center justify-center">
       <DropdownMenu>
-        <DropdownMenuTrigger className="flex h-10 w-10 items-center justify-center focus:outline-none">
-          <Share2 className="h-6 w-6" />
+        <DropdownMenuTrigger
+          id="shareTrigger"
+          className="relative flex h-10 w-10 items-center justify-center focus:outline-none"
+        >
+          <p
+            className={cn(
+              "absolute -top-10 flex h-8 w-[75px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+              tooltipVisible &&
+                "opacity-100 transition-opacity duration-200 ease-in"
+            )}
+          >
+            Share Ad
+          </p>
+          <Share2 className="h-6 w-6 hover:text-customAccent" />
         </DropdownMenuTrigger>
         <DropdownMenuContent className="flex flex-row gap-3">
           <DropdownMenuItem asChild>

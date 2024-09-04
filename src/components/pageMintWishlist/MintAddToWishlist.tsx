@@ -130,18 +130,38 @@ export default function MintAddToWishlist({ listing }: WishListProps) {
     setIsLoading(true)
   }
 
+  // TOOLTIP
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("wishTrigger")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
+
   // UI
   return isInWishlist === true ? (
     <div className="relative flex items-center justify-center">
       <Button
+        id="wishTrigger"
         onClick={handleSubmitRemove}
         variant="icon"
         disabled={isLoading}
         className={cn(
-          "relative flex h-10 w-10 items-center justify-center text-rose-500 transition duration-75 hover:scale-110"
+          "relative flex h-10 w-10 items-center justify-center text-rose-500 "
         )}
       >
-        <FaHeart className="absolute z-40 h-6 w-6" />
+        <p
+          className={cn(
+            "absolute -top-12 flex h-10 w-[100px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+            tooltipVisible &&
+              "opacity-100 transition-opacity duration-200 ease-in"
+          )}
+        >
+          Remove From Wishlist
+        </p>
+        <FaHeart className="absolute z-40 h-6 w-6 transition duration-75 hover:scale-110" />
       </Button>
       {isLoading && (
         <Loader2 className="absolute z-50 flex h-3 w-3 animate-spin text-primary" />
@@ -150,14 +170,24 @@ export default function MintAddToWishlist({ listing }: WishListProps) {
   ) : (
     <div className="relative flex items-center justify-center">
       <Button
+        id="wishTrigger"
         onClick={handleSubmitAdd}
         variant="icon"
         disabled={isLoading}
         className={cn(
-          "relative flex h-10 w-10 items-center justify-center font-semibold hover:scale-110 hover:text-rose-500"
+          "relative flex h-10 w-10 items-center justify-center font-semibold  hover:text-rose-500"
         )}
       >
-        <FaRegHeart className="absolute z-40 h-6 w-6" />
+        <p
+          className={cn(
+            "absolute -top-12 flex h-10 w-[85px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+            tooltipVisible &&
+              "opacity-100 transition-opacity duration-200 ease-in"
+          )}
+        >
+          Add To Wishlist
+        </p>
+        <FaRegHeart className="absolute z-40 h-6 w-6 transition duration-75 hover:scale-110" />
       </Button>
       {isLoading && (
         <Loader2 className="absolute z-50 flex h-3 w-3 animate-spin text-primary" />

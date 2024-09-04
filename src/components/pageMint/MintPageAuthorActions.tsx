@@ -11,6 +11,7 @@ import { listingsType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 import { useParams } from "next/navigation"
 import { offerType, queryType } from "@/src/types/db"
+import { cn } from "@/src/lib/utils"
 
 interface UserActionsProps {
   listing: listingsType
@@ -37,6 +38,15 @@ export default function MintPageAuthorActions({
     }
   }, [])
 
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("editTrigger")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
+
   return (
     <div className="flex w-full justify-end space-x-1 md:space-x-2">
       <ShareButtons domain={domain} />
@@ -44,9 +54,19 @@ export default function MintPageAuthorActions({
       <MintManageQueries queries={queries} userId={userId} />
       {!isExpired ? (
         <Link
+          id="editTrigger"
           href={`/ad/edit/${listing.id}`}
-          className="group flex h-10 w-10 items-center justify-center text-primary hover:text-amber-500"
+          className="group relative flex h-10 w-10 items-center justify-center text-primary hover:text-amber-500"
         >
+          <p
+            className={cn(
+              "absolute -top-10 flex h-8 w-[65px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+              tooltipVisible &&
+                "opacity-100 transition-opacity duration-200 ease-in"
+            )}
+          >
+            Edit Ad
+          </p>
           <FileEdit />
         </Link>
       ) : (

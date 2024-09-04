@@ -17,6 +17,7 @@ import {
 import { Button } from "@/src/components/components-ui/Button"
 import axios from "axios"
 import { Trash2, Loader2 } from "lucide-react"
+import { cn } from "@/src/lib/utils"
 
 import { Checkbox } from "../components-ui/Checkbox"
 
@@ -51,10 +52,31 @@ export default function MintDelete(listingId: any) {
     },
   })
 
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("deleteTrigger")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
+
   return (
     <div>
       <AlertDialog>
-        <AlertDialogTrigger className="group flex h-10 w-10 items-center justify-center hover:text-rose-500 ">
+        <AlertDialogTrigger
+          id="deleteTrigger"
+          className="group relative flex h-10 w-10 items-center justify-center hover:text-rose-500 "
+        >
+          <p
+            className={cn(
+              "absolute -top-10 flex h-8 w-[75px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+              tooltipVisible &&
+                "opacity-100 transition-opacity duration-200 ease-in"
+            )}
+          >
+            Delete Ad
+          </p>
           <Trash2 />
         </AlertDialogTrigger>
         <AlertDialogContent>

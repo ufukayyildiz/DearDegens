@@ -56,6 +56,15 @@ export default function MintQuery({ listing }: MintQueryProps) {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
 
+  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
+  const tooltip = document.getElementById("query")
+  tooltip?.addEventListener("mouseover", () => {
+    setTooltipVisible(true)
+  })
+  tooltip?.addEventListener("mouseout", () => {
+    setTooltipVisible(false)
+  })
+
   const queries = useGetQueriesUser(listing.id).data || []
 
   useEffect(() => {
@@ -175,7 +184,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
             id="query"
             className="absolute left-0 top-0 z-50 flex h-full w-full"
           />
-          {isLimited && (
+          {isLimited ? (
             <div
               className={cn(
                 "absolute -top-16 flex h-10 w-40 rounded-lg border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
@@ -184,6 +193,16 @@ export default function MintQuery({ listing }: MintQueryProps) {
             >
               You have reached your query limit for this ad.
             </div>
+          ) : (
+            <p
+              className={cn(
+                "absolute -top-12 flex h-10 w-[100px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+                tooltipVisible &&
+                  "opacity-100 transition-opacity duration-200 ease-in"
+              )}
+            >
+              Request More Information
+            </p>
           )}
           <HelpCircle />
         </AlertDialogTrigger>
