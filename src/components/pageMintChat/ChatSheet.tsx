@@ -69,24 +69,24 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
       >
         <p
           className={cn(
-            "absolute -top-10 flex h-8 w-[85px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
+            "absolute -top-10 hidden h-8 w-[85px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
             tooltipVisible &&
-              "opacity-100 transition-opacity duration-200 ease-in"
+              "flex opacity-100 transition-opacity duration-200 ease-in"
           )}
         >
           Chat Room
         </p>
         <MessageCircle />
       </SheetTrigger>
-      <SheetContent>
+      <SheetContent className="bg-transparent backdrop-blur-xl">
         <SheetHeader className="h-full">
           <SheetTitle className="text-customAccent">Chat Rooms</SheetTitle>
           {isFetching === true ? (
-            <div>
+            <div className="pt-3">
               <ChatRoomSkeleton />
             </div>
           ) : (
-            <div className="h-full">
+            <div className="h-full pt-3">
               {chatRoomData && chatRoomData.length > 0 ? (
                 <div className="flex flex-col space-y-1">
                   {chatRoomData.map((data: roomType, index) => {

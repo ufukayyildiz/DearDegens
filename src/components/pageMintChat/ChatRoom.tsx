@@ -144,8 +144,8 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
       <SheetTrigger>
         <div className="h-full w-full">{userName()}</div>
       </SheetTrigger>
-      <SheetContent>
-        <SheetHeader className="z-40 mr-10 h-16 w-[315px] bg-background pt-5 text-lg font-bold text-customAccent">
+      <SheetContent className="bg-transparent backdrop-blur-xl">
+        <SheetHeader className="z-40 mr-10 h-16 w-full bg-transparent pt-5 text-lg font-bold text-customAccent">
           <h1>Messages</h1>
           <div className="my-3 h-[1px] w-full bg-customAccent" />
         </SheetHeader>
@@ -176,7 +176,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                   <>
                     {msg.roomId === roomData.id && (
                       <div
-                        className="mt-3 flex flex-col rounded-md bg-background p-2"
+                        className="mt-3 flex flex-col rounded-2xl border border-muted bg-background p-3 shadow-md"
                         key={msg.id}
                       >
                         <span
@@ -199,7 +199,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                         </p>
                         <span
                           className={cn(
-                            "flex w-full pl-1 text-left text-[10px] italic text-muted-foreground",
+                            "flex pl-1 text-left text-[10px] italic text-muted-foreground",
                             session?.user.id === msg.userId &&
                               "justify-end text-right"
                           )}
@@ -210,7 +210,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                     )}
                   </>
                 ))}
-              <div className="mt-3 flex flex-col justify-center rounded-md bg-background p-2">
+              <div className="mt-3 flex flex-col justify-center rounded-2xl bg-background p-2">
                 <div className="flex justify-between">
                   <span className="flex w-full justify-start text-left text-xs font-bold italic text-primary">
                     DearDegens Admin
@@ -227,7 +227,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 </span>
               </div>
               <div className="my-3 h-[1px] w-full bg-customAccent" />
-              <p className="w-full text-end text-xs italic text-muted-foreground">
+              <p className="w-full pr-2 text-end text-xs italic text-muted-foreground">
                 Chatroom opened: {formatDateFromTimestamp(roomData.createdAt!)}
               </p>
             </ScrollArea>
@@ -242,7 +242,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                 void form.handleSubmit()
               }}
             >
-              <div className="z-50 flex h-full w-full flex-col justify-end overflow-visible pr-5">
+              <div className="z-50 flex h-full w-full flex-col overflow-visible pr-5">
                 <form.Field
                   name="message"
                   validators={{
