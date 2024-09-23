@@ -37,7 +37,7 @@ export default async function MyMints() {
   ads.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
   return (
-    <div className="z-20 mx-auto mb-52 md:mb-20 min-h-screen w-[95vw] min-w-[280px] overflow-hidden md:w-10/12">
+    <div className="z-20 mx-auto mb-52 min-h-screen w-[95vw] min-w-[280px] overflow-hidden md:mb-20 md:w-10/12">
       <Tabs defaultValue="ads" className="h-full w-full">
         <TabsList className="mt-10 w-full md:space-x-5">
           <TabsTrigger
