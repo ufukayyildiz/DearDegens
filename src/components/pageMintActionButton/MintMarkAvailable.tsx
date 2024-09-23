@@ -9,6 +9,17 @@ import axios from "axios"
 import { Loader2 } from "lucide-react"
 import { useGetListingById } from "@/src/server/services"
 import { useRouter } from "next/navigation"
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from "../components-ui/AlertDialog"
 
 interface MintRenewProps {
   listing: listingsType
@@ -19,6 +30,7 @@ export default function MintMarkAvailable({ listing }: MintRenewProps) {
   const queryClient = useQueryClient()
   const isFetching = useGetListingById(listing.id).isFetching
   const [isLoading, setIsLoading] = useState<boolean>(false)
+  const [hasFeedback, setHasFeedback] = useState<boolean>(false)
 
   const { mutate: updateIsExpired } = useMutation({
     mutationFn: async (listingId: any) => {
@@ -35,10 +47,11 @@ export default function MintMarkAvailable({ listing }: MintRenewProps) {
       })
     },
     onSuccess: () => {
+      setHasFeedback(true)
       setIsLoading(false)
       return toast({
         title: "Success!",
-        description: "Successfully marked your listing as not yet sold.",
+        description: "Successfully marked your listing as available.",
       })
     },
     onSettled: async (_, error) => {
@@ -55,19 +68,48 @@ export default function MintMarkAvailable({ listing }: MintRenewProps) {
 
   return (
     <div>
-      <Button
-        variant="outlineTwo"
-        className="w-28"
-        onClick={() => updateIsExpired(JSON.stringify(listing.id))}
-      >
-        {isLoading ? (
-          <Loader2 className="h-5 w-5 animate-spin" />
-        ) : isFetching ? (
+      {isFetching ? (
+        <Button variant="outlineTwo">
           <span className="text-muted-foreground">AVAILABLE</span>
-        ) : (
-          <span>AVAILABLE</span>
-        )}
-      </Button>
+        </Button>
+      ) : (
+        <AlertDialog>
+          <AlertDialogTrigger asChild>
+            <Button variant="outlineTwo">AVAILABLE</Button>
+          </AlertDialogTrigger>
+          <AlertDialogContent>
+            <AlertDialogHeader>
+              <AlertDialogTitle>Mark listing as available</AlertDialogTitle>
+              <AlertDialogDescription>
+                You are about to place your listing back on the market, allowing
+                other users to send you offers.
+              </AlertDialogDescription>
+            </AlertDialogHeader>
+            <AlertDialogFooter>
+              {hasFeedback ? (
+                <AlertDialogAction onClick={() => setHasFeedback(false)}>
+                  Close
+                </AlertDialogAction>
+              ) : (
+                <div className="flex flex-row gap-5">
+                  <Button
+                    variant="outline"
+                    className="w-20"
+                    onClick={() => updateIsExpired(JSON.stringify(listing.id))}
+                  >
+                    {isLoading ? (
+                      <Loader2 className="h-5 w-5 animate-spin" />
+                    ) : (
+                      <span>Confirm</span>
+                    )}
+                  </Button>
+                  <AlertDialogCancel>Cancel</AlertDialogCancel>
+                </div>
+              )}
+            </AlertDialogFooter>
+          </AlertDialogContent>
+        </AlertDialog>
+      )}
     </div>
   )
 }

@@ -141,7 +141,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
 
   return (
     <Sheet>
-      <SheetTrigger>
+      <SheetTrigger className="w-full">
         <div className="h-full w-full">{userName()}</div>
       </SheetTrigger>
       <SheetContent className="bg-transparent backdrop-blur-xl">
@@ -152,7 +152,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
 
         <div className="relative z-30 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
           <div className="absolute top-0 mb-5 flex h-[50vh] w-full overflow-hidden rounded-md md:h-[65vh]">
-            <ScrollArea className="flex w-full bg-background pr-5">
+            <ScrollArea className="flex w-full bg-transparent pr-5">
               {isPending && (
                 <div
                   className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"

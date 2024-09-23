@@ -81,14 +81,14 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
       <SheetContent className="bg-transparent backdrop-blur-xl">
         <SheetHeader className="h-full">
           <SheetTitle className="text-customAccent">Chat Rooms</SheetTitle>
-          {isFetching === true ? (
+          {isFetching ? (
             <div className="pt-3">
               <ChatRoomSkeleton />
             </div>
           ) : (
             <div className="h-full pt-3">
               {chatRoomData && chatRoomData.length > 0 ? (
-                <div className="flex flex-col space-y-1">
+                <div className="flex w-full flex-col space-y-1">
                   {chatRoomData.map((data: roomType, index) => {
                     return (
                       <div onClick={() => handleRoomChange(data)} key={index}>

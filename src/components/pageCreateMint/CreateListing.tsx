@@ -308,44 +308,48 @@ export default function CreateListing({ user }: CreateListingProps) {
             <form.Field name="category">
               {(field) => {
                 return (
-                  <div className="relative w-full flex-col">
-                    <div className="flex w-full">
-                      {type === "Vehicles" ? (
-                        <FieldLabel>Vehicle Type:</FieldLabel>
-                      ) : (
-                        <FieldLabel>Category:</FieldLabel>
-                      )}
-                      <FieldLabel className=" italic text-rose-500">
-                        *
-                      </FieldLabel>
-                    </div>
+                  type && (
+                    <>
+                      <div className="relative w-full flex-col">
+                        <div className="flex w-full">
+                          {type === "Vehicles" ? (
+                            <FieldLabel>Vehicle Type:</FieldLabel>
+                          ) : (
+                            <FieldLabel>Category:</FieldLabel>
+                          )}
+                          <FieldLabel className=" italic text-rose-500">
+                            *
+                          </FieldLabel>
+                        </div>
 
-                    <Select
-                      required
-                      onValueChange={(event) => setCategory(event)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-96 overflow-auto p-2">
-                        {categories &&
-                          categories.map((item, index) => (
-                            <div key={index}>
-                              <SelectItem
-                                className="text-primary"
-                                value={item.name}
-                                key={item.name}
-                              >
-                                {item.name}
-                              </SelectItem>
-                            </div>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FieldDescription>
-                      Select an appropriate type..
-                    </FieldDescription>
-                  </div>
+                        <Select
+                          required
+                          onValueChange={(event) => setCategory(event)}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-96 overflow-auto p-2">
+                            {categories &&
+                              categories.map((item, index) => (
+                                <div key={index}>
+                                  <SelectItem
+                                    className="text-primary"
+                                    value={item.name}
+                                    key={item.name}
+                                  >
+                                    {item.name}
+                                  </SelectItem>
+                                </div>
+                              ))}
+                          </SelectContent>
+                        </Select>
+                        <FieldDescription>
+                          Select an appropriate type..
+                        </FieldDescription>
+                      </div>
+                    </>
+                  )
                 )
               }}
             </form.Field>
@@ -354,54 +358,62 @@ export default function CreateListing({ user }: CreateListingProps) {
             <form.Field name="subCategory">
               {(field) => {
                 return (
-                  <div className="relative w-full flex-col">
-                    <div className="flex w-full">
-                      {type === "Vehicles" ? (
-                        <FieldLabel>Body Type:</FieldLabel>
-                      ) : (
-                        <FieldLabel>Sub-category:</FieldLabel>
-                      )}
-                      <FieldLabel className=" italic text-rose-500">
-                        *
-                      </FieldLabel>
-                    </div>
+                  type && (
+                    <>
+                      <div className="relative w-full flex-col">
+                        <div className="flex w-full">
+                          {type === "Vehicles" ? (
+                            <FieldLabel>Body Type:</FieldLabel>
+                          ) : (
+                            <FieldLabel>Sub-category:</FieldLabel>
+                          )}
+                          <FieldLabel className=" italic text-rose-500">
+                            *
+                          </FieldLabel>
+                        </div>
 
-                    <Select
-                      required
-                      onValueChange={(event) => setSubCategory(event)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-96 overflow-auto p-2">
-                        {subcategories &&
-                          subcategories.map((item, index) => (
-                            <div key={index}>
-                              <p
-                                className="text-lg font-bold text-primary"
-                                key={item.name}
-                              >
-                                {item.name}
-                              </p>
-                              <hr className="mb-5 mt-2 border border-muted"></hr>
-                              {item.subCategories.map((subs) => (
-                                <SelectItem key={subs} value={subs}>
-                                  {subs}
-                                </SelectItem>
+                        <Select
+                          required
+                          onValueChange={(event) => setSubCategory(event)}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-96 overflow-auto p-2">
+                            {subcategories &&
+                              subcategories.map((item, index) => (
+                                <div key={index}>
+                                  <p
+                                    className="text-lg font-bold text-primary"
+                                    key={item.name}
+                                  >
+                                    {item.name}
+                                  </p>
+                                  <hr className="mb-5 mt-2 border border-muted"></hr>
+                                  {item.subCategories.map((subs) => (
+                                    <SelectItem key={subs} value={subs}>
+                                      {subs}
+                                    </SelectItem>
+                                  ))}
+                                </div>
                               ))}
-                            </div>
-                          ))}
-                      </SelectContent>
-                    </Select>
-                    <FieldDescription>
-                      Select an appropriate body type..
-                    </FieldDescription>
-                  </div>
+                          </SelectContent>
+                        </Select>
+                        <FieldDescription>
+                          Select an appropriate body type..
+                        </FieldDescription>
+                      </div>
+                    </>
+                  )
                 )
               }}
             </form.Field>
           </div>
+        {/* ____________ */}
 
+        {subCategory && (
+          <>
+         
           <div className="flex flex-col gap-10 md:flex-row">
             {/* PRICE */}
             <form.Field
@@ -1105,6 +1117,9 @@ export default function CreateListing({ user }: CreateListingProps) {
               <Link href={`/`}>Cancel</Link>
             </Button>
           </div>
+          </>
+        )}
+        {/* _________ */}
         </form>
       </form.Provider>
     </div>

@@ -12,7 +12,7 @@ interface QueryCardProps {
 export default function MintQueriesCard({ query, userId }: QueryCardProps) {
   console.log("query", query)
   return (
-    <div className="relative z-40 mx-auto mb-3 flex h-auto min-h-[100px] w-11/12 max-w-[500px] flex-col overflow-hidden rounded-lg border border-muted p-2 text-left text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent sm:text-sm">
+    <div className="relative z-40 mx-auto mb-3 flex h-auto min-h-[100px] w-11/12 max-w-[500px] flex-col overflow-hidden rounded-lg border border-muted bg-background p-2 text-left text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent sm:text-sm">
       {/* <div className="mb-3 flex items-center space-x-2">
         <p className="font-semibold italic text-secondary">Name:</p>
         <p>{query.userName}</p>
