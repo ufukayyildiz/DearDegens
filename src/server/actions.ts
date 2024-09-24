@@ -21,6 +21,7 @@ import { listingsType, offersManagerType, offerType } from "../types/db"
 import { nanoid } from "nanoid"
 import axios, { AxiosError } from "axios"
 import { ISO8601Timestamp } from "../lib/utils"
+import { revalidatePath } from "next/cache"
 
 // Admin accept listing
 export const handleAccepted = async (listing: listingsType) => {
@@ -47,10 +48,12 @@ export const handleAccepted = async (listing: listingsType) => {
       adUrl: listing.url,
       createdAt: currentDate,
       title: `Listing ${listing.title} is live!`,
-      description: "Congratulation! Your listing has gone live",
+      description: "Congratulations! Your listing has gone live",
       body: `Our team has reviewed your listing and approved it for public circulation on our platform. Good luck and happy selling!`,
       isRead: false,
     })
+
+    revalidatePath("/command-centre")
 
     console.log("Successfully accepted listing")
   } catch (error) {
@@ -92,7 +95,7 @@ export const handleReject = async (listing: listingsType) => {
       title: `Listing ${listing.title} rejected`,
       description:
         "We regret to inform you that your listing has been rejected",
-      body: `Our team has reviewed your listing and found that the content unfortunately does not conform to our content policies. Once you have amended your listing to be in line with the above-mentioned policies and terms of service, it will be resubmitted for review by our team. To make changes to your listing, you can visit your listings page via the ads manager and click on the EDIT button to navigate to your listing's edit page.`,
+      body: `Our team has reviewed your listing and found that it's content unfortunately does not conform to our content policies. Once you have amended your listing to be in line with the above-mentioned policies and terms of service, it will be resubmitted for review by our team. To make changes to your listing, you can visit your listings page via the ads manager and click on the EDIT button to navigate to your listing's edit page.`,
       isRead: false,
     })
 
@@ -107,6 +110,8 @@ export const handleReject = async (listing: listingsType) => {
         adTitle: listing.title || "",
       }) as React.ReactElement,
     })
+
+    revalidatePath("/command-centre")
 
     console.log("Successfully rejected listing")
   } catch (error) {
@@ -545,6 +550,44 @@ export async function getWishlist() {
     return userWishlist
   } catch (error) {
     console.error("Server error: Failed to fetch wishlist - ", error)
+  }
+}
+
+// Get User Chatrooms
+export async function getUserChatrooms() {
+  try {
+    const session = await getServerSession(authOptions)
+    const userId = session?.user.id
+    const roomQueries = await db.execute(
+      sql.raw(`
+      SELECT 
+        "chatRoom"."id" AS "id", 
+        "chatRoom"."adId" AS "adId", 
+
+        "buyer"."id" AS "userId", 
+        "buyer"."name" AS "userName", 
+        "buyer"."image" AS "userImage",
+
+        "seller"."id" AS "sellerId",
+        "seller"."name" AS "sellerName",
+        "seller"."image" AS "sellerImage",
+
+        "chatRoom"."createdAt" AS "createdAt"
+      FROM "chatRoom" 
+      LEFT JOIN "users" AS "buyer" ON "buyer"."id" = "chatRoom"."userId"
+      LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId"
+      WHERE "chatRoom"."userId" = '${userId}'
+      OR "chatRoom"."sellerId" = '${userId}';
+      `)
+    )
+
+    roomQueries.rows &&
+      roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
+
+    console.log("User chatroom queries query successful")
+    return roomQueries.rows
+  } catch (error) {
+    console.error("Server error: Failed to fetch user chatrooms - ", error)
   }
 }
 

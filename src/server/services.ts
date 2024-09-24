@@ -26,6 +26,7 @@ import {
   getOffersManagerUser,
   getQueriesManagerAuthor,
   getQueriesManagerUser,
+  getUserChatrooms,
 } from "./actions"
 
 // ______________________________________________________________
@@ -158,6 +159,14 @@ export function useGetUserListings() {
 
 // ______________________________________________________________
 // GET CHATROOM
+export function useGetUserChatrooms() {
+  return useQuery({
+    queryKey: ["usersrooms"],
+    queryFn: () => getUserChatrooms(),
+    refetchOnMount: "always",
+  })
+}
+
 export function useGetChatrooms(mintId: any) {
   return useQuery<roomType[]>({
     queryKey: ["chatroom", mintId],

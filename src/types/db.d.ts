@@ -61,3 +61,19 @@ export type offersManagerType = {
   itemName: string | null
   url: string
 }
+
+export type queriesManagerType = {
+  id: string
+  userId: string
+  userName: string
+  adId: string
+  sellerId: string
+  adTitle: string
+  createdAt: Date
+  expirationDate: Date
+  purgeDate: Date
+  query: string
+  reply: string
+  isAnswered: boolean
+  isPublic: boolean
+}

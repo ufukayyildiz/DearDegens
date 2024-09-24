@@ -4,31 +4,27 @@ import { MessageCircle } from "lucide-react"
 import {
   Sheet,
   SheetContent,
-  SheetDescription,
   SheetHeader,
   SheetTitle,
   SheetTrigger,
 } from "../components-ui/Sheet"
-import { messagesType, roomType, chatRoomType } from "@/src/types/db"
+import { messagesType, roomType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
-import { useGetChatrooms, useGetMessages } from "@/src/server/services"
+import { useGetMessages, useGetUserChatrooms } from "@/src/server/services"
 import ChatRoom from "./ChatRoom"
 import ChatRoomSkeleton from "./ChatRoomSkeleton"
 import { useQueryClient } from "@tanstack/react-query"
 import { cn } from "@/src/lib/utils"
 
-interface ChatSheetProps {
-  listingId: any
-}
-
-export default function ChatSheet({ listingId }: ChatSheetProps) {
+export default function ChatSheetUser() {
   const [selectedRoom, setSelectedRoom] = useState<string>("")
   const { data: session } = useSession()
   const userId = session?.user.id
 
   const queryClient = useQueryClient()
   const messages = useGetMessages(selectedRoom).data as messagesType[]
-  const { data, isFetching } = useGetChatrooms(listingId)
+  const data = useGetUserChatrooms().data as roomType[]
+  const isFetching = useGetUserChatrooms().isFetching
 
   const chatRoomData: roomType[] = []
   const filteredRoom =
@@ -41,7 +37,8 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
 
   // INVALIDATE LISTING CHAT
   const handleInvalidateChat = async () => {
-    await queryClient.invalidateQueries({ queryKey: ["chatroom", listingId] })
+    console.log("invalidate chats")
+    await queryClient.invalidateQueries({ queryKey: ["usersrooms", userId] })
   }
 
   // MANAGE ROOM SELECT
@@ -50,33 +47,16 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
     await queryClient.invalidateQueries({ queryKey: ["messages", data.id] })
   }
 
-  // TOOLTIP
-  const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
-  const tooltip = document.getElementById("chatTrigger")
-  tooltip?.addEventListener("mouseover", () => {
-    setTooltipVisible(true)
-  })
-  tooltip?.addEventListener("mouseout", () => {
-    setTooltipVisible(false)
-  })
-
   return (
     <Sheet>
       <SheetTrigger
-        id="chatTrigger"
-        className="group relative flex h-10 min-w-10 items-center justify-center hover:text-blue-500"
         onClick={handleInvalidateChat}
+        className="flex flex-row items-center rounded border-2 border-transparent p-2 hover:border-customAccent"
       >
-        <p
-          className={cn(
-            "absolute -top-10 hidden h-8 w-[85px] items-center justify-center rounded-md border border-muted bg-background p-1 text-center text-xs text-primary opacity-0 shadow-md",
-            tooltipVisible &&
-              "flex opacity-100 transition-opacity duration-200 ease-in"
-          )}
-        >
-          Chat Room
-        </p>
-        <MessageCircle />
+        <div className="relative flex h-8 w-8 items-center justify-center">
+          <MessageCircle className="absolute h-6 w-6" />
+        </div>
+        <p className="pl-2 text-sm">Chat Rooms</p>
       </SheetTrigger>
       <SheetContent className="bg-transparent backdrop-blur-xl">
         <SheetHeader className="h-full">
