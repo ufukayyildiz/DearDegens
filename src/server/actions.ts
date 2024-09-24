@@ -48,7 +48,7 @@ export const handleAccepted = async (listing: listingsType) => {
       adUrl: listing.url,
       createdAt: currentDate,
       title: `Listing ${listing.title} is live!`,
-      description: "Congratulation! Your listing has gone live",
+      description: "Congratulations! Your listing has gone live",
       body: `Our team has reviewed your listing and approved it for public circulation on our platform. Good luck and happy selling!`,
       isRead: false,
     })
@@ -95,7 +95,7 @@ export const handleReject = async (listing: listingsType) => {
       title: `Listing ${listing.title} rejected`,
       description:
         "We regret to inform you that your listing has been rejected",
-      body: `Our team has reviewed your listing and found that the content unfortunately does not conform to our content policies. Once you have amended your listing to be in line with the above-mentioned policies and terms of service, it will be resubmitted for review by our team. To make changes to your listing, you can visit your listings page via the ads manager and click on the EDIT button to navigate to your listing's edit page.`,
+      body: `Our team has reviewed your listing and found that it's content unfortunately does not conform to our content policies. Once you have amended your listing to be in line with the above-mentioned policies and terms of service, it will be resubmitted for review by our team. To make changes to your listing, you can visit your listings page via the ads manager and click on the EDIT button to navigate to your listing's edit page.`,
       isRead: false,
     })
 

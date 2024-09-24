@@ -73,7 +73,7 @@ export async function POST(req: Request) {
         createdAt: currentDate,
         title: `Offer recieved!`,
         description: `Your listing ${title} has recieved an offer!`,
-        body: `An offer of R ${offerPrice} has been placed on your listing. Head over to your listings page to either accept or make a counter offer.`,
+        body: `An offer of R ${offerPrice} has been placed on your listing. Head over to your listings page to either accept it or make a counter offer.`,
         isRead: false,
       })
 
