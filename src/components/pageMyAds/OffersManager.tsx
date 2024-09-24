@@ -16,7 +16,7 @@ import {
 import PlaceholderFish from "../placeholdersEmptyState/PlaceholderFish"
 
 export default function OffersManager() {
-  const mock = [1, 2, 3]
+  const mock = [1]
   const userOffers =
     (useGetOffersManagerUser().data as offersManagerType[]) || []
   const userFetching = useGetOffersManagerUser().isFetching
@@ -46,7 +46,7 @@ export default function OffersManager() {
           </AccordionTrigger>
           <AccordionContent>
             {authorFetching ? (
-              mock.map((item) => <MintOffersManagerCardSkeleton />)
+              mock.map(() => <MintOffersManagerCardSkeleton />)
             ) : authorOffers[0] !== undefined ? (
               authorOffers.map((offer: offersManagerType) => (
                 <MintOffersManagerCard adOffer={offer} />
@@ -61,13 +61,13 @@ export default function OffersManager() {
           <AccordionTrigger className="relative">Offers sent:</AccordionTrigger>
           <AccordionContent>
             {userFetching ? (
-              mock.map((item) => <MintOffersManagerCardSkeleton />)
+              mock.map(() => <MintOffersManagerCardSkeleton />)
             ) : userOffers[0] !== undefined ? (
               userOffers.map((offer: offersManagerType) => (
                 <MintOffersManagerCard adOffer={offer} />
               ))
             ) : (
-              <PlaceholderFish text={"You have not sent any offers."} />
+              <PlaceholderFish text={"You have not yet sent any offers."} />
             )}
           </AccordionContent>
         </AccordionItem>

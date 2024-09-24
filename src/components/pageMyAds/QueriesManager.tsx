@@ -1,11 +1,12 @@
 "use client"
 import React from "react"
-import { listingsType, offerType, queryType } from "@/src/types/db"
+import { queriesManagerType, queryType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
 import {
   useGetQueriesManagerAuthor,
   useGetQueriesManagerUser,
 } from "@/src/server/services"
+import MintQueriesManagerCardSkeleton from "./MintQueriesManagerCardSkeleton"
 import MintQueriesManagerCard from "./MintQueriesManagerCard"
 import {
   Accordion,
@@ -13,25 +14,28 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from "../components-ui/Accordion"
+import PlaceholderRabbit from "../placeholdersEmptyState/PlaceholderRabbit"
 
 export default function QueriesManager() {
   const { data: session } = useSession()
   const userId = session?.user.id!
-
-  const userQueries = useGetQueriesManagerUser().data || []
-  const authorQueries = useGetQueriesManagerAuthor().data || []
-
-  console.log("user:", userQueries, "author:", authorQueries)
+  const mock = [1]
+  const userQueries =
+    (useGetQueriesManagerUser().data as queriesManagerType[]) || []
+  const userFetching = useGetQueriesManagerUser().isFetching
+  const authorQueries =
+    (useGetQueriesManagerAuthor().data as queriesManagerType[]) || []
+  const authorFetching = useGetQueriesManagerAuthor().isFetching
 
   userQueries &&
     // @ts-ignore
-    userQueries.sort((a: any, b: any) => {
+    userQueries.sort((a: queriesManagerType, b: queriesManagerType) => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
 
   authorQueries &&
     // @ts-ignore
-    authorQueries.sort((a: any, b: any) => {
+    authorQueries.sort((a: queriesManagerType, b: queriesManagerType) => {
       return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
     })
 
@@ -41,21 +45,31 @@ export default function QueriesManager() {
         <AccordionItem value="in">
           <AccordionTrigger>Queries recieved:</AccordionTrigger>
           <AccordionContent>
-            {authorQueries &&
+            {authorFetching ? (
+              mock.map(() => <MintQueriesManagerCardSkeleton />)
+            ) : authorQueries[0] !== undefined ? (
               // @ts-ignore
               authorQueries.map((query: queryType) => (
                 <MintQueriesManagerCard query={query} userId={userId} />
-              ))}
+              ))
+            ) : (
+              <PlaceholderRabbit text={"You have not recieved any queries."} />
+            )}
           </AccordionContent>
         </AccordionItem>
         <AccordionItem value="out">
           <AccordionTrigger>Queries sent:</AccordionTrigger>
           <AccordionContent>
-            {userQueries &&
+            {userFetching ? (
+              mock.map(() => <MintQueriesManagerCardSkeleton />)
+            ) : userQueries[0] !== undefined ? (
               // @ts-ignore
               userQueries.map((query: queryType) => (
                 <MintQueriesManagerCard query={query} userId={userId} />
-              ))}
+              ))
+            ) : (
+              <PlaceholderRabbit text={"You have not yet sent any queries."} />
+            )}
           </AccordionContent>
         </AccordionItem>
       </Accordion>
