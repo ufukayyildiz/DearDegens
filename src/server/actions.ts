@@ -548,6 +548,44 @@ export async function getWishlist() {
   }
 }
 
+// Get User Chatrooms
+export async function getUserChatrooms() {
+  try {
+    const session = await getServerSession(authOptions)
+    const userId = session?.user.id
+    const roomQueries = await db.execute(
+      sql.raw(`
+      SELECT 
+        "chatRoom"."id" AS "id", 
+        "chatRoom"."adId" AS "adId", 
+
+        "buyer"."id" AS "userId", 
+        "buyer"."name" AS "userName", 
+        "buyer"."image" AS "userImage",
+
+        "seller"."id" AS "sellerId",
+        "seller"."name" AS "sellerName",
+        "seller"."image" AS "sellerImage",
+
+        "chatRoom"."createdAt" AS "createdAt"
+      FROM "chatRoom" 
+      LEFT JOIN "users" AS "buyer" ON "buyer"."id" = "chatRoom"."userId"
+      LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId"
+      WHERE "chatRoom"."userId" = '${userId}'
+      OR "chatRoom"."sellerId" = '${userId}';
+      `)
+    )
+
+    roomQueries.rows &&
+      roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
+
+    console.log("User chatroom queries query successful")
+    return roomQueries.rows
+  } catch (error) {
+    console.error("Server error: Failed to fetch user chatrooms - ", error)
+  }
+}
+
 // Get listing Chatrooms
 export async function getChatrooms(mintId: string) {
   try {

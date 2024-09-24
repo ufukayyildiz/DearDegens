@@ -210,7 +210,7 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
                     )}
                   </>
                 ))}
-              <div className="mt-3 flex flex-col justify-center rounded-2xl bg-background p-2">
+              <div className="mt-3 flex flex-col justify-center rounded-2xl border border-muted bg-background p-2">
                 <div className="flex justify-between">
                   <span className="flex w-full justify-start text-left text-xs font-bold italic text-primary">
                     DearDegens Admin

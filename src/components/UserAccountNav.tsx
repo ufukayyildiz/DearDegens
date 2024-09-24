@@ -4,6 +4,7 @@ import Link from "next/link"
 import { signOut } from "next-auth/react"
 import { useTheme } from "next-themes"
 import { ThemeToggle } from "./components-global/theme-toggle"
+import ChatSheetUser from "./pageMintChat/ChatSheetUser"
 import { User } from "../types/user"
 import {
   DropdownMenu,
@@ -22,6 +23,7 @@ import {
   FileCog,
   Moon,
   Sun,
+  MessageCircle,
 } from "lucide-react"
 
 interface UserAccountNavProps extends React.HTMLAttributes<HTMLDivElement> {
@@ -94,6 +96,10 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
           </DropdownMenuItem>
 
           <DropdownMenuItem asChild>
+              <ChatSheetUser/>
+          </DropdownMenuItem>
+
+          <DropdownMenuItem asChild>
             <div>
               <div className="relative flex h-8 w-8 items-center justify-center">
                 <FilePlus className="absolute h-6 w-6" />
@@ -126,7 +132,7 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
             </div>
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild>
+          {/* <DropdownMenuItem asChild>
             <div>
               <div className="relative flex h-8 w-8 items-center justify-center">
                 <BookOpen className="absolute h-6 w-6" />
@@ -135,7 +141,7 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
                 User Guide
               </Link>
             </div>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
           <DropdownMenuItem
             asChild
