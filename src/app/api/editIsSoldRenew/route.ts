@@ -1,6 +1,7 @@
 import { db } from "@/src/server/db"
 import { eq } from "drizzle-orm"
 import { listings } from "@/src/server/db/schema"
+import { revalidatePath } from "next/cache"
 
 export async function PATCH(req: Request) {
   try {
@@ -12,6 +13,10 @@ export async function PATCH(req: Request) {
         isSold: false,
       })
       .where(eq(listings.id, listingId))
+
+    revalidatePath(
+      "/(listing)/[title]/[brand]/[model]/[subcategory]/[location]/[listingId]"
+    )
 
     return new Response("Successfully updated isSold status.", {
       status: 200,

@@ -233,7 +233,7 @@ export default function CreateListing({ user }: CreateListingProps) {
         return toast({
           title: "Something went wrong.",
           description:
-            "Your post was not published as there was an error connecting to the server. Please try again.",
+            "Your listing was not published as there was an error connecting to the server. Please try again.",
           variant: "destructive",
         })
       }
@@ -244,7 +244,7 @@ export default function CreateListing({ user }: CreateListingProps) {
       router.push("/ad/ads-manager")
       router.refresh()
       return toast({
-        description: "Your post has been published.",
+        description: "Your listing has been published.",
       })
     },
   })
@@ -409,202 +409,24 @@ export default function CreateListing({ user }: CreateListingProps) {
               }}
             </form.Field>
           </div>
-        {/* ____________ */}
+          {/* ____________ */}
 
-        {subCategory && (
-          <>
-         
-          <div className="flex flex-col gap-10 md:flex-row">
-            {/* PRICE */}
-            <form.Field
-              name="price"
-              validators={{
-                onChange: listingPrice,
-                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
-                onChangeAsync: onChangeAsync,
-              }}
-            >
-              {(field) => (
-                <div className="relative w-full flex-col">
-                  <div className="flex w-full ">
-                    <FieldLabel>Price:</FieldLabel>
-                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
-                  </div>
-                  <Input
-                    type="number"
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(event) =>
-                      // @ts-ignore
-                      field.handleChange(event.target.value)
-                    }
-                  />
-
-                  <FieldDescription>Have a price in mind?</FieldDescription>
-                  <FieldInfo field={field} />
-                </div>
-              )}
-            </form.Field>
-
-            {/* CONDITION */}
-            <form.Field name="condition">
-              {(field) => {
-                return (
-                  <div className="relative w-full flex-col">
-                    <div className="flex w-full">
-                      <FieldLabel>Condition:</FieldLabel>
-                      <FieldLabel className=" italic text-rose-500">
-                        *
-                      </FieldLabel>
-                    </div>
-
-                    <Select
-                      required
-                      onValueChange={(event) => field.handleChange(event)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-96 overflow-auto p-2">
-                        {condition.map((item) => (
-                          <SelectItem key={item} value={item}>
-                            {item}
-                          </SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FieldDescription>Be honest now ;)</FieldDescription>
-                  </div>
-                )
-              }}
-            </form.Field>
-          </div>
-
-          {/* TITLE */}
-          <form.Field
-            name="title"
-            validators={{
-              onChange: listingTitle,
-              onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
-              onChangeAsync: onChangeAsync,
-            }}
-          >
-            {(field) => (
-              <div className="relative w-full flex-col">
-                <div className="flex w-full">
-                  <FieldLabel>Title:</FieldLabel>
-                  <FieldLabel className=" italic text-rose-500">*</FieldLabel>
-                </div>
-                <Input
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  className="w-full text-primary"
-                  required
-                />
-                <FieldDescription>
-                  What are we listing for you today?
-                </FieldDescription>
-                <FieldInfo field={field} />
-              </div>
-            )}
-          </form.Field>
-
-          <div className="flex w-full flex-col justify-between gap-10 md:flex-row">
-            {/* BRAND */}
-            <form.Field
-              name="brand"
-              validators={{
-                onChange: listingBrand,
-                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
-                onChangeAsync: onChangeAsync,
-              }}
-            >
-              {(field) => (
-                <div className="relative w-full flex-col">
-                  <div className="flex w-full">
-                    {type === "Vehicles" ? (
-                      <FieldLabel>Manufacturer:</FieldLabel>
-                    ) : (
-                      <FieldLabel>Brand:</FieldLabel>
-                    )}
-                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
-                  </div>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className="w-full text-primary"
-                    required
-                  />
-                  <FieldDescription>
-                    It&apos;s all about the branding..
-                  </FieldDescription>
-                  <FieldInfo field={field} />
-                </div>
-              )}
-            </form.Field>
-
-            {/* MODEL */}
-            <form.Field
-              name="model"
-              validators={{
-                onChange: listingModel,
-                onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
-                onChangeAsync: onChangeAsync,
-              }}
-            >
-              {(field) => (
-                <div className="relative w-full flex-col">
-                  <div className="flex w-full">
-                    <FieldLabel>Model:</FieldLabel>
-                    <FieldLabel className=" italic text-rose-500">*</FieldLabel>
-                  </div>
-                  <Input
-                    id={field.name}
-                    name={field.name}
-                    value={field.state.value}
-                    onBlur={field.handleBlur}
-                    onChange={(e) => field.handleChange(e.target.value)}
-                    className="w-full text-primary"
-                    required
-                  />
-                  {type === "Vehicles" ? (
-                    <FieldDescription>
-                      Include vehicle full model name..
-                    </FieldDescription>
-                  ) : (
-                    <FieldDescription>
-                      Include products full model name..
-                    </FieldDescription>
-                  )}
-                  <FieldInfo field={field} />
-                </div>
-              )}
-            </form.Field>
-          </div>
-          {type === "Vehicles" && (
+          {subCategory && (
             <>
               <div className="flex flex-col gap-10 md:flex-row">
-                {/* MILEAGE */}
+                {/* PRICE */}
                 <form.Field
-                  name="mileage"
+                  name="price"
                   validators={{
-                    onChange: listingMileage,
+                    onChange: listingPrice,
                     onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
                     onChangeAsync: onChangeAsync,
                   }}
                 >
                   {(field) => (
                     <div className="relative w-full flex-col">
-                      <div className="flex w-full">
-                        <FieldLabel>Mileage:</FieldLabel>
+                      <div className="flex w-full ">
+                        <FieldLabel>Price:</FieldLabel>
                         <FieldLabel className=" italic text-rose-500">
                           *
                         </FieldLabel>
@@ -616,23 +438,129 @@ export default function CreateListing({ user }: CreateListingProps) {
                         value={field.state.value}
                         onBlur={field.handleBlur}
                         onChange={(event) =>
+                          // @ts-ignore
                           field.handleChange(event.target.value)
                         }
                       />
 
+                      <FieldDescription>Have a price in mind?</FieldDescription>
+                      <FieldInfo field={field} />
+                    </div>
+                  )}
+                </form.Field>
+
+                {/* CONDITION */}
+                <form.Field name="condition">
+                  {(field) => {
+                    return (
+                      <div className="relative w-full flex-col">
+                        <div className="flex w-full">
+                          <FieldLabel>Condition:</FieldLabel>
+                          <FieldLabel className=" italic text-rose-500">
+                            *
+                          </FieldLabel>
+                        </div>
+
+                        <Select
+                          required
+                          onValueChange={(event) => field.handleChange(event)}
+                        >
+                          <SelectTrigger className="w-full">
+                            <SelectValue />
+                          </SelectTrigger>
+                          <SelectContent className="max-h-96 overflow-auto p-2">
+                            {condition.map((item) => (
+                              <SelectItem key={item} value={item}>
+                                {item}
+                              </SelectItem>
+                            ))}
+                          </SelectContent>
+                        </Select>
+                        <FieldDescription>Be honest now ;)</FieldDescription>
+                      </div>
+                    )
+                  }}
+                </form.Field>
+              </div>
+
+              {/* TITLE */}
+              <form.Field
+                name="title"
+                validators={{
+                  onChange: listingTitle,
+                  onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                  onChangeAsync: onChangeAsync,
+                }}
+              >
+                {(field) => (
+                  <div className="relative w-full flex-col">
+                    <div className="flex w-full">
+                      <FieldLabel>Title:</FieldLabel>
+                      <FieldLabel className=" italic text-rose-500">
+                        *
+                      </FieldLabel>
+                    </div>
+                    <Input
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className="w-full text-primary"
+                      required
+                    />
+                    <FieldDescription>
+                      What are we listing for you today?
+                    </FieldDescription>
+                    <FieldInfo field={field} />
+                  </div>
+                )}
+              </form.Field>
+
+              <div className="flex w-full flex-col justify-between gap-10 md:flex-row">
+                {/* BRAND */}
+                <form.Field
+                  name="brand"
+                  validators={{
+                    onChange: listingBrand,
+                    onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                    onChangeAsync: onChangeAsync,
+                  }}
+                >
+                  {(field) => (
+                    <div className="relative w-full flex-col">
+                      <div className="flex w-full">
+                        {type === "Vehicles" ? (
+                          <FieldLabel>Manufacturer:</FieldLabel>
+                        ) : (
+                          <FieldLabel>Brand:</FieldLabel>
+                        )}
+                        <FieldLabel className=" italic text-rose-500">
+                          *
+                        </FieldLabel>
+                      </div>
+                      <Input
+                        id={field.name}
+                        name={field.name}
+                        value={field.state.value}
+                        onBlur={field.handleBlur}
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="w-full text-primary"
+                        required
+                      />
                       <FieldDescription>
-                        Its about quality, not quantity!
+                        It&apos;s all about the branding..
                       </FieldDescription>
                       <FieldInfo field={field} />
                     </div>
                   )}
                 </form.Field>
 
-                {/* YEAR */}
+                {/* MODEL */}
                 <form.Field
-                  name="year"
+                  name="model"
                   validators={{
-                    onChange: listingYear,
+                    onChange: listingModel,
                     onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
                     onChangeAsync: onChangeAsync,
                   }}
@@ -640,37 +568,410 @@ export default function CreateListing({ user }: CreateListingProps) {
                   {(field) => (
                     <div className="relative w-full flex-col">
                       <div className="flex w-full">
-                        <FieldLabel>Model Year:</FieldLabel>
+                        <FieldLabel>Model:</FieldLabel>
                         <FieldLabel className=" italic text-rose-500">
                           *
                         </FieldLabel>
                       </div>
                       <Input
-                        type="number"
                         id={field.name}
                         name={field.name}
                         value={field.state.value}
                         onBlur={field.handleBlur}
-                        onChange={(event) =>
-                          field.handleChange(event.target.value)
-                        }
+                        onChange={(e) => field.handleChange(e.target.value)}
+                        className="w-full text-primary"
+                        required
                       />
-
-                      <FieldDescription>Manufactured year..</FieldDescription>
+                      {type === "Vehicles" ? (
+                        <FieldDescription>
+                          Include vehicle full model name..
+                        </FieldDescription>
+                      ) : (
+                        <FieldDescription>
+                          Include products full model name..
+                        </FieldDescription>
+                      )}
                       <FieldInfo field={field} />
                     </div>
                   )}
                 </form.Field>
               </div>
+              {type === "Vehicles" && (
+                <>
+                  <div className="flex flex-col gap-10 md:flex-row">
+                    {/* MILEAGE */}
+                    <form.Field
+                      name="mileage"
+                      validators={{
+                        onChange: listingMileage,
+                        onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                        onChangeAsync: onChangeAsync,
+                      }}
+                    >
+                      {(field) => (
+                        <div className="relative w-full flex-col">
+                          <div className="flex w-full">
+                            <FieldLabel>Mileage:</FieldLabel>
+                            <FieldLabel className=" italic text-rose-500">
+                              *
+                            </FieldLabel>
+                          </div>
+                          <Input
+                            type="number"
+                            id={field.name}
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(event) =>
+                              field.handleChange(event.target.value)
+                            }
+                          />
+
+                          <FieldDescription>
+                            Its about quality, not quantity!
+                          </FieldDescription>
+                          <FieldInfo field={field} />
+                        </div>
+                      )}
+                    </form.Field>
+
+                    {/* YEAR */}
+                    <form.Field
+                      name="year"
+                      validators={{
+                        onChange: listingYear,
+                        onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                        onChangeAsync: onChangeAsync,
+                      }}
+                    >
+                      {(field) => (
+                        <div className="relative w-full flex-col">
+                          <div className="flex w-full">
+                            <FieldLabel>Model Year:</FieldLabel>
+                            <FieldLabel className=" italic text-rose-500">
+                              *
+                            </FieldLabel>
+                          </div>
+                          <Input
+                            type="number"
+                            id={field.name}
+                            name={field.name}
+                            value={field.state.value}
+                            onBlur={field.handleBlur}
+                            onChange={(event) =>
+                              field.handleChange(event.target.value)
+                            }
+                          />
+
+                          <FieldDescription>
+                            Manufactured year..
+                          </FieldDescription>
+                          <FieldInfo field={field} />
+                        </div>
+                      )}
+                    </form.Field>
+                  </div>
+
+                  <div className="flex flex-col gap-10 md:flex-row">
+                    {/* TRANSMISSION */}
+                    <form.Field name="transmission">
+                      {(field) => {
+                        return (
+                          <div className="relative w-full flex-col">
+                            <div className="flex w-full">
+                              <FieldLabel>Transmission:</FieldLabel>
+                              <FieldLabel className=" italic text-rose-500">
+                                *
+                              </FieldLabel>
+                            </div>
+
+                            <Select
+                              required
+                              onValueChange={(event) =>
+                                field.handleChange(event)
+                              }
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="max-h-96 overflow-auto p-2">
+                                {transmission.map((item) => (
+                                  <SelectItem key={item} value={item}>
+                                    {item}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FieldDescription>
+                              One foot or two?
+                            </FieldDescription>
+                          </div>
+                        )
+                      }}
+                    </form.Field>
+
+                    {/* FUEL */}
+                    <form.Field name="fuel">
+                      {(field) => {
+                        return (
+                          <div className="relative w-full flex-col">
+                            <div className="flex w-full">
+                              <FieldLabel>Fuel Type:</FieldLabel>
+                              <FieldLabel className=" italic text-rose-500">
+                                *
+                              </FieldLabel>
+                            </div>
+
+                            <Select
+                              required
+                              onValueChange={(event) =>
+                                field.handleChange(event)
+                              }
+                            >
+                              <SelectTrigger className="w-full">
+                                <SelectValue />
+                              </SelectTrigger>
+                              <SelectContent className="max-h-96 overflow-auto p-2">
+                                {fuel.map((item) => (
+                                  <SelectItem key={item} value={item}>
+                                    {item}
+                                  </SelectItem>
+                                ))}
+                              </SelectContent>
+                            </Select>
+                            <FieldDescription>
+                              Petrol or Diesel?
+                            </FieldDescription>
+                          </div>
+                        )
+                      }}
+                    </form.Field>
+                  </div>
+                </>
+              )}
+
+              {/* DESCRIPTION */}
+              <form.Field
+                name="description"
+                validators={{
+                  onChange: listingDescription,
+                  onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
+                  onChangeAsync: onChangeAsync,
+                }}
+              >
+                {(field) => (
+                  <div className="relative w-full flex-col">
+                    <div className="flex w-full">
+                      <FieldLabel>Type your message here:</FieldLabel>
+                      <FieldLabel className=" italic text-rose-500">
+                        *
+                      </FieldLabel>
+                    </div>
+                    <Textarea
+                      id={field.name}
+                      name={field.name}
+                      value={field.state.value}
+                      onBlur={field.handleBlur}
+                      onChange={(e) => field.handleChange(e.target.value)}
+                      className="h-32 w-full text-primary"
+                      required
+                    />
+                    <FieldDescription>
+                      Good descriptions = Speedy sales!
+                    </FieldDescription>
+                    <FieldInfo field={field} />
+                  </div>
+                )}
+              </form.Field>
+
+              {/* ITEMS */}
+              <hr className="border border-muted" />
+              <div className="mb-10 flex items-center justify-start space-x-2">
+                <Checkbox
+                  id="disable"
+                  checked={isList}
+                  onCheckedChange={() => setIsList(!isList)}
+                />
+                {type === "Vehicles" ? (
+                  <Label
+                    htmlFor="disable"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Any spares sold seperately?
+                  </Label>
+                ) : (
+                  <Label
+                    htmlFor="disable"
+                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                  >
+                    Would you like to list multiple items?
+                  </Label>
+                )}
+              </div>
+              <div className={cn(!isList && "hidden")}>
+                <form.Field name="items" mode="array">
+                  {(itemsField) => (
+                    <div className="w-full">
+                      <FieldLabel>Listed Items:</FieldLabel>
+                      <div className="flex flex-row pr-12">
+                        <FieldDescription className="w-full">
+                          Name{" "}
+                          <span className="text-[10px]">(Max 64 Char.)</span>:
+                        </FieldDescription>
+                        <FieldDescription className="w-full pl-3">
+                          Price:
+                        </FieldDescription>
+                      </div>
+                      <div>
+                        {!itemsField.state.value.length ? (
+                          <FieldDescription className="mb-5">
+                            Click the &quot;Plus&quot; icon to start adding
+                            items..
+                          </FieldDescription>
+                        ) : (
+                          itemsField.state.value.map(
+                            (items: any, index: number) => (
+                              <div
+                                id={items.id}
+                                key={index}
+                                className="relative mb-5 flex w-full flex-row space-x-5 pr-12"
+                              >
+                                <itemsField.Field
+                                  /* @ts-ignore */
+                                  index={index}
+                                  /* @ts-ignore */
+                                  name="name"
+                                >
+                                  {(field) => {
+                                    return (
+                                      <div className="w-full">
+                                        <Input
+                                          id={field.name}
+                                          name={field.name}
+                                          /* @ts-ignore */
+                                          value={field.state.value}
+                                          onBlur={field.handleBlur}
+                                          onChange={(e) =>
+                                            field.handleChange(e.target.value)
+                                          }
+                                          className="w-full text-primary"
+                                        />
+                                        <FieldInfo field={field} />
+                                      </div>
+                                    )
+                                  }}
+                                </itemsField.Field>
+
+                                <itemsField.Field
+                                  /* @ts-ignore */
+                                  index={index}
+                                  /* @ts-ignore */
+                                  name="price"
+                                >
+                                  {(field) => {
+                                    return (
+                                      <div className="w-full">
+                                        <Input
+                                          id={field.name}
+                                          name={field.name}
+                                          /* @ts-ignore */
+                                          value={field.state.value}
+                                          onBlur={field.handleBlur}
+                                          onChange={(event) =>
+                                            // @ts-ignore
+                                            field.handleChange(
+                                              event.target.value
+                                            )
+                                          }
+                                          className="w-full text-primary"
+                                        />
+                                        <FieldInfo field={field} />
+                                      </div>
+                                    )
+                                  }}
+                                </itemsField.Field>
+
+                                <itemsField.Field
+                                  /* @ts-ignore */
+                                  index={index}
+                                  /* @ts-ignore */
+                                  name="isSold"
+                                >
+                                  {(field) => {
+                                    return (
+                                      <div className="hidden">
+                                        <Select
+                                          required
+                                          onValueChange={(event) =>
+                                            field.handleChange(event)
+                                          }
+                                          defaultValue="false"
+                                        >
+                                          <SelectTrigger className="h-10 w-28 text-sm">
+                                            <SelectValue />
+                                          </SelectTrigger>
+                                          <SelectContent className="max-h-96 overflow-auto p-2 text-sm">
+                                            <SelectItem key="t" value="true">
+                                              True
+                                            </SelectItem>
+                                            <SelectItem key="f" value="false">
+                                              False
+                                            </SelectItem>
+                                          </SelectContent>
+                                        </Select>
+                                      </div>
+                                    )
+                                  }}
+                                </itemsField.Field>
+
+                                <Button
+                                  variant="icon"
+                                  onClick={(event) => {
+                                    event.preventDefault()
+                                    itemsField.removeValue(index)
+                                  }}
+                                  className={cn(
+                                    "absolute bottom-1 right-0 items-center justify-center hover:text-customAccent",
+                                    itemsField.state.value.length <= 1 &&
+                                      "hidden"
+                                  )}
+                                >
+                                  <X className="absolute w-10 text-muted-foreground" />
+                                </Button>
+                              </div>
+                            )
+                          )
+                        )}
+                      </div>
+                      <Button
+                        variant="icon"
+                        onClick={(event) => {
+                          event.preventDefault()
+                          itemsField.pushValue({
+                            id: nanoid(),
+                            name: "",
+                            price: 0,
+                            isSold: "false",
+                          })
+                        }}
+                        className="text-muted-foreground hover:text-customAccent"
+                      >
+                        <PlusCircle />
+                      </Button>
+                    </div>
+                  )}
+                </form.Field>
+              </div>
+              <hr className="border border-muted" />
 
               <div className="flex flex-col gap-10 md:flex-row">
-                {/* TRANSMISSION */}
-                <form.Field name="transmission">
+                {/* LOCATION */}
+                <form.Field name="location">
                   {(field) => {
                     return (
                       <div className="relative w-full flex-col">
                         <div className="flex w-full">
-                          <FieldLabel>Transmission:</FieldLabel>
+                          <FieldLabel>Location:</FieldLabel>
                           <FieldLabel className=" italic text-rose-500">
                             *
                           </FieldLabel>
@@ -684,26 +985,37 @@ export default function CreateListing({ user }: CreateListingProps) {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="max-h-96 overflow-auto p-2">
-                            {transmission.map((item) => (
-                              <SelectItem key={item} value={item}>
-                                {item}
-                              </SelectItem>
+                            {southAfrica.map((category, index) => (
+                              <div key={index}>
+                                <hr className="mb-10"></hr>
+                                <p
+                                  className="text-lg font-bold text-primary"
+                                  key={category.name}
+                                >
+                                  {category.name}
+                                </p>
+                                {category.subCategories.map((subs) => (
+                                  <SelectItem key={subs} value={subs}>
+                                    {subs}
+                                  </SelectItem>
+                                ))}
+                              </div>
                             ))}
                           </SelectContent>
                         </Select>
-                        <FieldDescription>One foot or two?</FieldDescription>
+                        <FieldDescription>Where are you from?</FieldDescription>
                       </div>
                     )
                   }}
                 </form.Field>
 
-                {/* FUEL */}
-                <form.Field name="fuel">
+                {/* MEETUP */}
+                <form.Field name="meetup">
                   {(field) => {
                     return (
                       <div className="relative w-full flex-col">
                         <div className="flex w-full">
-                          <FieldLabel>Fuel Type:</FieldLabel>
+                          <FieldLabel>Meeting preferance:</FieldLabel>
                           <FieldLabel className=" italic text-rose-500">
                             *
                           </FieldLabel>
@@ -717,409 +1029,125 @@ export default function CreateListing({ user }: CreateListingProps) {
                             <SelectValue />
                           </SelectTrigger>
                           <SelectContent className="max-h-96 overflow-auto p-2">
-                            {fuel.map((item) => (
-                              <SelectItem key={item} value={item}>
-                                {item}
-                              </SelectItem>
-                            ))}
+                            <SelectItem key="pub" value="public">
+                              Meet in public
+                            </SelectItem>
+                            <SelectItem key="col" value="collect">
+                              Buyer collects
+                            </SelectItem>
+                            <SelectItem key="del" value="deliver">
+                              Deliver to buyer
+                            </SelectItem>
                           </SelectContent>
                         </Select>
-                        <FieldDescription>Petrol or Diesel?</FieldDescription>
+                        <FieldDescription>
+                          How is this deal going down?
+                        </FieldDescription>
                       </div>
                     )
                   }}
                 </form.Field>
+              </div>
+
+              <div className="mb-10 flex items-center justify-start space-x-2">
+                <Checkbox
+                  id="disable"
+                  checked={!disabled}
+                  onCheckedChange={() => setDisabled(!disabled)}
+                />
+                <Label
+                  htmlFor="disable"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  I have read the{" "}
+                  <Link
+                    href="/disclaimer"
+                    target="_blank"
+                    className="underline"
+                  >
+                    disclaimer
+                  </Link>{" "}
+                  and{" "}
+                  <Link
+                    href="/termsofservice"
+                    target="_blank"
+                    className="underline"
+                  >
+                    terms of service.
+                  </Link>
+                </Label>
+              </div>
+
+              <div className="mb-10 flex items-center justify-start space-x-2">
+                <Checkbox
+                  id="display-contact"
+                  checked={displayContact}
+                  onCheckedChange={() => setDisplayContact(!displayContact)}
+                />
+                <Label
+                  htmlFor="display-contact"
+                  className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                >
+                  Display contact number on the ad page?
+                </Label>
+                <AlertDialog>
+                  <AlertDialogTrigger>
+                    <AlertCircle className="text-red-500" />
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle className="flex flex-row items-center justify-start gap-2 text-primary">
+                        <AlertCircle /> Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription className="flex flex-col text-primary">
+                        <span>
+                          We advise users not to share their contact details in
+                          advertisements before recieving a confirmed offer, as
+                          this increases the risk of encountering spam and
+                          uninterested buyers.
+                        </span>
+                        <span className="mt-3 italic text-customAccent">
+                          Note: Please ensure your contact details are up to
+                          date on your profile page.
+                        </span>
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Close</AlertDialogCancel>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </div>
+
+              <div className="flex gap-10">
+                <form.Subscribe
+                  /* @ts-ignore */
+                  selector={(state) => [state.canSubmit, state.isSubmitting]}
+                >
+                  {/* @ts-ignore */}
+                  {([canSubmit, isSubmitting]) => (
+                    <Button
+                      type="submit"
+                      variant="outline"
+                      disabled={disabled || !canSubmit}
+                      className="w-20 items-center justify-center"
+                    >
+                      {isSubmitting ? (
+                        <Loader2 className="h-5 w-5 animate-spin" />
+                      ) : (
+                        "Send"
+                      )}
+                    </Button>
+                  )}
+                </form.Subscribe>
+
+                <Button className="w-20">
+                  <Link href={`/`}>Cancel</Link>
+                </Button>
               </div>
             </>
           )}
-
-          {/* DESCRIPTION */}
-          <form.Field
-            name="description"
-            validators={{
-              onChange: listingDescription,
-              onChangeAsyncDebounceMs: onChangeAsyncDebounceMs,
-              onChangeAsync: onChangeAsync,
-            }}
-          >
-            {(field) => (
-              <div className="relative w-full flex-col">
-                <div className="flex w-full">
-                  <FieldLabel>Type your message here:</FieldLabel>
-                  <FieldLabel className=" italic text-rose-500">*</FieldLabel>
-                </div>
-                <Textarea
-                  id={field.name}
-                  name={field.name}
-                  value={field.state.value}
-                  onBlur={field.handleBlur}
-                  onChange={(e) => field.handleChange(e.target.value)}
-                  className="h-32 w-full text-primary"
-                  required
-                />
-                <FieldDescription>
-                  Good descriptions = Speedy sales!
-                </FieldDescription>
-                <FieldInfo field={field} />
-              </div>
-            )}
-          </form.Field>
-
-          {/* ITEMS */}
-          <hr className="border border-muted" />
-          <div className="mb-10 flex items-center justify-start space-x-2">
-            <Checkbox
-              id="disable"
-              checked={isList}
-              onCheckedChange={() => setIsList(!isList)}
-            />
-            {type === "Vehicles" ? (
-              <Label
-                htmlFor="disable"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Any spares sold seperately?
-              </Label>
-            ) : (
-              <Label
-                htmlFor="disable"
-                className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-              >
-                Would you like to list multiple items?
-              </Label>
-            )}
-          </div>
-          <div className={cn(!isList && "hidden")}>
-            <form.Field name="items" mode="array">
-              {(itemsField) => (
-                <div className="w-full">
-                  <FieldLabel>Listed Items:</FieldLabel>
-                  <div className="flex flex-row pr-12">
-                    <FieldDescription className="w-full">
-                      Name <span className="text-[10px]">(Max 64 Char.)</span>:
-                    </FieldDescription>
-                    <FieldDescription className="w-full pl-3">
-                      Price:
-                    </FieldDescription>
-                  </div>
-                  <div>
-                    {!itemsField.state.value.length ? (
-                      <FieldDescription className="mb-5">
-                        Click the &quot;Plus&quot; icon to start adding items..
-                      </FieldDescription>
-                    ) : (
-                      itemsField.state.value.map(
-                        (items: any, index: number) => (
-                          <div
-                            id={items.id}
-                            key={index}
-                            className="relative mb-5 flex w-full flex-row space-x-5 pr-12"
-                          >
-                            <itemsField.Field
-                              /* @ts-ignore */
-                              index={index}
-                              /* @ts-ignore */
-                              name="name"
-                            >
-                              {(field) => {
-                                return (
-                                  <div className="w-full">
-                                    <Input
-                                      id={field.name}
-                                      name={field.name}
-                                      /* @ts-ignore */
-                                      value={field.state.value}
-                                      onBlur={field.handleBlur}
-                                      onChange={(e) =>
-                                        field.handleChange(e.target.value)
-                                      }
-                                      className="w-full text-primary"
-                                    />
-                                    <FieldInfo field={field} />
-                                  </div>
-                                )
-                              }}
-                            </itemsField.Field>
-
-                            <itemsField.Field
-                              /* @ts-ignore */
-                              index={index}
-                              /* @ts-ignore */
-                              name="price"
-                            >
-                              {(field) => {
-                                return (
-                                  <div className="w-full">
-                                    <Input
-                                      id={field.name}
-                                      name={field.name}
-                                      /* @ts-ignore */
-                                      value={field.state.value}
-                                      onBlur={field.handleBlur}
-                                      onChange={(event) =>
-                                        // @ts-ignore
-                                        field.handleChange(event.target.value)
-                                      }
-                                      className="w-full text-primary"
-                                    />
-                                    <FieldInfo field={field} />
-                                  </div>
-                                )
-                              }}
-                            </itemsField.Field>
-
-                            <itemsField.Field
-                              /* @ts-ignore */
-                              index={index}
-                              /* @ts-ignore */
-                              name="isSold"
-                            >
-                              {(field) => {
-                                return (
-                                  <div className="hidden">
-                                    <Select
-                                      required
-                                      onValueChange={(event) =>
-                                        field.handleChange(event)
-                                      }
-                                      defaultValue="false"
-                                    >
-                                      <SelectTrigger className="h-10 w-28 text-sm">
-                                        <SelectValue />
-                                      </SelectTrigger>
-                                      <SelectContent className="max-h-96 overflow-auto p-2 text-sm">
-                                        <SelectItem key="t" value="true">
-                                          True
-                                        </SelectItem>
-                                        <SelectItem key="f" value="false">
-                                          False
-                                        </SelectItem>
-                                      </SelectContent>
-                                    </Select>
-                                  </div>
-                                )
-                              }}
-                            </itemsField.Field>
-
-                            <Button
-                              variant="icon"
-                              onClick={(event) => {
-                                event.preventDefault()
-                                itemsField.removeValue(index)
-                              }}
-                              className={cn(
-                                "absolute bottom-1 right-0 items-center justify-center hover:text-customAccent",
-                                itemsField.state.value.length <= 1 && "hidden"
-                              )}
-                            >
-                              <X className="absolute w-10 text-muted-foreground" />
-                            </Button>
-                          </div>
-                        )
-                      )
-                    )}
-                  </div>
-                  <Button
-                    variant="icon"
-                    onClick={(event) => {
-                      event.preventDefault()
-                      itemsField.pushValue({
-                        id: nanoid(),
-                        name: "",
-                        price: 0,
-                        isSold: "false",
-                      })
-                    }}
-                    className="text-muted-foreground hover:text-customAccent"
-                  >
-                    <PlusCircle />
-                  </Button>
-                </div>
-              )}
-            </form.Field>
-          </div>
-          <hr className="border border-muted" />
-
-          <div className="flex flex-col gap-10 md:flex-row">
-            {/* LOCATION */}
-            <form.Field name="location">
-              {(field) => {
-                return (
-                  <div className="relative w-full flex-col">
-                    <div className="flex w-full">
-                      <FieldLabel>Location:</FieldLabel>
-                      <FieldLabel className=" italic text-rose-500">
-                        *
-                      </FieldLabel>
-                    </div>
-
-                    <Select
-                      required
-                      onValueChange={(event) => field.handleChange(event)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-96 overflow-auto p-2">
-                        {southAfrica.map((category, index) => (
-                          <div key={index}>
-                            <hr className="mb-10"></hr>
-                            <p
-                              className="text-lg font-bold text-primary"
-                              key={category.name}
-                            >
-                              {category.name}
-                            </p>
-                            {category.subCategories.map((subs) => (
-                              <SelectItem key={subs} value={subs}>
-                                {subs}
-                              </SelectItem>
-                            ))}
-                          </div>
-                        ))}
-                      </SelectContent>
-                    </Select>
-                    <FieldDescription>Where are you from?</FieldDescription>
-                  </div>
-                )
-              }}
-            </form.Field>
-
-            {/* MEETUP */}
-            <form.Field name="meetup">
-              {(field) => {
-                return (
-                  <div className="relative w-full flex-col">
-                    <div className="flex w-full">
-                      <FieldLabel>Meeting preferance:</FieldLabel>
-                      <FieldLabel className=" italic text-rose-500">
-                        *
-                      </FieldLabel>
-                    </div>
-
-                    <Select
-                      required
-                      onValueChange={(event) => field.handleChange(event)}
-                    >
-                      <SelectTrigger className="w-full">
-                        <SelectValue />
-                      </SelectTrigger>
-                      <SelectContent className="max-h-96 overflow-auto p-2">
-                        <SelectItem key="pub" value="public">
-                          Meet in public
-                        </SelectItem>
-                        <SelectItem key="col" value="collect">
-                          Buyer collects
-                        </SelectItem>
-                        <SelectItem key="del" value="deliver">
-                          Deliver to buyer
-                        </SelectItem>
-                      </SelectContent>
-                    </Select>
-                    <FieldDescription>
-                      How is this deal going down?
-                    </FieldDescription>
-                  </div>
-                )
-              }}
-            </form.Field>
-          </div>
-
-          <div className="mb-10 flex items-center justify-start space-x-2">
-            <Checkbox
-              id="disable"
-              checked={!disabled}
-              onCheckedChange={() => setDisabled(!disabled)}
-            />
-            <Label
-              htmlFor="disable"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              I have read the{" "}
-              <Link href="/disclaimer" target="_blank" className="underline">
-                disclaimer
-              </Link>{" "}
-              and{" "}
-              <Link
-                href="/termsofservice"
-                target="_blank"
-                className="underline"
-              >
-                terms of service.
-              </Link>
-            </Label>
-          </div>
-
-          <div className="mb-10 flex items-center justify-start space-x-2">
-            <Checkbox
-              id="display-contact"
-              checked={displayContact}
-              onCheckedChange={() => setDisplayContact(!displayContact)}
-            />
-            <Label
-              htmlFor="display-contact"
-              className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-            >
-              Display contact number on the ad page?
-            </Label>
-            <AlertDialog>
-              <AlertDialogTrigger>
-                <AlertCircle className="text-red-500" />
-              </AlertDialogTrigger>
-              <AlertDialogContent>
-                <AlertDialogHeader>
-                  <AlertDialogTitle className="flex flex-row items-center justify-start gap-2 text-primary">
-                    <AlertCircle /> Are you absolutely sure?
-                  </AlertDialogTitle>
-                  <AlertDialogDescription className="flex flex-col text-primary">
-                    <span>
-                      We advise users not to share their contact details in
-                      advertisements before recieving a confirmed offer, as this
-                      increases the risk of encountering spam and uninterested
-                      buyers.
-                    </span>
-                    <span className="mt-3 italic text-customAccent">
-                      Note: Please ensure your contact details are up to date on
-                      your profile page.
-                    </span>
-                  </AlertDialogDescription>
-                </AlertDialogHeader>
-                <AlertDialogFooter>
-                  <AlertDialogCancel>Close</AlertDialogCancel>
-                </AlertDialogFooter>
-              </AlertDialogContent>
-            </AlertDialog>
-          </div>
-
-          <div className="flex gap-10">
-            <form.Subscribe
-              /* @ts-ignore */
-              selector={(state) => [state.canSubmit, state.isSubmitting]}
-            >
-              {/* @ts-ignore */}
-              {([canSubmit, isSubmitting]) => (
-                <Button
-                  type="submit"
-                  variant="outline"
-                  disabled={disabled || !canSubmit}
-                  className="w-20 items-center justify-center"
-                >
-                  {isSubmitting ? (
-                    <Loader2 className="h-5 w-5 animate-spin" />
-                  ) : (
-                    "Send"
-                  )}
-                </Button>
-              )}
-            </form.Subscribe>
-
-            <Button className="w-20">
-              <Link href={`/`}>Cancel</Link>
-            </Button>
-          </div>
-          </>
-        )}
-        {/* _________ */}
+          {/* _________ */}
         </form>
       </form.Provider>
     </div>

@@ -21,6 +21,7 @@ import { listingsType, offersManagerType, offerType } from "../types/db"
 import { nanoid } from "nanoid"
 import axios, { AxiosError } from "axios"
 import { ISO8601Timestamp } from "../lib/utils"
+import { revalidatePath } from "next/cache"
 
 // Admin accept listing
 export const handleAccepted = async (listing: listingsType) => {
@@ -51,6 +52,8 @@ export const handleAccepted = async (listing: listingsType) => {
       body: `Our team has reviewed your listing and approved it for public circulation on our platform. Good luck and happy selling!`,
       isRead: false,
     })
+
+    revalidatePath("/command-centre")
 
     console.log("Successfully accepted listing")
   } catch (error) {
@@ -107,6 +110,8 @@ export const handleReject = async (listing: listingsType) => {
         adTitle: listing.title || "",
       }) as React.ReactElement,
     })
+
+    revalidatePath("/command-centre")
 
     console.log("Successfully rejected listing")
   } catch (error) {
