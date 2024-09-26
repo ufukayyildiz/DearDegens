@@ -95,9 +95,9 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
             </div>
           </DropdownMenuItem>
 
-          <DropdownMenuItem asChild>
+          {/* <DropdownMenuItem asChild>
               <ChatSheetUser/>
-          </DropdownMenuItem>
+          </DropdownMenuItem> */}
 
           <DropdownMenuItem asChild>
             <div>
@@ -132,7 +132,7 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
             </div>
           </DropdownMenuItem>
 
-          {/* <DropdownMenuItem asChild>
+          <DropdownMenuItem asChild>
             <div>
               <div className="relative flex h-8 w-8 items-center justify-center">
                 <BookOpen className="absolute h-6 w-6" />
@@ -141,7 +141,7 @@ export function UserAccountNav({ user, adminId }: UserAccountNavProps) {
                 User Guide
               </Link>
             </div>
-          </DropdownMenuItem> */}
+          </DropdownMenuItem>
 
           <DropdownMenuItem
             asChild

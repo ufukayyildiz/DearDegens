@@ -9,11 +9,15 @@ import SportsCarousel from "../components/pageHome/SportsCarousel"
 import FashionCarousel from "../components/pageHome/FashionCarousel"
 import ComputersCarousel from "../components/pageHome/ComputersCarousel"
 import CategoryTags from "../components/pageHome/CategoryTags"
+import PostAd from "../components/pageHome/PostAd"
 
 export default async function HomePage() {
   return (
     <section className="mb-52 h-auto min-h-screen items-center gap-6 pb-8 pt-6">
       <div className="z-20 mx-auto h-auto w-10/12 min-w-[280px] md:w-8/12">
+        <div className="mb-6 flex w-full items-center justify-center">
+          <PostAd />
+        </div>
         <CategoryTags />
         <h1 className="mt-10 text-xl font-bold text-primary">Recently Added</h1>
         <hr className="my-2 border border-t-muted-foreground" />

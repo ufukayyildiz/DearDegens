@@ -1,6 +1,6 @@
 "use server"
 
-import { eq, sql, and } from "drizzle-orm"
+import { eq, sql, and, ne, or } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 import { Resend } from "resend"
 import { authOptions, getAuthSession } from "../lib/auth/auth-options"
@@ -635,6 +635,20 @@ export async function getMessages(roomId: string) {
     const buyerId = room[0].userId
     const sellerId = room[0].sellerId
 
+    if (buyerId === session?.user.id) {
+      await db
+        .update(messages)
+        .set({ isRead: true })
+        .where(and(eq(messages.userId, sellerId), eq(messages.roomId, roomId)))
+    }
+
+    if (sellerId === session?.user.id) {
+      await db
+        .update(messages)
+        .set({ isRead: true })
+        .where(and(eq(messages.userId, buyerId), eq(messages.roomId, roomId)))
+    }
+
     const buyerMessages = await db
       .select({
         id: messages.id,
@@ -671,5 +685,47 @@ export async function getMessages(roomId: string) {
     return sortedMessages
   } catch (error) {
     console.error("Server error: Failed to fetch chatroom messages - ", error)
+  }
+}
+
+export async function getUnreadMessages() {
+  try {
+    const session = await getAuthSession()
+
+    if (!session) {
+      return "unauthorized"
+    }
+
+    const rooms = await db
+      .select({ id: chatRoom.id })
+      .from(chatRoom)
+      .where(
+        or(
+          eq(chatRoom.userId, session.user.id),
+          eq(chatRoom.sellerId, session.user.id)
+        )
+      )
+
+    let roomIds: string[] = []
+    rooms.map((room) => roomIds.push(room.id))
+    const ids = roomIds.map((id) => `'${id}'`).join(",")
+    console.log("ids:", ids)
+
+    const message = await db.execute(
+      sql.raw(
+        `
+      SELECT "messages"."id" AS "id" 
+      FROM "messages" 
+      WHERE "roomId" IN (${ids})
+      AND "userId" <> '${session.user.id}'
+      AND "isRead" = ${false};
+      `
+      )
+    )
+
+    console.log("messages", message.rows)
+    return message.rows
+  } catch (error) {
+    console.log("Error fetching unread messages:", error)
   }
 }

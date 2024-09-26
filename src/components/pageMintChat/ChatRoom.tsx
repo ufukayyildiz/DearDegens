@@ -135,6 +135,9 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
         await queryClient.invalidateQueries({
           queryKey: ["messages", roomData.id],
         })
+        await queryClient.invalidateQueries({
+          queryKey: ["unreadMessage"],
+        })
       }
     },
   })
