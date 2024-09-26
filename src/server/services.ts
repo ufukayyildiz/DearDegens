@@ -27,6 +27,7 @@ import {
   getQueriesManagerAuthor,
   getQueriesManagerUser,
   getUserChatrooms,
+  getUnreadMessages,
 } from "./actions"
 
 // ______________________________________________________________
@@ -159,6 +160,13 @@ export function useGetUserListings() {
 
 // ______________________________________________________________
 // GET CHATROOM
+export function useGetUnreadMessages() {
+  return useQuery({
+    queryKey: ["unreadMessage"],
+    queryFn: () => getUnreadMessages(),
+  })
+}
+
 export function useGetUserChatrooms() {
   return useQuery({
     queryKey: ["usersrooms"],
@@ -180,7 +188,7 @@ export function useGetMessages(roomId: any) {
   return useQuery<messagesType[]>({
     queryKey: ["messages", roomId],
     queryFn: () => roomId && getMessages(roomId),
-    refetchInterval: 1000 * 60,
+    refetchInterval: 5000 * 60,
     refetchOnMount: "always",
   })
 }

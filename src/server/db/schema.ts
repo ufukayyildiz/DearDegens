@@ -411,6 +411,7 @@ export const messages = pgTable(
     createdAt: timestamp("createdAt")
       .default(sql`CURRENT_TIMESTAMP`)
       .notNull(),
+    isRead: boolean("isRead").default(false),
   },
   (message) => {
     return {

@@ -1,6 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { MessageCircle } from "lucide-react"
+import { MessageCircle, Loader2 } from "lucide-react"
 import {
   Sheet,
   SheetContent,
@@ -10,7 +10,11 @@ import {
 } from "../components-ui/Sheet"
 import { messagesType, roomType } from "@/src/types/db"
 import { useSession } from "next-auth/react"
-import { useGetMessages, useGetUserChatrooms } from "@/src/server/services"
+import {
+  useGetMessages,
+  useGetUnreadMessages,
+  useGetUserChatrooms,
+} from "@/src/server/services"
 import ChatRoom from "./ChatRoom"
 import ChatRoomSkeleton from "./ChatRoomSkeleton"
 import { useQueryClient } from "@tanstack/react-query"
@@ -22,6 +26,8 @@ export default function ChatSheetUser() {
   const userId = session?.user.id
 
   const queryClient = useQueryClient()
+  const unreadFetching = useGetUnreadMessages().isFetching
+  const unreadMessages = useGetUnreadMessages().data as string[] | []
   const messages = useGetMessages(selectedRoom).data as messagesType[]
   const data = useGetUserChatrooms().data as roomType[]
   const isFetching = useGetUserChatrooms().isFetching
@@ -51,12 +57,24 @@ export default function ChatSheetUser() {
     <Sheet>
       <SheetTrigger
         onClick={handleInvalidateChat}
-        className="flex flex-row items-center rounded border-2 border-transparent p-2 hover:border-customAccent"
+        className="relative flex flex-row items-center rounded-full border border-transparent bg-background shadow-md"
       >
         <div className="relative flex h-8 w-8 items-center justify-center">
+          <div className="absolute -right-2 -top-2 z-50 flex h-6 w-6 content-center rounded-full bg-red-500 shadow-md">
+            {unreadFetching === true ? (
+              <Loader2
+                className="absolute top-1 mx-auto w-full animate-spin text-white"
+                size={15}
+              />
+            ) : (
+              <p className="absolute top-1 mx-auto w-full text-center text-xs text-white">
+                {unreadMessages.length}
+              </p>
+            )}
+          </div>
           <MessageCircle className="absolute h-6 w-6" />
         </div>
-        <p className="pl-2 text-sm">Chat Rooms</p>
+        {/* <p className="pl-2 text-sm">Chat Rooms</p> */}
       </SheetTrigger>
       <SheetContent className="bg-transparent backdrop-blur-xl">
         <SheetHeader className="h-full">
