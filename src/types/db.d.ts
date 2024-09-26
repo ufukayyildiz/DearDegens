@@ -24,6 +24,7 @@ export type chatRoomType = InferInsertModel<typeof chatRoom>
 export type roomType = {
   id: string
   adId: string
+  adTitle: string
   userId: string
   userName: string
   userImage: string

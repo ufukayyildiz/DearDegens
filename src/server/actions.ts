@@ -563,7 +563,7 @@ export async function getUserChatrooms() {
       SELECT 
         "chatRoom"."id" AS "id", 
         "chatRoom"."adId" AS "adId", 
-
+        "listings"."title" AS "adTitle",
         "buyer"."id" AS "userId", 
         "buyer"."name" AS "userName", 
         "buyer"."image" AS "userImage",
@@ -574,6 +574,7 @@ export async function getUserChatrooms() {
 
         "chatRoom"."createdAt" AS "createdAt"
       FROM "chatRoom" 
+      LEFT JOIN "listings" ON "listings"."id" = "chatRoom"."adId"
       LEFT JOIN "users" AS "buyer" ON "buyer"."id" = "chatRoom"."userId"
       LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId"
       WHERE "chatRoom"."userId" = '${userId}'
@@ -599,7 +600,7 @@ export async function getChatrooms(mintId: string) {
       SELECT 
         "chatRoom"."id" AS "id", 
         "chatRoom"."adId" AS "adId", 
-
+        "listings"."title" AS "adTitle",
         "buyer"."id" AS "userId", 
         "buyer"."name" AS "userName", 
         "buyer"."image" AS "userImage",
@@ -610,6 +611,7 @@ export async function getChatrooms(mintId: string) {
 
         "chatRoom"."createdAt" AS "createdAt"
       FROM "chatRoom" 
+      LEFT JOIN "listings" ON "listings"."id" = "chatRoom"."adId"
       LEFT JOIN "users" AS "buyer" ON "buyer"."id" = "chatRoom"."userId"
       LEFT JOIN "users" AS "seller" ON "seller"."id" = "chatRoom"."sellerId"
       WHERE "chatRoom"."adId" = '${mintId}';
@@ -619,7 +621,7 @@ export async function getChatrooms(mintId: string) {
     roomQueries.rows &&
       roomQueries.rows.sort((a: any, b: any) => b.createdAt - a.createdAt)
 
-    console.log("Chatroom queries query successful")
+    console.log("Chatroom queries query successful", roomQueries.rows)
     return roomQueries.rows
   } catch (error) {
     console.error("Server error: Failed to fetch ad chatrooms - ", error)
