@@ -57,7 +57,7 @@ export default function ChatSheetUser() {
     <Sheet>
       <SheetTrigger
         onClick={handleInvalidateChat}
-        className="relative flex flex-row items-center rounded-full border border-transparent bg-background shadow-md"
+        className="relative flex flex-row items-center rounded-full border border-transparent bg-background shadow-lg dark:bg-transparent dark:shadow-none"
       >
         <div className="relative flex h-8 w-8 items-center justify-center">
           <div className="absolute -right-2 -top-2 z-50 flex h-6 w-6 content-center rounded-full bg-red-500 shadow-md">
@@ -86,7 +86,7 @@ export default function ChatSheetUser() {
           ) : (
             <div className="h-full pt-3">
               {chatRoomData && chatRoomData.length > 0 ? (
-                <div className="flex w-full flex-col space-y-2">
+                <div className="flex w-full flex-col space-y-3">
                   {chatRoomData.map((data: roomType, index) => {
                     return (
                       <div onClick={() => handleRoomChange(data)} key={index}>

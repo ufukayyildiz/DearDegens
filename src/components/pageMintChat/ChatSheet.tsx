@@ -88,7 +88,7 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
           ) : (
             <div className="h-full pt-3">
               {chatRoomData && chatRoomData.length > 0 ? (
-                <div className="flex w-full flex-col space-y-2">
+                <div className="flex w-full flex-col space-y-3">
                   {chatRoomData.map((data: roomType, index) => {
                     return (
                       <div onClick={() => handleRoomChange(data)} key={index}>

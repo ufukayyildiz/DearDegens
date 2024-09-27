@@ -171,7 +171,7 @@ export function useGetUserChatrooms() {
   return useQuery({
     queryKey: ["usersrooms"],
     queryFn: () => getUserChatrooms(),
-    refetchOnMount: "always",
+    // refetchOnMount: "always",
   })
 }
 
@@ -179,7 +179,7 @@ export function useGetChatrooms(mintId: any) {
   return useQuery<roomType[]>({
     queryKey: ["chatroom", mintId],
     queryFn: () => mintId && getChatrooms(mintId),
-    refetchOnMount: "always",
+    // refetchOnMount: "always",
   })
 }
 
@@ -188,7 +188,7 @@ export function useGetMessages(roomId: any) {
   return useQuery<messagesType[]>({
     queryKey: ["messages", roomId],
     queryFn: () => roomId && getMessages(roomId),
-    refetchInterval: 5000 * 60,
-    refetchOnMount: "always",
+    // refetchInterval: 5000 * 60,
+    // refetchOnMount: "always",
   })
 }
