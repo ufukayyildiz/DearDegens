@@ -155,8 +155,7 @@ export async function getUserSubscription(token: string) {
     const generateSignature = (data: any, passPhrase: any) => {
 
       if (token === (undefined || "")) {
-        console.log("User has no subscription")
-        return "User subscription query successful, no subscription available."
+        console.log("No subscription data available")
       }
 
       // Arrange the array by key alphabetically for API calls

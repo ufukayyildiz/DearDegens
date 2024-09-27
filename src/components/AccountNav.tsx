@@ -51,7 +51,7 @@ export async function AccountNav() {
         .where(eq(users.id, session.user.id))
     }
 
-    console.log("User subscriptiob checked")
+    console.log("User subscription checked")
   } catch (error) {
     console.log("Error checking user subscription:", error)
   }
