@@ -1,21 +1,22 @@
-import Link from "next/link"
 import { authOptions } from "@/src/lib/auth/auth-options"
-import { eq, sql, and, ne } from "drizzle-orm"
+import { eq, sql } from "drizzle-orm"
 import { getServerSession } from "next-auth"
 import { userType } from "../types/db"
-import { messages, users } from "..//server/db/schema"
+import { users } from "..//server/db/schema"
 import { db } from "../server/db"
 import { NotificationsNav } from "./NotificationsNav"
 import { UserAccountNav } from "./UserAccountNav"
-import PostAd from "./pageHome/PostAd"
-import { chatRoom } from "..//server/db/schema"
+import { redirect } from "next/navigation"
 import ChatSheetUser from "./pageMintChat/ChatSheetUser"
+import { products } from "../lib/categories/Products"
+import { getUserSubscription } from "../server/actions"
+import { subscriptionType } from "../types/subscription"
 
 export async function AccountNav() {
   const session = await getServerSession(authOptions)
 
   if (!session) {
-    return console.log("Unauthorised, please login")
+    redirect("/signin")
   }
 
   const user = await db
@@ -26,6 +27,34 @@ export async function AccountNav() {
   const admin: userType[] = (
     await db.execute(sql.raw(`SELECT * FROM users WHERE "admin" = 't'`))
   ).rows
+
+  try {
+    const token = user[0].subscriptionToken
+
+    if (!token) {
+      return "No token available."
+    }
+
+    const userSub: subscriptionType = await getUserSubscription(token)
+    console.log("User Sub:", userSub)
+
+    if (userSub.status_text !== "ACTIVE") {
+      let subscriptionId: string = products[0].id
+
+      if (user[0].maxAds! > products[0].ads) {
+        subscriptionId = products[1].id
+      }
+
+      await db
+        .update(users)
+        .set({ subscription: subscriptionId, subscriptionToken: "" })
+        .where(eq(users.id, session.user.id))
+    }
+
+    console.log("User subscriptiob checked")
+  } catch (error) {
+    console.log("Error checking user subscription:", error)
+  }
 
   return (
     <div className="absolute right-0 top-[26px] flex flex-1 items-center justify-end space-x-4">

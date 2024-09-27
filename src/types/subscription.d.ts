@@ -8,6 +8,18 @@ export type productType = {
   features: string[]
 }
 
+export type subscriptionType = {
+  amount: number
+  cycles: number
+  cycles_complete: number
+  frequency: number
+  run_date: string
+  status: number
+  status_reason: string
+  status_text: string
+  token: string
+}
+
 export type payfastAPI = {
   amount: number
   cycles: number
