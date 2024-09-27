@@ -153,6 +153,12 @@ export async function getUserSubscription(token: string) {
 
     // GENERATE SIGNATURE
     const generateSignature = (data: any, passPhrase: any) => {
+
+      if (token === (undefined || "")) {
+        console.log("User has no subscription")
+        return "User subscription query successful, no subscription available."
+      }
+
       // Arrange the array by key alphabetically for API calls
       let ordered_data: any = {}
 
@@ -190,7 +196,7 @@ export async function getUserSubscription(token: string) {
     let signature = generateSignature(data, passPhrase)
     data["signature"] = signature
 
-    if (sandboxMode && token !== (undefined || "")) {
+    if (sandboxMode === 'true') {
       const subscription = await axios.get(
         `https://api.payfast.co.za/subscriptions/${token}/fetch?testing=true`,
         {
@@ -206,7 +212,7 @@ export async function getUserSubscription(token: string) {
       return subscription.data.data.response
     }
 
-    if (!sandboxMode && token !== (undefined || "")) {
+    if (sandboxMode === 'false') {
       const subscription = await axios.get(
         `https://api.payfast.co.za/subscriptions/${token}/fetch`,
         {
@@ -222,10 +228,7 @@ export async function getUserSubscription(token: string) {
       return subscription.data.data.response
     }
 
-    if (token === (undefined || "")) {
-      console.log("User has no subscription")
-      return "User subscription query successful, no subscription available."
-    }
+    
   } catch (error) {
     console.error("Server Error: Failed to fetch user subscription - ", error)
   }
