@@ -28,32 +28,30 @@ export async function AccountNav() {
     await db.execute(sql.raw(`SELECT * FROM users WHERE "admin" = 't'`))
   ).rows
 
-  try {
-    const token = user[0].subscriptionToken
+  const token = user[0].subscriptionToken
 
-    if (!token) {
-      return "No token available."
-    }
+  if (token) {
+    try {
+      const userSub: subscriptionType = await getUserSubscription(token)
+      console.log("User Sub:", userSub)
 
-    const userSub: subscriptionType = await getUserSubscription(token)
-    console.log("User Sub:", userSub)
+      if (userSub.status_text !== "ACTIVE") {
+        let subscriptionId: string = products[0].id
 
-    if (userSub.status_text !== "ACTIVE") {
-      let subscriptionId: string = products[0].id
+        if (user[0].maxAds! > products[0].ads) {
+          subscriptionId = products[1].id
+        }
 
-      if (user[0].maxAds! > products[0].ads) {
-        subscriptionId = products[1].id
+        await db
+          .update(users)
+          .set({ subscription: subscriptionId, subscriptionToken: "" })
+          .where(eq(users.id, session.user.id))
       }
 
-      await db
-        .update(users)
-        .set({ subscription: subscriptionId, subscriptionToken: "" })
-        .where(eq(users.id, session.user.id))
+      console.log("User subscription checked")
+    } catch (error) {
+      console.log("Error checking user subscription:", error)
     }
-
-    console.log("User subscription checked")
-  } catch (error) {
-    console.log("Error checking user subscription:", error)
   }
 
   return (
