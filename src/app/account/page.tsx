@@ -13,10 +13,18 @@ import { listingsType, userType } from "@/src/types/db"
 import ProfileData from "@/src/components/pageProfile/ProfileData"
 import ProfileDataForm from "@/src/components/pageProfile/ProfileDataForm"
 import ProfileAccount from "@/src/components/pageProfile/ProfileAccount"
+import { useSession } from "next-auth/react"
+import { redirect } from "next/navigation"
 
 type imageArray = string[] | undefined
 
 export default function Profile() {
+  const { data: session } = useSession()
+
+  if (!session) {
+    redirect("/signin")
+  }
+
   const [isEdit, setIsEdit] = useState<boolean>(false)
   const [disabled, setDisabled] = useState<boolean>(false)
 

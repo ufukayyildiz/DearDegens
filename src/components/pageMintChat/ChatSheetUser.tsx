@@ -66,9 +66,13 @@ export default function ChatSheetUser() {
                 className="absolute top-1 mx-auto w-full animate-spin text-white"
                 size={15}
               />
-            ) : (
+            ) : unreadMessages ? (
               <p className="absolute top-1 mx-auto w-full text-center text-xs text-white">
                 {unreadMessages.length}
+              </p>
+            ) : (
+              <p className="absolute top-1 mx-auto w-full text-center text-xs text-white">
+                0
               </p>
             )}
           </div>

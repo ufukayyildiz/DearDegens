@@ -15,12 +15,13 @@ import {
   TabsContent,
   TabsTrigger,
 } from "@/src/components/components-ui/Tabs"
+import { redirect } from "next/navigation"
 
 export default async function MyMints() {
   const session = await getServerSession(authOptions)
 
   if (!session) {
-    return console.log("Unauthorised, please login")
+    redirect("/signin")
   }
 
   const adListings = await db

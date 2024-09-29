@@ -51,8 +51,6 @@ export default function ProfileAccount({
     price: products[0].price,
   })
 
-  console.log("subscription", subscription)
-
   let token: string = ""
   let maxImages: number = products[0].images
   let maxAds: number = products[0].ads
@@ -211,9 +209,13 @@ export default function ProfileAccount({
           <p className="mt-1 h-10 w-60 animate-pulse rounded-full pt-2 italic text-muted-foreground md:mt-0 md:pl-3">
             0 / {products[0].images}
           </p>
+        ) : images && images.length !== 0 ? (
+          <p className="mt-1 h-10 w-full pt-2 italic text-primary md:mt-0 md:pl-3">
+            {images[0].length} / {subscription.images}
+          </p>
         ) : (
           <p className="mt-1 h-10 w-full pt-2 italic text-primary md:mt-0 md:pl-3">
-            {images && images[0].length} / {subscription.images}
+            0 / {subscription.images}
           </p>
         )}
       </div>

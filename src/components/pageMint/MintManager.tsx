@@ -27,26 +27,38 @@ export default function MintManager({ listing, domain }: MintManagerProps) {
   const authorOffers = useGetOffersAuthor(listingId).data || []
   const authorLoading = useGetOffersAuthor(listingId).isLoading
 
-  userOffers &&
-    userOffers.sort(
-      (a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!
-    )
-  authorOffers &&
-    authorOffers.sort(
-      (a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!
-    )
+  console.log("checking", userOffers)
+
+  if (userOffers !== undefined) {
+    userOffers &&
+      userOffers.sort(
+        (a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!
+      )
+  }
+
+  if (authorOffers !== undefined) {
+    authorOffers &&
+      authorOffers.sort(
+        (a: offerType, b: offerType) => b.offerPrice! - a.offerPrice!
+      )
+  }
 
   const userQueries = useGetQueriesUser(listingId).data || []
   const authorQueries = useGetQueriesAuthor(listingId).data || []
 
-  userQueries &&
-    userQueries.sort((a: any, b: any) => {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    })
-  authorQueries &&
-    authorQueries.sort((a: any, b: any) => {
-      return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
-    })
+  if (userQueries !== undefined) {
+    userQueries &&
+      userQueries.sort((a: any, b: any) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      })
+  }
+
+  if (authorQueries !== undefined) {
+    authorQueries &&
+      authorQueries.sort((a: any, b: any) => {
+        return new Date(b.createdAt).getTime() - new Date(a.createdAt).getTime()
+      })
+  }
 
   return (
     <div className="flex min-h-[40px] w-full">
