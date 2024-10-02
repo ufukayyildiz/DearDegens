@@ -28,6 +28,7 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
 
   const queryClient = useQueryClient()
   const messages = useGetMessages(selectedRoom).data as messagesType[]
+  const msgFetching = useGetMessages(selectedRoom).isFetching
   const { data, isFetching } = useGetChatrooms(listingId)
 
   const chatRoomData: roomType[] = []
@@ -95,6 +96,7 @@ export default function ChatSheet({ listingId }: ChatSheetProps) {
                         <ChatRoom
                           roomData={data}
                           messages={messages!}
+                          msgFetching={msgFetching}
                           key={data.id}
                         />
                       </div>

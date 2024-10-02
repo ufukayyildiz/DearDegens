@@ -29,6 +29,7 @@ export default function ChatSheetUser() {
   const unreadFetching = useGetUnreadMessages().isFetching
   const unreadMessages = useGetUnreadMessages().data as string[] | []
   const messages = useGetMessages(selectedRoom).data as messagesType[]
+  const msgFetching = useGetMessages(selectedRoom).isFetching
   const data = useGetUserChatrooms().data as roomType[]
   const isFetching = useGetUserChatrooms().isFetching
 
@@ -97,6 +98,7 @@ export default function ChatSheetUser() {
                         <ChatRoom
                           roomData={data}
                           messages={messages!}
+                          msgFetching={msgFetching}
                           key={data.id}
                         />
                       </div>

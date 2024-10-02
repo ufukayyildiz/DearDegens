@@ -34,6 +34,7 @@ import { cn } from "@/src/lib/utils"
 interface ChatRoomProps {
   roomData: roomType
   messages: messagesType[]
+  msgFetching: boolean
 }
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
@@ -48,7 +49,11 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
   )
 }
 
-export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
+export default function ChatRoom({
+  roomData,
+  messages,
+  msgFetching,
+}: ChatRoomProps) {
   const queryClient = useQueryClient()
   const { data: session } = useSession()
   const [disabled, setDisabled] = useState<boolean>(false)
@@ -156,9 +161,9 @@ export default function ChatRoom({ roomData, messages }: ChatRoomProps) {
         <div className="relative z-30 flex h-[75vh] w-full flex-col justify-end overflow-hidden md:h-[85vh]">
           <div className="absolute top-0 mb-5 flex h-[50vh] w-full overflow-hidden rounded-md md:h-[65vh]">
             <ScrollArea className="flex w-full bg-transparent pr-5">
-              {isPending && (
+              {isPending && msgFetching && (
                 <div
-                  className="mt-3 flex flex-col justify-center rounded-md bg-background p-2"
+                  className="mt-3 flex flex-col rounded-2xl border border-muted bg-background p-3 shadow-md"
                   key={variables.roomId}
                 >
                   <div className="flex justify-between">
