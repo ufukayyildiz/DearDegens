@@ -112,9 +112,9 @@ export default function MintQueryReply({ queryId }: QueryReplyProps) {
     <div>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button className="hover:text-blue-500" variant="icon">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full text-secondary hover:text-blue-500">
             <MessageCircle />
-          </Button>
+          </div>
         </AlertDialogTrigger>
         <AlertDialogContent>
           <form.Provider>

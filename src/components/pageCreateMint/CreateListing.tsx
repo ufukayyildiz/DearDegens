@@ -214,7 +214,13 @@ export default function CreateListing({ user }: CreateListingProps) {
 
     // ERROR
     onError: (error: AxiosError) => {
-      console.log("error:", error.response?.status)
+      if (error.response?.status === 401) {
+        return toast({
+          title: "Authentication Error.",
+          description: "Unauthorised, please login.",
+          variant: "destructive",
+        })
+      }
       if (error.response?.status === 409) {
         return toast({
           title: "User Active Ad Limit Reached.",

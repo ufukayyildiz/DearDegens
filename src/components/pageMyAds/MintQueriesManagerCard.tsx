@@ -1,7 +1,7 @@
 import React from "react"
 import { formatTimeToNow } from "@/src/lib/utils"
 import { queryType } from "@/src/types/db"
-
+import MintQueryDelete from "../pageMintQueries/MintQueryDelete"
 import MintQueryReply from "../pageMintQueries/MintQueryReply"
 
 interface QueryManagerCardProps {
@@ -15,7 +15,7 @@ export default function MintQueriesManagerCard({
 }: QueryManagerCardProps) {
   console.log("query", query)
   return (
-    <div className="relative z-40 mx-auto mb-3 flex h-auto min-h-[100px] w-11/12 max-w-[500px] flex-col overflow-hidden rounded-lg border border-muted p-2 text-left text-primary shadow-lg transition duration-75 hover:scale-[0.99] hover:border-customAccent sm:text-sm">
+    <div className="relative z-40 mx-auto mb-3 flex h-auto min-h-[100px] w-11/12 max-w-[500px] flex-col overflow-hidden rounded-lg border border-muted p-2 text-left text-primary shadow-lg transition duration-75 hover:scale-[0.99] sm:text-sm">
       <div className="mb-3 flex items-center space-x-2 text-xs font-bold italic text-customAccent">
         {/* <p>Listing Title:</p> */}
         <p>{query.adTitle}</p>
@@ -32,14 +32,17 @@ export default function MintQueriesManagerCard({
           <span className="italic text-rose-500">Response pending.</span>
         )}
       </div>
-      <div className="absolute bottom-0 w-full ">
-        <div className="flex h-8 w-full items-center justify-between ">
-          <p className="text-xs italic text-muted-foreground">
+      <div className="absolute bottom-2 w-full pr-5">
+        <div className="flex h-8 w-full items-center">
+          <p className="w-32 text-xs italic text-muted-foreground">
             Sent {formatTimeToNow(query.createdAt!)}
           </p>
-          <div>
-            {query.sellerId === userId && <MintQueryReply queryId={query.id} />}
-          </div>
+          {query.sellerId === userId && (
+            <div className="flex w-full flex-row items-center justify-end space-x-3">
+              <MintQueryDelete query={query} />
+              <MintQueryReply queryId={query.id} />
+            </div>
+          )}
         </div>
       </div>
     </div>
