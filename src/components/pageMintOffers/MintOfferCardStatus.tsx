@@ -42,7 +42,7 @@ export default function MintOfferCardStatus({ adOffer }: CardStatusProps) {
   if (adOffer.isCountered) {
     return (
       <div className="flex w-full">
-        <p className="text-left text-sm italic text-customAccent">
+        <p className="text-left text-sm italic">
           Countered @ R {formatter.format(adOffer.counterPrice!)} - awaiting
           buyer acceptance.
         </p>

@@ -153,7 +153,6 @@ export async function getUserSubscription(token: string) {
 
     // GENERATE SIGNATURE
     const generateSignature = (data: any, passPhrase: any) => {
-
       if (token === (undefined || "")) {
         console.log("No subscription data available")
       }
@@ -195,7 +194,7 @@ export async function getUserSubscription(token: string) {
     let signature = generateSignature(data, passPhrase)
     data["signature"] = signature
 
-    if (sandboxMode === 'true') {
+    if (sandboxMode === "true") {
       const subscription = await axios.get(
         `https://api.payfast.co.za/subscriptions/${token}/fetch?testing=true`,
         {
@@ -211,7 +210,7 @@ export async function getUserSubscription(token: string) {
       return subscription.data.data.response
     }
 
-    if (sandboxMode === 'false') {
+    if (sandboxMode === "false") {
       const subscription = await axios.get(
         `https://api.payfast.co.za/subscriptions/${token}/fetch`,
         {
@@ -226,8 +225,6 @@ export async function getUserSubscription(token: string) {
       console.log("User subscription query successful")
       return subscription.data.data.response
     }
-
-    
   } catch (error) {
     console.error("Server Error: Failed to fetch user subscription - ", error)
   }
@@ -329,9 +326,13 @@ export async function getOffersAuthor(listingId: any) {
     const adOffers = await db.execute(
       sql.raw(
         `
-        SELECT * FROM offers 
-        WHERE "sellerId" = '${userId}'
-        AND "adId" = '${listingId}'; 
+        SELECT 
+          "offers".*,
+          "listings"."url"
+        FROM offers 
+        LEFT JOIN "listings" ON "offers"."adId" = "listings"."id"
+        WHERE "offers"."sellerId" = '${userId}'
+        AND "offers"."adId" = '${listingId}'; 
       `
       )
     )
@@ -384,9 +385,13 @@ export async function getOffersUser(listingId: any) {
     const adOffers = await db.execute(
       sql.raw(
         `
-        SELECT * FROM offers 
-        WHERE "userId" = '${userId}'
-        AND "adId" = '${listingId}'; 
+        SELECT 
+          "offers".*,
+          "listings"."url"
+        FROM offers 
+        LEFT JOIN "listings" ON "offers"."adId" = "listings"."id"
+        WHERE "offers"."userId" = '${userId}'
+        AND "offers"."adId" = '${listingId}'; 
       `
       )
     )

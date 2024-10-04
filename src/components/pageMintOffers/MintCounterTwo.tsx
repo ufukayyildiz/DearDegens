@@ -72,7 +72,7 @@ export default function MintCounterTwo({ adOffer }: CounterProps) {
       if (error) {
         console.log("onSettled error:", error)
       } else {
-        await queryClient.invalidateQueries({ queryKey: ["adOffers"] })
+        await queryClient.invalidateQueries({ queryKey: ["authorOffers"] })
       }
     },
   })

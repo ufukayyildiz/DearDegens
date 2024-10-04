@@ -49,6 +49,8 @@ export default function MintOfferCardUserActions({
         adId: adOffer && adOffer.adId,
         sellerId: adOffer && adOffer.sellerId,
         userId: adOffer && adOffer.userId,
+        adTitle: adOffer && adOffer.adTitle,
+        url: adOffer && adOffer.url
       }
       await axios.put("/api/offerBuyerConfirmation", payload)
     },
@@ -82,7 +84,15 @@ export default function MintOfferCardUserActions({
   // MUTATION ACCEPTANCE
   const { mutate: offerBuyerAcceptance } = useMutation({
     mutationFn: async () => {
-      await axios.put("/api/offerBuyerAcceptance", offerId)
+      const payload = {
+        offerId: adOffer && adOffer.id,
+        adId: adOffer && adOffer.adId,
+        sellerId: adOffer && adOffer.sellerId,
+        userId: adOffer && adOffer.userId,
+        adTitle: adOffer && adOffer.adTitle,
+        url: adOffer && adOffer.url
+      }
+      await axios.put("/api/offerBuyerAcceptance", payload)
     },
     onError: () => {
       return toast({
@@ -114,7 +124,15 @@ export default function MintOfferCardUserActions({
   // MUTATION DECLINED
   const { mutate: offerBuyerDecline } = useMutation({
     mutationFn: async () => {
-      await axios.put("/api/offerBuyerDecline", offerId)
+      const payload = {
+        offerId: adOffer && adOffer.id,
+        adId: adOffer && adOffer.adId,
+        sellerId: adOffer && adOffer.sellerId,
+        userId: adOffer && adOffer.userId,
+        adTitle: adOffer && adOffer.adTitle,
+        url: adOffer && adOffer.url
+      }
+      await axios.put("/api/offerBuyerDecline", payload)
     },
     onError: () => {
       return toast({

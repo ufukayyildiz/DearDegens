@@ -1,6 +1,6 @@
 import { getAuthSession } from "@/src/lib/auth/auth-options"
 import { db } from "@/src/server/db"
-import { chatRoom, offers } from "@/src/server/db/schema"
+import { chatRoom, offers, notifications } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { ulid } from "ulid"
 import { Ratelimit } from "@upstash/ratelimit"
@@ -30,9 +30,10 @@ export async function PUT(req: Request) {
     }
 
     const body = await req.json()
+    const { offerId, adId, sellerId, userId, adTitle, url } = body
     const currentDate: Date = new Date()
+    const notificationId = `offBuyConNot-${ulid()}`
     const chatroomId = `chtroom-${ulid()}`
-    const { offerId, adId, sellerId, userId } = body
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
@@ -42,12 +43,24 @@ export async function PUT(req: Request) {
         .set({ isCountered: false, isConfirmed: true })
         .where(eq(offers.id, offerId))
 
-      const createChatRoom = await db.insert(chatRoom).values({
+      await db.insert(chatRoom).values({
         id: chatroomId,
         adId: adId,
         userId: userId,
         sellerId: sellerId,
         createdAt: currentDate,
+      })
+
+      await db.insert(notifications).values({
+        id: notificationId,
+        userId: sellerId,
+        adId: adId,
+        adUrl: url,
+        createdAt: currentDate,
+        title: `Offer Status: Final Confirmation`,
+        description: `The buyer for ${adTitle} has made final confirmation.`,
+        body: `The buyer for ${adTitle} has made final confirmation. You are now free to communicate with them in the chat section.`,
+        isRead: false,
       })
 
       revalidatePath(

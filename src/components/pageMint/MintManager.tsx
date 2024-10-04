@@ -27,8 +27,6 @@ export default function MintManager({ listing, domain }: MintManagerProps) {
   const authorOffers = useGetOffersAuthor(listingId).data || []
   const authorLoading = useGetOffersAuthor(listingId).isLoading
 
-  console.log("checking", userOffers)
-
   if (userOffers !== undefined) {
     userOffers &&
       userOffers.sort(

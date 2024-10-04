@@ -4,7 +4,7 @@ import { notifications, offers } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { ulid } from "ulid"
 import { z } from "zod"
-import { Ratelimit } from "@upstash/ratelimit" 
+import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
 
@@ -33,7 +33,7 @@ export async function PUT(req: Request) {
     const currentDate: Date = new Date()
 
     const body = await req.json()
-    const { offerId, counterPrice, userId, sellerId, adId, adTitle } = body
+    const { offerId, counterPrice, userId, sellerId, adId, adTitle, url } = body
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
@@ -47,14 +47,15 @@ export async function PUT(req: Request) {
         })
         .where(eq(offers.id, offerId))
 
-      const notification = await db.insert(notifications).values({
+      await db.insert(notifications).values({
         id: notificationId,
         userId: userId,
         adId: adId,
+        adUrl: url,
         createdAt: currentDate,
-        title: `Counter offer recieved!`,
+        title: `Offer Status: Countered`,
         description: `Counter offer for listing ${adTitle} recieved!`,
-        body: `A counter offer of R ${counterPrice} has been sent for listing ${adTitle}. Head over to the listing page to either accept or decline the offer.`,
+        body: `A counter offer of R ${counterPrice} has been recieved for listing ${adTitle}. Head over to the offers manager to either accept or decline the offer.`,
         isRead: false,
       })
 
