@@ -8,7 +8,7 @@ export const products: productType[] = [
     price: 0,
     images: 15,
     ads: 3,
-    features: ["Maximum 2 listings.", "Image bucket size: 10"],
+    features: ["Maximum 3 listings.", "Image bucket size: 15"],
   },
   {
     id: "001",
@@ -30,7 +30,7 @@ export const products: productType[] = [
     price: 65.0,
     images: 75,
     ads: 15,
-    features: ["Maximum 10 listings.", "Image bucket size: 50"],
+    features: ["Maximum 15 listings.", "Image bucket size: 75"],
   },
   {
     id: "003",
@@ -39,6 +39,6 @@ export const products: productType[] = [
     price: 120.0,
     images: 250,
     ads: 50,
-    features: ["Maximum 30 listings.", "Image bucket size: 150"],
+    features: ["Maximum 50 listings.", "Image bucket size: 250"],
   },
 ]

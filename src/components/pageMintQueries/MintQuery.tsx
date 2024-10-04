@@ -154,6 +154,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
       })
     },
     onSuccess: () => {
+      form.reset()
       setSubmitted(true)
       return toast({
         description: "Your query is on the way to the seller.",
@@ -164,7 +165,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
         console.log("onSettled error:", error)
       } else {
         await queryClient.invalidateQueries({
-          queryKey: ["queries", listing.id],
+          queryKey: ["userQueries", listing.id],
         })
       }
     },
@@ -316,7 +317,7 @@ export default function MintQuery({ listing }: MintQueryProps) {
                             </Link>
                           </Label>
                         </div>
-                        <div className="space-x-5">
+                        <div className="flex flex-row space-x-5">
                           <Button
                             type="submit"
                             disabled={disabled || !canSubmit}

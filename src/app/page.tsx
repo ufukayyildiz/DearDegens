@@ -15,7 +15,7 @@ export default async function HomePage() {
   return (
     <section className="mb-52 h-auto min-h-screen items-center gap-6 pb-8 pt-6">
       <div className="z-20 mx-auto h-auto w-10/12 min-w-[280px] md:w-8/12">
-        <div className="mb-6 flex w-full items-center justify-center">
+        <div className="mb-10 flex w-full items-center justify-center">
           <PostAd />
         </div>
         <CategoryTags />

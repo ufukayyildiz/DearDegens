@@ -45,8 +45,8 @@ export default function Footer() {
 
       <p className="my-auto h-auto w-full justify-center text-center text-xs">
         <span>Copyright © {currentYear} - Developed by </span>
-        <a href="https://www.buidl.co.za" target="_blank" rel="noreferrer">
-          Buidl.co.za
+        <a href="https://www.buildsoftware.co.za" target="_blank" rel="noreferrer">
+          BuildSoftware.co.za
         </a>{" "}
         | All rights reserved
       </p>
