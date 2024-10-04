@@ -300,6 +300,7 @@ export default function ChatRoom({
                       </Button>
                       {session?.user.id === roomData.sellerId && (
                         <UserReport
+                          id={roomData.id}
                           adId={roomData.adId}
                           authorId={roomData.sellerId}
                           userId={roomData.userId}
@@ -307,6 +308,7 @@ export default function ChatRoom({
                       )}
                       {session?.user.id === roomData.userId && (
                         <UserReport
+                          id={roomData.id}
                           adId={roomData.adId}
                           authorId={roomData.userId}
                           userId={roomData.sellerId}

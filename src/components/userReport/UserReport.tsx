@@ -2,7 +2,6 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
-import { useParams } from "next/navigation"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -35,12 +34,10 @@ import { useMutation } from "@tanstack/react-query"
 import axios from "axios"
 import { Loader2, AlertTriangle } from "lucide-react"
 import { z } from "zod"
-import { useQueryClient } from "@tanstack/react-query"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
 import { Textarea } from "../components-ui/Textarea"
 import { userActivities } from "@/src/lib/categories/Report"
-import { listingsType } from "@/src/types/db"
 import { cn } from "@/src/lib/utils"
 
 function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
@@ -56,12 +53,14 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 }
 
 interface UserReportProps {
+  id: string
   adId: string
   userId: string
   authorId: string
 }
 
 export default function UserReport({
+  id,
   adId,
   userId,
   authorId,
@@ -70,7 +69,7 @@ export default function UserReport({
   const [submitted, setSubmitted] = useState<boolean>(false)
   const [infraction, setInfraction] = useState<string>("")
   const [tooltipVisible, setTooltipVisible] = useState<boolean>(false)
-  const tooltip = document.getElementById("reportTrigger")
+  const tooltip = document.getElementById(`${id}`)
   tooltip?.addEventListener("mouseover", () => {
     setTooltipVisible(true)
   })
@@ -148,7 +147,7 @@ export default function UserReport({
     <div>
       <AlertDialog>
         <AlertDialogTrigger
-          id="reportTrigger"
+          id={`${id}`}
           className="group relative flex h-10 w-10 items-center justify-center hover:text-orange-500"
         >
           <p

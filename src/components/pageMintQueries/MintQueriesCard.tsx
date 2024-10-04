@@ -37,6 +37,7 @@ export default function MintQueriesCard({ query, userId }: QueryCardProps) {
           {query.sellerId === userId && (
             <div className="flex w-full flex-row items-center justify-end space-x-3">
               <UserReport
+                id={query.id}
                 adId={query.adId}
                 authorId={query.sellerId}
                 userId={query.userId}
