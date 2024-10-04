@@ -35,8 +35,8 @@ export default async function SubscriptionPlanCard({
   const merchantKeyEnv = process.env.MERCHANT_KEY
   const passPhrase = process.env.PASSPHRASE!
   const pfHost = process.env.PFHOST
-  const domain =
-    process.env.SANDBOXMODE === "true" ? process.env.NGROK_URL : process.env.URL
+  // const domain = process.env.NGROK_URL
+  const domain = process.env.URL
   const paymentId = `pmnt-${ulid()}`
   const crypto = require("crypto")
 
