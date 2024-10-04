@@ -145,12 +145,13 @@ export async function POST(request: any) {
       responseData
     )
 
-    if (
-      isSignatureValid &&
-      isIpAddressValid &&
-      isPaymentDataValid &&
-      isServerConfirmationValid
-    ) {
+    console.log("Payment - Signature:", isSignatureValid)
+    console.log("Payment - IP Valid:", isIpAddressValid)
+    console.log("Payment - Payment Valid:", isPaymentDataValid)
+    console.log("Payment - Server Confirmation:", isServerConfirmationValid)
+
+    if (isSignatureValid && isIpAddressValid && isPaymentDataValid) {
+      console.log("Payment - Response Data:", responseData.item_description)
       if (responseData.item_description === products[2].id) {
         await db
           .update(users)
@@ -159,6 +160,7 @@ export async function POST(request: any) {
             subscriptionToken: responseData.token,
           })
           .where(eq(users.email, responseData.email_address))
+        console.log("Successfully updated user subscription:", products[2].id)
       }
 
       if (responseData.item_description === products[3].id) {
@@ -169,6 +171,7 @@ export async function POST(request: any) {
             subscriptionToken: responseData.token,
           })
           .where(eq(users.email, responseData.email_address))
+        console.log("Successfully updated user subscription:", products[3].id)
       }
 
       console.log("Payment Successful")
