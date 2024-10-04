@@ -149,12 +149,17 @@ export async function POST(request: any) {
       responseData
     )
 
+    console.log('Payment - Signature:', isSignatureValid)
+    console.log('Payment - IP Valid:', isIpAddressValid)
+    console.log('Payment - Payment Valid:', isPaymentDataValid)
+    console.log('Payment - Server Confirmation:', isServerConfirmationValid)
+
     if (
-      isSignatureValid &&
       isIpAddressValid &&
       isPaymentDataValid &&
       isServerConfirmationValid
     ) {
+      console.log('Payment - Response Data:', responseData.item_description, "-", products[1].id)
       if (responseData.item_description === products[1].id) {
         const user = await db
           .select()
@@ -174,6 +179,8 @@ export async function POST(request: any) {
             maxImages: updatedMaxImages,
           })
           .where(eq(users.email, responseData.email_address))
+        
+        console.log('Updated users ad & image limit successfully.', )
       }
 
       console.log("Payment Successful")
