@@ -19,6 +19,7 @@ import { toast } from "@/src/hooks/use-toast"
 import { useForm } from "@tanstack/react-form"
 import { FieldApi } from "@tanstack/react-form"
 import { zodValidator } from "@tanstack/zod-form-adapter"
+import UserReport from "../userReport/UserReport"
 import {
   ChatMessageCreationRequest,
   validateMessage,
@@ -284,18 +285,34 @@ export default function ChatRoom({
                 >
                   {/* @ts-ignore */}
                   {([canSubmit, isSubmitting]) => (
-                    <Button
-                      type="submit"
-                      disabled={disabled || !canSubmit}
-                      variant="outlineTwo"
-                      className="z-50 mt-5 w-20 shadow-sm hover:bg-customAccent hover:text-zinc-100"
-                    >
-                      {isSubmitting ? (
-                        <Loader2 className="h-5 w-5 animate-spin" />
-                      ) : (
-                        "Send"
+                    <div className="mt-5 flex items-center justify-between">
+                      <Button
+                        type="submit"
+                        disabled={disabled || !canSubmit}
+                        variant="outlineTwo"
+                        className="z-50 w-20 shadow-sm hover:bg-customAccent hover:text-zinc-100"
+                      >
+                        {isSubmitting ? (
+                          <Loader2 className="h-5 w-5 animate-spin" />
+                        ) : (
+                          "Send"
+                        )}
+                      </Button>
+                      {session?.user.id === roomData.sellerId && (
+                        <UserReport
+                          adId={roomData.adId}
+                          authorId={roomData.sellerId}
+                          userId={roomData.userId}
+                        />
                       )}
-                    </Button>
+                      {session?.user.id === roomData.userId && (
+                        <UserReport
+                          adId={roomData.adId}
+                          authorId={roomData.userId}
+                          userId={roomData.sellerId}
+                        />
+                      )}
+                    </div>
                   )}
                 </form.Subscribe>
               </div>

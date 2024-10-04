@@ -368,6 +368,33 @@ export const listingReports = pgTable(
   }
 )
 
+export const userReports = pgTable(
+  "userreports",
+  {
+    id: varchar("id", { length: 191 }).primaryKey().notNull(),
+    userId: varchar("userid", { length: 191 })
+      .references(() => users.id)
+      .notNull(),
+    adId: varchar("adid", { length: 191 })
+      .references(() => listings.id)
+      .notNull(),
+    authorId: varchar("authorid", { length: 191 })
+      .references(() => users.id)
+      .notNull(),
+    createdAt: timestamp("createdat")
+      .default(sql`CURRENT_TIMESTAMP`)
+      .notNull(),
+    infraction: varchar("infraction", { length: 191 }).notNull(),
+    description: text("description"),
+    userFlagged: boolean("userflagged").default(false),
+  },
+  (userReport) => {
+    return {
+      idIdx: uniqueIndex("userreports_pkey").on(userReport.id),
+    }
+  }
+)
+
 // __________________________________________________________________________________________________________________
 // CHAT ROOM:
 export const chatRoom = pgTable(

@@ -3,6 +3,7 @@ import { formatTimeToNow } from "@/src/lib/utils"
 import { queryType } from "@/src/types/db"
 import MintQueryDelete from "./MintQueryDelete"
 import MintQueryReply from "./MintQueryReply"
+import UserReport from "../userReport/UserReport"
 
 interface QueryCardProps {
   query: queryType
@@ -35,6 +36,11 @@ export default function MintQueriesCard({ query, userId }: QueryCardProps) {
           </p>
           {query.sellerId === userId && (
             <div className="flex w-full flex-row items-center justify-end space-x-3">
+              <UserReport
+                adId={query.adId}
+                authorId={query.sellerId}
+                userId={query.userId}
+              />
               <MintQueryDelete query={query} />
               <MintQueryReply queryId={query.id} />
             </div>
