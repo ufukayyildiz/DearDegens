@@ -114,7 +114,7 @@ export const userReportTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
             <Text style={paragraph}>Hi DearDegen Support Team,</Text>
             <Text style={paragraph}>
               The following report was sent by {userName} ({userEmail}) who has
-              flagged a listing ({adId}) as possibly infringing on the
+              flagged a user ({userId}) as possibly infringing on the
               DearDegens terms of service. The details of the report are as
               follows:
             </Text>
