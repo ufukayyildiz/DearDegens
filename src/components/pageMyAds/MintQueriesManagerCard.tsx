@@ -42,7 +42,7 @@ export default function MintQueriesManagerCard({
             <div className="flex w-full flex-row items-center justify-end space-x-3">
               <UserReport
                 id={query.id}
-                adId={query.adId}
+                qrymsgId={query.id}
                 authorId={query.sellerId}
                 userId={query.userId}
               />
