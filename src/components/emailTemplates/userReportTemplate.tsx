@@ -19,7 +19,7 @@ interface EmailTemplateProps {
   userName: string
   userEmail: string
   reportId: string
-  adId: string
+  qrymsgId: string
   userId: string
   description: string
   infraction: string
@@ -29,7 +29,7 @@ export const userReportTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
   userName,
   userEmail,
   reportId,
-  adId,
+  qrymsgId,
   userId,
   description,
   infraction,
@@ -119,7 +119,7 @@ export const userReportTemplate: React.FC<Readonly<EmailTemplateProps>> = ({
               follows:
             </Text>
             <Text style={paragraph}>Report ID: {reportId}</Text>
-            <Text style={paragraph}>Listing ID: {adId}</Text>
+            <Text style={paragraph}>Query / Chat ID: {qrymsgId}</Text>
             <Text style={paragraph}>Reported User ID: {userId}</Text>
             <Text style={paragraph}>Infraction reported: {infraction}</Text>
             <Text style={paragraph}>

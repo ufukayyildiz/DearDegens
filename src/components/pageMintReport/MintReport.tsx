@@ -3,6 +3,7 @@
 import React, { useState } from "react"
 import Link from "next/link"
 import { useParams } from "next/navigation"
+import { AxiosError } from "axios"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -112,13 +113,29 @@ export default function MintReport({ listing }: MintReportProps) {
 
       return data
     },
-    onError: () => {
-      return toast({
-        title: "Something went wrong.",
-        description:
-          "There was an error sending your report. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast({
+          title: "Authentication Error.",
+          description: "Unauthorised, please login.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 429) {
+        return toast({
+          title: "Too Many Requests.",
+          description: "Please wait 30sec before trying again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "Your report was not published as there was an error connecting to the server. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: () => {
       setSubmitted(true)

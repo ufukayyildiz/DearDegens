@@ -2,6 +2,7 @@
 
 import React, { useState } from "react"
 import Link from "next/link"
+import { AxiosError } from "axios"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -54,14 +55,14 @@ function FieldInfo({ field }: { field: FieldApi<any, any, any, any> }) {
 
 interface UserReportProps {
   id: string
-  adId: string
+  qrymsgId: string
   userId: string
   authorId: string
 }
 
 export default function UserReport({
   id,
-  adId,
+  qrymsgId,
   userId,
   authorId,
 }: UserReportProps) {
@@ -82,7 +83,7 @@ export default function UserReport({
     defaultValues: {
       description: "",
       infraction: "",
-      adId: adId,
+      qrymsgId: qrymsgId,
       userId: userId,
       authorId: authorId,
     },
@@ -90,7 +91,7 @@ export default function UserReport({
       const payload: UserReportCreationRequest = {
         description: value.description,
         infraction: infraction,
-        adId: adId,
+        qrymsgId: qrymsgId,
         userId: userId,
         authorId: authorId,
       }
@@ -105,14 +106,14 @@ export default function UserReport({
     mutationFn: async ({
       description,
       infraction,
-      adId,
+      qrymsgId,
       authorId,
       userId,
     }: UserReportCreationRequest) => {
       const payload: UserReportCreationRequest = {
         description,
         infraction,
-        adId,
+        qrymsgId,
         authorId,
         userId,
       }
@@ -121,13 +122,29 @@ export default function UserReport({
 
       return data
     },
-    onError: () => {
-      return toast({
-        title: "Something went wrong.",
-        description:
-          "There was an error sending your report. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast({
+          title: "Authentication Error.",
+          description: "Unauthorised, please login.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 429) {
+        return toast({
+          title: "Too Many Requests.",
+          description: "Please wait 30sec before trying again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "Your report was not published as there was an error connecting to the server. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: () => {
       setSubmitted(true)

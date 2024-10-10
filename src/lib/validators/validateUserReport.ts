@@ -10,7 +10,7 @@ export const reportDescription = z
   })
 
 export const validateUserReport = z.object({
-  adId: z.string(),
+  qrymsgId: z.string(),
   authorId: z.string(),
   userId: z.string(),
   infraction: z.string(),

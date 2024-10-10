@@ -34,13 +34,12 @@ export async function POST(req: Request) {
     }
 
     const body = await req.json()
-    const sessionUserId = session?.user.id
     const userName = session.user.name || ""
     const userEmail = session.user.email || ""
     const reportId = `repUser-${ulid()}`
     const currentDate: Date = new Date()
 
-    const { authorId, adId, userId, description, infraction } = body
+    const { authorId, qrymsgId, userId, description, infraction } = body
 
     if (!limitReached) {
       return new Response("API request limit reached", { status: 429 })
@@ -49,7 +48,7 @@ export async function POST(req: Request) {
         id: reportId,
         userId: userId,
         authorId: authorId,
-        adId: adId,
+        qrymsgId: qrymsgId,
         createdAt: currentDate,
         description: description,
         infraction: infraction,
@@ -64,7 +63,7 @@ export async function POST(req: Request) {
             userName: userName,
             userEmail: userEmail,
             reportId: reportId,
-            adId: adId,
+            qrymsgId: qrymsgId,
             userId: userId,
             description: description,
             infraction: infraction,

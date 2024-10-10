@@ -1,6 +1,7 @@
 "use client"
 import React, { useState, useRef, useEffect } from "react"
 import { roomType, messagesType, chatRoomType } from "@/src/types/db"
+import { AxiosError } from "axios"
 import {
   Sheet,
   SheetContent,
@@ -122,13 +123,29 @@ export default function ChatRoom({
       }
       await axios.post("/api/createChatMessage", payload)
     },
-    onError: (error) => {
-      console.log("error:", error)
-      return toast({
-        title: "Something went wrong.",
-        description: "Error sending message. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast({
+          title: "Authentication Error.",
+          description: "Unauthorised, please login.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 429) {
+        return toast({
+          title: "Too Many Requests.",
+          description: "Please wait 30sec before trying again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "Your message was not published as there was an error connecting to the server. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: () => {
       form.reset()
@@ -301,7 +318,7 @@ export default function ChatRoom({
                       {session?.user.id === roomData.sellerId && (
                         <UserReport
                           id={roomData.id}
-                          adId={roomData.adId}
+                          qrymsgId={roomData.adId}
                           authorId={roomData.sellerId}
                           userId={roomData.userId}
                         />
@@ -309,7 +326,7 @@ export default function ChatRoom({
                       {session?.user.id === roomData.userId && (
                         <UserReport
                           id={roomData.id}
-                          adId={roomData.adId}
+                          qrymsgId={roomData.id}
                           authorId={roomData.userId}
                           userId={roomData.sellerId}
                         />

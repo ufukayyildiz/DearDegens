@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { cn } from "@/src/lib/utils"
+import { AxiosError } from "axios"
 import {
   AlertDialog,
   AlertDialogAction,
@@ -146,12 +147,29 @@ export default function MintQuery({ listing }: MintQueryProps) {
 
       return data
     },
-    onError: () => {
-      return toast({
-        title: "Something went wrong.",
-        description: "There was an error sending your query. Please try again.",
-        variant: "destructive",
-      })
+    onError: (error: AxiosError) => {
+      if (error.response?.status === 401) {
+        return toast({
+          title: "Authentication Error.",
+          description: "Unauthorised, please login.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 429) {
+        return toast({
+          title: "Too Many Requests.",
+          description: "Please wait 30sec before trying again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "Your query was not published as there was an error connecting to the server. Please try again.",
+          variant: "destructive",
+        })
+      }
     },
     onSuccess: () => {
       form.reset()

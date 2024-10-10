@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
+import { AxiosError } from "axios"
 import { Button } from "../components-ui/Button"
 import { useMutation, useQueryClient } from "@tanstack/react-query"
 import { useGetWishlist } from "@/src/server/services"
@@ -49,18 +50,28 @@ export default function MintAddToWishlist({ listing }: WishListProps) {
     mutationFn: async () => {
       await axios.post("/api/createWishlistItem", listingId)
     },
-    onError: (error) => {
-      console.log("onError:", error)
+    onError: (error: AxiosError) => {
       setIsInWishlist(false)
       setIsLoading(false)
-      if (error.message === "Request failed with status code 429") {
+      if (error.response?.status === 401) {
         return toast({
-          description: "Too many network requests, please wait 30 seconds.",
-          variant: "warning",
+          title: "Authentication Error.",
+          description: "Unauthorised, please login.",
+          variant: "destructive",
         })
-      } else {
+      }
+      if (error.response?.status === 429) {
         return toast({
-          description: "Error adding listing in wishlist. Please try again.",
+          title: "Too Many Requests.",
+          description: "Please wait 30sec before trying again.",
+          variant: "destructive",
+        })
+      }
+      if (error.response?.status === 500) {
+        return toast({
+          title: "Something went wrong.",
+          description:
+            "There was an problem connecting to the server. Please try again.",
           variant: "destructive",
         })
       }
