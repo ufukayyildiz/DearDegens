@@ -375,7 +375,7 @@ export const userReports = pgTable(
     userId: varchar("userid", { length: 191 })
       .references(() => users.id)
       .notNull(),
-    qrymsgId: varchar("qrymsgId", { length: 191 })
+    qrymsgId: varchar("qrymsgid", { length: 191 })
       .references(() => listings.id)
       .notNull(),
     authorId: varchar("authorid", { length: 191 })
