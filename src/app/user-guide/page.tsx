@@ -1,4 +1,6 @@
-import React from "react"
+"use client"
+import React, { useEffect } from "react"
+import Lenis from "@studio-freight/lenis"
 import { Heading } from "@/src/components/components-typography/Heading"
 import { Paragraph } from "@/src/components/components-typography/Paragraph"
 import { Subheading } from "@/src/components/components-typography/Subheading"
@@ -22,6 +24,17 @@ export default function UserGuide() {
   const headingDiv = "flex flex-row relative w-full h-16"
   const subHeading = "flex absolute bottom-0 left-10"
   const icons = "flex absolute bottom-[10px] left-3"
+
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
 
   return (
     <div className="z-20 mx-auto mb-56 w-11/12 min-w-[280px] overflow-hidden md:w-8/12">

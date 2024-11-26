@@ -1,16 +1,11 @@
 "use client"
 
-import { useEffect, useState } from "react"
-import Link from "next/link"
 import { formatTimeToNow } from "@/src/lib/utils"
-import { listingsType } from "@/src/types/db"
 import { Image, MapPin } from "lucide-react"
-
-import AdTagsMini from "../adTags/AdTagsMini"
 
 export default function CarouselMintCardSkeleton() {
   return (
-    <div className="group h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+    <div className="group h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-100 hover:scale-[0.99]">
       <div className="relative flex h-full w-full flex-col">
         <div className="w-full">
           {/* IMAGE */}

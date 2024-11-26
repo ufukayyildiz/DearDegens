@@ -16,6 +16,7 @@ export default function SearchbarTop() {
   const [disabled, setDisabled] = useState<boolean>(false)
   const enterKey = useKeyPress("Enter")
   const searchParams = input.replace(/ /g, "-")
+  const [focus, setFocus] = useState<boolean>(false)
 
   const handleSearch = async () => {
     await queryClient.invalidateQueries({
@@ -48,7 +49,7 @@ export default function SearchbarTop() {
   }, [input])
 
   useEffect(() => {
-    if (enterKey) {
+    if (enterKey && focus) {
       handleSearch()
     }
   }, [enterKey])
@@ -58,6 +59,8 @@ export default function SearchbarTop() {
       <Input
         className="z-40 w-full rounded-full border border-transparent bg-background placeholder:text-customAccent dark:border-muted"
         placeholder="Your search begins here.."
+        onFocus={() => setFocus(true)}
+        onBlur={() => setFocus(false)}
         value={input}
         onChange={(event: any) => setInput(event.target.value)}
       />

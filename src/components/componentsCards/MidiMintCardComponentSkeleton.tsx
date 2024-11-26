@@ -4,7 +4,7 @@ import { Image, MapPin } from "lucide-react"
 
 export default function MidiMintCardComponentSkeleton() {
   return (
-    <div className="h-60 w-full max-w-[180px] rounded-lg border border-background bg-background shadow-md transition duration-75 hover:scale-[0.99] hover:shadow">
+    <div className="h-60 w-full max-w-[180px] rounded-lg border border-background bg-background shadow-md transition duration-100 hover:scale-[0.99] hover:shadow">
       <div className="relative flex h-full w-full flex-col">
         <div className="w-full">
           {/* IMAGE */}

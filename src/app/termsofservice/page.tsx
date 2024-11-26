@@ -1,5 +1,6 @@
 "use client"
-import React from "react"
+import React, { useEffect } from "react"
+import Lenis from "@studio-freight/lenis"
 import Link from "next/link"
 import { PageHeading } from "@/src/components/components-typography/PageHeading"
 import { Heading } from "@/src/components/components-typography/Heading"
@@ -11,6 +12,17 @@ import { Index } from "@/src/components/components-typography/Index"
 import { ChevronUp } from "lucide-react"
 
 export default function TermsOfService() {
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
+
   return (
     <div className="mb-20 p-5 md:p-16">
       <PageHeading>TERMS OF SERVICE</PageHeading>
@@ -171,14 +183,14 @@ export default function TermsOfService() {
       <Subheading>Your submissions and contributions</Subheading>
       <Paragraph>
         Please review this section and the{" "}
-        <span className="font-semibold">&quot;PROHIBITED ACTIVITIES&quot;</span> section
-        carefully prior to using our Services to understand the (a) rights you
-        give us and (b) obligations you have when you post or upload any content
-        through the Services. Submissions: By directly sending us any question,
-        comment, suggestion, idea, feedback, or other information about the
-        Services (&quot;Submissions&quot;), you agree to assign to us all
-        intellectual property rights in such Submission. You agree that we shall
-        own this Submission and be entitled to its unrestricted use and
+        <span className="font-semibold">&quot;PROHIBITED ACTIVITIES&quot;</span>{" "}
+        section carefully prior to using our Services to understand the (a)
+        rights you give us and (b) obligations you have when you post or upload
+        any content through the Services. Submissions: By directly sending us
+        any question, comment, suggestion, idea, feedback, or other information
+        about the Services (&quot;Submissions&quot;), you agree to assign to us
+        all intellectual property rights in such Submission. You agree that we
+        shall own this Submission and be entitled to its unrestricted use and
         dissemination for any lawful purpose, commercial or otherwise, without
         acknowledgment or compensation to you. Contributions: The Services may
         invite you to chat, contribute to, or participate in blogs, message

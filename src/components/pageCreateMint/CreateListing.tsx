@@ -1,6 +1,6 @@
 "use client"
 
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react"
 import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { toast } from "@/src/hooks/use-toast"
@@ -18,6 +18,7 @@ import { zodValidator } from "@tanstack/zod-form-adapter"
 import { Loader2, X, PlusCircle } from "lucide-react"
 import { nanoid } from "nanoid"
 import { cn } from "@/src/lib/utils"
+import Lenis from "@studio-freight/lenis"
 import { Button } from "../components-ui/Button"
 import { Checkbox } from "../components-ui/Checkbox"
 import { Label } from "../components-ui/Label"
@@ -254,6 +255,17 @@ export default function CreateListing({ user }: CreateListingProps) {
       })
     },
   })
+
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
 
   return (
     <div className="mx-auto mb-52 flex min-h-screen w-11/12 flex-col py-10 sm:w-8/12">
@@ -1136,10 +1148,10 @@ export default function CreateListing({ user }: CreateListingProps) {
                       type="submit"
                       variant="outline"
                       disabled={disabled || !canSubmit}
-                      className="w-20 items-center justify-center"
+                      className="relative flex w-20 items-center justify-center"
                     >
-                      {isSubmitting ? (
-                        <Loader2 className="h-5 w-5 animate-spin" />
+                      {!isSubmitting ? (
+                        <Loader2 className="absolute h-5 w-5 animate-spin" />
                       ) : (
                         "Send"
                       )}
@@ -1153,7 +1165,6 @@ export default function CreateListing({ user }: CreateListingProps) {
               </div>
             </>
           )}
-          {/* _________ */}
         </form>
       </form.Provider>
     </div>

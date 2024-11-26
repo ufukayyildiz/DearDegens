@@ -32,7 +32,7 @@ export default function CarouselMintCardComponent({ listing }: MyMintsProps) {
   const formattedPrice = formatter.format(price!)
 
   return (
-    <div className="h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+    <div className="h-60 w-40 rounded-lg border border-muted bg-background shadow-md transition duration-100 hover:scale-[0.99]">
       <Link href={listing.url}>
         <div className="relative flex h-full w-full flex-col">
           <div className="w-full">

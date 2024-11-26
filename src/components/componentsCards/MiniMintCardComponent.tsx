@@ -33,7 +33,7 @@ export default function MiniMintCardComponent({ listing }: MyMintsProps) {
   const formattedPrice = formatter.format(price!)
 
   return (
-    <div className="mx-auto w-full rounded-lg border border-background bg-background shadow-md transition duration-75 hover:scale-[0.99] dark:border-muted">
+    <div className="mx-auto w-full rounded-lg border border-background bg-background shadow-md transition duration-100 hover:scale-[0.99] dark:border-muted">
       <Link href={listing.url}>
         <div className="relative flex h-28 justify-between ">
           {/* IMAGE */}

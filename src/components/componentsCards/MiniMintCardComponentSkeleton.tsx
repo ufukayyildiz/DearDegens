@@ -4,7 +4,7 @@ import { MapPin } from "lucide-react"
 
 export default function MiniMintCardComponentSkeleton() {
   return (
-    <div className="group mx-auto w-full rounded-lg border border-background bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+    <div className="group mx-auto w-full rounded-lg border border-background bg-background shadow-md transition duration-100 hover:scale-[0.99]">
       <div className="relative flex h-28 justify-between ">
         {/* IMAGE */}
         <div className="h-full w-4/12">

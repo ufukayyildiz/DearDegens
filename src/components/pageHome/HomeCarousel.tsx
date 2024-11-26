@@ -16,6 +16,7 @@ import "@splidejs/react-splide/css/core"
 import { Button } from "../components-ui/Button"
 import { listingsType } from "@/src/types/db"
 import { queryLimit } from "@/src/server/queryLimit"
+import Lenis from "@studio-freight/lenis"
 
 export default function HomeCarousel() {
   const mock = ["1", "2", "3", "4", "5"]
@@ -42,6 +43,17 @@ export default function HomeCarousel() {
   })
 
   const listingsData = data?.pages.flatMap((page) => page.rows) || [""]
+
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
 
   return (
     <div>

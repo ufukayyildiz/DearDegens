@@ -1,29 +1,44 @@
-import React from "react"
+"use client"
+import React, { useEffect } from "react"
+import Lenis from "@studio-freight/lenis"
 import { PageHeading } from "@/src/components/components-typography/PageHeading"
 import { Heading } from "@/src/components/components-typography/Heading"
 import { Subheading } from "@/src/components/components-typography/Subheading"
 import { Paragraph } from "@/src/components/components-typography/Paragraph"
 
 export default function Disclaimer() {
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
   return (
     <div className="mb-20 p-5 md:p-16">
       <PageHeading>DISCLAIMER</PageHeading>
-      <Subheading className="pl-0 text-muted-foreground">Last updated February 09, 2024</Subheading>
+      <Subheading className="pl-0 text-muted-foreground">
+        Last updated February 09, 2024
+      </Subheading>
       <Heading>WEBSITE DISCLAIMER</Heading>
       <Paragraph>
-        The information provided by DearDegens (Pty) Ltd (&quot;we,&quot; &quot;us,&quot; or &quot;our&quot;)
-        on www.deardegens.com (the &quot;Site&quot;) and our mobile application is for
-        general informational purposes only. All information on the Site and our
-        mobile application is provided in good faith, however we make no
-        representation or warranty of any kind, express or implied, regarding
-        the accuracy, adequacy, validity, reliability, availability, or
-        completeness of any information on the Site or our mobile application.
-        UNDER NO CIRCUMSTANCE SHALL WE HAVE ANY LIABILITY TO YOU FOR ANY LOSS OR
-        DAMAGE OF ANY KIND INCURRED AS A RESULT OF THE USE OF THE SITE OR OUR
-        MOBILE APPLICATION OR RELIANCE ON ANY INFORMATION PROVIDED ON THE SITE
-        AND OUR MOBILE APPLICATION. YOUR USE OF THE SITE AND OUR MOBILE
-        APPLICATION AND YOUR RELIANCE ON ANY INFORMATION ON THE SITE AND OUR
-        MOBILE APPLICATION IS SOLELY AT YOUR OWN RISK.
+        The information provided by DearDegens (Pty) Ltd (&quot;we,&quot;
+        &quot;us,&quot; or &quot;our&quot;) on www.deardegens.com (the
+        &quot;Site&quot;) and our mobile application is for general
+        informational purposes only. All information on the Site and our mobile
+        application is provided in good faith, however we make no representation
+        or warranty of any kind, express or implied, regarding the accuracy,
+        adequacy, validity, reliability, availability, or completeness of any
+        information on the Site or our mobile application. UNDER NO CIRCUMSTANCE
+        SHALL WE HAVE ANY LIABILITY TO YOU FOR ANY LOSS OR DAMAGE OF ANY KIND
+        INCURRED AS A RESULT OF THE USE OF THE SITE OR OUR MOBILE APPLICATION OR
+        RELIANCE ON ANY INFORMATION PROVIDED ON THE SITE AND OUR MOBILE
+        APPLICATION. YOUR USE OF THE SITE AND OUR MOBILE APPLICATION AND YOUR
+        RELIANCE ON ANY INFORMATION ON THE SITE AND OUR MOBILE APPLICATION IS
+        SOLELY AT YOUR OWN RISK.
       </Paragraph>
 
       <Heading>USER INTERACTION DISCLAIMER</Heading>

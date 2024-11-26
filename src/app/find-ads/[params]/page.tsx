@@ -1,5 +1,6 @@
 "use client"
 import React, { useState, useEffect } from "react"
+import Lenis from "@studio-freight/lenis"
 import { useParams } from "next/navigation"
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
@@ -124,9 +125,20 @@ export default function FindAds() {
   //   listings.sort((a: any, b: any) => a.price! - b.price!)
   // }
 
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
+
   return (
     <div className="min-w-screen relative min-h-screen w-full">
-      <div className="mx-auto mb-60 pb-10 h-auto min-h-screen w-11/12 min-w-[280px] overflow-hidden md:w-8/12">
+      <div className="mx-auto mb-60 h-auto min-h-screen w-11/12 min-w-[280px] overflow-hidden pb-10 md:w-8/12">
         <div className="mt-10 flex flex-row justify-between md:items-center ">
           <div className="flex flex-col items-start justify-start sm:flex-row">
             <h1 className="pr-3 text-left text-xl font-bold">

@@ -4,7 +4,7 @@ import { formatTimeToNow } from "@/src/lib/utils"
 
 export default function MintCardComponentSkeleton() {
   return (
-    <div className="group mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+    <div className="group mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-100 hover:scale-[0.99]">
       <div className="relative flex h-52 justify-between ">
         {/* INFO */}
         <div className="relative w-8/12 p-3">

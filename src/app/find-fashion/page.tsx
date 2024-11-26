@@ -1,10 +1,9 @@
 "use client"
 import React, { useState, useEffect } from "react"
-import { useParams } from "next/navigation"
+import Lenis from "@studio-freight/lenis"
 import { useInfiniteQuery, useQueryClient } from "@tanstack/react-query"
 import axios from "axios"
 import MintFilterCategories from "@/src/components/pageMintFilter/MintFilterCategories"
-import MintFilter from "@/src/components/pageMintFilter/MintFilter"
 import { Button } from "@/src/components/components-ui/Button"
 import CardsFeed from "@/src/components/componentsCards/CardsFeed"
 import { Loader2, Filter, Search } from "lucide-react"
@@ -13,8 +12,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
 } from "@/src/components/components-ui/DropdownMenu"
 import {
   Sheet,
@@ -93,6 +90,17 @@ export default function FindVehicles() {
   const listings: listingsType[] = data?.pages.flatMap(
     (page) => page && page.rows
   ) || [""]
+
+  useEffect(() => {
+    const lenis = new Lenis()
+
+    function raf(time: any) {
+      lenis.raf(time)
+      requestAnimationFrame(raf)
+    }
+
+    requestAnimationFrame(raf)
+  }, [])
 
   // if (sort === "latest") {
   //   listings.sort((a: any, b: any) => {

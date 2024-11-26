@@ -32,7 +32,7 @@ export default function MintCardComponent({ listing }: MyMintsProps) {
   const formattedPrice = formatter.format(price!)
 
   return (
-    <div className="group mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-75 hover:scale-[0.99]">
+    <div className="group mx-auto w-full rounded-lg border border-l-4 border-background bg-background shadow-md transition duration-100 hover:scale-[0.99]">
       <Link href={listing.url}>
         <div className="relative flex h-52 justify-between ">
           {/* INFO */}
