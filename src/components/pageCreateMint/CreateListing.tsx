@@ -1150,7 +1150,7 @@ export default function CreateListing({ user }: CreateListingProps) {
                       disabled={disabled || !canSubmit}
                       className="relative flex w-20 items-center justify-center"
                     >
-                      {!isSubmitting ? (
+                      {isSubmitting ? (
                         <Loader2 className="absolute h-5 w-5 animate-spin" />
                       ) : (
                         "Send"

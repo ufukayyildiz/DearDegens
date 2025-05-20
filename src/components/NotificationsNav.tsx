@@ -340,9 +340,10 @@ export function NotificationsNav({ userId }: NotificationsNavProps) {
                                   setSelectedNotificationId(notify.id)
                                   handleDeleteNotification(notify)
                                 }}
-                                variant="outline"
-                                className="flex h-8 w-full border border-transparent bg-transparent text-start shadow-none"
-                              ></Button>
+                                variant="destructive"
+                              >
+                                Delete
+                              </Button>
                               <Button
                                 onClick={() => handleReadNotification(notify)}
                                 variant="outline"

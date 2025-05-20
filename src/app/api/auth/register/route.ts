@@ -2,12 +2,11 @@ import bcrypt from "bcrypt"
 import { db } from "@/src/server/db"
 import { eq } from "drizzle-orm"
 import crypto from "crypto"
-import { Resend } from "resend"
 import { users } from "@/src/server/db/schema"
 import { VerifyEmailTemplate } from "@/src/components/emailTemplates/VerifyEmailTemplate"
 import { ulid } from "ulid"
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import { render } from "@react-email/components"
+import { Nodemail } from "@/src/server/mail/mail"
 
 export async function POST(req: Request) {
   try {
@@ -34,20 +33,24 @@ export async function POST(req: Request) {
       })
 
       try {
-        const { data } = await resend.emails.send({
-          from: "DearDegens Support <support@deardegens.com>",
-          to: `${email}`,
-          subject: "DearDegens.com: Email Verification",
-          react: VerifyEmailTemplate({
+        const template = await render(
+          VerifyEmailTemplate({
             userName: name,
             userEmail: email,
             verifyEmailToken: verifyEmailToken,
-          }) as React.ReactElement,
+          }) as React.ReactElement
+        )
+
+        await Nodemail({
+          recipient: email,
+          sender: process.env.MAIL_USER!,
+          subject: `DearDegens.com: Email Verification`,
+          template: template,
         })
-        console.log("Successfully sent verification email:", data)
+        console.log(`Successfully sent verification email - ${email}`)
       } catch (error) {
-        console.error("Error sending verification email:", error)
-        return new Response("Error sending verififcation email:", {
+        console.error(`Failed to send verification email - ${email}`)
+        return new Response(`Failed to send verification email - ${email}`, {
           status: 500,
         })
       }

@@ -6,14 +6,14 @@ import { listings, notifications } from "@/src/server/db/schema"
 import { eq } from "drizzle-orm"
 import { ulid } from "ulid"
 import { z } from "zod"
-import { Resend } from "resend"
 import { ListingCreatedTemplate } from "@/src/components/emailTemplates/ListingCreatedTemplate"
+import { render } from "@react-email/components"
+import { Nodemail } from "@/src/server/mail/mail"
 
 export async function PATCH(req: Request, context: any) {
   try {
     const listingId = context.params.mintId
     const session = await getAuthSession()
-    const resend = new Resend(process.env.RESEND_API_KEY)
 
     if (!session?.user) {
       return new Response("Unauthorized", { status: 401 })
@@ -108,10 +108,13 @@ export async function PATCH(req: Request, context: any) {
         nonCompliant: false,
       })
       .where(eq(listings.id, listingId))
-    
-    await db.update(notifications).set({
-      adUrl: url
-    }).where(eq(notifications.adId, listingId))
+
+    await db
+      .update(notifications)
+      .set({
+        adUrl: url,
+      })
+      .where(eq(notifications.adId, listingId))
 
     await db.execute(
       sql.raw(
@@ -143,17 +146,34 @@ export async function PATCH(req: Request, context: any) {
       )
     )
 
-    await resend.emails.send({
-      from: "DearDegens Support <support@deardegens.com>",
-      to: `support@deardegens.com`,
-      subject: "DearDegens.com: Listing Recieved For Review (Updated).",
-      react: ListingCreatedTemplate({
-        userName: authorId,
-        userEmail: session.user.email || "",
-        adId: listingId,
-        adTitle: title,
-      }) as React.ReactElement,
-    })
+    try {
+      const template = await render(
+        ListingCreatedTemplate({
+          userName: authorId,
+          userEmail: session.user.email || "",
+          adId: listingId,
+          adTitle: title,
+        }) as React.ReactElement
+      )
+
+      await Nodemail({
+        recipient: process.env.MAIL_USER!,
+        sender: process.env.MAIL_USER!,
+        subject: `DearDegens.com: Listing Recieved For Review (Updated).`,
+        template: template,
+      })
+      console.log(
+        `Successfully sent listing update email to admin, listing ID - ${listingId}`
+      )
+    } catch (error) {
+      console.error(
+        `Failed to send listing update email to admin, listing ID - ${listingId}`
+      )
+      return new Response(
+        `Failed to send listing update email to admin, listing ID - ${listingId}`,
+        { status: 500 }
+      )
+    }
 
     await db.insert(notifications).values({
       id: notificationId,

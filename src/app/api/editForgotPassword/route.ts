@@ -3,13 +3,12 @@ import { db } from "@/src/server/db"
 import { eq } from "drizzle-orm"
 import { users } from "@/src/server/db/schema"
 import crypto from "crypto"
-import { Resend } from "resend"
 import { forgotPasswordTemplate } from "@/src/components/emailTemplates/ForgotPasswordTemplate"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import { render } from "@react-email/components"
+import { Nodemail } from "@/src/server/mail/mail"
 
 const rateLimit = new Ratelimit({
   redis,
@@ -47,19 +46,23 @@ export async function POST(req: Request) {
         .where(eq(users.email, email))
 
       try {
-        const { data } = await resend.emails.send({
-          from: "DearDegens Support <support@deardegens.com>",
-          to: `${email}`,
-          subject: "DearDegens.com: Forgot Password",
-          react: forgotPasswordTemplate({
+        const template = await render(
+          forgotPasswordTemplate({
             userEmail: email,
             resetPasswordToken: resetPasswordToken,
-          }) as React.ReactElement,
+          }) as React.ReactElement
+        )
+
+        await Nodemail({
+          recipient: email,
+          sender: process.env.MAIL_USER!,
+          subject: `DearDegens.com: Forgot Password.`,
+          template: template,
         })
-        console.log("Successfully sent update password email:", data)
+        console.log(`Successfully sent forgot password email - ${email}`)
       } catch (error) {
-        console.error("Error sending update password email:", error)
-        return new Response("Error sending update password email:", {
+        console.error(`Failed to send forgot password email - ${email}`)
+        return new Response(`Failed to send forgot password email - ${email}`, {
           status: 500,
         })
       }

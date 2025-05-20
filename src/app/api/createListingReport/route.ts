@@ -5,12 +5,11 @@ import { listingReports } from "@/src/server/db/schema"
 import { ulid } from "ulid"
 import { z } from "zod"
 import { listingReportTemplate } from "@/src/components/emailTemplates/listingReportTemplate"
-import { Resend } from "resend"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
-
-const resend = new Resend(process.env.RESEND_API_KEY)
+import { render } from "@react-email/components"
+import { Nodemail } from "@/src/server/mail/mail"
 
 const rateLimit = new Ratelimit({
   redis,
@@ -56,23 +55,34 @@ export async function POST(req: Request) {
       })
 
       try {
-        const { data } = await resend.emails.send({
-          from: "DearDegens Reports <support@deardegens.com>",
-          to: "support@deardegens.com",
-          subject: "Listing Report",
-          react: listingReportTemplate({
+        const template = await render(
+          listingReportTemplate({
             userName: userName,
             userEmail: userEmail,
             reportId: reportId,
             adId: adId,
             description: description,
             infraction: infraction,
-          }) as React.ReactElement,
+          }) as React.ReactElement
+        )
+
+        await Nodemail({
+          recipient: process.env.MAIL_USER!,
+          sender: process.env.MAIL_USER!,
+          subject: `Listing Report`,
+          template: template,
         })
-        console.log("Successfully sent report email:", data)
+        console.log(
+          `Successfully sent user report email to admin, report ID - ${reportId}`
+        )
       } catch (error) {
-        console.error("Error sending report email:", error)
-        return new Response("Error sending report email:", { status: 500 })
+        console.error(
+          `Failed to send user report email to admin, report ID - ${reportId}`
+        )
+        return new Response(
+          `Failed to send user report email to admin, report ID - ${reportId}`,
+          { status: 500 }
+        )
       }
 
       return new Response(JSON.stringify(post), { status: 200 })

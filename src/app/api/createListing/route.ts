@@ -9,8 +9,9 @@ import { sql, eq } from "drizzle-orm"
 import { Ratelimit } from "@upstash/ratelimit"
 import { redis } from "@/src/server/upstash"
 import { headers } from "next/headers"
-import { Resend } from "resend"
 import { ListingCreatedTemplate } from "@/src/components/emailTemplates/ListingCreatedTemplate"
+import { Nodemail } from "@/src/server/mail/mail"
+import { render } from "@react-email/components"
 
 const rateLimit = new Ratelimit({
   redis,
@@ -21,7 +22,6 @@ const rateLimit = new Ratelimit({
 export async function POST(req: Request) {
   try {
     const session = await getAuthSession()
-    const resend = new Resend(process.env.RESEND_API_KEY)
     const ip = headers().get("x-forwarded-for")
     const {
       remaining,
@@ -232,18 +232,34 @@ export async function POST(req: Request) {
           .where(eq(users.id, session.user.id))
       }
 
-      // SEND EMAIL NOTIFICATION TO SUPPORT
-      await resend.emails.send({
-        from: "DearDegens Support <support@deardegens.com>",
-        to: `support@deardegens.com`,
-        subject: "DearDegens.com: Listing Recieved For Review.",
-        react: ListingCreatedTemplate({
-          userName: authorId,
-          userEmail: session.user.email || "",
-          adId: listingId,
-          adTitle: title,
-        }) as React.ReactElement,
-      })
+      try {
+        const template = await render(
+          ListingCreatedTemplate({
+            userName: authorId,
+            userEmail: session.user.email || "",
+            adId: listingId,
+            adTitle: title,
+          }) as React.ReactElement
+        )
+
+        await Nodemail({
+          recipient: process.env.MAIL_USER!,
+          sender: process.env.MAIL_USER!,
+          subject: `DearDegens.com: Listing Recieved For Review`,
+          template: template,
+        })
+        console.log(
+          `Successfully sent listing creation email to admin, listing ID - ${listingId}`
+        )
+      } catch (error) {
+        console.error(
+          `Failed to send listing creation email to admin, listing ID - ${listingId}`
+        )
+        return new Response(
+          `Failed to send listing creation email to admin, listing ID - ${listingId}`,
+          { status: 500 }
+        )
+      }
 
       await db.insert(notifications).values({
         id: notificationId,
